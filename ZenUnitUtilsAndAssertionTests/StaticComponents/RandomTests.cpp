@@ -12,7 +12,7 @@ namespace ZenUnit
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
    AFACT(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
-   AFACT(RandomExceptForValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
+   AFACT(RandomNotEqualToValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
    AFACT(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
    AFACT(Random1OrGreater_ReturnsRandomIntegerBetween1AndTMaxValue)
    AFACT(RandomNegative_ReturnsRandomINtegerBetweenTMinValueAndNegative1)
@@ -149,14 +149,14 @@ namespace ZenUnit
       ARE_NOT_EQUAL(0, RandomNon0<unsigned long long>());
    }
 
-   TEST(RandomExceptForValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
+   TEST(RandomNotEqualToValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
    {
       set<unsigned char> randomNonZeroUnsignedChars;
       //
       const unsigned char exceptValue = Random<unsigned char>();
       for (size_t i = 0; i < 5000; ++i)
       {
-         const unsigned char randomNonZeroUnsignedChar = RandomExceptForValue<unsigned char>(exceptValue);
+         const unsigned char randomNonZeroUnsignedChar = RandomNotEqualToValue<unsigned char>(exceptValue);
          randomNonZeroUnsignedChars.insert(randomNonZeroUnsignedChar);
       }
       //
@@ -172,26 +172,26 @@ namespace ZenUnit
       SETS_ARE_EQUAL(expectedUnsignedCharsExceptForExceptValueAsUnorderedSet, randomNonZeroUnsignedChars);
 
 
-      const char exceptCharValue = ZenUnit::Random<char>();
-      ARE_NOT_EQUAL(exceptCharValue, RandomNon0<char>());
+      const char notEqualCharValue = ZenUnit::Random<char>();
+      ARE_NOT_EQUAL(notEqualCharValue, RandomNon0<char>());
 
-      const short exceptShortValue = ZenUnit::Random<short>();
-      ARE_NOT_EQUAL(exceptShortValue, RandomNon0<short>());
+      const short notEqualShortValue = ZenUnit::Random<short>();
+      ARE_NOT_EQUAL(notEqualShortValue, RandomNon0<short>());
 
-      const unsigned short exceptUnsignedShortValue = ZenUnit::Random<unsigned short>();
-      ARE_NOT_EQUAL(exceptUnsignedShortValue, RandomNon0<unsigned short>());
+      const unsigned short notEqualUnsignedShortValue = ZenUnit::Random<unsigned short>();
+      ARE_NOT_EQUAL(notEqualUnsignedShortValue, RandomNon0<unsigned short>());
 
-      const int exceptIntValue = ZenUnit::Random<int>();
-      ARE_NOT_EQUAL(exceptIntValue, RandomNon0<int>());
+      const int notEqualIntValue = ZenUnit::Random<int>();
+      ARE_NOT_EQUAL(notEqualIntValue, RandomNon0<int>());
 
-      const unsigned int exceptUnsignedIntValue = ZenUnit::Random<unsigned int>();
-      ARE_NOT_EQUAL(exceptUnsignedIntValue, RandomNon0<unsigned int>());
+      const unsigned int notEqualUnsignedIntValue = ZenUnit::Random<unsigned int>();
+      ARE_NOT_EQUAL(notEqualUnsignedIntValue, RandomNon0<unsigned int>());
 
-      const long long exceptLongLongValue = ZenUnit::Random<long long>();
-      ARE_NOT_EQUAL(exceptLongLongValue, RandomNon0<long long>());
+      const long long notEqualLongLongValue = ZenUnit::Random<long long>();
+      ARE_NOT_EQUAL(notEqualLongLongValue, RandomNon0<long long>());
 
-      const unsigned long long exceptUnsignedLongLongValue = ZenUnit::Random<unsigned long long>();
-      ARE_NOT_EQUAL(exceptUnsignedLongLongValue, RandomNon0<unsigned long long>());
+      const unsigned long long notEqualUnsignedLongLongValue = ZenUnit::Random<unsigned long long>();
+      ARE_NOT_EQUAL(notEqualUnsignedLongLongValue, RandomNon0<unsigned long long>());
    }
 
    TEST(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)

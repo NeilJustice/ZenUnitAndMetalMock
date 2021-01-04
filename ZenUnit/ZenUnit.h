@@ -7226,10 +7226,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T RandomExceptForValue(T exceptValue)
+   T RandomNotEqualToValue(T notEqualValue)
    {
       T randomValue = Random<T>();
-      while (randomValue == exceptValue)
+      while (randomValue == notEqualValue)
       {
          randomValue = Random<T>();
       }
