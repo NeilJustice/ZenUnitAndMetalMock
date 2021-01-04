@@ -7216,14 +7216,24 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    T RandomNon0()
    {
       static_assert(!std::is_same_v<T, std::string>);
-      const T randomNon0Integer = Random<T>();
-      static const T zeroT = T{0};
-      if (randomNon0Integer == zeroT)
+      T randomInteger = Random<T>();
+      static const T zeroValue = T{0};
+      while (randomInteger == zeroValue)
       {
-         static const T oneT = T{1};
-         return oneT;
+         randomInteger = Random<T>();
       }
-      return randomNon0Integer;
+      return randomInteger;
+   }
+
+   template<typename T>
+   T RandomExceptForValue(T exceptValue)
+   {
+      T randomValue = Random<T>();
+      while (randomValue == exceptValue)
+      {
+         randomValue = Random<T>();
+      }
+      return randomValue;
    }
 
    template<typename T>

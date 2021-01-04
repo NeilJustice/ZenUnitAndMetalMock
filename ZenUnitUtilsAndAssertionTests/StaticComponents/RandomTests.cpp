@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <numeric> // std::iota
 
 namespace ZenUnit
 {
@@ -10,7 +11,8 @@ namespace ZenUnit
    AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
-   AFACT(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
+   AFACT(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
+   AFACT(RandomExceptForValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
    AFACT(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
    AFACT(Random1OrGreater_ReturnsRandomIntegerBetween1AndTMaxValue)
    AFACT(RandomNegative_ReturnsRandomINtegerBetweenTMinValueAndNegative1)
@@ -33,13 +35,13 @@ namespace ZenUnit
          TwoValue,
          MaxValue
       };
-      unordered_set<EnumType> randomEnumsReturned;
+      set<EnumType> randomEnumsReturned;
       for (size_t i = 0; i < 100; ++i)
       {
          const EnumType randomEnum = Random<EnumType>();
          randomEnumsReturned.insert(randomEnum);
       }
-      const unordered_set<EnumType> expectedRandomEnumsReturned
+      const set<EnumType> expectedRandomEnumsReturned
       {
          EnumType::ZeroValue,
          EnumType::OneValue,
@@ -57,13 +59,13 @@ namespace ZenUnit
          TwoValue,
          MaxValue
       };
-      unordered_set<EnumType> randomEnumsReturned;
+      set<EnumType> randomEnumsReturned;
       for (size_t i = 0; i < 100; ++i)
       {
          const EnumType randomNon0Enum = RandomNon0<EnumType>();
          randomEnumsReturned.insert(randomNon0Enum);
       }
-      const unordered_set<EnumType> expectedRandomEnumsReturned
+      const set<EnumType> expectedRandomEnumsReturned
       {
          EnumType::OneValue,
          EnumType::TwoValue
@@ -120,17 +122,76 @@ namespace ZenUnit
       const unordered_set<string> unorderedStringSet = Random<unordered_set<string>>();
    }
 
-   TEST(RandomNon0_ReturnsRandomValueBetweenMinAndMaxForThatTypeButNeverZero)
+   TEST(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
    {
-      RandomNon0<char>();
-      RandomNon0<unsigned char>();
-      RandomNon0<short>();
-      RandomNon0<unsigned short>();
-      RandomNon0<int>();
-      RandomNon0<unsigned int>();
-      RandomNon0<long long>();
-      RandomNon0<unsigned long long>();
-      RandomNon0<size_t>();
+      set<unsigned char> randomNonZeroUnsignedChars;
+      //
+      for (size_t i = 0; i < 5000; ++i)
+      {
+         const unsigned char randomNonZeroUnsignedChar = RandomNon0<unsigned char>();
+         randomNonZeroUnsignedChars.insert(randomNonZeroUnsignedChar);
+      }
+      //
+      vector<unsigned char> expectedNonZeroUnsignedCharsAsVector(255);
+      iota(expectedNonZeroUnsignedCharsAsVector.begin(), expectedNonZeroUnsignedCharsAsVector.end(), static_cast<unsigned char>(1));
+      ARE_EQUAL(1, expectedNonZeroUnsignedCharsAsVector[0]);
+      ARE_EQUAL(numeric_limits<unsigned char>::max(), expectedNonZeroUnsignedCharsAsVector.back());
+      const set<unsigned char> expectedRandomNon0CharsAsUnorderedSet(
+         expectedNonZeroUnsignedCharsAsVector.begin(), expectedNonZeroUnsignedCharsAsVector.end());
+      SETS_ARE_EQUAL(expectedRandomNon0CharsAsUnorderedSet, randomNonZeroUnsignedChars);
+
+      ARE_NOT_EQUAL(0, RandomNon0<char>());
+      ARE_NOT_EQUAL(0, RandomNon0<short>());
+      ARE_NOT_EQUAL(0, RandomNon0<unsigned short>());
+      ARE_NOT_EQUAL(0, RandomNon0<int>());
+      ARE_NOT_EQUAL(0, RandomNon0<unsigned int>());
+      ARE_NOT_EQUAL(0, RandomNon0<long long>());
+      ARE_NOT_EQUAL(0, RandomNon0<unsigned long long>());
+   }
+
+   TEST(RandomExceptForValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
+   {
+      set<unsigned char> randomNonZeroUnsignedChars;
+      //
+      const unsigned char exceptValue = Random<unsigned char>();
+      for (size_t i = 0; i < 5000; ++i)
+      {
+         const unsigned char randomNonZeroUnsignedChar = RandomExceptForValue<unsigned char>(exceptValue);
+         randomNonZeroUnsignedChars.insert(randomNonZeroUnsignedChar);
+      }
+      //
+      vector<unsigned char> expectedUnsignedCharsExceptForExceptValueAsVector(256);
+      std::iota(expectedUnsignedCharsExceptForExceptValueAsVector.begin(),
+         expectedUnsignedCharsExceptForExceptValueAsVector.end(),
+         static_cast<unsigned char>(0));
+      expectedUnsignedCharsExceptForExceptValueAsVector.erase(std::find(
+         expectedUnsignedCharsExceptForExceptValueAsVector.begin(),
+         expectedUnsignedCharsExceptForExceptValueAsVector.end(), exceptValue));
+      const set<unsigned char> expectedUnsignedCharsExceptForExceptValueAsUnorderedSet(
+         expectedUnsignedCharsExceptForExceptValueAsVector.begin(), expectedUnsignedCharsExceptForExceptValueAsVector.end());
+      SETS_ARE_EQUAL(expectedUnsignedCharsExceptForExceptValueAsUnorderedSet, randomNonZeroUnsignedChars);
+
+
+      const char exceptCharValue = ZenUnit::Random<char>();
+      ARE_NOT_EQUAL(exceptCharValue, RandomNon0<char>());
+
+      const short exceptShortValue = ZenUnit::Random<short>();
+      ARE_NOT_EQUAL(exceptShortValue, RandomNon0<short>());
+
+      const unsigned short exceptUnsignedShortValue = ZenUnit::Random<unsigned short>();
+      ARE_NOT_EQUAL(exceptUnsignedShortValue, RandomNon0<unsigned short>());
+
+      const int exceptIntValue = ZenUnit::Random<int>();
+      ARE_NOT_EQUAL(exceptIntValue, RandomNon0<int>());
+
+      const unsigned int exceptUnsignedIntValue = ZenUnit::Random<unsigned int>();
+      ARE_NOT_EQUAL(exceptUnsignedIntValue, RandomNon0<unsigned int>());
+
+      const long long exceptLongLongValue = ZenUnit::Random<long long>();
+      ARE_NOT_EQUAL(exceptLongLongValue, RandomNon0<long long>());
+
+      const unsigned long long exceptUnsignedLongLongValue = ZenUnit::Random<unsigned long long>();
+      ARE_NOT_EQUAL(exceptUnsignedLongLongValue, RandomNon0<unsigned long long>());
    }
 
    TEST(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
@@ -172,7 +233,7 @@ namespace ZenUnit
 
    TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
    {
-      unordered_set<const char*> randomConstCharPointers;
+      set<const char*> randomConstCharPointers;
       //
       for (size_t i = 0; i < 300; ++i)
       {
@@ -180,7 +241,7 @@ namespace ZenUnit
          randomConstCharPointers.insert(randonConstCharPointer);
       }
       //
-      const unordered_set<const char*> expectedRandomConstCharPointers =
+      const set<const char*> expectedRandomConstCharPointers =
       {
          "RandomConstCharPointer1",
          "RandomConstCharPointer2",
@@ -198,7 +259,7 @@ namespace ZenUnit
 
    TEST(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
    {
-      unordered_set<const wchar_t*> randomWideConstCharPointers;
+      set<const wchar_t*> randomWideConstCharPointers;
       //
       for (size_t i = 0; i < 300; ++i)
       {
@@ -206,7 +267,7 @@ namespace ZenUnit
          randomWideConstCharPointers.insert(randomWideConstCharPointer);
       }
       //
-      const unordered_set<const wchar_t*> expectedRandomWideConstCharPointers =
+      const set<const wchar_t*> expectedRandomWideConstCharPointers =
       {
          L"RandomWideConstCharPointer1",
          L"RandomWideConstCharPointer2",
@@ -233,7 +294,7 @@ namespace ZenUnit
 
    TEST(Random_String_ReturnsRandomString1Through10)
    {
-      unordered_set<string> randomStrings;
+      set<string> randomStrings;
       //
       for (size_t i = 0; i < 300; ++i)
       {
@@ -241,7 +302,7 @@ namespace ZenUnit
          randomStrings.insert(randomString);
       }
       //
-      const unordered_set<string> expectedRandomStrings =
+      const set<string> expectedRandomStrings =
       {
          "RandomString1",
          "RandomString2",
@@ -259,7 +320,7 @@ namespace ZenUnit
 
    TEST(Random_WideString_ReturnsRandomWideString1Through10)
    {
-      unordered_set<wstring> randomStrings;
+      set<wstring> randomStrings;
       //
       for (size_t i = 0; i < 300; ++i)
       {
@@ -267,7 +328,7 @@ namespace ZenUnit
          randomStrings.insert(randomString);
       }
       //
-      const unordered_set<wstring> expectedRandomStrings =
+      const set<wstring> expectedRandomStrings =
       {
          L"RandomWString1",
          L"RandomWString2",
@@ -341,7 +402,7 @@ namespace ZenUnit
 
    TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
    {
-      unordered_set<T> randomValuesReturned;
+      set<T> randomValuesReturned;
       //
       const T minTValue = std::numeric_limits<T>::min();
       for (size_t i = 0; i < 100; ++i)
@@ -350,7 +411,7 @@ namespace ZenUnit
          randomValuesReturned.emplace(randomT);
       }
       //
-      const unordered_set<T> expectedRandomValuesReturned =
+      const set<T> expectedRandomValuesReturned =
       {
          minTValue,
          minTValue + 1,
@@ -372,7 +433,7 @@ namespace ZenUnit
 
    TEST(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
    {
-      unordered_set<T> randomValuesReturned;
+      set<T> randomValuesReturned;
       //
       const T maxTValue = std::numeric_limits<T>::max();
       for (size_t i = 0; i < 100; ++i)
@@ -381,7 +442,7 @@ namespace ZenUnit
          randomValuesReturned.emplace(randomT);
       }
       //
-      const unordered_set<T> expectedRandomValuesReturned =
+      const set<T> expectedRandomValuesReturned =
       {
          maxTValue - 2,
          maxTValue - 1,
