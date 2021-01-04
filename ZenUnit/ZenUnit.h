@@ -337,6 +337,11 @@ Example ZenUnit command line arguments:
    ZenUnit::PAIRS_ARE_EQUAL_Defined(expectedPair, #expectedPair, actualPair, #actualPair, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that each element of expectedTuple equals each element of actualTuple.
+#define TUPLES_ARE_EQUAL(expectedTuple, actualTuple, ...) \
+   ZenUnit::TUPLES_ARE_EQUAL_Defined(expectedTuple, #expectedTuple, actualTuple, #actualTuple, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that numberOfElementsToCompare elements are equal in two C-style arrays according to ARE_EQUAL(expectedElement, actualElement) assertions.
 #define ARRAYS_ARE_EQUAL(expectedArray, actualArray, numberOfElementsToCompare, ...) \
    ZenUnit::ARRAYS_ARE_EQUAL_Defined(expectedArray, #expectedArray, actualArray, #actualArray, numberOfElementsToCompare, \
@@ -847,7 +852,8 @@ namespace ZenUnit
       const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
    {
       const std::string assertTrueFailedErrorMessage = String::Concat(
-         "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n", filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")");
+         "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n",
+         filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")");
       std::cout << assertTrueFailedErrorMessage << '\n';
       exit(1);
    }
@@ -1380,6 +1386,15 @@ namespace ZenUnit
 #endif
    };
 
+   template<size_t... Indices>
+   struct IndexSequence {};
+
+   template<int N, size_t... Indices>
+   struct GenerateIndexSequence : GenerateIndexSequence<N - 1, N - 1, Indices...> {};
+
+   template<size_t... Indices>
+   struct GenerateIndexSequence<0, Indices...> : IndexSequence<Indices...> {};
+
    class ToStringer
    {
    public:
@@ -1521,6 +1536,37 @@ namespace ZenUnit
          const std::string toStringedSecond = ToStringer::ToString(p.second);
          std::string toStringedPair = String::Concat("(", toStringedFirst, ", ", toStringedSecond, ")");
          return toStringedPair;
+      }
+
+      template<typename TupleType, typename FunctionType, size_t... Indices>
+      static void CallFunctionOnEachTupleElement(const TupleType& t, FunctionType&& func, IndexSequence<Indices...>)
+      {
+         const auto automaticFunctionEvaluator =
+         {
+            (std::forward<FunctionType>(func)(std::get<Indices>(t)), 0)...
+         };
+      }
+
+      template<typename... TupleTypes>
+      static std::string ToString(const std::tuple<TupleTypes...>& t)
+      {
+         std::ostringstream oss;
+         oss << '(';
+         size_t tupleIndex = 0;
+         CallFunctionOnEachTupleElement(
+            t, [&oss, &tupleIndex](const auto& tupleElement)
+            {
+               const std::string elementAsString = ToString(tupleElement);
+               oss << elementAsString;
+               if (tupleIndex != sizeof...(TupleTypes) - 1)
+               {
+                  oss << ", ";
+               }
+               ++tupleIndex;
+            }, GenerateIndexSequence<sizeof...(TupleTypes)>());
+         oss << ')';
+         std::string toStringedTuple = oss.str();
+         return toStringedTuple;
       }
 
       template<typename... Types>
@@ -3283,6 +3329,59 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          PAIRS_ARE_EQUAL_ToStringAndRethrow(anomaly, expectedPair, expectedPairText, actualPair, actualPairText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename ExpectedTupleType, typename ActualTupleType, typename... MessageTypes>
+   void TUPLES_ARE_EQUAL_ToStringAndRethrow(
+      const Anomaly& becauseAnomaly,
+      const ExpectedTupleType& expectedTuple, const char* expectedTupleText,
+      const ActualTupleType& actualTuple, const char* actualTupleText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string expectedField = ToStringer::ToString(expectedTuple);
+      const std::string actualField = ToStringer::ToString(actualTuple);
+      const Anomaly anomaly("TUPLES_ARE_EQUAL", expectedTupleText, actualTupleText, "", messagesText, becauseAnomaly,
+         expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
+   }
+
+   template<typename TupleType, typename FunctionType, size_t... Indices>
+   void CallBinaryFunctionOnEachPairOfTupleElements(
+      const TupleType& expectedTuple, const TupleType& actualTuple, FunctionType&& binaryFunction, IndexSequence<Indices...>)
+   {
+      const auto automaticFunctionEvaluator =
+      {
+         (std::forward<FunctionType>(binaryFunction)(std::get<Indices>(expectedTuple), std::get<Indices>(actualTuple)), 0)...
+      };
+   }
+
+   template<typename... TupleTypes>
+   void TUPLES_ARE_EQUAL_AssertTuplesEqual(
+      const std::tuple<TupleTypes...>& expectedTuple,
+      const std::tuple<TupleTypes...>& actualTuple)
+   {
+      CallBinaryFunctionOnEachPairOfTupleElements(expectedTuple, actualTuple,
+         [](const auto& expectedTupleElement, const auto& actualTupleElement)
+         {
+            ARE_EQUAL(expectedTupleElement, actualTupleElement);
+         }, GenerateIndexSequence<sizeof...(TupleTypes)>());
+   }
+
+   template<typename ExpectedTupleType, typename ActualTupleType, typename... MessageTypes>
+   void TUPLES_ARE_EQUAL_Defined(
+      const ExpectedTupleType& expectedTuple, const char* expectedTupleText,
+      const ActualTupleType& actualTuple, const char* actualTupleText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      try
+      {
+         TUPLES_ARE_EQUAL_AssertTuplesEqual(expectedTuple, actualTuple);
+      }
+      catch (const Anomaly& anomaly)
+      {
+         TUPLES_ARE_EQUAL_ToStringAndRethrow(anomaly, expectedTuple, expectedTupleText, actualTuple, actualTupleText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -7002,6 +7101,18 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const std::pair<FirstType, SecondType>& actualPair)
       {
          PAIRS_ARE_EQUAL(expectedPair, actualPair);
+      }
+   };
+
+   template<typename... Types>
+   class Equalizer<std::tuple<Types...>>
+   {
+   public:
+      static void AssertEqual(
+         const std::tuple<Types...>& expectedTuple,
+         const std::tuple<Types...>& actualTuple)
+      {
+         TUPLES_ARE_EQUAL(expectedTuple, actualTuple);
       }
    };
 

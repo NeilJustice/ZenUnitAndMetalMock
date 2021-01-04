@@ -401,6 +401,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |`SETS_ARE_EQUAL(expectedSet, actualSet, messages...)`|Asserts that `expectedSet.size() == actualSet.size()` then calls `ARE_EQUAL(expectedElement, actualElement)` on each pair of expected and actual elements.|
 |`MAPS_ARE_EQUAL(expectedMap, actualMap, messages...)`|Asserts that `expectedMap.size() == actualMap.size()` then calls `ARE_EQUAL(expectedKeyValuePair, actualKeyValuePair)` on each pair of expected and actual key-value pairs.
 |`PAIRS_ARE_EQUAL(expectedPair, actualPair, messages...)`|Asserts `ARE_EQUAL(expectedPair.first, actualPair.first)` then asserts `ARE_EQUAL(expectedPair.second, actualPair.second)`.|
+|`TUPLES_ARE_EQUAL(expectedTuple, actualTuple, messages...)`|Asserts `ARE_EQUAL(expectedTupleElement, actualTupleElement)` for each tuple element.|
 |`ARRAYS_ARE_EQUAL(expectedArray, actualArray, numberOfElementsToCompare, messages...)`|Asserts `ARE_EQUAL` on each expected and actual array element up to numberOfElementsToCompare elements.|
 |`STD_ARRAYS_ARE_EQUAL(expectedStdArray, actualStdArray, messages...)`|Asserts `ARE_EQUAL` on each expected and actual `std::array` element.|
 |`CONTAINS_ELEMENT(expectedElement, dataStructure, messages...)`|Asserts that `dataStructure.find(expectedElement) != dataStructure.end()`.|
@@ -1248,9 +1249,9 @@ cmake --build . --target install
 
 ### ZenUnit Roadmap
 
-|Future ZenUnit Feature|Estimated Delivery|Implementation Status|
-|----------------------|------------------|---------------------|
-|`TUPLES_ARE_EQUAL`|January 2021|In progress|
+|Future ZenUnit Feature|Estimated Delivery Month|Implementation Status|
+|----------------------|------------------------|---------------------|
+|`TUPLES_ARE_EQUAL`|January 2021|Implemented|
 |Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|January 2021|In progress|
 |GitHub Actions build|January 2021|Awaiting implementation|
 |SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|January 2021|Awaiting implementation|
@@ -1262,8 +1263,8 @@ cmake --build . --target install
 
 ### MetalMock Roadmap
 
-|Future MetalMock Feature|Estimated Delivery|Implementation Status|
-|------------------------|------------------|---------------------|
+|Future MetalMock Feature|Estimated Delivery Month|Implementation Status|
+|------------------------|------------------------|---------------------|
 |Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness|January 2021|Awaiting implementation|
 
 ### Special Thanks
