@@ -1398,6 +1398,7 @@ namespace ZenUnit
    template<typename TupleType, typename FunctionType, size_t... Indices>
    static void CallFunctionOnEachConstTupleElement(const TupleType& constTuple, FunctionType&& func, IndexSequence<Indices...>)
    {
+      [[maybe_unused]]
       const auto automaticFunctionEvaluator =
       {
          (std::forward<FunctionType>(func)(std::get<Indices>(constTuple)), 0)...
@@ -1407,6 +1408,7 @@ namespace ZenUnit
    template<typename TupleType, typename FunctionType, size_t... Indices>
    static void CallFunctionOnEachMutableTupleElement(TupleType& mutableTuple, FunctionType&& func, IndexSequence<Indices...>)
    {
+      [[maybe_unused]]
       const auto automaticFunctionEvaluator =
       {
          (std::forward<FunctionType>(func)(std::ref(std::get<Indices>(mutableTuple))), 0)...
@@ -3360,6 +3362,7 @@ namespace ZenUnit
    void CallBinaryFunctionOnEachPairOfTupleElements(
       const TupleType& expectedTuple, const TupleType& actualTuple, FunctionType&& binaryFunction, IndexSequence<Indices...>)
    {
+      [[maybe_unused]]
       const auto automaticFunctionEvaluator =
       {
          (std::forward<FunctionType>(binaryFunction)(std::get<Indices>(expectedTuple), std::get<Indices>(actualTuple)), 0)...
