@@ -8,7 +8,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
 
 |Build Type|Build Status|
 |----------|------------|
-|Travis CI Linux Clang 9.0.1, Linux GCC 9.3.0, and macOS AppleClang 12.0.0 Debug and Release|[![Build Status](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock.svg?branch=main)](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock)|
+|Travis CI Linux Clang 9.0.1 and Linux GCC 9.3.0 Debug and Release|[![Build Status](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock.svg?branch=main)](https://travis-ci.com/NeilJustice/ZenUnitAndMetalMock)|
 |AppVeyor Windows Visual Studio 2019 x64 Debug and Release|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
 |Code Coverage For The Travis CI Linux GCC 9.3.0 Release Build|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
 
