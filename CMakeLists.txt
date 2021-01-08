@@ -3,7 +3,7 @@ project(ZenUnitAndMetalMock)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
 if(UNIX)
-   set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -Wextra -pedantic -Werror -pthread -Wno-gnu-zero-variadic-macro-arguments")
+   set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -Wextra -pedantic -Werror -pthread -Wno-gnu-zero-variadic-macro-arguments -Wno-unused-variable")
    option(ClangTidyMode "Sets CMAKE_EXPORT_COMPILE_COMMANDS to ON" OFF)
    option(ClangSanitizerMode_AddressAndUndefinedBehavior "Appends -fsanitize=address,undefined" OFF)
    option(ClangSanitizerMode_Thread "Appends -fsanitize=thread" OFF)
