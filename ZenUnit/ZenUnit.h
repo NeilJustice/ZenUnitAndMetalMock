@@ -5392,8 +5392,16 @@ namespace ZenUnit
          _console->WriteLineAndExit("  ExitCode: " + std::to_string(exitCode), exitCode);
       }
    private:
-      NOINLINE void FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
-         const char* anomalyOrException, const ZenUnitArgs& zenUnitArgs) const;
+      void FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
+         const char* anomalyOrException, const ZenUnitArgs& zenUnitArgs) const
+      {
+         const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
+         _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
+         const std::string exitMessage = String::Concat(
+            "[ZenUnit] TestResult: A ", anomalyOrException, " was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
+            "[ZenUnit]   ExitCode: ", exitCode);
+         _console->WriteLineAndExit(exitMessage, exitCode);
+      }
 
       template<typename ExceptionType>
       void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& ex, TestPhaseResult* outTestPhaseResult) const
@@ -5588,17 +5596,6 @@ namespace ZenUnit
          return testResult;
       }
    };
-
-   NOINLINE inline void TestPhaseRunner::FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
-      const char* anomalyOrException, const ZenUnitArgs& zenUnitArgs) const
-   {
-      const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-      _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
-      const std::string exitMessage = String::Concat(
-         "[ZenUnit] TestResult: A ", anomalyOrException, " was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
-         "[ZenUnit]   ExitCode: ", exitCode);
-      _console->WriteLineAndExit(exitMessage, exitCode);
-   }
 
    inline TestPhaseResult TestPhaseRunner::RunTestPhase(
       void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
