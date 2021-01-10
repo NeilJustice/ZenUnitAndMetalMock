@@ -7270,6 +7270,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomUnsignedLongLong;
    }
 
+   inline unsigned long long RandomUnsignedLongLongBetween0AndValue(unsigned long long inclusiveMaxValue)
+   {
+      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      std::uniform_int_distribution<unsigned long long> distribution(0, inclusiveMaxValue);
+      const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue = distribution(defaultRandomEngine);
+      return randomUnsignedLongLongBetween0AndInclusiveMaxValue;
+   }
+
    template<typename EnumType>
    EnumType RandomEnum(EnumType exclusiveMaxValue)
    {

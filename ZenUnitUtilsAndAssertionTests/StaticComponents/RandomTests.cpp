@@ -25,6 +25,8 @@ namespace ZenUnit
    AFACT(Random_String_ReturnsRandomString1Through10)
    AFACT(Random_WideString_ReturnsRandomWideString1Through10)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
+   FACTS(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue)
    EVIDENCE
 
    TEST(Random_Enum_ReturnsRandomEnumBetween0AndEnumMaxValue)
@@ -398,6 +400,43 @@ namespace ZenUnit
       IS_TRUE(randomBetweenReturned0);
       IS_TRUE(randomBetweenReturnedPositive1);
       IS_TRUE(randomBetweenReturnedPositive2);
+   }
+
+   TEST(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
+   {
+      unordered_set<unsigned long long> uniqueRandomValues;
+      //
+      for (size_t i = 0; i < 10; ++i)
+      {
+         const unsigned long long randomUnsignedLongLong = ZenUnit::RandomUnsignedLongLong();
+         uniqueRandomValues.insert(randomUnsignedLongLong);
+      }
+      //
+      IS_TRUE(uniqueRandomValues.size() >= 2);
+   }
+
+   TEST1X1(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue,
+      size_t inclusiveMaxValue,
+      0ULL,
+      1ULL,
+      2ULL,
+      3ULL)
+   {
+      unordered_set<unsigned long long> uniqueRandomValues;
+      //
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue =
+            ZenUnit::RandomUnsignedLongLongBetween0AndValue(inclusiveMaxValue);
+         uniqueRandomValues.insert(randomUnsignedLongLongBetween0AndInclusiveMaxValue);
+      }
+      //
+      unordered_set<unsigned long long> expectedUniqueRandomValues;
+      for (size_t x = 0; x <= inclusiveMaxValue; ++x)
+      {
+         expectedUniqueRandomValues.insert(x);
+      }
+      SETS_ARE_EQUAL(expectedUniqueRandomValues, uniqueRandomValues);
    }
 
    RUN_TESTS(RandomTests)
