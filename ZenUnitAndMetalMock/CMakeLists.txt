@@ -7,6 +7,6 @@ source_group("" FILES ${sourceFilePaths})
 add_library(ZenUnitAndMetalMock INTERFACE ${sourceFilePaths})
 
 install(DIRECTORY .
-        DESTINATION include/ZenUnitAndMetalMock
+        DESTINATION include/ZenUnitAndMetalMock/ZenUnitAndMetalMock
         FILES_MATCHING REGEX "ZenUnit.h|MetalMock.h"
         PATTERN REGEX "CMakeFiles|Debug|Release|RelWithDebInfo|MinSizeRel|x64|ZenUnit.dir" EXCLUDE)
