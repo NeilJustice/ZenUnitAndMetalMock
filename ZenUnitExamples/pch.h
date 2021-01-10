@@ -2,7 +2,7 @@
 #define ZenUnitExamples_PCH
 
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
-#include "ZenUnit/ZenUnit.h"
-#include "ZenUnit/MetalMock.h"
+#include "ZenUnitAndMetalMock/ZenUnit.h"
+#include "ZenUnitAndMetalMock/MetalMock.h"
 
 #endif

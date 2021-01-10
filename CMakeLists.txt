@@ -37,7 +37,7 @@ elseif(MSVC)
    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-add_subdirectory(ZenUnit)
+add_subdirectory(ZenUnitAndMetalMock)
 add_subdirectory(ZenUnitCompileSpeedTests)
 add_subdirectory(ZenUnitExamples)
 add_subdirectory(ZenUnitLibraryTests)

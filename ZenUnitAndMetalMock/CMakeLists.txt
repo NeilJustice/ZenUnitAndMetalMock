@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
-project(ZenUnit)
+project(ZenUnitAndMetalMock)
 
-add_library(ZenUnit INTERFACE)
+file(GLOB_RECURSE sourceFilePaths ZenUnit.h MetalMock.h)
+source_group("" FILES ${sourceFilePaths})
+
+add_library(ZenUnitAndMetalMock INTERFACE ${sourceFilePaths})
 
 install(DIRECTORY .
         DESTINATION include/ZenUnit/ZenUnit

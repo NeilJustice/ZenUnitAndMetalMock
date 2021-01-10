@@ -2,6 +2,6 @@
 #define ZenUnitLibraryTests_PCH
 
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
-#include "ZenUnit/ZenUnit.h"
+#include "ZenUnitAndMetalMock/ZenUnit.h"
 
 #endif

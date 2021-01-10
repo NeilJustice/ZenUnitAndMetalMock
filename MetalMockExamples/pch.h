@@ -9,7 +9,7 @@
 #include "Windows.h"
 #endif
 
-#include "ZenUnit/ZenUnit.h"
-#include "ZenUnit/MetalMock.h"
+#include "ZenUnitAndMetalMock/ZenUnit.h"
+#include "ZenUnitAndMetalMock/MetalMock.h"
 
 #endif
