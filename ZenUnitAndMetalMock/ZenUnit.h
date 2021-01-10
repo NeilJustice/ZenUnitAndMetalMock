@@ -2397,7 +2397,8 @@ namespace ZenUnit
 
    template<typename ExpectedType, typename ActualType, typename... MessageTypes>
    void ARE_EQUAL_Defined(
-      const ExpectedType& expectedValue, const char* expectedValueText, const ActualType& actualValue, const char* actualValueText,
+      const ExpectedType& expectedValue, const char* expectedValueText,
+      const ActualType& actualValue, const char* actualValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       try
