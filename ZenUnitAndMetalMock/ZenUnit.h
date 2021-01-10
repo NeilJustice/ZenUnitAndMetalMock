@@ -2184,7 +2184,7 @@ namespace ZenUnit
             {
                _console->WriteLineAndExit(ZenUnitArgs::CommandLineUsage, 0);
             }
-            else if (arg == "--version" || arg == "-version")
+            else if (arg == "--version")
             {
                _console->WriteLineAndExit(VersionNumber, 0);
             }
