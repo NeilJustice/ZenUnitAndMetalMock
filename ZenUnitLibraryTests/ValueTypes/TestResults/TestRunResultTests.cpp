@@ -12,20 +12,21 @@ namespace ZenUnit
    AFACT(DefaultConstructor_NewsComponents_SetsFieldsToDefaultValues)
    AFACT(AddSkippedTest_AddsTestClassNameDotTestNameToSkippedFullTestNamesVector)
    AFACT(AddSkippedTestClassNameAndReason_AddsTestClassNameAndReasonToSkippedTestClassNamesAndReasonsVector)
-   FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
-   AFACT(CalculateNumberOfFailedTestCases_ZeroTestClassResults_Returns0)
-   AFACT(CalculateNumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
-   FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames);
-   AFACT(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
-   FACTS(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedSeconds)
-   AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    FACTS(DetermineZenUnitExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0)
    FACTS(DetermineZenUnitExitCode_Exit0True_AlwaysReturns0)
    FACTS(DetermineZenUnitExitCode_Exit0True_noskipsTrue_AlwaysReturns0)
    FACTS(DetermineZenUnitExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped)
+   AFACT(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   FACTS(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedSeconds)
+   FACTS(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames)
+   AFACT(ResetStateInPreparationForNextTestRun_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
+   FACTS(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField)
+   // Private Functions
+   AFACT(CalculateNumberOfFailedTestCases_ZeroTestClassResults_Returns0)
+   AFACT(CalculateNumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
+   AFACT(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
    AFACT(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
    AFACT(PrintSkippedTestReminder_PrintsExpectedToConsole)
-   AFACT(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
    EVIDENCE
 
    TestRunResult _testRunResult;
@@ -130,179 +131,6 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestRunResultB, _testRunResult);
    }
 
-   TEST1X1(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField,
-      size_t numberOfFailedTestCases,
-      size_t(0),
-      size_t(1),
-      size_t(2))
-   {
-      class TestRunResultSelfMocked : public Metal::Mock<TestRunResult>
-      {
-      public:
-         METALMOCK_NONVOID1_CONST(size_t, CalculateNumberOfFailedTestCases, const vector<TestClassResult>&)
-      } testRunResultSelfMocked;
-      testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
-
-      vector<TestClassResult> testClassResults{ TestClassResult() };
-      const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;
-      //
-      testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
-      //
-      METALMOCK(testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
-      VECTORS_ARE_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
-      ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
-   }
-
-   TEST(CalculateNumberOfFailedTestCases_ZeroTestClassResults_Returns0)
-   {
-      const size_t numberOfFailedTestCases = _testRunResult.CalculateNumberOfFailedTestCases(vector<TestClassResult>());
-      IS_ZERO(numberOfFailedTestCases);
-   }
-
-   TEST(CalculateNumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
-   {
-      TestClassResult testClassResultA;
-      TestResult testResultA1;
-      testResultA1.testOutcome = TestOutcome::Anomaly;
-      TestResult testResultA2;
-      testResultA2.testOutcome = TestOutcome::Exception;
-      TestResult testResultA3;
-      testResultA3.testOutcome = TestOutcome::Success;
-      testClassResultA.AddTestResults({ testResultA1, testResultA2, testResultA3 });
-
-      TestResult testResultB1;
-      testResultB1.testOutcome = TestOutcome::Success;
-      TestClassResult testClassResultB;
-      testClassResultB.AddTestResults({ testResultB1 });
-
-      TestResult testResultC1;
-      testResultC1.testOutcome = TestOutcome::Anomaly;
-      TestResult testResultC2;
-      testResultC2.testOutcome = TestOutcome::Exception;
-      TestResult testResultC3;
-      testResultC3.testOutcome = TestOutcome::Anomaly;
-      TestClassResult testClassResultC;
-      testClassResultC.AddTestResults({ testResultC1, testResultC2, testResultC3 });
-
-      const vector<TestClassResult> testClassResults{ testClassResultA, testClassResultB, testClassResultC };
-      //
-      const size_t numberOfFailedTestCases = _testRunResult.CalculateNumberOfFailedTestCases(testClassResults);
-      //
-      ARE_EQUAL(5, numberOfFailedTestCases);
-   }
-
-   TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames,
-      size_t numberOfFailedTestCases, bool expectTestsFailedLineAndPrintFailuresCall, const string& expectedTestsFailedLine,
-      size_t(0), false, "",
-      size_t(1), true, "== 1 Test Failed ==\n===================\n",
-      size_t(2), true, "== 2 Tests Failed ==\n====================\n",
-      size_t(10), true, "== 10 Tests Failed ==\n=====================\n")
-   {
-      _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
-      if (expectTestsFailedLineAndPrintFailuresCall)
-      {
-         _consoleMock->WriteLineColorMock.Expect();
-         _memberForEacherTestClassResultsMock->MemberForEachMock.Expect();
-      }
-      _memberForEacherSkippedTestsMock->MemberForEachMock.Expect();
-      //
-      _testRunResult.PrintTestFailuresAndSkips();
-      //
-      if (expectTestsFailedLineAndPrintFailuresCall)
-      {
-         METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedTestsFailedLine, Color::Red));
-         METALMOCK(_memberForEacherTestClassResultsMock->MemberForEachMock.
-            CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult, &TestRunResult::PrintTestClassResultFailures));
-      }
-      METALMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
-      {
-         { &_testRunResult._skippedTestClassNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
-         { &_testRunResult._skippedFullTestNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
-      }));
-   }
-
-   TEST(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
-   {
-      _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteLineAndExitMock.Expect();
-      //
-      _testRunResult.PrintConclusionLines(
-         ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>());
-      //
-      METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Red));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(" Zero test classes run. Exiting with code 1.", 1));
-   }
-
-   TEST5X5(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedSeconds,
-      const string& expectedSuccessOrFailLinePrefix,
-      ZenUnit::Color expectedColor,
-      size_t numberOfFailedTestCases,
-      size_t numberOfTotalTests,
-      const char* expectedClosingLineTestsCountText,
-      "[SUCCESS]", Color::Green, size_t(0), size_t(1), "All 1 test passed",
-      "[SUCCESS]", Color::Green, size_t(0), size_t(2), "All 2 tests passed",
-      "[SUCCESS]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
-      "[SUCCESS]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
-      ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1 of 1 test failed",
-      ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1 of 2 tests failed",
-      ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1 of 3 tests failed",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2 of 2 tests failed",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2 of 3 tests failed",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2 of 3 tests failed",
-      ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2 of 4 tests failed")
-   {
-      _consoleMock->WriteColorMock.Expect();
-      _consoleMock->WriteLineMock.Expect();
-      _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
-      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
-
-      const string startDateTime = ZenUnit::Random<string>();
-      const string testRunElapsedSeconds = ZenUnit::Random<string>();
-      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
-      //
-      _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, args);
-      //
-      const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
-      METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
-      {
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedSuccessOrFailLinePrefix, expectedColor }
-      }));
-      const string expectedCompletedLine  = "  Completed: " + args.commandLine;
-      const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(args.randomSeed);
-      const string expectedStartTimeLine  = "  StartTime: " + startDateTime;
-      const string expectedEndTimeLine    = "    EndTime: " + dateTimeNow;
-      const string expectedDurationLine   = "   Duration: " + testRunElapsedSeconds + " seconds";
-      const string expectedRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
-      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
-      {
-         { expectedCompletedLine },
-         { expectedRandomSeedLine },
-         { expectedStartTimeLine },
-         { expectedEndTimeLine },
-         { expectedDurationLine },
-         { expectedRunResultLine }
-      }));
-   }
-
-   TEST(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
-   {
-      TestClassResultMock testClassResultMock;
-      testClassResultMock.PrintTestFailuresMock.Expect();
-      //
-      _testRunResult.PrintTestClassResultFailures(testClassResultMock);
-      //
-      METALMOCK(testClassResultMock.PrintTestFailuresMock.CalledOnceWith(
-         _testRunResult._threeArgForEacher.get(),
-         _testRunResult._console.get(),
-         _testRunResult._testFailureNumberer.get()));
-   }
-
    TEST4X4(DetermineZenUnitExitCode_DefaultArgs_Returns1IfAnyTestFailures_OtherwiseReturns0,
       size_t numberOfFailedTestCases,
       size_t numberOfSkippedTests,
@@ -384,11 +212,199 @@ namespace ZenUnit
       ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
    }
 
+   TEST(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)
+   {
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineAndExitMock.Expect();
+      //
+      _testRunResult.PrintConclusionLines(
+         ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>());
+      //
+      METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Red));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(" Zero test classes run. Exiting with code 1.", 1));
+   }
+
+   TEST5X5(PrintConclusionLines_PositiveTotalNumberOfTests_PrintsSuccesOrFailureAndElapsedSeconds,
+      const string& expectedSuccessOrFailLinePrefix,
+      ZenUnit::Color expectedColor,
+      size_t numberOfFailedTestCases,
+      size_t numberOfTotalTests,
+      const char* expectedClosingLineTestsCountText,
+      "[SUCCESS]", Color::Green, size_t(0), size_t(1), "All 1 test passed",
+      "[SUCCESS]", Color::Green, size_t(0), size_t(2), "All 2 tests passed",
+      "[SUCCESS]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
+      "[SUCCESS]", Color::Green, size_t(0), size_t(3), "All 3 tests passed",
+      ">>-FAIL->", Color::Red, size_t(1), size_t(1), "1 of 1 test failed",
+      ">>-FAIL->", Color::Red, size_t(1), size_t(2), "1 of 2 tests failed",
+      ">>-FAIL->", Color::Red, size_t(1), size_t(3), "1 of 3 tests failed",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(2), "2 of 2 tests failed",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2 of 3 tests failed",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(3), "2 of 3 tests failed",
+      ">>-FAIL->", Color::Red, size_t(2), size_t(4), "2 of 4 tests failed")
+   {
+      _consoleMock->WriteColorMock.Expect();
+      _consoleMock->WriteLineMock.Expect();
+      _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
+      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
+
+      const string startDateTime = ZenUnit::Random<string>();
+      const string testRunElapsedSeconds = ZenUnit::Random<string>();
+      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+      //
+      _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, args);
+      //
+      const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
+      METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
+      {
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
+         { expectedSuccessOrFailLinePrefix, expectedColor }
+      }));
+      const string expectedCompletedLine = "  Completed: " + args.commandLine;
+      const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(args.randomSeed);
+      const string expectedStartTimeLine = "  StartTime: " + startDateTime;
+      const string expectedEndTimeLine = "    EndTime: " + dateTimeNow;
+      const string expectedDurationLine = "   Duration: " + testRunElapsedSeconds + " seconds";
+      const string expectedRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
+      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
+      METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
+         {
+            { expectedCompletedLine },
+            { expectedRandomSeedLine },
+            { expectedStartTimeLine },
+            { expectedEndTimeLine },
+            { expectedDurationLine },
+            { expectedRunResultLine }
+         }));
+   }
+
+   TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames,
+      size_t numberOfFailedTestCases, bool expectTestsFailedLineAndPrintFailuresCall, const string& expectedTestsFailedLine,
+      size_t(0), false, "",
+      size_t(1), true, "== 1 Test Failed ==\n===================\n",
+      size_t(2), true, "== 2 Tests Failed ==\n====================\n",
+      size_t(10), true, "== 10 Tests Failed ==\n=====================\n")
+   {
+      _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
+      if (expectTestsFailedLineAndPrintFailuresCall)
+      {
+         _consoleMock->WriteLineColorMock.Expect();
+         _memberForEacherTestClassResultsMock->MemberForEachMock.Expect();
+      }
+      _memberForEacherSkippedTestsMock->MemberForEachMock.Expect();
+      //
+      _testRunResult.PrintTestFailuresAndSkips();
+      //
+      if (expectTestsFailedLineAndPrintFailuresCall)
+      {
+         METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedTestsFailedLine, Color::Red));
+         METALMOCK(_memberForEacherTestClassResultsMock->MemberForEachMock.
+            CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult, &TestRunResult::PrintTestClassResultFailures));
+      }
+      METALMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
+      {
+         { &_testRunResult._skippedTestClassNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
+         { &_testRunResult._skippedFullTestNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
+      }));
+   }
+
    void SetState(size_t numberOfFailedTestCases, size_t numberOfSkippedTests, size_t numberOfSkippedTestClasses)
    {
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       _testRunResult._skippedFullTestNamesAndSkipReasons.resize(numberOfSkippedTests);
       _testRunResult._skippedTestClassNamesAndSkipReasons.resize(numberOfSkippedTestClasses);
+   }
+
+   TEST(ResetStateInPreparationForNextTestRun_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
+   {
+      _testFailureNumbererMock->ResetTestFailureNumberMock.Expect();
+      _testRunResult._testClassResults.resize(1);
+      _testRunResult._numberOfFailedTestCases = 1;
+      //
+      _testRunResult.ResetStateInPreparationForNextTestRun();
+      //
+      METALMOCK(_testFailureNumbererMock->ResetTestFailureNumberMock.CalledOnce());
+      IS_EMPTY(_testRunResult._testClassResults);
+      IS_ZERO(_testRunResult._numberOfFailedTestCases);
+   }
+
+   TEST1X1(SetTestClassResults_SetsNumberofFailedTestCases_MovesTestClassResultsIntoField,
+      size_t numberOfFailedTestCases,
+      size_t(0),
+      size_t(1),
+      size_t(2))
+   {
+      class TestRunResultSelfMocked : public Metal::Mock<TestRunResult>
+      {
+      public:
+         METALMOCK_NONVOID1_CONST(size_t, CalculateNumberOfFailedTestCases, const vector<TestClassResult>&)
+      } testRunResultSelfMocked;
+      testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
+
+      vector<TestClassResult> testClassResults{ TestClassResult() };
+      const vector<TestClassResult> NonMovedFromTestClassResults = testClassResults;
+      //
+      testRunResultSelfMocked.SetTestClassResults(std::move(testClassResults));
+      //
+      METALMOCK(testRunResultSelfMocked.CalculateNumberOfFailedTestCasesMock.CalledOnceWith(NonMovedFromTestClassResults));
+      VECTORS_ARE_EQUAL(NonMovedFromTestClassResults, testRunResultSelfMocked._testClassResults);
+      ARE_EQUAL(numberOfFailedTestCases, testRunResultSelfMocked._numberOfFailedTestCases);
+   }
+
+   // Private Functions
+
+   TEST(CalculateNumberOfFailedTestCases_ZeroTestClassResults_Returns0)
+   {
+      const size_t numberOfFailedTestCases = _testRunResult.CalculateNumberOfFailedTestCases(vector<TestClassResult>());
+      IS_ZERO(numberOfFailedTestCases);
+   }
+
+   TEST(CalculateNumberOfFailedTestCases_ThreeTestClassResults_ReturnsSumOfNumberOfFailedTestCases)
+   {
+      TestClassResult testClassResultA;
+      TestResult testResultA1;
+      testResultA1.testOutcome = TestOutcome::Anomaly;
+      TestResult testResultA2;
+      testResultA2.testOutcome = TestOutcome::Exception;
+      TestResult testResultA3;
+      testResultA3.testOutcome = TestOutcome::Success;
+      testClassResultA.AddTestResults({ testResultA1, testResultA2, testResultA3 });
+
+      TestResult testResultB1;
+      testResultB1.testOutcome = TestOutcome::Success;
+      TestClassResult testClassResultB;
+      testClassResultB.AddTestResults({ testResultB1 });
+
+      TestResult testResultC1;
+      testResultC1.testOutcome = TestOutcome::Anomaly;
+      TestResult testResultC2;
+      testResultC2.testOutcome = TestOutcome::Exception;
+      TestResult testResultC3;
+      testResultC3.testOutcome = TestOutcome::Anomaly;
+      TestClassResult testClassResultC;
+      testClassResultC.AddTestResults({ testResultC1, testResultC2, testResultC3 });
+
+      const vector<TestClassResult> testClassResults{ testClassResultA, testClassResultB, testClassResultC };
+      //
+      const size_t numberOfFailedTestCases = _testRunResult.CalculateNumberOfFailedTestCases(testClassResults);
+      //
+      ARE_EQUAL(5, numberOfFailedTestCases);
+   }
+
+   TEST(PrintTestClassResultFailures_CallsTestClassResultPrintTestFailures)
+   {
+      TestClassResultMock testClassResultMock;
+      testClassResultMock.PrintTestFailuresMock.Expect();
+      //
+      _testRunResult.PrintTestClassResultFailures(testClassResultMock);
+      //
+      METALMOCK(testClassResultMock.PrintTestFailuresMock.CalledOnceWith(
+         _testRunResult._threeArgForEacher.get(),
+         _testRunResult._console.get(),
+         _testRunResult._testFailureNumberer.get()));
    }
 
    TEST(PrintSkippedTestClassReminder_PrintsExpectedToConsole)
@@ -409,19 +425,6 @@ namespace ZenUnit
       _testRunResult.PrintSkippedTestReminder(skippedTestName);
       //
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("[SKIPPED] Test " + skippedTestName, Color::Yellow));
-   }
-
-   TEST(ResetStateExceptForSkips_ResetsTestFailureNumberer_ClearsTestClassResults_SetsNumberOfFailedTestCasesTo0)
-   {
-      _testFailureNumbererMock->ResetTestFailureNumberMock.Expect();
-      _testRunResult._testClassResults.resize(1);
-      _testRunResult._numberOfFailedTestCases = 1;
-      //
-      _testRunResult.ResetStateExceptForSkips();
-      //
-      METALMOCK(_testFailureNumbererMock->ResetTestFailureNumberMock.CalledOnce());
-      IS_EMPTY(_testRunResult._testClassResults);
-      IS_ZERO(_testRunResult._numberOfFailedTestCases);
    }
 
    RUN_TESTS(TestRunResultTests)

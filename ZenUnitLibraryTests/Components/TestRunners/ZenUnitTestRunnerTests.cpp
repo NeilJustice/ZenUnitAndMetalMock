@@ -140,7 +140,7 @@ namespace ZenUnit
       _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->
          CallNonConstMemberFunctionMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
 
-      _testRunResultMock->ResetStateExceptForSkipsMock.Expect();
+      _testRunResultMock->ResetStateInPreparationForNextTestRunMock.Expect();
 
       _consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
@@ -153,7 +153,7 @@ namespace ZenUnit
       METALMOCK(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->CallNonConstMemberFunctionMock.CalledNTimesWith(
          static_cast<size_t>(testRuns), &_zenUnitTestRunner,
          &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, zenUnitArgs));
-      METALMOCK(_testRunResultMock->ResetStateExceptForSkipsMock.CalledNTimes(static_cast<size_t>(testRuns)));
+      METALMOCK(_testRunResultMock->ResetStateInPreparationForNextTestRunMock.CalledNTimes(static_cast<size_t>(testRuns)));
       METALMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }

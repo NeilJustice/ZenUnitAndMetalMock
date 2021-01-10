@@ -7,5 +7,5 @@ public:
    METALMOCK_VOID1(ApplyTestNameFiltersIfAny, const vector<TestNameFilter>&)
    METALMOCK_NONVOID0_CONST(size_t, NumberOfTestClassesToBeRun)
    METALMOCK_NONVOID0_CONST(size_t, NumberOfTestCases)
-   METALMOCK_NONVOID1(vector<TestClassResult>, RunTestClasses, ZenUnitArgs&)
+   METALMOCK_NONVOID1(vector<TestClassResult>, RunTestClasses, const ZenUnitArgs&)
 };

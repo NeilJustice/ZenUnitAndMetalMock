@@ -9,5 +9,5 @@ public:
    METALMOCK_VOID0_CONST(PrintTestFailuresAndSkips)
    METALMOCK_VOID4_CONST(PrintConclusionLines, string_view, size_t, string_view, const ZenUnitArgs&)
    METALMOCK_NONVOID1_CONST(int, DetermineZenUnitExitCode, const ZenUnitArgs&)
-   METALMOCK_VOID0(ResetStateExceptForSkips)
+   METALMOCK_VOID0(ResetStateInPreparationForNextTestRun)
 };

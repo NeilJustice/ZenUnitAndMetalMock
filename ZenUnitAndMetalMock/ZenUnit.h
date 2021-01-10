@@ -4712,7 +4712,7 @@ namespace ZenUnit
          }
       }
 
-      virtual std::vector<TestClassResult> RunTestClasses(ZenUnitArgs& zenUnitArgs)
+      virtual std::vector<TestClassResult> RunTestClasses(const ZenUnitArgs& zenUnitArgs)
       {
          std::vector<TestClassResult> testClassResults;
          if (zenUnitArgs.randomTestOrdering)
@@ -4998,7 +4998,7 @@ namespace ZenUnit
          return zenUnitExitCode;
       }
 
-      virtual void ResetStateExceptForSkips()
+      virtual void ResetStateInPreparationForNextTestRun()
       {
          _testFailureNumberer->ResetTestFailureNumber();
          _testClassResults.clear();
@@ -5261,7 +5261,7 @@ namespace ZenUnit
                this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
             ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
-            _testRunResult->ResetStateExceptForSkips();
+            _testRunResult->ResetStateInPreparationForNextTestRun();
          }
          _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
          return overallExitCode;
