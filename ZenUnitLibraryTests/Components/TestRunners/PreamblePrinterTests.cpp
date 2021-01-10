@@ -2,7 +2,7 @@
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerRunnerMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/MetalMock/EnvironmentalistMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/MetalMock/EnvironmentServiceMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 
 namespace ZenUnit
@@ -14,13 +14,13 @@ namespace ZenUnit
 
    PreamblePrinter _preamblePrinter;
    const ConsoleMock* _consoleMock = nullptr;
-   const EnvironmentalistMock* _environmentalistMock = nullptr;
+   const EnvironmentServiceMock* _environmentServiceMock = nullptr;
    const WatchMock* _watchMock = nullptr;
 
    STARTUP
    {
       _preamblePrinter._console.reset(_consoleMock = new ConsoleMock);
-      _preamblePrinter._environmentalist.reset(_environmentalistMock = new EnvironmentalistMock);
+      _preamblePrinter._environmentService.reset(_environmentServiceMock = new EnvironmentServiceMock);
       _preamblePrinter._watch.reset(_watchMock = new WatchMock);
    }
 
@@ -28,7 +28,7 @@ namespace ZenUnit
    {
       PreamblePrinter preamblePrinter;
       DELETE_TO_ASSERT_NEWED(preamblePrinter._console);
-      DELETE_TO_ASSERT_NEWED(preamblePrinter._environmentalist);
+      DELETE_TO_ASSERT_NEWED(preamblePrinter._environmentService);
       DELETE_TO_ASSERT_NEWED(preamblePrinter._watch);
    }
 
@@ -38,11 +38,11 @@ namespace ZenUnit
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
 
-      const string currentDirectoryPath = _environmentalistMock->GetCurrentDirectoryPathMock.ReturnRandom();
+      const string currentDirectoryPath = _environmentServiceMock->GetCurrentDirectoryPathMock.ReturnRandom();
 
-      const string machineName = _environmentalistMock->GetMachineNameMock.ReturnRandom();
+      const string machineName = _environmentServiceMock->GetMachineNameMock.ReturnRandom();
 
-      const string userNameRunningThisProgram = _environmentalistMock->GetUserNameRunningThisProgramMock.ReturnRandom();
+      const string userNameRunningThisProgram = _environmentServiceMock->GetUserNameRunningThisProgramMock.ReturnRandom();
 
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
 
@@ -57,9 +57,9 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
       METALMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
       METALMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
-      METALMOCK(_environmentalistMock->GetCurrentDirectoryPathMock.CalledOnce());
-      METALMOCK(_environmentalistMock->GetMachineNameMock.CalledOnce());
-      METALMOCK(_environmentalistMock->GetUserNameRunningThisProgramMock.CalledOnce());
+      METALMOCK(_environmentServiceMock->GetCurrentDirectoryPathMock.CalledOnce());
+      METALMOCK(_environmentServiceMock->GetMachineNameMock.CalledOnce());
+      METALMOCK(_environmentServiceMock->GetUserNameRunningThisProgramMock.CalledOnce());
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {

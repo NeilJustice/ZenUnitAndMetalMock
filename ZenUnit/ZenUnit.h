@@ -4362,9 +4362,9 @@ namespace ZenUnit
    static_assert(std::is_move_constructible_v<TestClassResult>);
    static_assert(std::is_move_assignable_v<TestClassResult>);
 
-   class Environmentalist
+   class EnvironmentService
    {
-      friend class EnvironmentalistTests;
+      friend class EnvironmentServiceTests;
    private:
       std::function<std::filesystem::path()> _call_filesystem_current_path;
 #if defined __linux__ || defined __APPLE__
@@ -4374,7 +4374,7 @@ namespace ZenUnit
       std::function<BOOL(LPSTR, LPDWORD)> _call_GetUserNameA;
 #endif
    public:
-      Environmentalist() noexcept
+      EnvironmentService() noexcept
          : _call_filesystem_current_path(static_cast<std::filesystem::path(*)()>(std::filesystem::current_path))
 #if defined __linux__ || defined __APPLE__
          , _call_gethostname(::gethostname)
@@ -4385,7 +4385,7 @@ namespace ZenUnit
       {
       }
 
-      virtual ~Environmentalist() = default;
+      virtual ~EnvironmentService() = default;
 
       virtual std::string GetCurrentDirectoryPath() const
       {
@@ -4774,12 +4774,12 @@ namespace ZenUnit
       friend class PreamblePrinterTests;
    private:
       std::unique_ptr<const Console> _console;
-      std::unique_ptr<const Environmentalist> _environmentalist;
+      std::unique_ptr<const EnvironmentService> _environmentService;
       std::unique_ptr<const Watch> _watch;
    public:
       PreamblePrinter() noexcept
          : _console(std::make_unique<Console>())
-         , _environmentalist(std::make_unique<Environmentalist>())
+         , _environmentService(std::make_unique<EnvironmentService>())
          , _watch(std::make_unique<Watch>())
       {
       }
@@ -4796,15 +4796,15 @@ namespace ZenUnit
          _console->WriteLine("     Running: " + zenUnitArgs.commandLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string currentDirectoryPath = _environmentalist->GetCurrentDirectoryPath();
+         const std::string currentDirectoryPath = _environmentService->GetCurrentDirectoryPath();
          _console->WriteLine("   Directory: " + currentDirectoryPath);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string machineName = _environmentalist->GetMachineName();
+         const std::string machineName = _environmentService->GetMachineName();
          _console->WriteLine(" MachineName: " + machineName);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string userNameRunningThisProgram = _environmentalist->GetUserNameRunningThisProgram();
+         const std::string userNameRunningThisProgram = _environmentService->GetUserNameRunningThisProgram();
          _console->WriteLine("    UserName: " + userNameRunningThisProgram);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
