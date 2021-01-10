@@ -1366,7 +1366,7 @@ namespace ZenUnit
          InplaceEraseAllSubstrings(&demangledTypeName, "class ");
          InplaceEraseAllSubstrings(&demangledTypeName, "struct ");
          InplaceEraseAllSubstrings(&demangledTypeName, "<char,std::char_traits<char>,std::allocator<char> >");
-         InplaceEraseAllSubstrings(&demangledTypeName, " const & __ptr64");
+         InplaceEraseAllSubstrings(&demangledTypeName, " __ptr64");
          return demangledTypeName;
       }
 

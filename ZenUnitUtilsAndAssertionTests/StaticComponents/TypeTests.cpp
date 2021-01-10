@@ -11,10 +11,12 @@ namespace ZenUnit
    AFACT(GetName_StructType_ReturnsTypeNameMinusStructSpace)
    AFACT(GetName_DeclaredAndRuntimeTypeIsDerived_ReturnsDerived)
    AFACT(GetName_ThrownExceptionSubclass_ReturnsSubclassNameAndNotException)
+   AFACT(GetName_Pointers_ReturnsPointerTypeWithPtr64SuffixRemovedOnWindows)
    AFACT(GetNameT_NonClassNonStructType_ReturnsTypeName)
    AFACT(GetNameT_ClassType_ReturnsTypeNameMinusClassSpace)
    AFACT(GetNameT_StructType_ReturnsTypeNameMinusStructSpace)
    AFACT(GetNameT_ThrownExceptionSubclass_ReturnsBaseClassNameAndNotSubclassName)
+   AFACT(GetNameT_Pointers_ReturnsPointerTypeWithPtr64SuffixRemovedOnWindows)
    EVIDENCE
 
    class C {};
@@ -42,7 +44,7 @@ namespace ZenUnit
       ARE_EQUAL("char const [1]", *Type::GetName(""));
       ARE_EQUAL("char const [2]", *Type::GetName("a"));
       const char* const ccp = "hello";
-      ARE_EQUAL("char const * __ptr64", *Type::GetName(ccp));
+      ARE_EQUAL("char const *", *Type::GetName(ccp));
 #endif
    }
 
@@ -78,6 +80,11 @@ namespace ZenUnit
       }
    }
 
+   TEST(GetName_Pointers_ReturnsPointerTypeWithPtr64SuffixRemovedOnWindows)
+   {
+      ARE_EQUAL("int *", *Type::GetName<int*>());
+   }
+
    TEST(GetNameT_NonClassNonStructType_ReturnsTypeName)
    {
       ARE_EQUAL("int", *Type::GetName<int>());
@@ -95,7 +102,7 @@ namespace ZenUnit
       ARE_EQUAL("std::nullptr_t", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char const [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char const [2]", *Type::GetName<decltype("a")>());
-      ARE_EQUAL("char const * __ptr64", *Type::GetName<const char*>());
+      ARE_EQUAL("char const *", *Type::GetName<const char*>());
 #endif
    }
 
@@ -133,6 +140,12 @@ namespace ZenUnit
       {
          ARE_EQUAL("std::exception", *Type::GetName<decltype(ex)>());
       }
+   }
+
+   TEST(GetNameT_Pointers_ReturnsPointerTypeWithPtr64SuffixRemovedOnWindows)
+   {
+      int x = 0;
+      ARE_EQUAL("int *", *Type::GetName(&x));
    }
 
    RUN_TESTS(TypeTests)
