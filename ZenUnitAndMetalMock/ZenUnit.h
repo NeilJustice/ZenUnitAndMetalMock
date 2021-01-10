@@ -5283,7 +5283,7 @@ namespace ZenUnit
          {
             return true;
          }
-         _console->WriteLine("ZenUnit test runner paused. Press any key to run tests.");
+         _console->WriteLine("ZenUnit test runner paused before running tests. Press any key to run tests...");
          _console->WaitForAnyKey();
          return true;
       }

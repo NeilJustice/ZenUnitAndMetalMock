@@ -222,7 +222,7 @@ namespace ZenUnit
          _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(true, false);
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit test runner paused. Press any key to run tests."));
+         "ZenUnit test runner paused before running tests. Press any key to run tests..."));
       METALMOCK(_consoleMock->WaitForAnyKeyMock.CalledOnce());
       IS_TRUE(newValueForHavePaused);
    }
