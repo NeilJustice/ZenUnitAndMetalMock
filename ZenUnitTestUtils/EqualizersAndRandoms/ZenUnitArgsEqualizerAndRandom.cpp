@@ -15,7 +15,6 @@ namespace ZenUnit
       ARE_EQUAL(expectedZenUnitArgs.exit1IfTestsSkipped, actualZenUnitArgs.exit1IfTestsSkipped);
       ARE_EQUAL(expectedZenUnitArgs.testRuns, actualZenUnitArgs.testRuns);
       ARE_EQUAL(expectedZenUnitArgs.randomTestOrdering, actualZenUnitArgs.randomTestOrdering);
-      ARE_EQUAL(expectedZenUnitArgs.randomSeed, actualZenUnitArgs.randomSeed);
       ARE_EQUAL(expectedZenUnitArgs.maxTestMilliseconds, actualZenUnitArgs.maxTestMilliseconds);
    }
 
@@ -32,7 +31,6 @@ namespace ZenUnit
       randomZenUnitArgs.exit1IfTestsSkipped = randomGenerator->Bool();
       randomZenUnitArgs.testRuns = randomGenerator->Int();
       randomZenUnitArgs.randomTestOrdering = randomGenerator->Bool();
-      randomZenUnitArgs.randomSeed = randomGenerator->UnsignedInt();
       randomZenUnitArgs.maxTestMilliseconds = randomGenerator->UnsignedInt();
       return randomZenUnitArgs;
    }

@@ -98,7 +98,7 @@ namespace ZenUnit
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath;
       expectedZenUnitArgs.startDateTime = startDateTime;
-      expectedZenUnitArgs.randomSeed = randomSeed;
+      ARE_EQUAL(randomSeed, globalZenUnitMode.randomSeed);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
@@ -188,9 +188,9 @@ namespace ZenUnit
       expectedZenUnitArgs.exit1IfTestsSkipped = true;
       expectedZenUnitArgs.randomTestOrdering = true;
       expectedZenUnitArgs.testRuns = testruns;
-      expectedZenUnitArgs.randomSeed = randomSeed;
       expectedZenUnitArgs.startDateTime = startDateTime;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+      ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
    TEST(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
@@ -215,8 +215,8 @@ namespace ZenUnit
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.testNameFilters = testNameFilters;
-      expectedZenUnitArgs.randomSeed = randomSeed;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+      ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
    TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
@@ -252,8 +252,8 @@ namespace ZenUnit
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = _testProgramPath + " " + arg;
       (expectedZenUnitArgs.*expectedFieldToBeSet) = true;
-      expectedZenUnitArgs.randomSeed = randomSeed;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+      ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
    TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
@@ -269,8 +269,8 @@ namespace ZenUnit
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.alwaysExit0 = true;
-      expectedZenUnitArgs.randomSeed = randomSeed;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+      ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
    TEST1X1(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndCommandLineUsageAndExits1,
@@ -323,8 +323,8 @@ namespace ZenUnit
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.testRuns = testRuns;
-      expectedZenUnitArgs.randomSeed = randomSeed;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+      ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
@@ -341,9 +341,9 @@ namespace ZenUnit
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.randomTestOrdering = false;
-      expectedZenUnitArgs.randomSeed = randomSeed;
       AssertCallToSetRandomSeedIfNotSetByUser(randomSeedToUnsignedReturnValue);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
+      ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
    TEST(Parse_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)

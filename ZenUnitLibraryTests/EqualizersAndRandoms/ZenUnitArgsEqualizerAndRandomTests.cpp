@@ -21,7 +21,6 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, exit1IfTestsSkipped, true);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testRuns, ZenUnit::RandomNon0<int>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomTestOrdering, true);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeed, ZenUnit::RandomNon0<unsigned>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, ZenUnit::RandomNon0<unsigned>());
    }
 
@@ -44,16 +43,14 @@ namespace ZenUnit
 
       const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
 
-      const unsigned randomSeed = ZenUnit::Random<unsigned>();
-      const unsigned maxTestMilliseconds = ZenUnit::Random<unsigned>();
-      randomGeneratorMock.UnsignedIntMock.ReturnValues(randomSeed, maxTestMilliseconds);
+      const unsigned maxTestMilliseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
       //
       const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(&randomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
       METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(6));
       METALMOCK(randomGeneratorMock.IntMock.CalledOnce());
-      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledNTimes(2));
+      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
 
       ARE_EQUAL(startDateTime, randomZenUnitArgs.startDateTime);
       ARE_EQUAL(commandLine, randomZenUnitArgs.commandLine);
@@ -71,7 +68,6 @@ namespace ZenUnit
       ARE_EQUAL(exit1IfTestsSkipped, randomZenUnitArgs.exit1IfTestsSkipped);
       ARE_EQUAL(testRuns, randomZenUnitArgs.testRuns);
       ARE_EQUAL(randomTestOrdering, randomZenUnitArgs.randomTestOrdering);
-      ARE_EQUAL(randomSeed, randomZenUnitArgs.randomSeed);
       ARE_EQUAL(maxTestMilliseconds, randomZenUnitArgs.maxTestMilliseconds);
    }
 

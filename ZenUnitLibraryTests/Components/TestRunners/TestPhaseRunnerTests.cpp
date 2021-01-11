@@ -412,6 +412,9 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.Expect();
 
       const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
+
+      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowInt, _testMock.get(), testPhase);
       //
@@ -435,7 +438,7 @@ namespace ZenUnit
          { " StartTime: " + zenUnitArgs.startDateTime },
          { "   EndTime: " + endTime },
          { "  Duration: " + testRunDurationInSeconds + " seconds" },
-         { "RandomSeed: --random-seed=" + to_string(zenUnitArgs.randomSeed) },
+         { "RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed) },
          { "    Result: Fatal ... exception thrown during test phase: " + testPhaseName }
       }));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
@@ -475,13 +478,16 @@ namespace ZenUnit
       ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
       args.failFast = true;
       args.alwaysExit0 = alwaysExit0;
+
+      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, args);
       //
       const string expectedFailFastMessage = String::Concat('\n',
          "[ZenUnit] A test failed in --fail-fast mode.\n",
          "[ZenUnit] CommandLine: ", args.commandLine, '\n',
-         "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n',
+         "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitModeRandomSeed, '\n',
          "[ZenUnit]    ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, expectedExitCode));
    }

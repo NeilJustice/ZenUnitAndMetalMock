@@ -95,7 +95,6 @@ namespace ZenUnit
       bool exit1IfTestsSkipped = false;
       int testRuns = 1;
       bool randomTestOrdering = false;
-      unsigned randomSeed = 0;
       unsigned maxTestMilliseconds = 0;
 
       static inline const std::string CommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + R"(
@@ -2303,7 +2302,7 @@ namespace ZenUnit
             }
          }
          zenUnitArgs.startDateTime = _watch->DateTimeNow();
-         zenUnitArgs.randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser->CallConstMemberFunction(
+         globalZenUnitMode.randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser->CallConstMemberFunction(
             this, &ArgsParser::GetSecondsSince1970RandomSeedIfNotAlreadySetByUser, randomSeedPotentiallySetByUser);
          return zenUnitArgs;
       }
@@ -4794,7 +4793,7 @@ namespace ZenUnit
          if (zenUnitArgs.randomTestOrdering)
          {
             testClassResults = _transformer->RandomTransform(
-               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomSeed);
+               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, globalZenUnitMode.randomSeed);
          }
          else
          {
@@ -4885,7 +4884,7 @@ namespace ZenUnit
          _console->WriteLine("    UserName: " + userNameRunningThisProgram);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         _console->WriteLine("  RandomSeed: --random-seed=" + std::to_string(zenUnitArgs.randomSeed));
+         _console->WriteLine("  RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
@@ -5037,7 +5036,7 @@ namespace ZenUnit
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string randomSeedMessage = String::Concat(" RandomSeed: --random-seed=", zenUnitArgs.randomSeed);
+            const std::string randomSeedMessage = String::Concat(" RandomSeed: --random-seed=", globalZenUnitMode.randomSeed);
             _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
@@ -5384,7 +5383,7 @@ namespace ZenUnit
          _console->WriteLine("  Duration: " + testRunDurationInSeconds + " seconds");
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("RandomSeed: --random-seed=" + std::to_string(zenUnitArgs.randomSeed));
+         _console->WriteLine("RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));
 
          _console->WriteColor(">>------> ", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
@@ -5842,7 +5841,7 @@ namespace ZenUnit
          if (zenUnitArgs.randomTestOrdering)
          {
             _twoArgMemberForEacher->RandomTwoArgMemberForEach(
-               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, zenUnitArgs.randomSeed);
+               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, globalZenUnitMode.randomSeed);
          }
          else
          {
@@ -6059,7 +6058,7 @@ namespace ZenUnit
    {
    public:
       static std::shared_ptr<ITestCaseNumberGenerator> FactoryNew(bool randomMode);
-      virtual void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs& zenUnitArgs) = 0;
+      virtual void Initialize(size_t numberOfTestCaseArgs, size_t N) = 0;
       virtual size_t NextTestCaseNumber() = 0;
       virtual void ResetTestCaseNumber() = 0;
       virtual ~ITestCaseNumberGenerator() = default;
@@ -6072,7 +6071,7 @@ namespace ZenUnit
       size_t _maxTestCaseNumber = 0;
       size_t _currentTestCaseNumber = 1;
    public:
-      void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs&) override
+      void Initialize(size_t numberOfTestCaseArgs, size_t N) override
       {
          ZENUNIT_ASSERT(N >= 1);
          ZENUNIT_ASSERT(numberOfTestCaseArgs >= 1);
@@ -6104,7 +6103,7 @@ namespace ZenUnit
       std::vector<size_t> _randomTestCaseNumbers;
       size_t _testCaseNumberIndex = 0;
    public:
-      void Initialize(size_t numberOfTestCaseArgs, size_t N, const ZenUnitArgs& zenUnitArgs) override
+      void Initialize(size_t numberOfTestCaseArgs, size_t N) override
       {
          ZENUNIT_ASSERT(N >= 1);
          ZENUNIT_ASSERT(numberOfTestCaseArgs >= 1 && numberOfTestCaseArgs >= N);
@@ -6115,7 +6114,7 @@ namespace ZenUnit
             _randomTestCaseNumbers.push_back(testCaseNumber);
          }
          std::shuffle(_randomTestCaseNumbers.begin(), _randomTestCaseNumbers.end(),
-            std::default_random_engine(static_cast<unsigned int>(zenUnitArgs.randomSeed)));
+            std::default_random_engine(static_cast<unsigned int>(globalZenUnitMode.randomSeed)));
       }
 
       size_t NextTestCaseNumber() override
@@ -6222,7 +6221,7 @@ namespace ZenUnit
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          std::shared_ptr<ITestCaseNumberGenerator> const testCaseNumberGenerator(
             _call_ITestCaseNumberGeneratorFactoryNew(zenUnitArgs.randomTestOrdering));
-         testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N, zenUnitArgs);
+         testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N);
          const std::vector<std::string> splitTestCaseArgs = _call_String_SplitOnNonQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())
          {

@@ -227,7 +227,6 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.randomTestOrdering = randomTestOrdering;
-      zenUnitArgs.randomSeed = Random<unsigned>();
       GetZenUnitArgsMock.Return(zenUnitArgs);
       if (expectRandomForEach)
       {
@@ -237,6 +236,8 @@ namespace ZenUnit
       {
          _twoArgMemberForEacherMock->TwoArgMemberForEachMock.Expect();
       }
+      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       _specificTestClassRunner->DoRunTests();
       //
@@ -247,7 +248,7 @@ namespace ZenUnit
             &_specificTestClassRunner->_tests, _specificTestClassRunner.get(),
             &SpecificTestClassRunner<TestingTestClass>::RunTest,
             &_specificTestClassRunner->_testClassResult,
-            zenUnitArgs.randomSeed));
+            globalZenUnitModeRandomSeed));
       }
       else
       {

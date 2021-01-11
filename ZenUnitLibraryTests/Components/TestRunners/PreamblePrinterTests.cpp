@@ -50,6 +50,8 @@ namespace ZenUnit
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
 
       const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(args, &testClassRunnerRunnerMock);
       //
@@ -67,7 +69,7 @@ namespace ZenUnit
          { "   Directory: " + currentDirectoryPath },
          { " MachineName: " + machineName },
          { "    UserName: " + userNameRunningThisProgram },
-         { "  RandomSeed: --random-seed=" + to_string(args.randomSeed) },
+         { "  RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed) },
          { " TestClasses: " + std::to_string(numberOfTestClassesToBeRun) },
          { "   StartTime: " + startDateTime + "\n" }
       }));

@@ -192,7 +192,7 @@ namespace ZenUnit
       //
       METALMOCK(GetArgsMock_SelfMocked.CalledOnce());
       METALMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering));
-      METALMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N, args));
+      METALMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N));
       METALMOCK(SplitOnNonQuotedCommasMock_SelfMocked.CalledOnce());
       METALMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
       METALMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
@@ -491,9 +491,9 @@ namespace ZenUnit
 
    TEST3X3(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow,
       size_t testCaseNumber, size_t expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-      1ull, 1ull, 0ull,
-      2ull, 2ull, 1ull,
-      3ull, 3ull, 2ull)
+      size_t(1), size_t(1), size_t(0),
+      size_t(2), size_t(2), size_t(1),
+      size_t(3), size_t(3), size_t(2))
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();

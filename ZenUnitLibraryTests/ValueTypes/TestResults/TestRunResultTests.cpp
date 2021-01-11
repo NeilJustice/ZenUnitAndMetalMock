@@ -250,6 +250,9 @@ namespace ZenUnit
       const string startDateTime = ZenUnit::Random<string>();
       const string testRunElapsedSeconds = ZenUnit::Random<string>();
       const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+
+      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, args);
       //
@@ -264,21 +267,21 @@ namespace ZenUnit
          { expectedSuccessOrFailLinePrefix, expectedColor }
       }));
       const string expectedCompletedLine = "  Completed: " + args.commandLine;
-      const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(args.randomSeed);
+      const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed);
       const string expectedStartTimeLine = "  StartTime: " + startDateTime;
       const string expectedEndTimeLine = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine = "   Duration: " + testRunElapsedSeconds + " seconds";
       const string expectedRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
-         {
-            { expectedCompletedLine },
-            { expectedRandomSeedLine },
-            { expectedStartTimeLine },
-            { expectedEndTimeLine },
-            { expectedDurationLine },
-            { expectedRunResultLine }
-         }));
+      {
+         { expectedCompletedLine },
+         { expectedRandomSeedLine },
+         { expectedStartTimeLine },
+         { expectedEndTimeLine },
+         { expectedDurationLine },
+         { expectedRunResultLine }
+      }));
    }
 
    TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames,

@@ -20,17 +20,15 @@ namespace ZenUnit
 
    TEST3X3(Initialize_SetsRandomTestCaseNumbersVector,
       size_t numberOfTestCaseArgs, size_t N, const vector<size_t>& expectedRandomTestCaseNumbers,
-      1ull, 1ull, vector<size_t>{ 1 },
-      2ull, 1ull, vector<size_t>{ 1, 2 },
-      3ull, 1ull, vector<size_t>{ 1, 2, 3 },
+      size_t(1), size_t(1), vector<size_t>{ 1 },
+      size_t(2), size_t(1), vector<size_t>{ 1, 2 },
+      size_t(3), size_t(1), vector<size_t>{ 1, 2, 3 },
 
-      2ull, 2ull, vector<size_t>{ 1 },
-      4ull, 2ull, vector<size_t>{ 1, 2 },
-      6ull, 2ull, vector<size_t>{ 1, 2, 3 })
+      size_t(2), size_t(2), vector<size_t>{ 1 },
+      size_t(4), size_t(2), vector<size_t>{ 1, 2 },
+      size_t(6), size_t(2), vector<size_t>{ 1, 2, 3 })
    {
-      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
-      //
-      _randomTestCaseNumberGenerator.Initialize(numberOfTestCaseArgs, N, args);
+      _randomTestCaseNumberGenerator.Initialize(numberOfTestCaseArgs, N);
       //
       ARE_EQUAL(expectedRandomTestCaseNumbers.size(), _randomTestCaseNumberGenerator._randomTestCaseNumbers.size());
       for (size_t expectedTestCaseNumber : expectedRandomTestCaseNumbers)

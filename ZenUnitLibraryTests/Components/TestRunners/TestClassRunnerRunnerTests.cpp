@@ -258,12 +258,14 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.randomTestOrdering = true;
-      zenUnitArgs.randomSeed = ZenUnit::Random<unsigned>();
+
+      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
       //
       METALMOCK(_transformerMock->RandomTransformMock.CalledOnceWith(
-         &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, zenUnitArgs.randomSeed));
+         &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, globalZenUnitModeRandomSeed));
       VECTORS_ARE_EQUAL(transformReturnValue, testClassResults);
    }
 

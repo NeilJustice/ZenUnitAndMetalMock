@@ -27,18 +27,14 @@ namespace ZenUnit
 
    TEST3X3(Initialize_SetsMaxTestCaseNumberAndCurrentTestCaseNumber,
       size_t numberOfTestCaseArgs, size_t N, size_t expectedMaxTestCaseNumber,
-      1ull, 1ull, 1ull,
-      2ull, 1ull, 2ull,
-      3ull, 1ull, 3ull,
-
-      2ull, 2ull, 1ull,
-      4ull, 2ull, 2ull,
-      6ull, 2ull, 3ull)
+      size_t(1), size_t(1), size_t(1),
+      size_t(2), size_t(1), size_t(2),
+      size_t(3), size_t(1), size_t(3),
+      size_t(2), size_t(2), size_t(1),
+      size_t(4), size_t(2), size_t(2),
+      size_t(6), size_t(2), size_t(3))
    {
-      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
-      //
-      _sequentialTestCaseNumberGenerator.Initialize(numberOfTestCaseArgs, N, args);
-      //
+      _sequentialTestCaseNumberGenerator.Initialize(numberOfTestCaseArgs, N);
       AssertGeneratorState(expectedMaxTestCaseNumber, 1);
    }
 

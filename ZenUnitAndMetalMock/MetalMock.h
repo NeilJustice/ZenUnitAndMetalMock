@@ -1493,7 +1493,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             console.WriteColor("\n>>------>", ZenUnit::Color::Red);
             console.WriteLine("  Completed: " + zenUnitArgs.commandLine);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine(" RandomSeed: --random-seed=" + std::to_string(zenUnitArgs.randomSeed));
+            console.WriteLine(" RandomSeed: --random-seed=" + std::to_string(ZenUnit::globalZenUnitMode.randomSeed));
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             console.WriteLine("  StartTime: " + zenUnitArgs.startDateTime);
             console.WriteColor(">>------>", ZenUnit::Color::Red);
