@@ -109,7 +109,7 @@ namespace ZenUnit
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Utility:
+Testing Utility Options:
 
 --pause-before
    Wait for any key before running tests to allow for attaching a debugger or performance profiler.
@@ -122,7 +122,7 @@ Testing Utility:
 --version
    Print the ZenUnit version number.
 
-Testing Filtration:
+Testing Filtration Options:
 
 --run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, and/or test case numbers.
@@ -137,7 +137,7 @@ Testing Filtration:
 --fail-fast
    Call exit(1) if a test fails.
 
-Testing Rigorousness:
+Testing Rigorousness Options:
 
 --test-runs=<N>
    Repeat N times the running of all tests.
