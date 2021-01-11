@@ -27,6 +27,7 @@ namespace ZenUnit
       expectedDefaultZenUnitArgs.exit1IfTestsSkipped = false;
       expectedDefaultZenUnitArgs.testRuns = 1;
       expectedDefaultZenUnitArgs.randomTestOrdering = false;
+      expectedDefaultZenUnitArgs.globalRandomSeedSetByUser = false;
       expectedDefaultZenUnitArgs.maxTestMilliseconds = 0;
       ARE_EQUAL(expectedDefaultZenUnitArgs, defaultZenUnitArgs);
    }

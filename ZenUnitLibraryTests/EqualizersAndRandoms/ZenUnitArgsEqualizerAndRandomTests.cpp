@@ -21,6 +21,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, exit1IfTestsSkipped, true);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testRuns, ZenUnit::RandomNon0<int>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomTestOrdering, true);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, globalRandomSeedSetByUser, true);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, ZenUnit::RandomNon0<unsigned>());
    }
 
@@ -38,8 +39,9 @@ namespace ZenUnit
       const bool failFast = ZenUnit::Random<bool>();
       const bool exit1IfTestsSkipped = ZenUnit::Random<bool>();
       const bool randomTestOrdering = ZenUnit::Random<bool>();
+      const bool globalRandomSeedSetByUser = ZenUnit::Random<bool>();
       randomGeneratorMock.BoolMock.ReturnValues(
-         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped, randomTestOrdering);
+         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped, randomTestOrdering, globalRandomSeedSetByUser);
 
       const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
 
@@ -48,7 +50,7 @@ namespace ZenUnit
       const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(&randomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
-      METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(6));
+      METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
       METALMOCK(randomGeneratorMock.IntMock.CalledOnce());
       METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
 
@@ -68,6 +70,7 @@ namespace ZenUnit
       ARE_EQUAL(exit1IfTestsSkipped, randomZenUnitArgs.exit1IfTestsSkipped);
       ARE_EQUAL(testRuns, randomZenUnitArgs.testRuns);
       ARE_EQUAL(randomTestOrdering, randomZenUnitArgs.randomTestOrdering);
+      ARE_EQUAL(globalRandomSeedSetByUser, randomZenUnitArgs.globalRandomSeedSetByUser);
       ARE_EQUAL(maxTestMilliseconds, randomZenUnitArgs.maxTestMilliseconds);
    }
 

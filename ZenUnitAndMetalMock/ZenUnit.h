@@ -95,6 +95,7 @@ namespace ZenUnit
       bool exit1IfTestsSkipped = false;
       int testRuns = 1;
       bool randomTestOrdering = false;
+      bool globalRandomSeedSetByUser = false;
       unsigned maxTestMilliseconds = 0;
 
       static inline const std::string CommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + R"(
@@ -2130,10 +2131,11 @@ namespace ZenUnit
          return localTimeWithTimeZone;
       }
 
-      virtual long long SecondsSince1970() const
+      virtual unsigned SecondsSince1970() const
       {
          const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         return secondsSince1970;
+         const unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
+         return secondsSince1970AsUnsigned;
       }
 
       static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(long long microseconds)
@@ -2225,7 +2227,7 @@ namespace ZenUnit
          }
          ZenUnitArgs zenUnitArgs;
          zenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
-         unsigned randomSeedPotentiallySetByUser = 0;
+         unsigned randomSeedArgument = std::numeric_limits<unsigned>::max();
          const size_t numberOfArgs = stringArgs.size();
          for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
          {
@@ -2271,7 +2273,8 @@ namespace ZenUnit
                const std::vector<std::string> splitArg = String::Split(arg, '=');
                if (splitArg.size() != 2)
                {
-                  WriteZenUnitCommandLineUsageErrorThenExit1("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"");
+                  WriteZenUnitCommandLineUsageErrorThenExit1(
+                     "String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"");
                }
                try
                {
@@ -2288,7 +2291,8 @@ namespace ZenUnit
                   }
                   else if (argName == "--random-seed")
                   {
-                     randomSeedPotentiallySetByUser = _call_String_ToUnsigned(argValueString);
+                     randomSeedArgument = _call_String_ToUnsigned(argValueString);
+                     zenUnitArgs.globalRandomSeedSetByUser = true;
                   }
                   else
                   {
@@ -2303,18 +2307,17 @@ namespace ZenUnit
          }
          zenUnitArgs.startDateTime = _watch->DateTimeNow();
          globalZenUnitMode.randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser->CallConstMemberFunction(
-            this, &ArgsParser::GetSecondsSince1970RandomSeedIfNotAlreadySetByUser, randomSeedPotentiallySetByUser);
+            this, &ArgsParser::GetSecondsSince1970RandomSeedIfNotAlreadySetByUser, randomSeedArgument);
          return zenUnitArgs;
       }
    private:
-      unsigned GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(unsigned randomSeedPotentiallySetByUser) const
+      unsigned GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(unsigned randomSeedArgument) const
       {
-         if (randomSeedPotentiallySetByUser != 0)
+         if (randomSeedArgument != std::numeric_limits<unsigned>::max())
          {
-            return randomSeedPotentiallySetByUser;
+            return randomSeedArgument;
          }
-         const long long secondsSince1970 = _watch->SecondsSince1970();
-         const unsigned secondsSince1970RandomSeed = static_cast<unsigned>(secondsSince1970);
+         const unsigned secondsSince1970RandomSeed = _watch->SecondsSince1970();
          return secondsSince1970RandomSeed;
       }
 
@@ -5179,12 +5182,15 @@ namespace ZenUnit
          _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
       std::unique_ptr<const VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>
          _caller_RunTestClasses;
+      std::unique_ptr<const VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>
+         _caller_SetNextGlobalZenUnitModeRandomSeed;
       std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>
          _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
       // Constant Components
       std::unique_ptr<const ArgsParser> _argsParser;
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
+      std::unique_ptr<const Watch> _watch;
       // Mutable Components
       std::unique_ptr<TestClassRunnerRunner> _testClassRunnerRunner;
       std::unique_ptr<TestRunResult> _testRunResult;
@@ -5199,12 +5205,15 @@ namespace ZenUnit
             std::make_unique<NonVoidOneArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&>>())
          , _caller_RunTestClasses(
             std::make_unique<VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>())
+         , _caller_SetNextGlobalZenUnitModeRandomSeed(
+            std::make_unique<VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>())
          , _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(
             std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
          // Constant Components
          , _argsParser(std::make_unique<ArgsParser>())
          , _console(std::make_unique<Console>())
          , _preamblePrinter(std::make_unique<PreamblePrinter>())
+         , _watch(std::make_unique<Watch>())
          // Mutable Components
          , _testClassRunnerRunner(std::make_unique<TestClassRunnerRunner>())
          , _testRunResult(std::make_unique<TestRunResult>())
@@ -5264,6 +5273,8 @@ namespace ZenUnit
             ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
             overallExitCode |= testRunExitCode;
             _testRunResult->ResetStateInPreparationForNextTestRun();
+            _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
+               this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
          }
          _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
          return overallExitCode;
@@ -5275,21 +5286,6 @@ namespace ZenUnit
          return elapsedSeconds;
       }
    private:
-      bool WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(bool pauseMode, bool havePaused) const
-      {
-         if (!pauseMode)
-         {
-            return false;
-         }
-         if (havePaused)
-         {
-            return true;
-         }
-         _console->WriteLine("ZenUnit test runner paused before running tests. Press any key to run tests...");
-         _console->WaitForAnyKey();
-         return true;
-      }
-
       int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& zenUnitArgs)
       {
          const std::string startDateTime =
@@ -5310,6 +5306,29 @@ namespace ZenUnit
       {
          std::vector<TestClassResult> testClassResults = _testClassRunnerRunner->RunTestClasses(_zenUnitArgs);
          _testRunResult->SetTestClassResults(std::move(testClassResults));
+      }
+
+      void SetNextGlobalZenUnitModeRandomSeed(bool randomSeedSetByUser) const
+      {
+         if (!randomSeedSetByUser)
+         {
+            globalZenUnitMode.randomSeed = _watch->SecondsSince1970();
+         }
+      }
+
+      bool WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(bool pauseMode, bool havePaused) const
+      {
+         if (!pauseMode)
+         {
+            return false;
+         }
+         if (havePaused)
+         {
+            return true;
+         }
+         _console->WriteLine("ZenUnit test runner paused before running tests. Press any key to run tests...");
+         _console->WaitForAnyKey();
+         return true;
       }
    };
 

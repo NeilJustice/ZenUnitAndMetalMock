@@ -14,6 +14,7 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
@@ -28,24 +29,33 @@ namespace ZenUnit
    AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
    FACTS(RunTests_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
+   // Private Functions
+   AFACT(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
+   AFACT(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
+   AFACT(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsFalse_SetsGlobalZenUnitModeRandomSeedToSecondsSince1970)
+   AFACT(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsTrue_DoesNothing)
    AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
    AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
    AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
-   AFACT(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
-   AFACT(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
    EVIDENCE
 
    ZenUnitTestRunner _zenUnitTestRunner;
    // Function Callers
    using NonVoidOneArgMemberFunctionCallerMockType = NonVoidOneArgMemberFunctionCallerMock<int, ZenUnitTestRunner, const ZenUnitArgs&>;
    NonVoidOneArgMemberFunctionCallerMockType* _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = nullptr;
+
    VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>* _caller_RunTestClassesMock = nullptr;
+
+   using VoidOneArgMemberFunctionCallerMockType = VoidOneArgMemberFunctionCallerMock<ZenUnitTestRunner, bool>;
+   VoidOneArgMemberFunctionCallerMockType* _caller_SetNextGlobalZenUnitModeRandomSeedMock = nullptr;
+
    using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool>;
    NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
    // Constant Components
    ArgsParserMock* _argsParserMock = nullptr;
    ConsoleMock* _consoleMock = nullptr;
    PreamblePrinterMock* _preamblePrinterMock = nullptr;
+   WatchMock* _watchMock = nullptr;
    // Mutable Components
    TestClassRunnerRunnerMock* _testClassRunnerRunnerMock = nullptr;
    TestRunResultMock* _testRunResultMock = nullptr;
@@ -67,12 +77,15 @@ namespace ZenUnit
          _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new NonVoidOneArgMemberFunctionCallerMockType);
       _zenUnitTestRunner._caller_RunTestClasses.reset(
          _caller_RunTestClassesMock = new VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>);
+      _zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed.reset(
+         _caller_SetNextGlobalZenUnitModeRandomSeedMock = new VoidOneArgMemberFunctionCallerMockType);
       _zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(
          _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
       // Constant Components
       _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
       _zenUnitTestRunner._console.reset(_consoleMock = new ConsoleMock);
       _zenUnitTestRunner._preamblePrinter.reset(_preamblePrinterMock = new PreamblePrinterMock);
+      _zenUnitTestRunner._watch.reset(_watchMock = new WatchMock);
       // Mutable Components
       _zenUnitTestRunner._testClassRunnerRunner.reset(_testClassRunnerRunnerMock = new TestClassRunnerRunnerMock);
       _zenUnitTestRunner._testRunResult.reset(_testRunResultMock = new TestRunResultMock);
@@ -85,11 +98,13 @@ namespace ZenUnit
       // Function Callers
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_RunTestClasses);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
       // Constant Components
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._console);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._preamblePrinter);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._watch);
       // Mutable Components
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testClassRunnerRunner);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._testRunResult);
@@ -144,6 +159,8 @@ namespace ZenUnit
 
       _consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
+      _caller_SetNextGlobalZenUnitModeRandomSeedMock->CallConstMemberFunctionMock.Expect();
+
       const vector<string> commandLineArgs = ZenUnit::RandomVector<string>();
       //
       const int overallExitCode = _zenUnitTestRunner.RunTests(commandLineArgs);
@@ -154,9 +171,38 @@ namespace ZenUnit
          static_cast<size_t>(testRuns), &_zenUnitTestRunner,
          &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, zenUnitArgs));
       METALMOCK(_testRunResultMock->ResetStateInPreparationForNextTestRunMock.CalledNTimes(static_cast<size_t>(testRuns)));
+      METALMOCK(_caller_SetNextGlobalZenUnitModeRandomSeedMock->CallConstMemberFunctionMock.CalledNTimesWith(
+         static_cast<size_t>(testRuns), &_zenUnitTestRunner, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, false));
       METALMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
       ARE_EQUAL(expectedOverallExitCode, overallExitCode);
    }
+
+   TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)
+   {
+      _testRunResultMock->AddSkippedTestMock.Expect();
+      const string TestClassName = Random<string>();
+      const string TestName = Random<string>();
+      const string Reason = Random<string>();
+      //
+      _zenUnitTestRunner.SkipTest(TestClassName.c_str(), TestName.c_str(), Reason.c_str());
+      //
+      METALMOCK(_testRunResultMock->AddSkippedTestMock.
+         CalledOnceWith(TestClassName.c_str(), TestName.c_str(), Reason.c_str()));
+   }
+
+   TEST(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
+   {
+      _testRunResultMock->AddSkippedTestClassNameAndReasonMock.Expect();
+      const string SkippedTestClassName = Random<string>();
+      const string Reason = Random<string>();
+      //
+      _zenUnitTestRunner.SkipTestClass(SkippedTestClassName.c_str(), Reason.c_str());
+      //
+      METALMOCK(_testRunResultMock->AddSkippedTestClassNameAndReasonMock.
+         CalledOnceWith(SkippedTestClassName.c_str(), Reason.c_str()));
+   }
+
+   // Private Functions
 
    TEST(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    {
@@ -199,6 +245,37 @@ namespace ZenUnit
       ARE_EQUAL(determineZenUnitExitCodeReturnValue, exitCode);
    }
 
+   TEST(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
+   {
+      ZenUnitArgs zenUnitArgs;
+      zenUnitArgs.commandLine = Random<string>();
+      _zenUnitTestRunner._zenUnitArgs = zenUnitArgs;
+
+      vector<TestClassResult> testClassResults(1);
+      _testClassRunnerRunnerMock->RunTestClassesMock.Return(testClassResults);
+      _testRunResultMock->SetTestClassResultsMock.Expect();
+      //
+      _zenUnitTestRunner.RunTestClasses();
+      //
+      METALMOCK(_testClassRunnerRunnerMock->RunTestClassesMock.CalledOnceWith(_zenUnitTestRunner._zenUnitArgs));
+      METALMOCK(_testRunResultMock->SetTestClassResultsMock.CalledOnceWith(testClassResults));
+   }
+
+   TEST(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsFalse_SetsGlobalZenUnitModeRandomSeedToSecondsSince1970)
+   {
+      const unsigned secondSince1970 = _watchMock->SecondsSince1970Mock.ReturnRandom();
+      //
+      _zenUnitTestRunner.SetNextGlobalZenUnitModeRandomSeed(false);
+      //
+      METALMOCK(_watchMock->SecondsSince1970Mock.CalledOnce());
+      ARE_EQUAL(secondSince1970, globalZenUnitMode.randomSeed);
+   }
+
+   TEST(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsTrue_DoesNothing)
+   {
+      _zenUnitTestRunner.SetNextGlobalZenUnitModeRandomSeed(true);
+   }
+
    TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
    {
       const bool newValueForHavePaused =
@@ -225,47 +302,6 @@ namespace ZenUnit
          "ZenUnit test runner paused before running tests. Press any key to run tests..."));
       METALMOCK(_consoleMock->WaitForAnyKeyMock.CalledOnce());
       IS_TRUE(newValueForHavePaused);
-   }
-
-   TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)
-   {
-      _testRunResultMock->AddSkippedTestMock.Expect();
-      const string TestClassName = Random<string>();
-      const string TestName = Random<string>();
-      const string Reason = Random<string>();
-      //
-      _zenUnitTestRunner.SkipTest(TestClassName.c_str(), TestName.c_str(), Reason.c_str());
-      //
-      METALMOCK(_testRunResultMock->AddSkippedTestMock.
-         CalledOnceWith(TestClassName.c_str(), TestName.c_str(), Reason.c_str()));
-   }
-
-   TEST(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
-   {
-      _testRunResultMock->AddSkippedTestClassNameAndReasonMock.Expect();
-      const string SkippedTestClassName = Random<string>();
-      const string Reason = Random<string>();
-      //
-      _zenUnitTestRunner.SkipTestClass(SkippedTestClassName.c_str(), Reason.c_str());
-      //
-      METALMOCK(_testRunResultMock->AddSkippedTestClassNameAndReasonMock.
-         CalledOnceWith(SkippedTestClassName.c_str(), Reason.c_str()));
-   }
-
-   TEST(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
-   {
-      ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.commandLine = Random<string>();
-      _zenUnitTestRunner._zenUnitArgs = zenUnitArgs;
-
-      vector<TestClassResult> testClassResults(1);
-      _testClassRunnerRunnerMock->RunTestClassesMock.Return(testClassResults);
-      _testRunResultMock->SetTestClassResultsMock.Expect();
-      //
-      _zenUnitTestRunner.RunTestClasses();
-      //
-      METALMOCK(_testClassRunnerRunnerMock->RunTestClassesMock.CalledOnceWith(_zenUnitTestRunner._zenUnitArgs));
-      METALMOCK(_testRunResultMock->SetTestClassResultsMock.CalledOnceWith(testClassResults));
    }
 
    RUN_TESTS(ZenUnitTestRunnerTests)
