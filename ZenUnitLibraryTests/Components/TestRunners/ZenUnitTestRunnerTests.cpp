@@ -13,6 +13,7 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidZeroArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NTimesMemberFunctionAccumulatorMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
@@ -28,7 +29,7 @@ namespace ZenUnit
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_ReturnsNullptr)
    AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
-   FACTS(RunTests_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
+   FACTS(RunTestsNumberOfTestRunsTimes_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
    // Private Functions
    AFACT(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    AFACT(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
@@ -51,6 +52,8 @@ namespace ZenUnit
 
    using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool>;
    NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
+
+   NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>* _nTimesMemberFunctionAccumulator_RunTestsMock = nullptr;
    // Constant Components
    ArgsParserMock* _argsParserMock = nullptr;
    ConsoleMock* _consoleMock = nullptr;
@@ -81,6 +84,8 @@ namespace ZenUnit
          _caller_SetNextGlobalZenUnitModeRandomSeedMock = new VoidOneArgMemberFunctionCallerMockType);
       _zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(
          _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
+      _zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests.reset(
+         _nTimesMemberFunctionAccumulator_RunTestsMock = new NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>);
       // Constant Components
       _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
       _zenUnitTestRunner._console.reset(_consoleMock = new ConsoleMock);
@@ -100,6 +105,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_RunTestClasses);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests);
       // Constant Components
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._console);
@@ -137,44 +143,35 @@ namespace ZenUnit
       IS_NULLPTR(returnValue);
    }
 
-   TEST4X4(RunTests_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
-      int testRuns, int firstTestRunExitCode, int secondTestRunExitCode, int expectedOverallExitCode,
-      1, 0, ZenUnit::Random<int>(), 0,
-      2, 1, 0, 1,
-      2, 0, 1, 1,
-      2, 1, 1, 1)
+   TEST2X2(RunTestsNumberOfTestRunsTimes_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
+      int zenUnitArgsTestRuns, size_t expectedNumberOfTestRuns,
+      -2, numeric_limits<size_t>::max(),
+      -1, numeric_limits<size_t>::max(),
+      0, size_t(0),
+      1, size_t(1),
+      2, size_t(2))
    {
-      ZenUnitArgs zenUnitArgs;
-      zenUnitArgs.testNameFilters = ZenUnit::RandomNonEmptyVector<TestNameFilter>();
-      zenUnitArgs.pauseAfter = ZenUnit::Random<bool>();
-      zenUnitArgs.testRuns = testRuns;
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.testRuns = zenUnitArgsTestRuns;
       _argsParserMock->ParseMock.Return(zenUnitArgs);
 
       _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
-      _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->
-         CallNonConstMemberFunctionMock.ReturnValues(firstTestRunExitCode, secondTestRunExitCode);
-
-      _testRunResultMock->ResetStateInPreparationForNextTestRunMock.Expect();
+      const int numberOfFailedTestRuns =
+         _nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.ReturnRandom();
 
       _consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
-      _caller_SetNextGlobalZenUnitModeRandomSeedMock->CallConstMemberFunctionMock.Expect();
-
       const vector<string> commandLineArgs = ZenUnit::RandomVector<string>();
       //
-      const int overallExitCode = _zenUnitTestRunner.RunTests(commandLineArgs);
+      const int returnedNumberOfFailedTestRuns = _zenUnitTestRunner.RunTestsNumberOfTestRunsTimes(commandLineArgs);
       //
       METALMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
-      METALMOCK(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock->CallNonConstMemberFunctionMock.CalledNTimesWith(
-         static_cast<size_t>(testRuns), &_zenUnitTestRunner,
-         &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, zenUnitArgs));
-      METALMOCK(_testRunResultMock->ResetStateInPreparationForNextTestRunMock.CalledNTimes(static_cast<size_t>(testRuns)));
-      METALMOCK(_caller_SetNextGlobalZenUnitModeRandomSeedMock->CallConstMemberFunctionMock.CalledNTimesWith(
-         static_cast<size_t>(testRuns), &_zenUnitTestRunner, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, false));
+      METALMOCK(_nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.CalledOnceWith(
+         expectedNumberOfTestRuns, &_zenUnitTestRunner, &ZenUnitTestRunner::RunTests));
       METALMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
-      ARE_EQUAL(expectedOverallExitCode, overallExitCode);
+      ARE_EQUAL(numberOfFailedTestRuns, returnedNumberOfFailedTestRuns);
    }
 
    TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)
@@ -186,8 +183,7 @@ namespace ZenUnit
       //
       _zenUnitTestRunner.SkipTest(TestClassName.c_str(), TestName.c_str(), Reason.c_str());
       //
-      METALMOCK(_testRunResultMock->AddSkippedTestMock.
-         CalledOnceWith(TestClassName.c_str(), TestName.c_str(), Reason.c_str()));
+      METALMOCK(_testRunResultMock->AddSkippedTestMock.CalledOnceWith(TestClassName.c_str(), TestName.c_str(), Reason.c_str()));
    }
 
    TEST(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
@@ -198,8 +194,7 @@ namespace ZenUnit
       //
       _zenUnitTestRunner.SkipTestClass(SkippedTestClassName.c_str(), Reason.c_str());
       //
-      METALMOCK(_testRunResultMock->AddSkippedTestClassNameAndReasonMock.
-         CalledOnceWith(SkippedTestClassName.c_str(), Reason.c_str()));
+      METALMOCK(_testRunResultMock->AddSkippedTestClassNameAndReasonMock.CalledOnceWith(SkippedTestClassName.c_str(), Reason.c_str()));
    }
 
    // Private Functions
@@ -236,11 +231,13 @@ namespace ZenUnit
       METALMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
       METALMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.CalledOnceWith(
          zenUnitArgs, _zenUnitTestRunner._testClassRunnerRunner.get()));
-      METALMOCK(_caller_RunTestClassesMock->CallNonConstMemberFunctionMock.CalledOnceWith(&_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
+      METALMOCK(_caller_RunTestClassesMock->CallNonConstMemberFunctionMock.CalledOnceWith(
+         &_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
       METALMOCK(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
       METALMOCK(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       METALMOCK(_testRunStopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());
-      METALMOCK(_testRunResultMock->PrintConclusionLinesMock.CalledOnceWith(startDateTime, totalNumberOfTestCases, testRunElapsedSeconds, zenUnitArgs));
+      METALMOCK(_testRunResultMock->PrintConclusionLinesMock.CalledOnceWith(
+         startDateTime, totalNumberOfTestCases, testRunElapsedSeconds, zenUnitArgs));
       METALMOCK(_testRunResultMock->DetermineZenUnitExitCodeMock.CalledOnceWith(zenUnitArgs));
       ARE_EQUAL(determineZenUnitExitCodeReturnValue, exitCode);
    }
@@ -278,15 +275,13 @@ namespace ZenUnit
 
    TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
    {
-      const bool newValueForHavePaused =
-         _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(false, ZenUnit::Random<bool>());
+      const bool newValueForHavePaused = _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(false, ZenUnit::Random<bool>());
       IS_FALSE(newValueForHavePaused);
    }
 
    TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
    {
-      const bool newValueForHavePaused =
-         _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(true, true);
+      const bool newValueForHavePaused = _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(true, true);
       IS_TRUE(newValueForHavePaused);
    }
 

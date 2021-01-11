@@ -1158,6 +1158,14 @@ namespace ZenUnit
          std::cout << '\n';
       }
 
+      virtual void WriteNewLineIfValuesAreNotEqual(size_t value1, size_t value2) const
+      {
+         if (value1 != value2)
+         {
+            WriteNewLine();
+         }
+      }
+
       virtual void WriteLineAndExit(std::string_view message, int exitCode) const
       {
          std::cout << message << '\n';
@@ -5173,6 +5181,27 @@ namespace ZenUnit
       }
    };
 
+   template<typename ReturnType, typename ClassType>
+   class NTimesMemberFunctionAccumulator
+   {
+   public:
+      using AccumulationFunctionType = ReturnType(ClassType::*)(size_t, size_t);
+
+      virtual ReturnType AccumulateNonConstMemberFunctionNTimes(
+         size_t n, ClassType* nonConstClassInstance, const AccumulationFunctionType& nonConstMemberFunction) const
+      {
+         ReturnType accumulatedReturnValue{};
+         for (size_t i = 0; i < n; ++i)
+         {
+            const ReturnType ithReturnValue = (nonConstClassInstance->*nonConstMemberFunction)(i, n);
+            accumulatedReturnValue += ithReturnValue;
+         }
+         return accumulatedReturnValue;
+      }
+
+      virtual ~NTimesMemberFunctionAccumulator() = default;
+   };
+
    class ZenUnitTestRunner
    {
       friend class ZenUnitTestRunnerTests;
@@ -5186,6 +5215,8 @@ namespace ZenUnit
          _caller_SetNextGlobalZenUnitModeRandomSeed;
       std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>
          _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
+      std::unique_ptr<const NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>
+         _nTimesMemberFunctionAccumulator_RunTests;
       // Constant Components
       std::unique_ptr<const ArgsParser> _argsParser;
       std::unique_ptr<const Console> _console;
@@ -5209,6 +5240,8 @@ namespace ZenUnit
             std::make_unique<VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>())
          , _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(
             std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
+         , _nTimesMemberFunctionAccumulator_RunTests(
+            std::make_unique<NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>())
          // Constant Components
          , _argsParser(std::make_unique<ArgsParser>())
          , _console(std::make_unique<Console>())
@@ -5260,24 +5293,16 @@ namespace ZenUnit
          return nullptr;
       }
 
-      int RunTests(const std::vector<std::string>& stringArgs)
+      int RunTestsNumberOfTestRunsTimes(const std::vector<std::string>& stringArgs)
       {
          _zenUnitArgs = _argsParser->Parse(stringArgs);
          _testClassRunnerRunner->ApplyTestNameFiltersIfAny(_zenUnitArgs.testNameFilters);
-         int overallExitCode = 0;
-         const int numberOfTestRuns = _zenUnitArgs.testRuns < 0 ? std::numeric_limits<int>::max() : _zenUnitArgs.testRuns;
-         for (int testRunIndex = 0; testRunIndex < numberOfTestRuns; ++testRunIndex)
-         {
-            const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
-               this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
-            ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
-            overallExitCode |= testRunExitCode;
-            _testRunResult->ResetStateInPreparationForNextTestRun();
-            _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
-               this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
-         }
+         const size_t numberOfTestRuns = _zenUnitArgs.testRuns < 0 ?
+            std::numeric_limits<size_t>::max() : static_cast<size_t>(_zenUnitArgs.testRuns);
+         const int numberOfFailedTestRuns = _nTimesMemberFunctionAccumulator_RunTests->
+            AccumulateNonConstMemberFunctionNTimes(numberOfTestRuns, this, &ZenUnitTestRunner::RunTests);
          _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
-         return overallExitCode;
+         return numberOfFailedTestRuns;
       }
 
       std::string StopTestRunStopwatchAndGetElapsedSeconds()
@@ -5286,6 +5311,18 @@ namespace ZenUnit
          return elapsedSeconds;
       }
    private:
+      int RunTests(size_t testRunIndex, size_t numberOfTestRuns)
+      {
+         const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
+            this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
+         ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
+         _testRunResult->ResetStateInPreparationForNextTestRun();
+         _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
+            this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
+         _console->WriteNewLineIfValuesAreNotEqual(testRunIndex, numberOfTestRuns - 1ULL);
+         return testRunExitCode;
+      }
+
       int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& zenUnitArgs)
       {
          const std::string startDateTime =
@@ -7904,7 +7941,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       const std::vector<std::string> stringArgs = VectorUtils::FromArgcArgv(argc, argv);
       ZenUnitTestRunner* const zenUnitTestRunner = ZenUnitTestRunner::Instance();
-      const int exitCode = zenUnitTestRunner->RunTests(stringArgs);
+      const int exitCode = zenUnitTestRunner->RunTestsNumberOfTestRunsTimes(stringArgs);
       return exitCode;
    }
 }

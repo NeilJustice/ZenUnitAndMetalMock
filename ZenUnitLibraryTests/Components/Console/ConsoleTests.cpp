@@ -10,6 +10,8 @@ namespace ZenUnit
    AFACT(WriteLine_CallsWriteLineWithWhite)
    FACTS(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
    FACTS(WriteLineAndExit_CallsWriteLineAndExit)
+   AFACT(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNothing)
+   AFACT(WriteNewLineIfValuesAreNotEqual_ValuesAreNotEqual_WritesNewLine)
    AFACT(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
    FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
    FACTS(WaitForAnyKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue)
@@ -126,6 +128,25 @@ namespace ZenUnit
       _console.WriteLineAndExit(_message, exitCode);
       //
       METALMOCK(exitMock.CalledOnceWith(exitCode));
+   }
+
+   TEST(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNothing)
+   {
+      const size_t value1 = ZenUnit::Random<size_t>();
+      const size_t value2 = value1;
+      //
+      _consoleSelfMocked.WriteNewLineIfValuesAreNotEqual(value1, value2);
+   }
+
+   TEST(WriteNewLineIfValuesAreNotEqual_ValuesAreNotEqual_WritesNewLine)
+   {
+      _consoleSelfMocked.WriteNewLineMock.Expect();
+      const size_t value1 = ZenUnit::Random<size_t>();
+      const size_t value2 = ZenUnit::RandomNotEqualToValue<size_t>(value1);
+      //
+      _consoleSelfMocked.WriteNewLineIfValuesAreNotEqual(value1, value2);
+      //
+      METALMOCK(_consoleSelfMocked.WriteNewLineMock.CalledOnce());
    }
 
    TEST(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
