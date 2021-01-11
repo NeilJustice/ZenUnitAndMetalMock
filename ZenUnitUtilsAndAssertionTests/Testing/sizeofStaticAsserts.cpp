@@ -76,9 +76,9 @@ namespace ZenUnit
 
    #if defined(_WIN32)
       #if defined _DEBUG
-         static_assert(sizeof(ZenUnitArgs) == 144);
+         static_assert(sizeof(ZenUnitArgs) == 136);
       #elif NDEBUG
-         static_assert(sizeof(ZenUnitArgs) == 120);
+         static_assert(sizeof(ZenUnitArgs) == 112);
       #endif
    #endif
 }

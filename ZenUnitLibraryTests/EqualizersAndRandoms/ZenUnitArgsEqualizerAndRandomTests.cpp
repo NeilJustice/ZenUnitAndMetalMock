@@ -22,7 +22,6 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testRuns, ZenUnit::RandomNon0<int>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomTestOrdering, true);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeed, ZenUnit::RandomNon0<unsigned>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomSeedSetByUser, true);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, ZenUnit::RandomNon0<unsigned>());
    }
 
@@ -40,9 +39,8 @@ namespace ZenUnit
       const bool failFast = ZenUnit::Random<bool>();
       const bool exit1IfTestsSkipped = ZenUnit::Random<bool>();
       const bool randomTestOrdering = ZenUnit::Random<bool>();
-      const bool randomSeedSetByUser = ZenUnit::Random<bool>();
       randomGeneratorMock.BoolMock.ReturnValues(
-         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped, randomTestOrdering, randomSeedSetByUser);
+         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped, randomTestOrdering);
 
       const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
 
@@ -53,7 +51,7 @@ namespace ZenUnit
       const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(&randomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
-      METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
+      METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(6));
       METALMOCK(randomGeneratorMock.IntMock.CalledOnce());
       METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledNTimes(2));
 
@@ -74,7 +72,6 @@ namespace ZenUnit
       ARE_EQUAL(testRuns, randomZenUnitArgs.testRuns);
       ARE_EQUAL(randomTestOrdering, randomZenUnitArgs.randomTestOrdering);
       ARE_EQUAL(randomSeed, randomZenUnitArgs.randomSeed);
-      ARE_EQUAL(randomSeedSetByUser, randomZenUnitArgs.randomSeedSetByUser);
       ARE_EQUAL(maxTestMilliseconds, randomZenUnitArgs.maxTestMilliseconds);
    }
 

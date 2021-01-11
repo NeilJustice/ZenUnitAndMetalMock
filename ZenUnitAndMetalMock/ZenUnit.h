@@ -103,7 +103,6 @@ namespace ZenUnit
       int testRuns = 1;
       bool randomTestOrdering = false;
       unsigned randomSeed = 0;
-      bool randomSeedSetByUser = false;
       unsigned maxTestMilliseconds = 0;
 
       static inline const std::string CommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + R"(
@@ -2042,6 +2041,79 @@ namespace ZenUnit
       virtual ~NonVoidOneArgMemberFunctionCaller() = default;
    };
 
+   template<typename ClassType>
+   class VoidZeroArgMemberFunctionCaller
+   {
+   public:
+      virtual void CallConstMemberFunction(
+         const ClassType* constClassPointer, void(ClassType::* constMemberFunction)() const) const
+      {
+         (constClassPointer->*constMemberFunction)();
+      }
+
+      virtual void CallNonConstMemberFunction(
+         ClassType* nonConstClassPointer, void(ClassType::* nonConstMemberFunction)()) const
+      {
+         (nonConstClassPointer->*nonConstMemberFunction)();
+      }
+
+      virtual ~VoidZeroArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ReturnType, typename ClassType>
+   class NonVoidZeroArgMemberFunctionCaller
+   {
+   public:
+      virtual ReturnType CallConstMemberFunction(
+         const ClassType* constClassPointer, ReturnType(ClassType::* constMemberFunction)() const) const
+      {
+         ReturnType returnValue = (constClassPointer->*constMemberFunction)();
+         return returnValue;
+      }
+
+      virtual ReturnType CallNonConstMemberFunction(
+         ClassType* nonConstClassPointer, ReturnType(ClassType::* nonConstMemberFunction)()) const
+      {
+         ReturnType returnValue = (nonConstClassPointer->*nonConstMemberFunction)();
+         return returnValue;
+      }
+
+      virtual ~NonVoidZeroArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ClassType, typename Arg1Type, typename Arg2Type>
+   class VoidTwoArgMemberFunctionCaller
+   {
+   public:
+      virtual void CallConstMemberFunction(
+         const ClassType* classPointer,
+         void(ClassType::* constMemberFunction)(Arg1Type, Arg2Type) const,
+         Arg1Type arg1,
+         Arg2Type arg2) const
+      {
+         (classPointer->*constMemberFunction)(arg1, arg2);
+      }
+
+      virtual ~VoidTwoArgMemberFunctionCaller() = default;
+   };
+
+   template<typename ReturnType, typename ClassType, typename Arg1Type, typename Arg2Type>
+   class NonVoidTwoArgMemberFunctionCaller
+   {
+   public:
+      virtual ReturnType CallConstMemberFunction(
+         const ClassType* constClassPointer,
+         ReturnType(ClassType::* constMemberFunction)(Arg1Type, Arg2Type) const,
+         Arg1Type arg1,
+         Arg2Type arg2) const
+      {
+         ReturnType returnValue = (constClassPointer->*constMemberFunction)(arg1, arg2);
+         return returnValue;
+      }
+
+      virtual ~NonVoidTwoArgMemberFunctionCaller() = default;
+   };
+
    class Watch
    {
       friend class WatchTests;
@@ -2122,7 +2194,8 @@ namespace ZenUnit
       std::function<int(std::string_view)> _call_String_ToInt;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
       // Function Callers
-      std::unique_ptr<const VoidOneArgMemberFunctionCaller<ArgsParser, ZenUnitArgs&>> _caller_SetRandomSeedIfNotSetByUser;
+      std::unique_ptr<const NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>
+         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
@@ -2133,7 +2206,8 @@ namespace ZenUnit
          : _call_String_ToInt(String::ToInt)
          , _call_String_ToUnsigned(String::ToUnsigned)
          // Function Callers
-         , _caller_SetRandomSeedIfNotSetByUser(std::make_unique<VoidOneArgMemberFunctionCaller<ArgsParser, ZenUnitArgs&>>())
+         , _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(
+            std::make_unique<NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
@@ -2152,6 +2226,7 @@ namespace ZenUnit
          }
          ZenUnitArgs zenUnitArgs;
          zenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
+         unsigned randomSeedPotentiallySetByUser = 0;
          const size_t numberOfArgs = stringArgs.size();
          for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
          {
@@ -2214,8 +2289,7 @@ namespace ZenUnit
                   }
                   else if (argName == "--random-seed")
                   {
-                     zenUnitArgs.randomSeed = _call_String_ToUnsigned(argValueString);
-                     zenUnitArgs.randomSeedSetByUser = true;
+                     randomSeedPotentiallySetByUser = _call_String_ToUnsigned(argValueString);
                   }
                   else
                   {
@@ -2229,18 +2303,20 @@ namespace ZenUnit
             }
          }
          zenUnitArgs.startDateTime = _watch->DateTimeNow();
-         _caller_SetRandomSeedIfNotSetByUser->CallConstMemberFunction(this, &ArgsParser::SetRandomSeedIfNotSetByUser, zenUnitArgs);
-         zenUnitMode.randomSeed = zenUnitArgs.randomSeed;
+         zenUnitArgs.randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser->CallConstMemberFunction(
+            this, &ArgsParser::GetSecondsSince1970RandomSeedIfNotAlreadySetByUser, randomSeedPotentiallySetByUser);
          return zenUnitArgs;
       }
    private:
-      void SetRandomSeedIfNotSetByUser(ZenUnitArgs& outZenUnitArgs) const
+      unsigned GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(unsigned randomSeedPotentiallySetByUser) const
       {
-         if (!outZenUnitArgs.randomSeedSetByUser)
+         if (randomSeedPotentiallySetByUser != 0)
          {
-            const long long secondsSince1970 = _watch->SecondsSince1970();
-            outZenUnitArgs.randomSeed = static_cast<unsigned>(secondsSince1970);
+            return randomSeedPotentiallySetByUser;
          }
+         const long long secondsSince1970 = _watch->SecondsSince1970();
+         const unsigned secondsSince1970RandomSeed = static_cast<unsigned>(secondsSince1970);
+         return secondsSince1970RandomSeed;
       }
 
       void WriteZenUnitCommandLineUsageErrorThenExit1(std::string_view errorMessage) const
@@ -5031,79 +5107,6 @@ namespace ZenUnit
       {
          _console->WriteLineColor("[SKIPPED] Test " + skippedFullTestNameAndReason, Color::Yellow);
       }
-   };
-
-   template<typename ClassType>
-   class VoidZeroArgMemberFunctionCaller
-   {
-   public:
-      virtual void CallConstMemberFunction(
-         const ClassType* constClassPointer, void(ClassType::*constMemberFunction)() const) const
-      {
-         (constClassPointer->*constMemberFunction)();
-      }
-
-      virtual void CallNonConstMemberFunction(
-         ClassType* nonConstClassPointer, void(ClassType::*nonConstMemberFunction)()) const
-      {
-         (nonConstClassPointer->*nonConstMemberFunction)();
-      }
-
-      virtual ~VoidZeroArgMemberFunctionCaller() = default;
-   };
-
-   template<typename ReturnType, typename ClassType>
-   class NonVoidZeroArgMemberFunctionCaller
-   {
-   public:
-      virtual ReturnType CallConstMemberFunction(
-         const ClassType* constClassPointer, ReturnType(ClassType::*constMemberFunction)() const) const
-      {
-         ReturnType returnValue = (constClassPointer->*constMemberFunction)();
-         return returnValue;
-      }
-
-      virtual ReturnType CallNonConstMemberFunction(
-         ClassType* nonConstClassPointer, ReturnType(ClassType::*nonConstMemberFunction)()) const
-      {
-         ReturnType returnValue = (nonConstClassPointer->*nonConstMemberFunction)();
-         return returnValue;
-      }
-
-      virtual ~NonVoidZeroArgMemberFunctionCaller() = default;
-   };
-
-   template<typename ClassType, typename Arg1Type, typename Arg2Type>
-   class VoidTwoArgMemberFunctionCaller
-   {
-   public:
-      virtual void CallConstMemberFunction(
-         const ClassType* classPointer,
-         void(ClassType::*constMemberFunction)(Arg1Type, Arg2Type) const,
-         Arg1Type arg1,
-         Arg2Type arg2) const
-      {
-         (classPointer->*constMemberFunction)(arg1, arg2);
-      }
-
-      virtual ~VoidTwoArgMemberFunctionCaller() = default;
-   };
-
-   template<typename ReturnType, typename ClassType, typename Arg1Type, typename Arg2Type>
-   class NonVoidTwoArgMemberFunctionCaller
-   {
-   public:
-      virtual ReturnType CallConstMemberFunction(
-         const ClassType* classPointer,
-         ReturnType(ClassType::*constMemberFunction)(Arg1Type, Arg2Type) const,
-         Arg1Type arg1,
-         Arg2Type arg2) const
-      {
-         ReturnType returnValue = (classPointer->*constMemberFunction)(arg1, arg2);
-         return returnValue;
-      }
-
-      virtual ~NonVoidTwoArgMemberFunctionCaller() = default;
    };
 
    class Stopwatch

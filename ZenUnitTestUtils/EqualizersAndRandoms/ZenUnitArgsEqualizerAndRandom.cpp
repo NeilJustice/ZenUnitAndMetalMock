@@ -16,7 +16,6 @@ namespace ZenUnit
       ARE_EQUAL(expectedZenUnitArgs.testRuns, actualZenUnitArgs.testRuns);
       ARE_EQUAL(expectedZenUnitArgs.randomTestOrdering, actualZenUnitArgs.randomTestOrdering);
       ARE_EQUAL(expectedZenUnitArgs.randomSeed, actualZenUnitArgs.randomSeed);
-      ARE_EQUAL(expectedZenUnitArgs.randomSeedSetByUser, actualZenUnitArgs.randomSeedSetByUser);
       ARE_EQUAL(expectedZenUnitArgs.maxTestMilliseconds, actualZenUnitArgs.maxTestMilliseconds);
    }
 
@@ -34,7 +33,6 @@ namespace ZenUnit
       randomZenUnitArgs.testRuns = randomGenerator->Int();
       randomZenUnitArgs.randomTestOrdering = randomGenerator->Bool();
       randomZenUnitArgs.randomSeed = randomGenerator->UnsignedInt();
-      randomZenUnitArgs.randomSeedSetByUser = randomGenerator->Bool();
       randomZenUnitArgs.maxTestMilliseconds = randomGenerator->UnsignedInt();
       return randomZenUnitArgs;
    }
