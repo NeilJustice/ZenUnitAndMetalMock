@@ -81,13 +81,6 @@ namespace ZenUnit
 
 namespace ZenUnit
 {
-   struct ZenUnitMode
-   {
-      bool selfTestMode = false;
-      unsigned randomSeed = 0;
-   };
-   inline ZenUnitMode zenUnitMode;
-
    class TestNameFilter;
 
    struct ZenUnitArgs
@@ -641,6 +634,13 @@ namespace ZenUnit
    };
 #endif
 
+   struct ZenUnitMode
+   {
+      bool selfTest = false;
+      unsigned randomSeed = 0;
+   };
+   inline ZenUnitMode globalZenUnitMode;
+
    struct FilePathLineNumber
    {
       const char* filePath;
@@ -663,8 +663,8 @@ namespace ZenUnit
          return filePathAndLineNumber;
       }
 
-      static const char* File(const char* fileMacroValue) noexcept { return zenUnitMode.selfTestMode ? "File.cpp" : fileMacroValue; }
-      static unsigned Line(unsigned lineMacroValue) noexcept { return zenUnitMode.selfTestMode ? 1U : lineMacroValue; }
+      static const char* File(const char* fileMacroValue) noexcept { return globalZenUnitMode.selfTest ? "File.cpp" : fileMacroValue; }
+      static unsigned Line(unsigned lineMacroValue) noexcept { return globalZenUnitMode.selfTest ? 1U : lineMacroValue; }
    };
 
    class String
@@ -5359,7 +5359,7 @@ namespace ZenUnit
             const std::string failFastMessage = String::Concat('\n',
                "[ZenUnit] A test failed in --fail-fast mode.\n",
                "[ZenUnit] CommandLine: ", zenUnitArgs.commandLine, '\n',
-               "[ZenUnit]  RandomSeed: --random-seed=", zenUnitMode.randomSeed, '\n',
+               "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n',
                "[ZenUnit]    ExitCode: ", exitCode);
             _console->WriteLineAndExit(failFastMessage, exitCode);
          }
@@ -7189,7 +7189,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomBetween(long long inclusiveLowerBound, long long inclusiveUpperBound)
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       std::uniform_int_distribution<long long> uniformIntDistribution(inclusiveLowerBound, inclusiveUpperBound);
       const long long randomIntegerBetweenInclusiveAndExclusiveAsLongLong = uniformIntDistribution(defaultRandomEngine);
       const T randomIntegerBetweenInclusiveAndExclusiveAsT = static_cast<T>(randomIntegerBetweenInclusiveAndExclusiveAsLongLong);
@@ -7199,7 +7199,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr T maxTValue = std::numeric_limits<T>::max();
       std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
       const T randomIntegerGreaterThanOrEqualToInclusiveLowerBound = uniformTDistribution(defaultRandomEngine);
@@ -7209,7 +7209,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomLessThanOrEqualTo(T inclusiveUpperBound)
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr T minTValue = std::numeric_limits<T>::min();
       std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
       const T randomIntegerLessThanOrEqualToInclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
@@ -7266,7 +7266,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline unsigned long long RandomUnsignedLongLong()
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
       std::uniform_int_distribution<unsigned long long> distribution(0, maximumUnsignedLongLong);
       const unsigned long long randomUnsignedLongLong = distribution(defaultRandomEngine);
@@ -7275,7 +7275,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline unsigned long long RandomUnsignedLongLongBetween0AndValue(unsigned long long inclusiveMaxValue)
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       std::uniform_int_distribution<unsigned long long> distribution(0, inclusiveMaxValue);
       const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue = distribution(defaultRandomEngine);
       return randomUnsignedLongLongBetween0AndInclusiveMaxValue;
@@ -7534,7 +7534,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline float Random<float>()
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr float minFloatValue = std::numeric_limits<float>::min();
       constexpr float maxFloatValue = std::numeric_limits<float>::max();
       std::uniform_real_distribution<float> uniformFloatDistribution(minFloatValue, maxFloatValue);
@@ -7545,7 +7545,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline double Random<double>()
    {
-      static std::default_random_engine defaultRandomEngine(zenUnitMode.randomSeed);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr double minDoubleValue = std::numeric_limits<double>::min();
       constexpr double maxDoubleValue = std::numeric_limits<double>::max();
       std::uniform_real_distribution<double> uniformDoubleDistribution(minDoubleValue, maxDoubleValue);

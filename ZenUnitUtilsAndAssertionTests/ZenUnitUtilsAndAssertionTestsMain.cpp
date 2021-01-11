@@ -38,7 +38,7 @@ THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
 int main(int argc, char* argv[])
 {
-   ZenUnit::zenUnitMode.selfTestMode = true;
+   ZenUnit::globalZenUnitMode.selfTest = true;
    const int exitCode = ZenUnit::RunTests(argc, argv);
    return exitCode;
 }
