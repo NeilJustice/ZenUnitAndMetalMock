@@ -135,10 +135,10 @@ Testing Rigorousness Options:
 --test-runs=<N>
    Repeat N times the running of all tests.
    Specify -1 to repeat forever the running of all tests.
---random-test-ordering
+--random
    Run test classes, tests, and value-parameterized test cases in a random order.
 --random-seed=<32BitUnsignedInteger>
-   Sets the random seed which sets the test ordering for --random-test-ordering and
+   Sets the random seed which sets the test ordering for --random and
    sets the sequence of values returned by the ZenUnit::Random<T>
    family of random-value-generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
@@ -147,7 +147,7 @@ Testing Rigorousness Options:
 
 Example ZenUnit command line arguments:
 
-./SafetyCriticalUnitTests --test-runs=5 --random-test-ordering --exit-1-if-tests-skipped
+./SafetyCriticalUnitTests --test-runs=5 --random --exit-1-if-tests-skipped
 ./FinanciallyCriticalUnitTests --run=MarketDataDispatcherTests --fail-fast
 )";
    };
@@ -2260,7 +2260,7 @@ namespace ZenUnit
             {
                zenUnitArgs.exit1IfTestsSkipped = true;
             }
-            else if (arg == "--random-test-ordering")
+            else if (arg == "--random")
             {
                zenUnitArgs.randomTestOrdering = true;
             }

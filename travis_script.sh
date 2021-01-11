@@ -32,11 +32,11 @@ if [ "$TRAVIS_COMPILER" = "gcc" ]; then
 else
    ninja -v
 fi
-./MetalMockTests/MetalMockTests --test-runs=3 --random-test-ordering
-./MetalMockExamples/MetalMockExamples --test-runs=3 --random-test-ordering
-./ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=3 --random-test-ordering
-./ZenUnitLibraryTests/ZenUnitLibraryTests --test-runs=3 --random-test-ordering
-./ZenUnitExamples/ZenUnitExamples --test-runs=3 --random-test-ordering
+./MetalMockTests/MetalMockTests --test-runs=3 --random
+./MetalMockExamples/MetalMockExamples --test-runs=3 --random
+./ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=3 --random
+./ZenUnitLibraryTests/ZenUnitLibraryTests --test-runs=3 --random
+./ZenUnitExamples/ZenUnitExamples --test-runs=3 --random
 
 if [ "$CODE_COV_MODE" == "ON" ]; then
   lcov --directory . --capture --output-file coverage.info

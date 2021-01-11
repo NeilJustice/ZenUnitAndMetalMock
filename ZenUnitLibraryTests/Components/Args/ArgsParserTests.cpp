@@ -168,7 +168,7 @@ namespace ZenUnit
          "--always-exit-0",
          "--fail-fast",
          "--exit-1-if-tests-skipped",
-         "--random-test-ordering",
+         "--random",
          "--test-runs=" + to_string(testruns),
          "--random-seed=" + to_string(randomSeed)
       };
@@ -237,7 +237,7 @@ namespace ZenUnit
       AssertArgSetsBoolField("--exit-1-if-tests-skipped", &ZenUnitArgs::exit1IfTestsSkipped);
       Startup();
 
-      AssertArgSetsBoolField("--random-test-ordering", &ZenUnitArgs::randomTestOrdering);
+      AssertArgSetsBoolField("--random", &ZenUnitArgs::randomTestOrdering);
       Startup();
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)

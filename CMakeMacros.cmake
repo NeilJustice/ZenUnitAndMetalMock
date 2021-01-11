@@ -77,7 +77,6 @@ endmacro()
 
 macro(OnWindowsAddPostBuildStepToRunTests)
    if(MSVC)
-      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) --random-test-ordering --always-exit-0)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) --random --always-exit-0)
    endif()
 endmacro()
-
