@@ -82,7 +82,11 @@ namespace ZenUnit
 
    TEST(GetName_Pointers_ReturnsPointerTypeWithPtr64SuffixRemovedOnWindows)
    {
+#ifdef __linux__
+      ARE_EQUAL("int*", *Type::GetName<int*>());
+#elif _WIN32
       ARE_EQUAL("int *", *Type::GetName<int*>());
+#endif
    }
 
    TEST(GetNameT_NonClassNonStructType_ReturnsTypeName)
@@ -145,7 +149,11 @@ namespace ZenUnit
    TEST(GetNameT_Pointers_ReturnsPointerTypeWithPtr64SuffixRemovedOnWindows)
    {
       int x = 0;
+#ifdef __linux__
+      ARE_EQUAL("int*", *Type::GetName(&x));
+#elif _WIN32
       ARE_EQUAL("int *", *Type::GetName(&x));
+#endif
    }
 
    RUN_TESTS(TypeTests)
