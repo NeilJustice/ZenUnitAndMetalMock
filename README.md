@@ -54,12 +54,12 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
-   * [How ZenUnit And MetalMock Appears In Visual Studio 2019](#how-zenunit-and-metalmock-appears-in-visual-studio-2019)
+   * [How ZenUnit And MetalMock Source Code Appears In Visual Studio 2019](#how-zenunit-and-metalmock-source-code-appears-in-visual-studio-2019)
    * [6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#6-linux-commands-to-build-and-run-zenUnit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
    * [4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#4-windows-commands-to-build-and-run-zenunit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
    * [ZenUnit Features Roadmap](#zenunit-features-roadmap)
    * [MetalMock Features Roadmap](#metalmock-features-roadmap)
-   * [Special Thanks](#special-thanks)
+   * [Acknowledgments](#acknowledgments)
 
 ### ZenUnit Command Line Usage
 
@@ -1210,7 +1210,7 @@ ZenUnit provides the following random-value-generating functions for maximizing 
 
 ![Windows Jenkins Jobs](Screenshots/WindowsJenkinsJobsForZenUnitAndMetalMock.png)
 
-### How ZenUnit And MetalMock Appears In Visual Studio 2019
+### How ZenUnit And MetalMock Source Code Appears In Visual Studio 2019
 
 ![ZenUnitAndMetalMock In Visual Studio 2019](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
 
@@ -1275,7 +1275,7 @@ cmake --build . --target install
 |------------------------|------------------------|---------------------|
 |Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness|January 2021|Awaiting implementation|
 
-### Special Thanks
+### Acknowledgments
 
 * [Jason Turner, host of C++ Weekly and co-host of CppCast](https://www.youtube.com/user/lefticus1/videos)
 * [Rob Irving, co-host of CppCast](https://cppcast.com)
