@@ -254,7 +254,7 @@ int main(int argc, char* argv[])
 
 ### How To Unit Test Templated Class PredicateCounter's CountWhere() Function With ZenUnit's Type-Parameterized Test Syntax
 
-How might you confirm the correctness of this templated class PredicateCounter with its function CountWhere() for counting the number of elements in a container that match a predicate function?
+How might the correctness of this templated class PredicateCounter with its CountWhere() function be confirmed across various types of T?
 
 ```cpp
 namespace Utils
