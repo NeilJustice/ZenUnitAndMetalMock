@@ -1261,19 +1261,19 @@ cmake --build . --target install
 |----------------------|------------------------|---------------------|
 |`TUPLES_ARE_EQUAL`|January 2021|Implemented|
 |Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|January 2021|In progress|
-|GitHub Actions build|January 2021|Awaiting implementation|
-|SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|January 2021|Awaiting implementation|
-|`main` and `dev` branches|February 2021|Awaiting implementation|
+|GitHub Actions build|February 2021|Awaiting implementation|
+|SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|February 2021|Awaiting implementation|
 |SonarCloud Badge|February 2021|Awaiting implementation|
 |Coverity Badge|February 2021|Awaiting implementation|
 |`ARE_NEAR` floating point assertion|February 2021|Awaiting implementation|
-|`--parallel` for parallel running of tests and value-parameterized test cases|Q2 2021|Awaiting implementation|
+|`main` and `dev` branches|March 2021|Awaiting implementation|
+|`--parallel` for parallel running of tests|April 2021|Awaiting implementation|
 
 ### MetalMock Roadmap
 
 |Future MetalMock Feature|Estimated Delivery Month|Implementation Status|
 |------------------------|------------------------|---------------------|
-|Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness|January 2021|Awaiting implementation|
+|Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness.|March 2021|Awaiting implementation|
 
 ### Acknowledgments
 
