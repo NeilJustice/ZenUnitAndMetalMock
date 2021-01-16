@@ -5218,10 +5218,9 @@ namespace ZenUnit
       std::unique_ptr<const NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>
          _nTimesMemberFunctionAccumulator_RunTests;
       // Function Pointers
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
       using CRT_REPORT_HOOK_FunctionType = int(*)(int, char*, int*);
       std::function<CRT_REPORT_HOOK_FunctionType(CRT_REPORT_HOOK_FunctionType)> _call_CrtSetReportHook;
-      std::function<void(int)> _call_exit;
 #endif
       // Constant Components
       std::unique_ptr<const ArgsParser> _argsParser;
@@ -5249,7 +5248,7 @@ namespace ZenUnit
          , _nTimesMemberFunctionAccumulator_RunTests(
             std::make_unique<NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>())
          // Function Pointers
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
          , _call_CrtSetReportHook(_CrtSetReportHook)
 #endif
          // Constant Components
@@ -5305,7 +5304,7 @@ namespace ZenUnit
 
       int RunTestsNumberOfTestRunsTimes(const std::vector<std::string>& stringArgs)
       {
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
          _call_CrtSetReportHook(FailFastInResponseToWindowsCrtAssertionFailure);
 #endif
          _zenUnitArgs = _argsParser->Parse(stringArgs);
@@ -5324,7 +5323,7 @@ namespace ZenUnit
          return elapsedSeconds;
       }
    private:
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
       static int FailFastInResponseToWindowsCrtAssertionFailure(int, char* fileNameLineNumberErrorMessage, int*)
       {
          Console console;

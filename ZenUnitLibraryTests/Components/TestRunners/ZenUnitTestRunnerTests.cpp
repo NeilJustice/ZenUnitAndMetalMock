@@ -55,7 +55,7 @@ namespace ZenUnit
 
    NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>* _nTimesMemberFunctionAccumulator_RunTestsMock = nullptr;
    // Function Pointers
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
    using CRT_REPORT_HOOK_FunctionType = int(*)(int, char*, int*);
    METALMOCK_NONVOID1_FREE(CRT_REPORT_HOOK_FunctionType, _CrtSetReportHook, CRT_REPORT_HOOK_FunctionType)
 #endif
@@ -92,7 +92,9 @@ namespace ZenUnit
       _zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests.reset(
          _nTimesMemberFunctionAccumulator_RunTestsMock = new NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>);
       // Function Pointers
+#if defined _WIN32 && defined _DEBUG
       _zenUnitTestRunner._call_CrtSetReportHook = BIND_1ARG_METALMOCK_OBJECT(_CrtSetReportHookMock);
+#endif
       // Constant Components
       _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
       _zenUnitTestRunner._console.reset(_consoleMock = new ConsoleMock);
@@ -114,7 +116,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests);
       // Function Pointers
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
       STD_FUNCTION_TARGETS(_CrtSetReportHook, zenUnitTestRunner._call_CrtSetReportHook);
 #endif
       // Constant Components
@@ -162,7 +164,7 @@ namespace ZenUnit
       1, size_t(1),
       2, size_t(2))
    {
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
       _CrtSetReportHookMock.Return(nullptr);
 #endif
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
@@ -180,7 +182,7 @@ namespace ZenUnit
       //
       const int returnedNumberOfFailedTestRuns = _zenUnitTestRunner.RunTestsNumberOfTestRunsTimes(commandLineArgs);
       //
-#ifdef _WIN32
+#if defined _WIN32 && defined _DEBUG
       METALMOCK(_CrtSetReportHookMock.CalledOnceWith(ZenUnitTestRunner::FailFastInResponseToWindowsCrtAssertionFailure));
 #endif
       METALMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
