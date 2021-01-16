@@ -5217,6 +5217,12 @@ namespace ZenUnit
          _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
       std::unique_ptr<const NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>
          _nTimesMemberFunctionAccumulator_RunTests;
+      // Function Pointers
+#ifdef _WIN32
+      using CRT_REPORT_HOOK_FunctionType = int(*)(int, char*, int*);
+      std::function<CRT_REPORT_HOOK_FunctionType(CRT_REPORT_HOOK_FunctionType)> _call_CrtSetReportHook;
+      std::function<void(int)> _call_exit;
+#endif
       // Constant Components
       std::unique_ptr<const ArgsParser> _argsParser;
       std::unique_ptr<const Console> _console;
@@ -5242,6 +5248,10 @@ namespace ZenUnit
             std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
          , _nTimesMemberFunctionAccumulator_RunTests(
             std::make_unique<NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>())
+         // Function Pointers
+#ifdef _WIN32
+         , _call_CrtSetReportHook(_CrtSetReportHook)
+#endif
          // Constant Components
          , _argsParser(std::make_unique<ArgsParser>())
          , _console(std::make_unique<Console>())
@@ -5295,6 +5305,9 @@ namespace ZenUnit
 
       int RunTestsNumberOfTestRunsTimes(const std::vector<std::string>& stringArgs)
       {
+#ifdef _WIN32
+         _call_CrtSetReportHook(FailFastInResponseToWindowsCrtAssertionFailure);
+#endif
          _zenUnitArgs = _argsParser->Parse(stringArgs);
          _testClassRunnerRunner->ApplyTestNameFiltersIfAny(_zenUnitArgs.testNameFilters);
          const size_t numberOfTestRuns = _zenUnitArgs.testRuns < 0 ?
@@ -5311,6 +5324,20 @@ namespace ZenUnit
          return elapsedSeconds;
       }
    private:
+#ifdef _WIN32
+      static int FailFastInResponseToWindowsCrtAssertionFailure(int, char* fileNameLineNumberErrorMessage, int*)
+      {
+         Console console;
+         console.WriteLineColor(R"(
+===================================
+Fatal Windows C++ Runtime Assertion
+===================================)", Color::Red);
+         console.Write(fileNameLineNumberErrorMessage);
+         console.WriteLineColor("[ZenUnit] ExitCode: 1", Color::Red);
+         exit(1);
+      }
+#endif
+
       int RunTests(size_t testRunIndex, size_t numberOfTestRuns)
       {
          const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(

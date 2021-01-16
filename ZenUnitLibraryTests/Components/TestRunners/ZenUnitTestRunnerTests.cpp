@@ -29,7 +29,7 @@ namespace ZenUnit
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_ReturnsNullptr)
    AFACT(SkipTest_CallsTestRunResultAddSkippedFullTestName)
    AFACT(SkipTestClass_CallsTestRunResultAddSkippedTestClassNameAndReason)
-   FACTS(RunTestsNumberOfTestRunsTimes_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
+   FACTS(RunTestsNumberOfTestRunsTimes_SetsCrtAssertionFailureHandlerOnWindows_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1)
    // Private Functions
    AFACT(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    AFACT(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
@@ -54,6 +54,11 @@ namespace ZenUnit
    NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
 
    NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>* _nTimesMemberFunctionAccumulator_RunTestsMock = nullptr;
+   // Function Pointers
+#ifdef _WIN32
+   using CRT_REPORT_HOOK_FunctionType = int(*)(int, char*, int*);
+   METALMOCK_NONVOID1_FREE(CRT_REPORT_HOOK_FunctionType, _CrtSetReportHook, CRT_REPORT_HOOK_FunctionType)
+#endif
    // Constant Components
    ArgsParserMock* _argsParserMock = nullptr;
    ConsoleMock* _consoleMock = nullptr;
@@ -86,6 +91,8 @@ namespace ZenUnit
          _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
       _zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests.reset(
          _nTimesMemberFunctionAccumulator_RunTestsMock = new NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>);
+      // Function Pointers
+      _zenUnitTestRunner._call_CrtSetReportHook = BIND_1ARG_METALMOCK_OBJECT(_CrtSetReportHookMock);
       // Constant Components
       _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
       _zenUnitTestRunner._console.reset(_consoleMock = new ConsoleMock);
@@ -106,6 +113,10 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests);
+      // Function Pointers
+#ifdef _WIN32
+      STD_FUNCTION_TARGETS(_CrtSetReportHook, zenUnitTestRunner._call_CrtSetReportHook);
+#endif
       // Constant Components
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._console);
@@ -143,7 +154,7 @@ namespace ZenUnit
       IS_NULLPTR(returnValue);
    }
 
-   TEST2X2(RunTestsNumberOfTestRunsTimes_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
+   TEST2X2(RunTestsNumberOfTestRunsTimes_SetsCrtAssertionFailureHandlerOnWindows_ParsesArgs_RunsTestClassesTimesNumberOfTimes_Returns0IfAllTestRunsPassOtherwiseReturns1,
       int zenUnitArgsTestRuns, size_t expectedNumberOfTestRuns,
       -2, numeric_limits<size_t>::max(),
       -1, numeric_limits<size_t>::max(),
@@ -151,6 +162,9 @@ namespace ZenUnit
       1, size_t(1),
       2, size_t(2))
    {
+#ifdef _WIN32
+      _CrtSetReportHookMock.Return(nullptr);
+#endif
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.testRuns = zenUnitArgsTestRuns;
       _argsParserMock->ParseMock.Return(zenUnitArgs);
@@ -166,6 +180,9 @@ namespace ZenUnit
       //
       const int returnedNumberOfFailedTestRuns = _zenUnitTestRunner.RunTestsNumberOfTestRunsTimes(commandLineArgs);
       //
+#ifdef _WIN32
+      METALMOCK(_CrtSetReportHookMock.CalledOnceWith(ZenUnitTestRunner::FailFastInResponseToWindowsCrtAssertionFailure));
+#endif
       METALMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
       METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
       METALMOCK(_nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.CalledOnceWith(
