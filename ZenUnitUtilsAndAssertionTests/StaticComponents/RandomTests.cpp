@@ -176,26 +176,33 @@ namespace ZenUnit
       SETS_ARE_EQUAL(expectedUnsignedCharsExceptForExceptValueAsUnorderedSet, randomNonZeroUnsignedChars);
 
 
-      const char notEqualCharValue = ZenUnit::Random<char>();
-      ARE_NOT_EQUAL(notEqualCharValue, RandomNon0<char>());
+      const char char1 = ZenUnit::Random<char>();
+      const char char2 = ZenUnit::RandomNotEqualToValue<char>(char1);
+      ARE_NOT_EQUAL(char1, char2);
 
-      const short notEqualShortValue = ZenUnit::Random<short>();
-      ARE_NOT_EQUAL(notEqualShortValue, RandomNon0<short>());
+      const short short1 = ZenUnit::Random<short>();
+      const short short2 = ZenUnit::RandomNotEqualToValue<short>(short1);
+      ARE_NOT_EQUAL(short1, short2);
 
-      const unsigned short notEqualUnsignedShortValue = ZenUnit::Random<unsigned short>();
-      ARE_NOT_EQUAL(notEqualUnsignedShortValue, RandomNon0<unsigned short>());
+      const unsigned short unsignedShort1 = ZenUnit::Random<unsigned short>();
+      const unsigned short unsignedShort2 = ZenUnit::RandomNotEqualToValue<unsigned short>(unsignedShort1);
+      ARE_NOT_EQUAL(unsignedShort1, unsignedShort2);
 
-      const int notEqualIntValue = ZenUnit::Random<int>();
-      ARE_NOT_EQUAL(notEqualIntValue, RandomNon0<int>());
+      const int int1 = ZenUnit::Random<int>();
+      const int int2 = ZenUnit::RandomNotEqualToValue<int>(int1);
+      ARE_NOT_EQUAL(int1, int2);
 
-      const unsigned int notEqualUnsignedIntValue = ZenUnit::Random<unsigned int>();
-      ARE_NOT_EQUAL(notEqualUnsignedIntValue, RandomNon0<unsigned int>());
+      const unsigned int unsignedInt1 = ZenUnit::Random<unsigned int>();
+      const unsigned int unsignedInt2 = ZenUnit::RandomNotEqualToValue<unsigned int>(unsignedInt1);
+      ARE_NOT_EQUAL(unsignedInt1, unsignedInt2);
 
-      const long long notEqualLongLongValue = ZenUnit::Random<long long>();
-      ARE_NOT_EQUAL(notEqualLongLongValue, RandomNon0<long long>());
+      const long long longLong1 = ZenUnit::Random<long long>();
+      const long long longLong2 = ZenUnit::RandomNotEqualToValue<long long>(longLong1);
+      ARE_NOT_EQUAL(longLong1, longLong2);
 
-      const unsigned long long notEqualUnsignedLongLongValue = ZenUnit::Random<unsigned long long>();
-      ARE_NOT_EQUAL(notEqualUnsignedLongLongValue, RandomNon0<unsigned long long>());
+      const unsigned long long unsignedLongLong1 = ZenUnit::Random<unsigned long long>();
+      const unsigned long long unsignedLongLong2 = ZenUnit::RandomNotEqualToValue<unsigned long long>(unsignedLongLong1);
+      ARE_NOT_EQUAL(unsignedLongLong1, unsignedLongLong2);
    }
 
    TEST(Random1OrGreater_ReturnsRandomIntegerBetween1AndTMaxValue)
