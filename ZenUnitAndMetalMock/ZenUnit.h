@@ -7322,14 +7322,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T Random0OrGreater()
-   {
-      constexpr T maxTValue = std::numeric_limits<T>::max();
-      const T randomIntegerBetween0AndMaxValue = RandomBetween<T>(0, maxTValue);
-      return randomIntegerBetween0AndMaxValue;
-   }
-
-   template<typename T>
    T Random1OrGreater()
    {
       constexpr T maxTValue = std::numeric_limits<T>::max();
@@ -7338,7 +7330,23 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T RandomNegative()
+   T Random0OrGreater()
+   {
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      const T randomIntegerBetween0AndMaxValue = RandomBetween<T>(0, maxTValue);
+      return randomIntegerBetween0AndMaxValue;
+   }
+
+   template<typename T>
+   T Random0OrLess()
+   {
+      constexpr T minTValue = std::numeric_limits<T>::min();
+      const T randomIntegerBetweenMinValueAnd0 = RandomBetween<T>(minTValue, 0);
+      return randomIntegerBetweenMinValueAnd0;
+   }
+
+   template<typename T>
+   T RandomNegative1OrLess()
    {
       constexpr T minTValue = std::numeric_limits<T>::min();
       const T randomIntegerBetweenMinValueAndNegative1 = RandomBetween<T>(minTValue, -1);
