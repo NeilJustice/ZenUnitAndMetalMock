@@ -455,18 +455,18 @@ namespace ZenUnit
 namespace ZenUnit
 {
    template<typename T>
-   TEMPLATE_TESTS(RandomLessThanOrEqualToTests, T)
-   AFACT(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
+   TEMPLATE_TESTS(RandomLessThanTests, T)
+   AFACT(RandomLessThan_ReturnsARandomValueBetweenTMinValueAndExclusiveUpperBoundMinus1)
    EVIDENCE
 
-   TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
+   TEST(RandomLessThan_ReturnsARandomValueBetweenTMinValueAndExclusiveUpperBoundMinus1)
    {
       set<T> randomValuesReturned;
       //
       const T minTValue = std::numeric_limits<T>::min();
       for (size_t i = 0; i < 100; ++i)
       {
-         const T randomT = ZenUnit::RandomLessThanOrEqualTo<T>(minTValue + 2);
+         const T randomT = ZenUnit::RandomLessThan<T>(minTValue + 3);
          randomValuesReturned.emplace(randomT);
       }
       //
@@ -475,6 +475,38 @@ namespace ZenUnit
          minTValue,
          minTValue + 1,
          minTValue + 2
+      };
+      SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
+   }
+
+   RUN_TEMPLATE_TESTS(RandomLessThanTests, short)
+   THEN_RUN_TEMPLATE_TESTS(RandomLessThanTests, int)
+   THEN_RUN_TEMPLATE_TESTS(RandomLessThanTests, long long)
+   THEN_RUN_TEMPLATE_TESTS(RandomLessThanTests, unsigned long long)
+
+
+   template<typename T>
+   TEMPLATE_TESTS(RandomLessThanOrEqualToTests, T)
+   AFACT(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenTMinValueAndInclusiveUpperBound)
+   EVIDENCE
+
+   TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenTMinValueAndInclusiveUpperBound)
+   {
+      set<T> randomValuesReturned;
+      //
+      const T minTValue = std::numeric_limits<T>::min();
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const T randomT = ZenUnit::RandomLessThanOrEqualTo<T>(minTValue + 3);
+         randomValuesReturned.emplace(randomT);
+      }
+      //
+      const set<T> expectedRandomValuesReturned =
+      {
+         minTValue,
+         minTValue + 1,
+         minTValue + 2,
+         minTValue + 3
       };
       SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
    }
@@ -497,7 +529,39 @@ namespace ZenUnit
       const T maxTValue = std::numeric_limits<T>::max();
       for (size_t i = 0; i < 100; ++i)
       {
-         const T randomT = ZenUnit::RandomGreaterThanOrEqualTo<T>(maxTValue - 2);
+         const T randomT = ZenUnit::RandomGreaterThanOrEqualTo<T>(maxTValue - 3);
+         randomValuesReturned.emplace(randomT);
+      }
+      //
+      const set<T> expectedRandomValuesReturned =
+      {
+         maxTValue - 3,
+         maxTValue - 2,
+         maxTValue - 1,
+         maxTValue
+      };
+      SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
+   }
+
+   RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, short)
+   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, int)
+   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, long long)
+   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, unsigned long long)
+
+
+   template<typename T>
+   TEMPLATE_TESTS(RandomGreaterThanTests, T)
+   AFACT(RandomGreaterThan_ReturnsARandomValueBetweenExclusiveLowerBoundPlus1AndTMaxValue)
+   EVIDENCE
+
+   TEST(RandomGreaterThan_ReturnsARandomValueBetweenExclusiveLowerBoundPlus1AndTMaxValue)
+   {
+      set<T> randomValuesReturned;
+      //
+      const T maxTValue = std::numeric_limits<T>::max();
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const T randomT = ZenUnit::RandomGreaterThan<T>(maxTValue - 3);
          randomValuesReturned.emplace(randomT);
       }
       //
@@ -510,8 +574,8 @@ namespace ZenUnit
       SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
    }
 
-   RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, short)
-   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, int)
-   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, long long)
-   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, unsigned long long)
+   RUN_TEMPLATE_TESTS(RandomGreaterThanTests, short)
+   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanTests, int)
+   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanTests, long long)
+   THEN_RUN_TEMPLATE_TESTS(RandomGreaterThanTests, unsigned long long)
 }

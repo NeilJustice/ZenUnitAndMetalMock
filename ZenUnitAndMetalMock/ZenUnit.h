@@ -2969,7 +2969,12 @@ namespace ZenUnit
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-
+      const std::string actualValueAsString = ToStringer::ToString(actualValue);
+      const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
+      const Anomaly anomaly("IS_LT", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+         actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
+         filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
@@ -2993,7 +2998,12 @@ namespace ZenUnit
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-
+      const std::string actualValueAsString = ToStringer::ToString(actualValue);
+      const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
+      const Anomaly anomaly("IS_LTE", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+         actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
+         filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
@@ -3017,7 +3027,12 @@ namespace ZenUnit
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-
+      const std::string actualValueAsString = ToStringer::ToString(actualValue);
+      const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
+      const Anomaly anomaly("IS_GTE", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+         actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
+         filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
@@ -3041,7 +3056,12 @@ namespace ZenUnit
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-
+      const std::string actualValueAsString = ToStringer::ToString(actualValue);
+      const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
+      const Anomaly anomaly("IS_GT", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+         actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
+         filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
@@ -7394,13 +7414,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
+   T RandomLessThan(T exclusiveUpperBound)
    {
       static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      constexpr T maxTValue = std::numeric_limits<T>::max();
-      std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
-      const T randomIntegerGreaterThanOrEqualToInclusiveLowerBound = uniformTDistribution(defaultRandomEngine);
-      return randomIntegerGreaterThanOrEqualToInclusiveLowerBound;
+      constexpr T minTValue = std::numeric_limits<T>::min();
+      std::uniform_int_distribution<T> uniformTDistribution(minTValue, exclusiveUpperBound - T{1});
+      const T randomIntegerLessThanExclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
+      return randomIntegerLessThanExclusiveUpperBound;
    }
 
    template<typename T>
@@ -7411,6 +7431,26 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
       const T randomIntegerLessThanOrEqualToInclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
       return randomIntegerLessThanOrEqualToInclusiveUpperBound;
+   }
+
+   template<typename T>
+   T RandomGreaterThan(T exclusiveLowerBound)
+   {
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      std::uniform_int_distribution<T> uniformTDistribution(exclusiveLowerBound + T{ 1 }, maxTValue);
+      const T randomIntegerGreaterThanExclusiveLowerBound = uniformTDistribution(defaultRandomEngine);
+      return randomIntegerGreaterThanExclusiveLowerBound;
+   }
+
+   template<typename T>
+   T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
+   {
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
+      const T randomIntegerGreaterThanOrEqualToInclusiveLowerBound = uniformTDistribution(defaultRandomEngine);
+      return randomIntegerGreaterThanOrEqualToInclusiveLowerBound;
    }
 
    template<typename T>
