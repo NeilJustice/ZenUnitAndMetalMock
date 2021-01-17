@@ -3,7 +3,7 @@
 namespace ZenUnit
 {
    template<typename EnumUnderlyingType>
-   TEMPLATE_TESTS(ENUMS_ARE_EQUALTests, EnumUnderlyingType)
+   TEMPLATE_TESTS(ENUM_EQUALS_INTTests, EnumUnderlyingType)
    AFACT(EnumClassEqualsInteger_DoesNotThrowException)
    AFACT(EnumClassDoesNotEqualInteger_ThrowsAnomaly)
    AFACT(EnumClassDoesNotEqualInteger_ThrowsAnomaly__MessagesTestCase)
@@ -22,24 +22,24 @@ namespace ZenUnit
 
    TEST(EnumClassEqualsInteger_DoesNotThrowException)
    {
-      ENUMS_ARE_EQUAL(0, EnumClass::Zero);
-      ENUMS_ARE_EQUAL(1, EnumClass::One);
-      ENUMS_ARE_EQUAL(2, EnumClass::Two);
-      ENUMS_ARE_EQUAL(3, EnumClass::Three);
+      ENUM_EQUALS_INT(0, EnumClass::Zero);
+      ENUM_EQUALS_INT(1, EnumClass::One);
+      ENUM_EQUALS_INT(2, EnumClass::Two);
+      ENUM_EQUALS_INT(3, EnumClass::Three);
    }
 
    TEST(EnumClassDoesNotEqualInteger_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(ENUMS_ARE_EQUAL(1, EnumClass::Zero),
+      THROWS_EXCEPTION(ENUM_EQUALS_INT(1, EnumClass::Zero),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ENUMS_ARE_EQUAL(1, EnumClass::Zero)",
+"  Failed: ENUM_EQUALS_INT(1, EnumClass::Zero)",
 "Expected: 1",
 "  Actual: 0",
 "File.cpp(1)"));
 
-      THROWS_EXCEPTION(ENUMS_ARE_EQUAL(3, EnumClass::One),
+      THROWS_EXCEPTION(ENUM_EQUALS_INT(3, EnumClass::One),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ENUMS_ARE_EQUAL(3, EnumClass::One)",
+"  Failed: ENUM_EQUALS_INT(3, EnumClass::One)",
 "Expected: 3",
 "  Actual: 1",
 "File.cpp(1)"));
@@ -49,9 +49,9 @@ namespace ZenUnit
    {
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS_EXCEPTION(ENUMS_ARE_EQUAL(0, EnumClass::Three, messageA, messageB),
+      THROWS_EXCEPTION(ENUM_EQUALS_INT(0, EnumClass::Three, messageA, messageB),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ENUMS_ARE_EQUAL(0, EnumClass::Three, messageA, messageB)",
+"  Failed: ENUM_EQUALS_INT(0, EnumClass::Three, messageA, messageB)",
 "Expected: 0",
 "  Actual: 3",
 " Message: \"" + messageA + "\", \"" + messageB + "\"",
@@ -68,24 +68,24 @@ namespace ZenUnit
 
    TEST(ClassicEnumEqualsInteger_DoesNotThrowException)
    {
-      ENUMS_ARE_EQUAL(0, ClassicEnum::Zero);
-      ENUMS_ARE_EQUAL(1, ClassicEnum::One);
-      ENUMS_ARE_EQUAL(2, ClassicEnum::Two);
-      ENUMS_ARE_EQUAL(3, ClassicEnum::Three);
+      ENUM_EQUALS_INT(0, ClassicEnum::Zero);
+      ENUM_EQUALS_INT(1, ClassicEnum::One);
+      ENUM_EQUALS_INT(2, ClassicEnum::Two);
+      ENUM_EQUALS_INT(3, ClassicEnum::Three);
    }
 
    TEST(ClassicEnumDoesNotEqualInteger_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(ENUMS_ARE_EQUAL(1, ClassicEnum::Zero),
+      THROWS_EXCEPTION(ENUM_EQUALS_INT(1, ClassicEnum::Zero),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ENUMS_ARE_EQUAL(1, ClassicEnum::Zero)",
+"  Failed: ENUM_EQUALS_INT(1, ClassicEnum::Zero)",
 "Expected: 1",
 "  Actual: 0",
 "File.cpp(1)"));
 
-      THROWS_EXCEPTION(ENUMS_ARE_EQUAL(3, ClassicEnum::One),
+      THROWS_EXCEPTION(ENUM_EQUALS_INT(3, ClassicEnum::One),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ENUMS_ARE_EQUAL(3, ClassicEnum::One)",
+"  Failed: ENUM_EQUALS_INT(3, ClassicEnum::One)",
 "Expected: 3",
 "  Actual: 1",
 "File.cpp(1)"));
@@ -95,19 +95,19 @@ namespace ZenUnit
    {
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS_EXCEPTION(ENUMS_ARE_EQUAL(0, ClassicEnum::Three, messageA, messageB),
+      THROWS_EXCEPTION(ENUM_EQUALS_INT(0, ClassicEnum::Three, messageA, messageB),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ENUMS_ARE_EQUAL(0, ClassicEnum::Three, messageA, messageB)",
+"  Failed: ENUM_EQUALS_INT(0, ClassicEnum::Three, messageA, messageB)",
 "Expected: 0",
 "  Actual: 3",
 " Message: \"" + messageA + "\", \"" + messageB + "\"",
 "File.cpp(1)"));
    }
 
-   RUN_TEMPLATE_TESTS(ENUMS_ARE_EQUALTests, char)
-   THEN_RUN_TEMPLATE_TESTS(ENUMS_ARE_EQUALTests, unsigned char)
-   THEN_RUN_TEMPLATE_TESTS(ENUMS_ARE_EQUALTests, int)
-   THEN_RUN_TEMPLATE_TESTS(ENUMS_ARE_EQUALTests, unsigned)
-   THEN_RUN_TEMPLATE_TESTS(ENUMS_ARE_EQUALTests, long long)
-   THEN_RUN_TEMPLATE_TESTS(ENUMS_ARE_EQUALTests, unsigned long long)
+   RUN_TEMPLATE_TESTS(ENUM_EQUALS_INTTests, char)
+   THEN_RUN_TEMPLATE_TESTS(ENUM_EQUALS_INTTests, unsigned char)
+   THEN_RUN_TEMPLATE_TESTS(ENUM_EQUALS_INTTests, int)
+   THEN_RUN_TEMPLATE_TESTS(ENUM_EQUALS_INTTests, unsigned)
+   THEN_RUN_TEMPLATE_TESTS(ENUM_EQUALS_INTTests, long long)
+   THEN_RUN_TEMPLATE_TESTS(ENUM_EQUALS_INTTests, unsigned long long)
 }

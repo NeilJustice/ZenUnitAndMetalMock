@@ -168,8 +168,8 @@ Example ZenUnit command line arguments:
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that
-#define ENUMS_ARE_EQUAL(expectedInteger, actualEnumClass, ...) \
-   ZenUnit::ENUMS_ARE_EQUAL_Defined(expectedInteger, #expectedInteger, actualEnumClass, #actualEnumClass, \
+#define ENUM_EQUALS_INT(expectedInteger, actualEnumClass, ...) \
+   ZenUnit::ENUM_EQUALS_INT_Defined(expectedInteger, #expectedInteger, actualEnumClass, #actualEnumClass, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // First asserts ARE_NOT_SAME(expectedObject, actualObject) then asserts ARE_EQUAL(expectedObject, actualObject).
@@ -2548,20 +2548,20 @@ namespace ZenUnit
    }
 
    template<typename EnumType, typename... MessageTypes>
-   NOINLINE void ENUMS_ARE_EQUAL_ThrowAnomaly(
+   NOINLINE void ENUM_EQUALS_INT_ThrowAnomaly(
       typename std::underlying_type<EnumType>::type expectedInteger, const char* expectedIntegerText,
       EnumType actualEnumClass, const char* actualEnumClassText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedInteger = std::to_string(expectedInteger);
       const std::string toStringedActualEnumClass = std::to_string(static_cast<typename std::underlying_type<EnumType>::type>(actualEnumClass));
-      const Anomaly anomaly("ENUMS_ARE_EQUAL", expectedIntegerText, actualEnumClassText, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("ENUM_EQUALS_INT", expectedIntegerText, actualEnumClassText, "", messagesText, Anomaly::Default(),
          toStringedExpectedInteger, toStringedActualEnumClass, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
 
    template<typename EnumType, typename... MessageTypes>
-   void ENUMS_ARE_EQUAL_Defined(
+   void ENUM_EQUALS_INT_Defined(
       typename std::underlying_type<EnumType>::type expectedInteger, const char* expectedIntegerText,
       EnumType actualEnumClass, const char* actualEnumClassText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
@@ -2570,7 +2570,7 @@ namespace ZenUnit
          static_cast<typename std::underlying_type<EnumType>::type>(actualEnumClass);
       if (actualEnumClassAsUnderlyingType != expectedInteger)
       {
-         ENUMS_ARE_EQUAL_ThrowAnomaly(expectedInteger, expectedIntegerText, actualEnumClass, actualEnumClassText,
+         ENUM_EQUALS_INT_ThrowAnomaly(expectedInteger, expectedIntegerText, actualEnumClass, actualEnumClassText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
