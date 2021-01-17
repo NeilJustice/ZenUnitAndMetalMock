@@ -376,6 +376,10 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |`ARE_NOT_EQUAL(notExpectedValue, actualValue, messages...)`|By default, asserts that `!(expectedValue == actualValue)` returns true, otherwise throws a `ZenUnit::Anomaly`.|
 |`ENUM_EQUALS_INT(expectedInteger, actualEnumClass)`|Asserts that `static_cast<typename std::underlying_type<T>::type>(actualEnumClass) == expectedInteger`.|
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
+|`IS_LT(actualValue, comparisonValue, messages...)`|Asserts that `actualValue < comparisonValue`.|
+|`IS_LTE(actualValue, comparisonValue, messages...)`|Asserts that `actualValue <= comparisonValue`.|
+|`IS_GTE(actualValue, comparisonValue, messages...)`|Asserts that `actualValue >= comparisonValue`.|
+|`IS_GT(actualValue, comparisonValue, messages...)`|Asserts that `actualValue > comparisonValue`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
 |`IS_ZERO(value, messages...)`|Asserts that `value == 0` is true.|

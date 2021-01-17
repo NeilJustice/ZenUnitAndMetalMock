@@ -167,19 +167,14 @@ Example ZenUnit command line arguments:
    ZenUnit::ARE_NOT_EQUAL_Defined(notExpectedValue, #notExpectedValue, actualValue, #actualValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that
-#define ENUM_EQUALS_INT(expectedInteger, actualEnumClass, ...) \
-   ZenUnit::ENUM_EQUALS_INT_Defined(expectedInteger, #expectedInteger, actualEnumClass, #actualEnumClass, \
-      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
-
 // First asserts ARE_NOT_SAME(expectedObject, actualObject) then asserts ARE_EQUAL(expectedObject, actualObject).
 #define ARE_COPIES(expectedObject, actualObject, ...) \
    ZenUnit::ARE_COPIES_Defined(expectedObject, #expectedObject, actualObject, #actualObject, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value when converted to a bool is true.
-#define IS_TRUE(value, ...) \
-   ZenUnit::IS_TRUE_Defined(value, #value, \
+// Asserts that
+#define ENUM_EQUALS_INT(expectedInteger, actualEnumClass, ...) \
+   ZenUnit::ENUM_EQUALS_INT_Defined(expectedInteger, #expectedInteger, actualEnumClass, #actualEnumClass, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that value when converted to a bool is false.
@@ -187,9 +182,29 @@ Example ZenUnit command line arguments:
    ZenUnit::IS_FALSE_Defined(value, #value, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that value == 0 is true.
-#define IS_ZERO(value, ...) \
-   ZenUnit::IS_ZERO_Defined(value, #value, \
+// Asserts that value when converted to a bool is true.
+#define IS_TRUE(value, ...) \
+   ZenUnit::IS_TRUE_Defined(value, #value, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts actualValue < comparisonValue.
+#define IS_LT(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_LT_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts actualValue <= comparisonValue.
+#define IS_LTE(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_LTE_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts actualValue >= comparisonValue.
+#define IS_GTE(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_GTE_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts actualValue > comparisonValue.
+#define IS_GT(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_GT_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that str.empty() is true.
@@ -210,6 +225,11 @@ Example ZenUnit command line arguments:
 // Asserts that ZenUnit::Equalizer<T>::AssertEqual(T{}, value) throws a ZenUnit::Anomaly exception.
 #define IS_NOT_DEFAULT_VALUE(value, ...) \
    ZenUnit::IS_NOT_DEFAULT_VALUE_Defined(value, #value, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts that value == 0 is true.
+#define IS_ZERO(value, ...) \
+   ZenUnit::IS_ZERO_Defined(value, #value, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 //
@@ -2940,6 +2960,102 @@ namespace ZenUnit
       if (value)
       {
          IS_FALSE_ThrowAnomaly(valueText, filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename T, typename... MessageTypes>
+   NOINLINE void IS_LT_ThrowAnomaly(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+
+   }
+
+   template<typename T, typename... MessageTypes>
+   void IS_LT_Defined(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const bool actualValueIsLessThanComparisonValue = actualValue < comparisonValue;
+      if (!actualValueIsLessThanComparisonValue)
+      {
+         IS_LT_ThrowAnomaly(
+            actualValue, actualValueText, comparisonValue, comparisonValueText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename T, typename... MessageTypes>
+   NOINLINE void IS_LTE_ThrowAnomaly(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+
+   }
+
+   template<typename T, typename... MessageTypes>
+   void IS_LTE_Defined(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const bool actualValueIsLessThanOrEqualToComparisonValue = actualValue <= comparisonValue;
+      if (!actualValueIsLessThanOrEqualToComparisonValue)
+      {
+         IS_LTE_ThrowAnomaly(
+            actualValue, actualValueText, comparisonValue, comparisonValueText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename T, typename... MessageTypes>
+   NOINLINE void IS_GTE_ThrowAnomaly(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+
+   }
+
+   template<typename T, typename... MessageTypes>
+   void IS_GTE_Defined(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const bool actualValueIsGreaterThanOrEqualToComparisonValue = actualValue >= comparisonValue;
+      if (!actualValueIsGreaterThanOrEqualToComparisonValue)
+      {
+         IS_GTE_ThrowAnomaly(
+            actualValue, actualValueText, comparisonValue, comparisonValueText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename T, typename... MessageTypes>
+   NOINLINE void IS_GT_ThrowAnomaly(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+
+   }
+
+   template<typename T, typename... MessageTypes>
+   void IS_GT_Defined(
+      const T& actualValue, const char* actualValueText,
+      const T& comparisonValue, const char* comparisonValueText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const bool actualValueIsGreaterThanComparisonValue = actualValue > comparisonValue;
+      if (!actualValueIsGreaterThanComparisonValue)
+      {
+         IS_GT_ThrowAnomaly(
+            actualValue, actualValueText, comparisonValue, comparisonValueText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
