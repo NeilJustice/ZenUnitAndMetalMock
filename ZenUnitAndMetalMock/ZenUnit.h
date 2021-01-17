@@ -197,14 +197,14 @@ Example ZenUnit command line arguments:
    ZenUnit::IS_LTE_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts actualValue >= comparisonValue.
-#define IS_GTE(actualValue, comparisonValue, ...) \
-   ZenUnit::IS_GTE_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
-      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
-
 // Asserts actualValue > comparisonValue.
 #define IS_GT(actualValue, comparisonValue, ...) \
    ZenUnit::IS_GT_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+// Asserts actualValue >= comparisonValue.
+#define IS_GTE(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_GTE_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that str.empty() is true.
