@@ -13,10 +13,6 @@ namespace ZenUnit
    AFACT(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
    AFACT(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
    AFACT(RandomNotEqualToValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
-   AFACT(Random1OrGreater_ReturnsRandomIntegerBetween1AndTMaxValue)
-   AFACT(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
-   AFACT(Random0OrLess_ReturnsRandomIntegerBetweenTMinValueAnd0)
-   AFACT(RandomNegative1OrLess_ReturnsRandomIntegerBetweenTMinValueAndNegative1)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
@@ -203,42 +199,6 @@ namespace ZenUnit
       const unsigned long long unsignedLongLong1 = ZenUnit::Random<unsigned long long>();
       const unsigned long long unsignedLongLong2 = ZenUnit::RandomNotEqualToValue<unsigned long long>(unsignedLongLong1);
       ARE_NOT_EQUAL(unsignedLongLong1, unsignedLongLong2);
-   }
-
-   TEST(Random1OrGreater_ReturnsRandomIntegerBetween1AndTMaxValue)
-   {
-      const int randomIntBetween1AndMaxValue = Random1OrGreater<int>();
-      IS_TRUE(randomIntBetween1AndMaxValue >= 1);
-
-      const long long randomLongLongBetween1AndMaxValue = Random1OrGreater<long long>();
-      IS_TRUE(randomLongLongBetween1AndMaxValue >= 0);
-   }
-
-   TEST(Random0OrGreater_ReturnsRandomIntegerBetween0AndTMaxValue)
-   {
-      const int randomIntBetween0AndMaxValue = Random0OrGreater<int>();
-      IS_TRUE(randomIntBetween0AndMaxValue >= 0);
-
-      const long long randomLongLongBetween0AndMaxValue = Random0OrGreater<long long>();
-      IS_TRUE(randomLongLongBetween0AndMaxValue >= 0);
-   }
-
-   TEST(Random0OrLess_ReturnsRandomIntegerBetweenTMinValueAnd0)
-   {
-      const int randomIntBetweenMinValueAnd0 = Random0OrLess<int>();
-      IS_TRUE(randomIntBetweenMinValueAnd0 <= 0);
-
-      const long long randomLongLongBetweenMinValueAnd0 = Random0OrLess<long long>();
-      IS_TRUE(randomLongLongBetweenMinValueAnd0 <= 0);
-   }
-
-   TEST(RandomNegative1OrLess_ReturnsRandomIntegerBetweenTMinValueAndNegative1)
-   {
-      const int randomIntBetweenMinValueAndNegative1 = RandomNegative1OrLess<int>();
-      IS_TRUE(randomIntBetweenMinValueAndNegative1 <= -1);
-
-      const long long randomLongLongBetweenMinValueAndNegative1 = RandomNegative1OrLess<long long>();
-      IS_TRUE(randomLongLongBetweenMinValueAndNegative1 <= -1);
    }
 
    TEST(Random_Float_ReturnsRandomFloat)
