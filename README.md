@@ -1269,6 +1269,7 @@ cmake --build . --target install
 |----------------------|------------------------|---------------------|
 |`TUPLES_ARE_EQUAL`|January 2021|Implemented|
 |Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|January 2021|In progress|
+|ctest support|February 2021|Awaiting implementation|
 |GitHub Actions build|February 2021|Awaiting implementation|
 |SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|February 2021|Awaiting implementation|
 |SonarCloud Badge|February 2021|Awaiting implementation|
