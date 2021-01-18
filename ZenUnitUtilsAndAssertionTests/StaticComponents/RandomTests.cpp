@@ -124,23 +124,8 @@ namespace ZenUnit
 
    TEST(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
    {
-      set<unsigned char> randomNonZeroUnsignedChars;
-      //
-      for (size_t i = 0; i < 5000; ++i)
-      {
-         const unsigned char randomNonZeroUnsignedChar = RandomNon0<unsigned char>();
-         randomNonZeroUnsignedChars.insert(randomNonZeroUnsignedChar);
-      }
-      //
-      vector<unsigned char> expectedNonZeroUnsignedCharsAsVector(255);
-      iota(expectedNonZeroUnsignedCharsAsVector.begin(), expectedNonZeroUnsignedCharsAsVector.end(), static_cast<unsigned char>(1));
-      ARE_EQUAL(1, expectedNonZeroUnsignedCharsAsVector[0]);
-      ARE_EQUAL(numeric_limits<unsigned char>::max(), expectedNonZeroUnsignedCharsAsVector.back());
-      const set<unsigned char> expectedRandomNon0CharsAsUnorderedSet(
-         expectedNonZeroUnsignedCharsAsVector.begin(), expectedNonZeroUnsignedCharsAsVector.end());
-      SETS_ARE_EQUAL(expectedRandomNon0CharsAsUnorderedSet, randomNonZeroUnsignedChars);
-
       ARE_NOT_EQUAL(0, RandomNon0<char>());
+      ARE_NOT_EQUAL(0, RandomNon0<unsigned char>());
       ARE_NOT_EQUAL(0, RandomNon0<short>());
       ARE_NOT_EQUAL(0, RandomNon0<unsigned short>());
       ARE_NOT_EQUAL(0, RandomNon0<int>());
@@ -151,30 +136,13 @@ namespace ZenUnit
 
    TEST(RandomNotEqualToValue_ReturnsRandomValueBetweenMinAndMaxForTypeTExceptForTheExceptValue)
    {
-      set<unsigned char> randomNonZeroUnsignedChars;
-      //
-      const unsigned char exceptValue = Random<unsigned char>();
-      for (size_t i = 0; i < 5000; ++i)
-      {
-         const unsigned char randomNonZeroUnsignedChar = RandomNotEqualToValue<unsigned char>(exceptValue);
-         randomNonZeroUnsignedChars.insert(randomNonZeroUnsignedChar);
-      }
-      //
-      vector<unsigned char> expectedUnsignedCharsExceptForExceptValueAsVector(256);
-      std::iota(expectedUnsignedCharsExceptForExceptValueAsVector.begin(),
-         expectedUnsignedCharsExceptForExceptValueAsVector.end(),
-         static_cast<unsigned char>(0));
-      expectedUnsignedCharsExceptForExceptValueAsVector.erase(std::find(
-         expectedUnsignedCharsExceptForExceptValueAsVector.begin(),
-         expectedUnsignedCharsExceptForExceptValueAsVector.end(), exceptValue));
-      const set<unsigned char> expectedUnsignedCharsExceptForExceptValueAsUnorderedSet(
-         expectedUnsignedCharsExceptForExceptValueAsVector.begin(), expectedUnsignedCharsExceptForExceptValueAsVector.end());
-      SETS_ARE_EQUAL(expectedUnsignedCharsExceptForExceptValueAsUnorderedSet, randomNonZeroUnsignedChars);
-
-
       const char char1 = ZenUnit::Random<char>();
       const char char2 = ZenUnit::RandomNotEqualToValue<char>(char1);
       ARE_NOT_EQUAL(char1, char2);
+
+      const unsigned char unsignedChar1 = ZenUnit::Random<unsigned char>();
+      const unsigned char unsignedChar2 = ZenUnit::RandomNotEqualToValue<unsigned char>(unsignedChar1);
+      ARE_NOT_EQUAL(unsignedChar1, unsignedChar2);
 
       const short short1 = ZenUnit::Random<short>();
       const short short2 = ZenUnit::RandomNotEqualToValue<short>(short1);

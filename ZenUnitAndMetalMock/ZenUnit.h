@@ -7406,25 +7406,28 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomBetween(long long inclusiveLowerBound, long long inclusiveUpperBound)
    {
+      std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
+      if (inclusiveLowerBound == inclusiveUpperBound)
+      {
+         return static_cast<T>(inclusiveLowerBound);
+      }
+      std::uniform_int_distribution<int> uniformIntDistribution(1, 5);
       static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      std::uniform_int_distribution<int> uniformIntDistribution(1, 6);
-      const int intBetween1And6 = uniformIntDistribution(defaultRandomEngine);
-      switch (intBetween1And6)
+      const int equivalenceClass1Through5 = uniformIntDistribution(defaultRandomEngine);
+      switch (equivalenceClass1Through5)
       {
       case 1: return static_cast<T>(inclusiveLowerBound);
       case 2: return static_cast<T>(inclusiveLowerBound + 1LL);
       case 3:
-      case 4:
       {
-         std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
          const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound =
             uniformLongLongDistribution(defaultRandomEngine);
          const T randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT =
             static_cast<T>(randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound);
          return randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT;
       }
-      case 5: return static_cast<T>(inclusiveUpperBound - 1LL);
-      case 6:
+      case 4: return static_cast<T>(inclusiveUpperBound - 1LL);
+      case 5:
       default: return static_cast<T>(inclusiveUpperBound);
       }
    }
@@ -7432,15 +7435,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomLessThan(T exclusiveUpperBound)
    {
-      const int equivalenceClass0Or1 = RandomBetween<int>(0, 1);
-      switch (equivalenceClass0Or1)
+      constexpr T minTValue = std::numeric_limits<T>::min();
+      ZENUNIT_ASSERT(exclusiveUpperBound != minTValue);
+      const int equivalenceClass1Or2 = RandomBetween<int>(1, 2);
+      switch (equivalenceClass1Or2)
       {
-      case 0: return exclusiveUpperBound - T{1};
-      case 1:
+      case 1: return exclusiveUpperBound - T{1};
+      case 2:
       default:
       {
          static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-         constexpr T minTValue = std::numeric_limits<T>::min();
          const T inclusiveUpperBound = exclusiveUpperBound - T{1};
          std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
          const T randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1 = uniformTDistribution(defaultRandomEngine);
@@ -7452,12 +7456,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomLessThanOrEqualTo(T inclusiveUpperBound)
    {
-      const int equivalenceClass0Or1Or2 = RandomBetween<int>(0, 2);
-      switch (equivalenceClass0Or1Or2)
+      const int equivalenceClass1Or2Or3 = RandomBetween<int>(1, 3);
+      switch (equivalenceClass1Or2Or3)
       {
-      case 0: return inclusiveUpperBound;
-      case 1: return inclusiveUpperBound - T{1};
-      case 2:
+      case 1: return inclusiveUpperBound;
+      case 2: return inclusiveUpperBound - T{1};
+      case 3:
       default:
       {
          static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
@@ -7474,11 +7478,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       constexpr T maxTValue = std::numeric_limits<T>::max();
       ZENUNIT_ASSERT(exclusiveLowerBound != maxTValue);
-      const int equivalenceClass0Or1 = RandomBetween<int>(0, 1);
-      switch (equivalenceClass0Or1)
+      const int equivalenceClass1Or2 = RandomBetween<int>(1, 2);
+      switch (equivalenceClass1Or2)
       {
-      case 0: return exclusiveLowerBound + T{1};
-      case 1:
+      case 1: return exclusiveLowerBound + T{1};
+      case 2:
       default:
       {
          static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
@@ -7493,12 +7497,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
    {
-      const int equivalenceClass0Or1Or2 = RandomBetween<int>(0, 2);
-      switch (equivalenceClass0Or1Or2)
+      const int equivalenceClass1Or2Or3 = RandomBetween<int>(1, 3);
+      switch (equivalenceClass1Or2Or3)
       {
-      case 0: return inclusiveLowerBound;
-      case 1: return inclusiveLowerBound + T{1};
-      case 2:
+      case 1: return inclusiveLowerBound;
+      case 2: return inclusiveLowerBound + T{1};
+      case 3:
       default:
       {
          static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);

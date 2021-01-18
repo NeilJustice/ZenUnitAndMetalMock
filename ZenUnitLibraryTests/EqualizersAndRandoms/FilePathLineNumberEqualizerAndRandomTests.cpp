@@ -13,7 +13,7 @@ namespace ZenUnit
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(FilePathLineNumber);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FilePathLineNumber, filePath, ZenUnit::Random<const char*>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FilePathLineNumber, lineNumber, ZenUnit::Random<unsigned>());
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(FilePathLineNumber, lineNumber, ZenUnit::RandomNon0<unsigned>());
    }
 
    TEST(TestableRandomFilePathLineNumber_ReturnsFilePathLineNumberWithAllRandomFields)
