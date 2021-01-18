@@ -5278,7 +5278,7 @@ namespace ZenUnit
       {
          if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
-            return 0u;
+            return 0LL;
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_high_resolution_clock_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
@@ -5302,9 +5302,9 @@ namespace ZenUnit
          const long long elapsedSeconds = elapsedMilliseconds / 1000;
 
          const size_t numberOfLeadingMillisecondZeros =
-            elapsedMillisecondsMod1000 < 10 ? 2ull : // 3 -> 0.003
-            elapsedMillisecondsMod1000 < 100 ? 1ull : // 33 -> 0.033
-            0ull; // 333 -> 0.333
+            elapsedMillisecondsMod1000 < 10 ? 2ULL : // 3 -> 0.003
+            elapsedMillisecondsMod1000 < 100 ? 1ULL : // 33 -> 0.033
+            0ULL; // 333 -> 0.333
 
          // Example leadingZeros: "00"
          const std::string leadingZeros(numberOfLeadingMillisecondZeros, '0');
@@ -7407,50 +7407,107 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    T RandomBetween(long long inclusiveLowerBound, long long inclusiveUpperBound)
    {
       static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      std::uniform_int_distribution<long long> uniformIntDistribution(inclusiveLowerBound, inclusiveUpperBound);
-      const long long randomIntegerBetweenInclusiveAndExclusiveAsLongLong = uniformIntDistribution(defaultRandomEngine);
-      const T randomIntegerBetweenInclusiveAndExclusiveAsT = static_cast<T>(randomIntegerBetweenInclusiveAndExclusiveAsLongLong);
-      return randomIntegerBetweenInclusiveAndExclusiveAsT;
+      std::uniform_int_distribution<int> uniformIntDistribution(1, 6);
+      const int intBetween1And6 = uniformIntDistribution(defaultRandomEngine);
+      switch (intBetween1And6)
+      {
+      case 1: return static_cast<T>(inclusiveLowerBound);
+      case 2: return static_cast<T>(inclusiveLowerBound + 1LL);
+      case 3:
+      case 4:
+      {
+         std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
+         const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound =
+            uniformLongLongDistribution(defaultRandomEngine);
+         const T randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT =
+            static_cast<T>(randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound);
+         return randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT;
+      }
+      case 5: return static_cast<T>(inclusiveUpperBound - 1LL);
+      case 6:
+      default: return static_cast<T>(inclusiveUpperBound);
+      }
    }
 
    template<typename T>
    T RandomLessThan(T exclusiveUpperBound)
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      constexpr T minTValue = std::numeric_limits<T>::min();
-      std::uniform_int_distribution<T> uniformTDistribution(minTValue, exclusiveUpperBound - T{1});
-      const T randomIntegerLessThanExclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
-      return randomIntegerLessThanExclusiveUpperBound;
+      const int equivalenceClass0Or1 = RandomBetween<int>(0, 1);
+      switch (equivalenceClass0Or1)
+      {
+      case 0: return exclusiveUpperBound - T{1};
+      case 1:
+      default:
+      {
+         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
+         constexpr T minTValue = std::numeric_limits<T>::min();
+         const T inclusiveUpperBound = exclusiveUpperBound - T{1};
+         std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
+         const T randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1 = uniformTDistribution(defaultRandomEngine);
+         return randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1;
+      }
+      }
    }
 
    template<typename T>
    T RandomLessThanOrEqualTo(T inclusiveUpperBound)
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      constexpr T minTValue = std::numeric_limits<T>::min();
-      std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
-      const T randomIntegerLessThanOrEqualToInclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
-      return randomIntegerLessThanOrEqualToInclusiveUpperBound;
+      const int equivalenceClass0Or1Or2 = RandomBetween<int>(0, 2);
+      switch (equivalenceClass0Or1Or2)
+      {
+      case 0: return inclusiveUpperBound;
+      case 1: return inclusiveUpperBound - T{1};
+      case 2:
+      default:
+      {
+         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
+         constexpr T minTValue = std::numeric_limits<T>::min();
+         std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
+         const T randomIntegerBetweenMinValueAndInclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
+         return randomIntegerBetweenMinValueAndInclusiveUpperBound;
+      }
+      }
    }
 
    template<typename T>
    T RandomGreaterThan(T exclusiveLowerBound)
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr T maxTValue = std::numeric_limits<T>::max();
-      std::uniform_int_distribution<T> uniformTDistribution(exclusiveLowerBound + T{1}, maxTValue);
-      const T randomIntegerGreaterThanExclusiveLowerBound = uniformTDistribution(defaultRandomEngine);
-      return randomIntegerGreaterThanExclusiveLowerBound;
+      ZENUNIT_ASSERT(exclusiveLowerBound != maxTValue);
+      const int equivalenceClass0Or1 = RandomBetween<int>(0, 1);
+      switch (equivalenceClass0Or1)
+      {
+      case 0: return exclusiveLowerBound + T{1};
+      case 1:
+      default:
+      {
+         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
+         const T inclusiveLowerBound = exclusiveLowerBound + T{1};
+         std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
+         const T randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue = uniformTDistribution(defaultRandomEngine);
+         return randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue;
+      }
+      }
    }
 
    template<typename T>
    T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      constexpr T maxTValue = std::numeric_limits<T>::max();
-      std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
-      const T randomIntegerGreaterThanOrEqualToInclusiveLowerBound = uniformTDistribution(defaultRandomEngine);
-      return randomIntegerGreaterThanOrEqualToInclusiveLowerBound;
+      const int equivalenceClass0Or1Or2 = RandomBetween<int>(0, 2);
+      switch (equivalenceClass0Or1Or2)
+      {
+      case 0: return inclusiveLowerBound;
+      case 1: return inclusiveLowerBound + T{1};
+      case 2:
+      default:
+      {
+         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
+         constexpr T maxTValue = std::numeric_limits<T>::max();
+         std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
+         const T randomIntegerBetweenInclusiveLowerBoundAndMaxValue = uniformTDistribution(defaultRandomEngine);
+         return randomIntegerBetweenInclusiveLowerBoundAndMaxValue;
+      }
+      }
    }
 
    template<typename T>
@@ -7458,7 +7515,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       static_assert(!std::is_same_v<T, std::string>);
       T randomInteger = Random<T>();
-      static const T zeroValue = T{0};
+      static const T zeroValue{0};
       while (randomInteger == zeroValue)
       {
          randomInteger = Random<T>();

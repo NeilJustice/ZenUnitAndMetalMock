@@ -45,8 +45,8 @@ namespace ZenUnit
    TEST(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
    {
       chrono::time_point<chrono::high_resolution_clock> startDateTime;
-      startDateTime += chrono::milliseconds(Random<unsigned>());
-      const unsigned randomMicrosecondDuration = Random<unsigned>();
+      startDateTime += chrono::milliseconds(RandomNon0<unsigned>());
+      const unsigned randomMicrosecondDuration = RandomNon0<unsigned>();
       const chrono::time_point<chrono::high_resolution_clock> stopTime = startDateTime + chrono::microseconds(randomMicrosecondDuration);
       nowMock.Return(stopTime);
       _stopwatch._startTime = startDateTime;

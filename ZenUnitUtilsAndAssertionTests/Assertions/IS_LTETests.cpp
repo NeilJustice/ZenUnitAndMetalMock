@@ -12,7 +12,7 @@ namespace ZenUnit
 
    TEST(IS_LTE_ValueIsLessThanComparisonValue_DoesNothing)
    {
-      const T comparisonValue = ZenUnit::Random<T>();
+      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       IS_LTE(value, comparisonValue);
    }
@@ -26,7 +26,7 @@ namespace ZenUnit
 
    TEST(IS_LTE_ValueIsGreaterThanComparisonValue_ThrowsAnomaly)
    {
-      const T comparisonValue = ZenUnit::Random<T>();
+      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
       const T value = ZenUnit::RandomGreaterThan<T>(comparisonValue);
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
 "  Failed: IS_LTE(value, comparisonValue)",
@@ -38,7 +38,7 @@ namespace ZenUnit
 
    TEST(IS_LTE_ValueIsGreaterThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    {
-      const T comparisonValue = ZenUnit::Random<T>();
+      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
       const T value = ZenUnit::RandomGreaterThan<T>(comparisonValue);
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();

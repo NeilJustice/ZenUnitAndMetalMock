@@ -19,14 +19,14 @@ namespace ZenUnit
 
    TEST(IS_GTE_ValueIsGreaterThanComparisonValue_DoesNothing)
    {
-      const T comparisonValue = ZenUnit::Random<T>();
+      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
       const T value = ZenUnit::RandomGreaterThan<T>(comparisonValue);
       IS_GTE(value, comparisonValue);
    }
 
    TEST(IS_GTE_ValueIsLessThanComparisonValue_ThrowsAnomaly)
    {
-      const T comparisonValue = ZenUnit::Random<T>();
+      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: IS_GTE(value, comparisonValue)",
@@ -38,7 +38,7 @@ namespace ZenUnit
 
    TEST(IS_GTE_ValueIsLessThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    {
-      const T comparisonValue = ZenUnit::Random<T>();
+      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();

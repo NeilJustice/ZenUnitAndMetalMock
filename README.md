@@ -372,14 +372,14 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 #### Value Assertions
 |Assertion|Behavior|
 |---------|--------|
-|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default, asserts that `expectedValue == actualValue` returns true, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test. `messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`. If `expectedValue` and `actualValue` are `const char*` or `const wchar_t*`, `ARE_EQUAL` determines equality by calling `strcmp` or `wcscmp`.|
-|`ARE_NOT_EQUAL(notExpectedValue, actualValue, messages...)`|By default, asserts that `!(expectedValue == actualValue)` returns true, otherwise throws a `ZenUnit::Anomaly`.|
-|`ENUM_EQUALS_INT(expectedInteger, actualEnumClass)`|Asserts that `static_cast<typename std::underlying_type<T>::type>(actualEnumClass) == expectedInteger`.|
-|`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
-|`IS_LT(actualValue, comparisonValue, messages...)`|Asserts that `actualValue < comparisonValue`.|
-|`IS_LTE(actualValue, comparisonValue, messages...)`|Asserts that `actualValue <= comparisonValue`.|
-|`IS_GTE(actualValue, comparisonValue, messages...)`|Asserts that `actualValue >= comparisonValue`.|
-|`IS_GT(actualValue, comparisonValue, messages...)`|Asserts that `actualValue > comparisonValue`.|
+|`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default asserts `expectedValue == actualValue`, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test.<br><br>`messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`.<br><br>If `expectedValue` and `actualValue` are `const char*` or `const wchar_t*`, `ARE_EQUAL` determines equality by calling `strcmp` or `wcscmp`.|
+|`ARE_NOT_EQUAL(notExpectedValue, actualValue, messages...)`|By default asserts `!(expectedValue == actualValue)`, otherwise throws a `ZenUnit::Anomaly`.|
+|`ENUM_EQUALS_INT(expectedInteger, actualEnumClass)`|Asserts `static_cast<typename std::underlying_type<T>::type>(actualEnumClass) == expectedInteger`.|
+|`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
+|`IS_LT(actualValue, comparisonValue, messages...)`|Asserts `actualValue < comparisonValue`.|
+|`IS_LTE(actualValue, comparisonValue, messages...)`|Asserts `actualValue <= comparisonValue`.|
+|`IS_GTE(actualValue, comparisonValue, messages...)`|Asserts `actualValue >= comparisonValue`.|
+|`IS_GT(actualValue, comparisonValue, messages...)`|Asserts `actualValue > comparisonValue`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
 |`IS_ZERO(value, messages...)`|Asserts that `value == 0` is true.|
@@ -391,12 +391,12 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 #### Pointer Assertions
 |Assertion|Behavior|
 |---------|--------|
-|`IS_NULLPTR(pointer, messages...)`|Asserts that `pointer == nullptr`.|
-|`IS_NOT_NULLPTR(pointer, messages...)`|Asserts that `pointer != nullptr`.|
-|`ARE_SAME(expectedObject, actualObject, messages...)`|Asserts that `&expectedObject == &actualObject`.|
-|`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|Asserts that `&expectedObject != &actualObject`.
-|`POINTEES_ARE_EQUAL(expectedPointer, actualPointer, messages...)`|Asserts that `expectedPointer != nullptr` and `actualPointer != nullptr` then asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
-|`POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, messages...)`|First statically asserts `static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>)`, then asserts `actualPointer != nullptr`, then asserts `typeid(expectedPolymorphicPointeeType) == typeid(*actualPointer)`. This is a useful assertion for confirming the correctness of factory functions that return a newed instance of a subclass as a base class pointer.|
+|`IS_NULLPTR(pointer, messages...)`|Asserts `pointer == nullptr`.|
+|`IS_NOT_NULLPTR(pointer, messages...)`|Asserts `pointer != nullptr`.|
+|`ARE_SAME(expectedObject, actualObject, messages...)`|Asserts `&expectedObject == &actualObject`.|
+|`ARE_NOT_SAME(notExpectedObject, actualObject, messages...)`|Asserts `&expectedObject != &actualObject`.
+|`POINTEES_ARE_EQUAL(expectedPointer, actualPointer, messages...)`|1. Asserts `expectedPointer != nullptr`.<br>2. Asserts `actualPointer != nullptr`.<br>3. Asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
+|`POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, messages...)`|1. Statically asserts `static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>)`.<br>2. Asserts `actualPointer != nullptr`.<br>3. Asserts `typeid(expectedPolymorphicPointeeType) == typeid(*actualPointer)`.<br>This is a useful assertion for confirming the correctness of factory functions that return `make_unique`/`make_shared` instances of subclasses as base class pointers.|
 
 #### Data Structure Assertions
 |Assertion|Behavior|
