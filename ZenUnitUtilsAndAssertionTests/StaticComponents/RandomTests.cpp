@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnitUtilsAndAssertionTests/Assertions/REGEX_MATCHES.h"
 #include <numeric> // std::iota
 
 namespace ZenUnit
@@ -16,11 +17,11 @@ namespace ZenUnit
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
-   AFACT(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
+   AFACT(Random_ConstWCharTPointer_CodeCoverage)
    AFACT(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
    AFACT(Random_String_ReturnsRandomString1Through10)
-   AFACT(Random_WideString_ReturnsRandomWideString1Through10)
+   AFACT(Random_WideString_CodeCoverage)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
    FACTS(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue)
@@ -189,46 +190,19 @@ namespace ZenUnit
          randomConstCharPointers.insert(randonConstCharPointer);
       }
       //
-      const set<const char*> expectedRandomConstCharPointers =
+      for (const char* randomConstCharPointer : randomConstCharPointers)
       {
-         "RandomConstCharPointer1",
-         "RandomConstCharPointer2",
-         "RandomConstCharPointer3",
-         "RandomConstCharPointer4",
-         "RandomConstCharPointer5",
-         "RandomConstCharPointer6",
-         "RandomConstCharPointer7",
-         "RandomConstCharPointer8",
-         "RandomConstCharPointer9",
-         "RandomConstCharPointer10"
-      };
-      SETS_ARE_EQUAL(expectedRandomConstCharPointers, randomConstCharPointers);
+         REGEX_MATCHES("RandomConstCharPointer\\d+", randomConstCharPointer);
+      }
    }
 
-   TEST(Random_ConstWCharTPointer_ReturnsRandomConstWCharTPointer1Through10)
+   TEST(Random_ConstWCharTPointer_CodeCoverage)
    {
-      set<const wchar_t*> randomWideConstCharPointers;
-      //
-      for (size_t i = 0; i < 300; ++i)
+      // 1000 iterations for code coverage of all ten branches
+      for (size_t i = 0; i < 1000; ++i)
       {
-         const wchar_t* const randomWideConstCharPointer = Random<const wchar_t*>();
-         randomWideConstCharPointers.insert(randomWideConstCharPointer);
+         Random<const wchar_t*>();
       }
-      //
-      const set<const wchar_t*> expectedRandomWideConstCharPointers =
-      {
-         L"RandomWideConstCharPointer1",
-         L"RandomWideConstCharPointer2",
-         L"RandomWideConstCharPointer3",
-         L"RandomWideConstCharPointer4",
-         L"RandomWideConstCharPointer5",
-         L"RandomWideConstCharPointer6",
-         L"RandomWideConstCharPointer7",
-         L"RandomWideConstCharPointer8",
-         L"RandomWideConstCharPointer9",
-         L"RandomWideConstCharPointer10"
-      };
-      SETS_ARE_EQUAL(expectedRandomWideConstCharPointers, randomWideConstCharPointers);
    }
 
    TEST(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
@@ -253,52 +227,26 @@ namespace ZenUnit
    {
       set<string> randomStrings;
       //
-      for (size_t i = 0; i < 300; ++i)
+      // 1000 iterations for code coverage of all ten branches
+      for (size_t i = 0; i < 1000; ++i)
       {
-         const string randomString = Random<string>();
-         randomStrings.insert(randomString);
+         string randomString = Random<string>();
+         randomStrings.emplace(randomString);
       }
       //
-      const set<string> expectedRandomStrings =
+      for (const string& randomString : randomStrings)
       {
-         "RandomString1",
-         "RandomString2",
-         "RandomString3",
-         "RandomString4",
-         "RandomString5",
-         "RandomString6",
-         "RandomString7",
-         "RandomString8",
-         "RandomString9",
-         "RandomString10"
-      };
-      SETS_ARE_EQUAL(expectedRandomStrings, randomStrings);
+         REGEX_MATCHES("RandomString\\d+", randomString);
+      }
    }
 
-   TEST(Random_WideString_ReturnsRandomWideString1Through10)
+   TEST(Random_WideString_CodeCoverage)
    {
-      set<wstring> randomStrings;
-      //
-      for (size_t i = 0; i < 300; ++i)
+      // 1000 iterations for code coverage of all ten branches
+      for (size_t i = 0; i < 1000; ++i)
       {
-         const wstring randomString = Random<wstring>();
-         randomStrings.insert(randomString);
+         Random<wstring>();
       }
-      //
-      const set<wstring> expectedRandomStrings =
-      {
-         L"RandomWString1",
-         L"RandomWString2",
-         L"RandomWString3",
-         L"RandomWString4",
-         L"RandomWString5",
-         L"RandomWString6",
-         L"RandomWString7",
-         L"RandomWString8",
-         L"RandomWString9",
-         L"RandomWString10"
-      };
-      SETS_ARE_EQUAL(expectedRandomStrings, randomStrings);
    }
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
