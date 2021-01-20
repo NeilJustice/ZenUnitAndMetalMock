@@ -59,9 +59,9 @@ namespace MetalMock
    AFACT(Expect_DoesNotThrowExceptionWhenCalledTwice_MakesFunctionNotThrowWhenCalled)
    AFACT(ThrowException_MakesSubsequentCallsToMetalMockedFunctionThrowSpecifiedException__runtime_error_TestCase)
    AFACT(ThrowException_MakesSubsequentCallsToMetalMockedFunctionThrowSpecifiedException__runtime_error_then_invalid_argument_TestCase)
-   AFACT(CalledOnceWith_MetalMockedFunctionNotPreviouslyCalled_Throws)
-   AFACT(CalledAsFollows_MetalMockedFunctionNotPreviouslyCalled_Throws)
-   AFACT(CalledNTimesWith_MetalMockedFunctionNotPreviouslyCalled_Throws)
+   AFACT(CalledOnceWith_MetalMockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
+   AFACT(CalledAsFollows_MetalMockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
+   AFACT(CalledNTimesWith_MetalMockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
    EVIDENCE
 
    Void2ArgFunctionsMock _metalMockObject;
@@ -211,7 +211,7 @@ Argument2: )" + to_string(argument2);
       testcase(StaticVoid2ArgFunctionMock);
    }
 
-   TEST(CalledOnceWith_MetalMockedFunctionNotPreviouslyCalled_Throws)
+   TEST(CalledOnceWith_MetalMockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
    {
       const auto testcase = [](VoidTwoArgumentMetalMocker<int, int>& metalMockObject, const string& metalMockedFunctionSignature)
       {
@@ -236,7 +236,7 @@ File.cpp(1))";
       testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
-   TEST(CalledAsFollows_MetalMockedFunctionNotPreviouslyCalled_Throws)
+   TEST(CalledAsFollows_MetalMockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
    {
       const auto testcase = [](VoidTwoArgumentMetalMocker<int, int>& metalMockObject, const string& metalMockedFunctionSignature)
       {
@@ -278,11 +278,11 @@ File.cpp(1))";
       testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
-   TEST(CalledNTimesWith_MetalMockedFunctionNotPreviouslyCalled_Throws)
+   TEST(CalledNTimesWith_MetalMockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
    {
       const auto testcase = [](VoidTwoArgumentMetalMocker<int, int>& metalMockObject, const string& metalMockedFunctionSignature)
       {
-         const size_t n = ZenUnit::Random<size_t>();
+         const size_t n = ZenUnit::RandomNon0<size_t>();
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
          const string expectedExceptionMessage = R"(

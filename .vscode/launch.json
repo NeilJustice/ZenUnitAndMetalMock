@@ -8,7 +8,7 @@
          "request": "launch",
          "preLaunchTask": "Ninja Build Debug",
          "cwd": "${workspaceRoot}",
-         "program": "Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
+         "program": "Debug/MetalMockTests/MetalMockTests",
          "linux": { "MIMode": "gdb" }
       }
    ]
