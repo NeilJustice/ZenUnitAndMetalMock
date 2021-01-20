@@ -34,13 +34,13 @@ namespace ZenUnit
 
 
    TESTS(RandomTupleTests)
-   AFACT(RandomTuple_ReturnsTupleWithRandomElements__IntTestCase)
+   AFACT(RandomTuple_ReturnsTupleWithRandomElements__StringTestCase)
    AFACT(RandomTuple_ReturnsTupleWithRandomElements__StringSizeTTestCase)
    EVIDENCE
 
-   TEST(RandomTuple_ReturnsTupleWithRandomElements__IntTestCase)
+   TEST(RandomTuple_ReturnsTupleWithRandomElements__StringTestCase)
    {
-      const tuple<int> randomTuple = ZenUnit::RandomTuple<int>();
+      const tuple<string> randomTuple = ZenUnit::RandomTuple<string>();
       IS_NOT_DEFAULT_VALUE(get<0>(randomTuple));
    }
 
@@ -48,7 +48,6 @@ namespace ZenUnit
    {
       const tuple<string, size_t> randomTuple = ZenUnit::RandomTuple<string, size_t>();
       IS_NOT_DEFAULT_VALUE(get<0>(randomTuple));
-      IS_NOT_DEFAULT_VALUE(get<1>(randomTuple));
    }
 
    RUN_TESTS(RandomTupleTests)
