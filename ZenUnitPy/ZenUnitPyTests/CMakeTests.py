@@ -5,8 +5,7 @@ from unittest.mock import patch
 from ZenUnitPy import CMake, Process, UnitTester
 
 testNames = [
-'generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType_test',
-'install_RunsCMakeInstall_test'
+'generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType_test'
 ]
 
 class CMakeTests(unittest.TestCase):
@@ -37,13 +36,6 @@ class CMakeTests(unittest.TestCase):
       testcase('linux', '', 'cmake -G"Generator" -A"Architecture"  CMakeListsFolderPath')
       testcase('Windows', '', 'cmake -G"Generator" -A"Architecture"  CMakeListsFolderPath')
       testcase('Windows', '-DCMAKE_INSTALL_PREFIX=C:/', 'cmake -G"Generator" -A"Architecture" -DCMAKE_INSTALL_PREFIX=C:/ CMakeListsFolderPath')
-
-   @patch('ZenUnitPy.Process.run', spec_set=True)
-   def install_RunsCMakeInstall_test(self, _1):
-      #
-      CMake.install()
-      #
-      Process.run.assert_called_once_with('cmake --build . --target install')
 
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(CMakeTests, testNames)

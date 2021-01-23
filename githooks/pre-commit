@@ -3,7 +3,7 @@ set -u
 
 osname="$(uname --operating-system)"
 if [[ "$osname" == *"Linux" ]]; then
-   sudo JenkinsJobs/Linux/ZenUnitAndMetalMock-Debug-Clang.sh
+   JenkinsJobs/Linux/ZenUnitAndMetalMock-Debug-Clang.sh
 elif [ "$osname" == "Msys" ]; then
    powershell.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-Debug-x64.ps1
 fi

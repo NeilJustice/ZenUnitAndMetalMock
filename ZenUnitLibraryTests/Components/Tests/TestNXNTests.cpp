@@ -410,7 +410,7 @@ namespace ZenUnit
       fullTestName.testClassName = testClassName.c_str();
       fullTestName.testName = testName.c_str();
       fullTestName.arity = ZenUnit::Random<unsigned char>();
-      const size_t testCaseNumber = ZenUnit::Random<size_t>();
+      const size_t testCaseNumber = ZenUnit::RandomNon0<size_t>();
       //
       const bool returnedTestNameMatchesTestCase =
          TestNXN<TestingTestClass, 1, int>::TestNameFilterMatchesTestCase(testNameFilterMock, fullTestName, testCaseNumber);

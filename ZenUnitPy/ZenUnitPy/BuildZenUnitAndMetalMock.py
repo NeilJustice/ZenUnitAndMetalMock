@@ -10,7 +10,7 @@ def main(args):
    if len(args) != 5:
       Util.print_and_exit(
 'Invalid args: ' + ' '.join(args) + '\n'
-"""Usage: python BuildAndInstallZenUnitAndMetalMock.py --cmake-generator=<CMakeGenerator> --cmake-architecture=<x64OrWin32> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
+"""Usage: python BuildZenUnitAndMetalMock.py --cmake-generator=<CMakeGenerator> --cmake-architecture=<x64OrWin32> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
    else:
       cmakeGenerator = ArgParser.parse_arg('--cmake-generator', args[1])
       cmakeArch = ArgParser.parse_arg('--cmake-architecture', args[2])
@@ -18,25 +18,23 @@ def main(args):
       cmakeDefinitions = ArgParser.parse_arg('--cmake-definitions', args[4])
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
-         linux_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
+         linux_cmake_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
          Process.run('MetalMockTests/MetalMockTests')
          Process.run('ZenUnitLibraryTests/ZenUnitLibraryTests')
          Process.run('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
          os.chdir('..')
       else:
-         windows_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
+         windows_cmake_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
    return 0
 
-def linux_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
+def linux_cmake_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions, '..')
    Process.run('ninja -v')
-   CMake.install()
 
-def windows_cmake_build_install(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
+def windows_cmake_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions):
    CMake.generate('.', cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions, '.')
    buildCommand = f'cmake --build . --config {cmakeBuildType}'
    Process.run(buildCommand)
-   CMake.install()
 
 if __name__ == "__main__": # pragma nocover
    main(sys.argv)

@@ -976,20 +976,20 @@ namespace ZenUnit
 
       virtual bool MatchesTestCase(std::string_view testClassName, std::string_view testName, size_t testNXNTestCaseNumber) const
       {
-         const bool matchesTestClassName = MatchesTestClassName(testClassName);
-         if (!matchesTestClassName)
+         const bool testClassNameMatches = MatchesTestClassName(testClassName);
+         if (!testClassNameMatches)
          {
             return false;
          }
-         const bool matchesTestName = MatchesTestName(testName);
-         if (!matchesTestName)
+         const bool testNameMatches = MatchesTestName(testName);
+         if (!testNameMatches)
          {
             return false;
          }
-         const bool testCaseNumberUnsetOrMatches =
-            testCaseNumber == std::numeric_limits<size_t>::max() ||
-            testCaseNumber == testNXNTestCaseNumber;
-         return testCaseNumberUnsetOrMatches;
+         const bool testCaseNumberIsUnsetOrMatches =
+            this->testCaseNumber == std::numeric_limits<size_t>::max() ||
+            this->testCaseNumber == testNXNTestCaseNumber;
+         return testCaseNumberIsUnsetOrMatches;
       }
    };
 
@@ -6514,7 +6514,6 @@ Fatal Windows C++ Runtime Assertion
          const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
       {
          ZENUNIT_ASSERT(testCaseNumber >= 1);
-         ZENUNIT_ASSERT(testCaseNumber != std::numeric_limits<size_t>::max());
          const bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(
             fullTestName.testClassName, fullTestName.testName, testCaseNumber);
          return testNameFilterMatchesTestCase;

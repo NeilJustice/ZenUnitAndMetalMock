@@ -3,12 +3,12 @@
    "configurations":
    [
       {
-         "name": "GDB Debug ZenUnitUtilsAndAssertionTests",
+         "name": "GDB Debug ZenUnitLibraryTests",
          "type": "cppdbg",
          "request": "launch",
          "preLaunchTask": "Ninja Build Debug",
          "cwd": "${workspaceRoot}",
-         "program": "Debug/MetalMockTests/MetalMockTests",
+         "program": "Debug/ZenUnitLibraryTests/ZenUnitLibraryTests",
          "linux": { "MIMode": "gdb" }
       }
    ]

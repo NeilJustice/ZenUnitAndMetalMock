@@ -37,7 +37,7 @@ namespace ZenUnit
          MaxValue
       };
       set<EnumType> randomEnumsReturned;
-      for (size_t i = 0; i < 100; ++i)
+      for (size_t i = 0; i < 1000; ++i)
       {
          const EnumType randomEnum = Random<EnumType>();
          randomEnumsReturned.insert(randomEnum);
@@ -61,7 +61,7 @@ namespace ZenUnit
          MaxValue
       };
       set<EnumType> randomEnumsReturned;
-      for (size_t i = 0; i < 100; ++i)
+      for (size_t i = 0; i < 1000; ++i)
       {
          const EnumType randomNon0Enum = RandomNon0<EnumType>();
          randomEnumsReturned.insert(randomNon0Enum);
@@ -207,8 +207,8 @@ namespace ZenUnit
 
    TEST(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
    {
-      // 30 iterations for code coverage of the for-loop and hasFileExtension if-statement
-      for (size_t i = 0; i < 30; ++i)
+      // 100 iterations for code coverage of the for-loop and hasFileExtension if-statement
+      for (size_t i = 0; i < 100; ++i)
       {
          Random<std::filesystem::path>();
       }
@@ -256,7 +256,7 @@ namespace ZenUnit
       bool randomBetweenReturned0 = false;
       bool randomBetweenReturnedPositive1 = false;
       bool randomBetweenReturnedPositive2 = false;
-      for (size_t i = 0; i < 300; ++i)
+      for (size_t i = 0; i < 10000; ++i)
       {
          const long long randomLongLong = RandomBetween<long long>(-2, 2);
          if (randomLongLong == -2)
@@ -299,7 +299,7 @@ namespace ZenUnit
    {
       unordered_set<unsigned long long> uniqueRandomValues;
       //
-      for (size_t i = 0; i < 10; ++i)
+      for (size_t i = 0; i < 100; ++i)
       {
          const unsigned long long randomUnsignedLongLong = ZenUnit::RandomUnsignedLongLong();
          uniqueRandomValues.insert(randomUnsignedLongLong);
@@ -317,7 +317,7 @@ namespace ZenUnit
    {
       unordered_set<unsigned long long> uniqueRandomValues;
       //
-      for (size_t i = 0; i < 100; ++i)
+      for (size_t i = 0; i < 1000; ++i)
       {
          const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue =
             ZenUnit::RandomUnsignedLongLongBetween0AndValue(inclusiveMaxValue);
@@ -344,22 +344,8 @@ namespace ZenUnit
 
    TEST(RandomLessThan_ReturnsARandomValueBetweenTMinValueAndExclusiveUpperBoundMinus1)
    {
-      set<T> randomValuesReturned;
-      //
-      const T minTValue = std::numeric_limits<T>::min();
-      for (size_t i = 0; i < 100; ++i)
-      {
-         const T randomT = ZenUnit::RandomLessThan<T>(minTValue + 3);
-         randomValuesReturned.emplace(randomT);
-      }
-      //
-      const set<T> expectedRandomValuesReturned =
-      {
-         minTValue,
-         minTValue + 1,
-         minTValue + 2
-      };
-      SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
+      const T randomTValue = ZenUnit::RandomLessThan<T>(3);
+      IS_LT(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomLessThanTests, short)
@@ -375,23 +361,8 @@ namespace ZenUnit
 
    TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenTMinValueAndInclusiveUpperBound)
    {
-      set<T> randomValuesReturned;
-      //
-      const T minTValue = std::numeric_limits<T>::min();
-      for (size_t i = 0; i < 100; ++i)
-      {
-         const T randomT = ZenUnit::RandomLessThanOrEqualTo<T>(minTValue + 3);
-         randomValuesReturned.emplace(randomT);
-      }
-      //
-      const set<T> expectedRandomValuesReturned =
-      {
-         minTValue,
-         minTValue + 1,
-         minTValue + 2,
-         minTValue + 3
-      };
-      SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
+      const T randomTValue = ZenUnit::RandomLessThanOrEqualTo<T>(3);
+      IS_LTE(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomLessThanOrEqualToTests, short)
@@ -407,23 +378,8 @@ namespace ZenUnit
 
    TEST(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
    {
-      set<T> randomValuesReturned;
-      //
-      const T maxTValue = std::numeric_limits<T>::max();
-      for (size_t i = 0; i < 100; ++i)
-      {
-         const T randomT = ZenUnit::RandomGreaterThanOrEqualTo<T>(maxTValue - 3);
-         randomValuesReturned.emplace(randomT);
-      }
-      //
-      const set<T> expectedRandomValuesReturned =
-      {
-         maxTValue - 3,
-         maxTValue - 2,
-         maxTValue - 1,
-         maxTValue
-      };
-      SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
+      const T randomTValue = ZenUnit::RandomGreaterThanOrEqualTo<T>(3);
+      IS_GTE(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, short)
@@ -439,22 +395,8 @@ namespace ZenUnit
 
    TEST(RandomGreaterThan_ReturnsARandomValueBetweenExclusiveLowerBoundPlus1AndTMaxValue)
    {
-      set<T> randomValuesReturned;
-      //
-      const T maxTValue = std::numeric_limits<T>::max();
-      for (size_t i = 0; i < 100; ++i)
-      {
-         const T randomT = ZenUnit::RandomGreaterThan<T>(maxTValue - 3);
-         randomValuesReturned.emplace(randomT);
-      }
-      //
-      const set<T> expectedRandomValuesReturned =
-      {
-         maxTValue - 2,
-         maxTValue - 1,
-         maxTValue
-      };
-      SETS_ARE_EQUAL(expectedRandomValuesReturned, randomValuesReturned);
+      const T randomTValue = ZenUnit::RandomGreaterThan<T>(3);
+      IS_GT(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomGreaterThanTests, short)

@@ -1,0 +1,67 @@
+{
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "label": "Run Current File",
+         "type": "shell",
+         "command": "PYTHONPATH=. python ${file}",
+         "options": {
+            "cwd": "${workspaceRoot}"
+         },
+         "presentation": {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         },
+         "group": {
+            "kind": "test",
+            "isDefault": true
+         }
+      },
+      {
+         "label": "Run All Tests",
+         "type": "shell",
+         "command": "PYTHONPATH=ZenUnitPy python ZenUnitPyTests/RunAll.py",
+         "options": {
+            "cwd": "${workspaceRoot}"
+         },
+         "presentation": {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         },
+         "group": {
+            "kind": "build",
+            "isDefault": true
+         }
+      },
+      {
+         "label": "Pylint Current File",
+         "type": "shell",
+         "command": "pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\" ${file}",
+         "options": {
+            "cwd": "${workspaceRoot}"
+         },
+         "presentation": {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         },
+         "problemMatcher": []
+      },
+      {
+         "label": "Pylint All",
+         "type": "shell",
+         "command": "ag -g \"\\.py$\" -0 | xargs -0 pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\"",
+         "options": {
+            "cwd": "${workspaceRoot}"
+         },
+         "presentation": {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         },
+         "problemMatcher": []
+      },
+   ]
+}

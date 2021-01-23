@@ -7,7 +7,6 @@ from ZenUnitPy import FileSystem, UnitTester
 
 testNames = [
 'delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists_test',
-'get_filepaths_ReturnsAllFilePathsInAndBelowFolderPath_test',
 'copy_file_to_folder_CreateDestFolderAndCopiesFile_test',
 ]
 

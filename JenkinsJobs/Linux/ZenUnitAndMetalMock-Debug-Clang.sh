@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
-python ZenUnitPy/ZenUnitPy/RunZenUnitPyTestsWithCoverageAndLinting.py
-CXX=/usr/bin/clang++ python ZenUnitPy/ZenUnitPy/BuildAndInstallZenUnitAndMetalMock.py \
+cd ZenUnitPy
+PYTHONPATH=. python ZenUnitPy/RunZenUnitPyTestsWithCoverageAndLinting.py
+cd ..
+CXX=/usr/bin/clang++ python ZenUnitPy/ZenUnitPy/BuildZenUnitAndMetalMock.py \
    --cmake-generator=Ninja \
    --cmake-architecture=x64 \
    --cmake-build-type=Debug \
