@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ZenUnitPy", "ZenUnitPy\ZenUnitPy.pyproj", "{7442C4B6-4D10-4AEA-A009-421F7252D55E}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ZenUnitPyTests", "ZenUnitPyTests\ZenUnitPyTests.pyproj", "{5BE2BD06-B3D6-4E12-9D37-CB82AA0EF9D3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticAnalysis", "StaticAnalysis", "{44A47100-0D78-43F8-BCC0-FC0E13AA0BC4}"
+	ProjectSection(SolutionItems) = preProject
+		.flake8 = .flake8
+		.pylintrc = .pylintrc
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
