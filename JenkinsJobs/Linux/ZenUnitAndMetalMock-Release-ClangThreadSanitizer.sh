@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-CXX=/usr/bin/clang++ python ZenUnitPy/ZenUnitPy/BuildAndInstallZenUnitAndMetalMock.py \
+CXX=/usr/bin/clang++ python ZenUnitPy/ZenUnitPy/BuildZenUnitAndMetalMock.py \
    --cmake-generator=Ninja \
    --cmake-architecture=x64 \
    --cmake-build-type=Release \

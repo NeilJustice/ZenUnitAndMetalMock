@@ -1,7 +1,7 @@
 param([string]$installFolder = "C:\\")
 Set-PSDebug -Trace 1
 
-python.exe ZenUnitPy\ZenUnitPy\BuildAndInstallZenUnitAndMetalMock.py `
+python.exe ZenUnitPy\ZenUnitPy\BuildZenUnitAndMetalMock.py `
    --cmake-generator="Visual Studio 16 2019" `
    --cmake-architecture="x64" `
    --cmake-build-type="Debug" `

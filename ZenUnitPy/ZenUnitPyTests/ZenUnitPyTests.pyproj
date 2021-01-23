@@ -33,7 +33,7 @@
     <Compile Include="ArgParserTests.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuildAndInstallZenUnitAndMetalMockTests.py" />
+    <Compile Include="BuildZenUnitAndMetalMockTests.py" />
     <Compile Include="CMakeTests.py" />
     <Compile Include="FileSystemTests.py" />
     <Compile Include="ProcessTests.py" />
