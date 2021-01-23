@@ -1,4 +1,5 @@
 from ZenUnitPy import Process
+import os
 
 Process.run('coverage3 run --branch --omit="/usr/*" ZenUnitPyTests/RunAll.py')
 Process.run('coverage3 report --fail-under=100 --show-missing')

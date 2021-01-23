@@ -8,7 +8,7 @@
     </ProjectHome>
     <StartupFile>RunAllWithCoverage.py</StartupFile>
     <SearchPath>..\</SearchPath>
-    <WorkingDirectory>.</WorkingDirectory>
+    <WorkingDirectory>..</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPyTests</Name>
     <RootNamespace>ZenUnitPyTests</RootNamespace>
