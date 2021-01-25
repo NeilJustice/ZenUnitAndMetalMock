@@ -37,8 +37,8 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
    * [How ZenUnit And MetalMock Source Code Appears In Visual Studio 2019](#how-zenunit-and-metalmock-source-code-appears-in-visual-studio-2019)
-   * [6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#6-linux-commands-to-build-and-run-zenUnit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
-   * [4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h](#4-windows-commands-to-build-and-run-zenunit-and-metalmocks-unit-tests-then-install-zenunith-and-metalmockh)
+   * [How To Build And Run ZenUnit And MetalMock's Unit Tests On Linux And Then Install ZenUnit.h And MetalMock.h](#how-to-build-and-run-zenunit-and-metalmocks-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
+   * [How To Build And Run ZenUnit And MetalMock's Unit Tests On Windows And Then Install ZenUnit.h And MetalMock.h](#how-to-build-and-run-zenunit-and-metalmocks-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
    * [ZenUnit Features Roadmap](#zenunit-features-roadmap)
    * [MetalMock Features Roadmap](#metalmock-features-roadmap)
    * [Acknowledgments](#acknowledgments)
@@ -560,7 +560,7 @@ Testing using random values instead of constant values renders test code immune 
 
 ![ZenUnitAndMetalMock In Visual Studio 2019](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
 
-### 6 Linux Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h
+### How To Build And Run ZenUnit And MetalMock's Unit Tests On Linux And Then Install ZenUnit.h And MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -582,7 +582,7 @@ cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
 
-### 4 Windows Commands To Build And Run ZenUnit And MetalMock's Unit Tests Then Install ZenUnit.h And MetalMock.h
+### How To Build And Run ZenUnit And MetalMock's Unit Tests On Windows And Then Install ZenUnit.h And MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
