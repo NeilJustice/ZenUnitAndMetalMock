@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.2)
 project(ZenUnitAndMetalMock)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
+if(${CMAKE_SIZEOF_VOID_P} STREQUAL "4")
+   message("Warning: ZenUnitAndMetalMock is not supported on 32-bit Windows")
+endif()
+
 if(UNIX)
    set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -Wextra -pedantic -Werror -pthread -Wno-gnu-zero-variadic-macro-arguments -Wno-unused-variable")
    option(ClangTidyMode "Sets CMAKE_EXPORT_COMPILE_COMMANDS to ON" OFF)
