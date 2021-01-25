@@ -374,6 +374,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |---------|--------|
 |`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default asserts `expectedValue == actualValue`, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test.<br><br>`messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`.<br><br>If `expectedValue` and `actualValue` are `const char*` or `const wchar_t*`, `ARE_EQUAL` determines equality by calling `strcmp` or `wcscmp`.|
 |`ARE_NOT_EQUAL(notExpectedValue, actualValue, messages...)`|By default asserts `!(expectedValue == actualValue)`, otherwise throws a `ZenUnit::Anomaly`.|
+|`FIELDS_ARE_EQUAL(expectedObject, actualObject, fieldName, messages...)`|Asserts `ARE_EQUAL(expectedObject.fieldName, actualObject.fieldName, messages...)`.|
 |`ENUM_EQUALS_INT(expectedInteger, actualEnumClass)`|Asserts `static_cast<typename std::underlying_type<T>::type>(actualEnumClass) == expectedInteger`.|
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
 |`IS_LT(actualValue, comparisonValue, messages...)`|Asserts `actualValue < comparisonValue`.|

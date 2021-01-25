@@ -5,6 +5,7 @@ namespace ZenUnit
    TESTS(FIELDS_ARE_EQUALTests)
    AFACT(FieldAreEqual_DoesNotThrowException)
    AFACT(IntFieldsAreNotEqual_ThrowsZenUnitAnomaly)
+   AFACT(UserTypeFieldsAreNotEqual_ThrowsZenUnitAnomaly)
    AFACT(StringFieldsAreNotEqual_ThrowsZenUnitAnomaly__MessagesTestCase)
    EVIDENCE
 
@@ -12,6 +13,7 @@ namespace ZenUnit
    {
       int intField = 0;
       string stringField;
+      UserType userType;
    };
 
    TEST(FieldAreEqual_DoesNotThrowException)
@@ -31,6 +33,23 @@ namespace ZenUnit
          "  Failed: ARE_EQUAL(expectedStruct.intField, actualStruct.intField)",
          "Expected: " + to_string(expectedStruct.intField),
          "  Actual: " + to_string(actualStruct.intField),
+         "File.cpp(1)"));
+   }
+
+   TEST(UserTypeFieldsAreNotEqual_ThrowsZenUnitAnomaly)
+   {
+      Struct expected;
+      expected.userType = UserType(10);
+      Struct actual;
+      actual.userType = UserType(20);
+      THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expected, actual, userType), Anomaly, TestUtil::NewlineConcat("",
+         "  Failed: ARE_EQUAL(expected.userType, actual.userType)",
+         "Expected: UserType@10",
+         "  Actual: UserType@20",
+         " Because: ARE_EQUAL(expectedUserType.value, actualUserType.value) failed",
+         "Expected: 10",
+         "  Actual: 20",
+         "File.cpp(1)",
          "File.cpp(1)"));
    }
 
