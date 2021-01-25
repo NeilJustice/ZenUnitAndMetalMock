@@ -162,6 +162,11 @@ Example ZenUnit command line arguments:
    ZenUnit::ARE_EQUAL_Defined(expectedValue, #expectedValue, actualValue, #actualValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts ARE_EQUAL(expectedObject.nonQuotedFieldName, actualObject.nonQuotedFieldName)
+#define FIELDS_ARE_EQUAL(expectedObject, actualObject, fieldName, ...) \
+   ZenUnit::ARE_EQUAL_Defined(expectedObject.fieldName, #expectedObject"."#fieldName, actualObject.fieldName, #actualObject"."#fieldName, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 // Asserts that !(expectedValue == actualValue) or if defined asserts that ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue) throws a ZenUnit::Anomaly.
 #define ARE_NOT_EQUAL(notExpectedValue, actualValue, ...) \
    ZenUnit::ARE_NOT_EQUAL_Defined(notExpectedValue, #notExpectedValue, actualValue, #actualValue, \
