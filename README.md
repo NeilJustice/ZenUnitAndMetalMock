@@ -31,7 +31,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
       * [ZenUnit Equalizer Assertions](#zenunit-equalizer-assertions)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
-   * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](#how-to-write-a-custom-zenunit-equalizer-struct-to-achieve-field-by-field-assertion-granularity)
+   * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](Documentation/HowToWriteACustomZenUnitEqualizer.md)
    * [Guide To MetalMock](Documentation/GuideToMetalMock.md)
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
@@ -460,35 +460,6 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |`THEN_RUN_TEMPLATE_TESTS(testClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
 |`SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
-
-### How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity
-
-By default, ZenUnit assertion `ARE_EQUAL(expectedObject, actualObject)` calls `expectedObject == actualObject` to determine whether `expectedObject` is equal to `actualObject`.
-
-Here is the implementation of `ARE_EQUAL` in ZenUnit.h, which shows the default behavior of calling `expectedObject == actualObject` can be overridden for type `T` by defining a `namespace ZenUnit { Equalizer<T> }` struct with static function `static void AssertEqual(const T&, const T&)`. In the body of this custom `AssertEqual` function, field-by-field `ARE_EQUAL(expectedObject.fieldName, actualObject.fieldName)` assert statements can be written to achieve field-by-field assertion granularity.
-
-![ARE_EQUAL Implementation](Screenshots/Equalizers/ARE_EQUALImplementation.png)
-
-![Default Equalizer Implementation](Screenshots/Equalizers/DefaultEqualizerImplementation.png)
-
-For example struct `DomainStruct` as defined below, here is the `binary '==': no operator found` error message which appears when asserting that two instances of `DomainStruct` are equal with ZenUnit assertion `ARE_EQUAL(expectedDomainStruct, actualDomainStruct)`.
-
-The `binary '==': no operator found` error message appears because `DomainStruct` has not defined `operator==` and a custom ZenUnit Equalizer function in the form `ZenUnit::Equalizer<DomainStruct>::AssertEqual(const DomainStruct& expectedDomainStruct, const DomainStruct& actualDomainStruct)` has not yet been defined.
-
-![Operator Equals Error Message When Two Structs ARE_EQUAL](Screenshots/Equalizers/OperatorEqualsErrorMessageWhenTwoStructsARE_EQUAL.png)
-
-Here is the syntax for how to define a custom `ZenUnit::Equalizer<T>` struct specialization to achieve field-by-field assertion granularity for type `DomainStruct`:
-
-![Equalizer Definition Syntax](Screenshots/Equalizers/EqualizerDefinitionSyntax.png)
-
-Here is the ZenUnit console output from running the above ZenUnit Equalizer example with `ZenUnitExamples.exe --run=DomainStructTests`, which shows field-by-field assertion granularity regarding `field2` being the specific field that differs between `expectedDomainStruct` and `actualDomainStruct`:
-
-![Equalizer Example Console Output](Screenshots/Equalizers/EqualizerExampleConsoleOutput.png)
-
-In contrast, here is the ZenUnit console output from running `ZenUnitExamples.exe --run=DomainStructTests` when the `DomainStruct` ZenUnit Equalizer 
-is commented out and instead a `friend operator==(const DomainStruct& left, const DomainStruct& right` function is defined. Note how just `Expected: <DomainStruct>` and `Actual: <DomainStruct>` is printed instead of `field2` being printed as happens when a `ZenUnit::Equalizer<DomainStruct>` is defined.
-
-![Equality Operator Defined And ZenUnit Equalizer Not Defined](Screenshots/Equalizers/EqualityOperatorDefinedAndZenUnitEqualizerNotDefined.png)
 
 ### Maximize Mutation Coverage By Testing With Random Values
 
