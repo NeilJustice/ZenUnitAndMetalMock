@@ -566,18 +566,7 @@ Testing using random values instead of constant values renders test code immune 
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 cd ZenUnitAndMetalMock && mkdir Debug && cd Debug
 CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
-
-# Builds ZenUnit and MetalMock Debug unit test binaries then copies
-# ZenUnit.h to /usr/local/include/ZenUnit/ZenUnit.h and
-# MetalMock.h to /usr/local/include/MetalMock/MetalMock.h
 sudo cmake --build . --target install
-
-# Runs all ZenUnit and MetalMock Debug test binaries:
-# Debug/MetalMockTests/MetalMockTests
-# Debug/MetalMockExamples/MetalMockExamples
-# Debug/ZenUnitLibraryTests/ZenUnitLibraryTests
-# Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
-# Debug/ZenUnitExamples/ZenUnitExamples
 cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
@@ -588,18 +577,12 @@ cd ..
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 cd ZenUnitAndMetalMock
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
-
-# Builds and runs during post-build events all of these
-# ZenUnit and MetalMock Debug test binaries:
-# MetalMockTests\Debug\MetalMockTests.exe
-# MetalMockExamples\Debug\MetalMockExamples.exe
-# ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe
-# ZenUnitUtilsAndAssertionTests\Debug\ZenUnitUtilsAndAssertionTests.exe
-# ZenUnitExamples\Debug\ZenUnitExamples.exe
-# Copies ZenUnit.h to C:\include\ZenUnit\ZenUnit.h
-# Copies MetalMock.h to C:\include\MetalMock\MetalMock.h
 cmake --build . --target install
 ```
+
+ZenUnit.h and MetalMock.h installed on Windows:
+
+![Installed ZenUnit.h and MetalMock.h on Windows](Screenshots/Windows/ZenUnitDotHAndMetalMockDotHOnWindows.png)
 
 ### ZenUnit Roadmap
 
@@ -612,8 +595,8 @@ cmake --build . --target install
 |SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|February 2021|Awaiting implementation|
 |SonarCloud Badge|February 2021|Awaiting implementation|
 |Coverity Badge|February 2021|Awaiting implementation|
-|`ARE_NEAR` floating point assertion|February 2021|Awaiting implementation|
-|`main` and `dev` branches|March 2021|Awaiting implementation|
+|`main` and `dev` branches|February 2021|Awaiting implementation|
+|`ARE_NEAR` floating point assertion|March 2021|Awaiting implementation|
 |`--parallel` for parallel running of tests|April 2021|Awaiting implementation|
 
 ### MetalMock Roadmap
