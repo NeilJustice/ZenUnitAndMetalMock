@@ -116,15 +116,9 @@ FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
 // EVIDENCE concludes the declaration of FACTS section and begins the presentation of EVIDENCE section
 EVIDENCE
 
-// In ZenUnit, test names are by design duplicated between the FACTS section and the EVIDENCE section.
+// In ZenUnit test names are by-design duplicated between the FACTS section and the EVIDENCE section.
 // This carefully-considered design decision is to maximize long-term test code readability
-// by making it a breeze for code readers to quickly confirm
-// what a test class tests by simply reading the top part of a ZenUnit test class .cpp file.
-// In contrast, ZenUnit could have been designed to allow test names to be scattered throughout test files
-// for initial writeability convenience, but at a cost of long-term code readability convenience.
-// Because test code is read much more often than it is written,
-// especially safety-critical and financially-critical test code,
-// a design that maximizes long-term test code readability was chosen for ZenUnit.
+// by always presenting test names at the top of test files instead of scattered throughout test files.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
 // which processes its typesafe variadic arguments list 1-by-1.
