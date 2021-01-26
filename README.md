@@ -103,7 +103,7 @@ Example ZenUnit command line arguments:
 
 ```cpp
 // Single header
-#include "ZenUnit/ZenUnit.h"
+#include "ZenUnitAndMetalMock/ZenUnit.h"
 
 // FizzBuzz function to be unit tested with ZenUnit
 std::string FizzBuzz(int endNumber);
@@ -270,7 +270,7 @@ namespace Utils
 Here is how the CountWhere() function's correctness can be confirmed across multiple `ContainerType` types and `T` types by using ZenUnit's type-parameterized test class syntax `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, and `THEN_RUN_TEMPLATE_TESTS`:
 
 ```cpp
-#include "ZenUnit/ZenUnit.h"
+#include "ZenUnitAndMetalMock/ZenUnit.h"
 
 template<
    template<typename T>
