@@ -36,6 +36,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
+   * [ZenUnit And MetalMock Code Structure As It Appears In VS Code](#zenunit-and-metalmock-code-structure-as-it-appears-in-vs-code)
    * [ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019)
    * [How To Build And Run ZenUnit And MetalMock's Unit Tests On Linux And Then Install ZenUnit.h And MetalMock.h](#how-to-build-and-run-zenunit-and-metalmocks-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
    * [How To Build And Run ZenUnit And MetalMock's Unit Tests On Windows And Then Install ZenUnit.h And MetalMock.h](#how-to-build-and-run-zenunit-and-metalmocks-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
@@ -520,6 +521,10 @@ Testing using random values instead of constant values renders test code immune 
 ### Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock
 
 ![Windows Jenkins Jobs](Screenshots/WindowsJenkinsJobsForZenUnitAndMetalMock.png)
+
+### ZenUnit And MetalMock Code Structure As It Appears In VS Code
+
+![ZenUnit And MetalMock Code Structure As It Appears In VS Code](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
 
 ### ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019
 
