@@ -683,7 +683,7 @@ namespace ZenUnit
       std::string ToString() const
       {
          std::ostringstream oss;
-         oss << *this;
+         oss << filePath << '(' << lineNumber << ')';
          std::string filePathAndLineNumber = oss.str();
          return filePathAndLineNumber;
       }
