@@ -516,7 +516,7 @@ Testing using random values instead of constant values renders test code immune 
 
 ### Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock
 
-![Linux Jenkins Jobs](Screenshots/LinuxJenkinsJobsForZenUnitAndMetalMock.png)
+![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
 ### Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock
 
