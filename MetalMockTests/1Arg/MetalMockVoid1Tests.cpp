@@ -68,7 +68,7 @@ namespace MetalMock
    const string ExpectedNonVirtualConstFunctionSignature =
       "void MetalMock::Void1Functions::NonVirtualConstFunction(int) const";
    const string FreeFunctionSignature =
-      "void ::Void1Function(int)";
+      "void Void1Function(int)";
    const string ExpectedNamespacedFunctionSignature =
       "void MetalMock::Void1Function(int)";
    const string StaticFunctionSignature =

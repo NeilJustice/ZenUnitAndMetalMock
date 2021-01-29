@@ -42,7 +42,7 @@ namespace MetalMock
    EVIDENCE
 
    const string GlobalNonVoid0FreeFunctionSignature =
-      "int ::GlobalNonVoid0FreeFunction()";
+      "int GlobalNonVoid0FreeFunction()";
    const string NamespacedNonVoid0FreeFunctionSignature =
       "int MetalMock::NamespacedNonVoid0FreeFunction()";
    const string StaticNonVoid0FunctionSignature =

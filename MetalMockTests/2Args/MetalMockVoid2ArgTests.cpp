@@ -88,7 +88,7 @@ namespace MetalMock
       "void MetalMock::Void2ArgFunctions::NonVirtual2ArgConstFunction(int, int) const";
 
    const string FreeFunctionSignature =
-      "void ::Void2ArgFreeFunction(int, int)";
+      "void Void2ArgFreeFunction(int, int)";
 
    const string NamespacedFreeFunctionSignature =
       "void MetalMock::Void2ArgFreeFunction(int, int)";
