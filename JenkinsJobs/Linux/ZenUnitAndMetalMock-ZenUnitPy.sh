@@ -1,1 +1,4 @@
-python ZenUnitPy/ZenUnitPy/RunZenUnitPyTestsWithCoverageAndLinting.py
+#!/bin/bash
+cd ZenUnitPy
+PYTHONPATH=. python ZenUnitPy/RunZenUnitPyTestsWithCoverageAndLinting.py
+cd ..
