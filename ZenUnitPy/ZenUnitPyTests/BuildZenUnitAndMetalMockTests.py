@@ -92,8 +92,8 @@ class BuildZenUnitTests(unittest.TestCase):
                self.cmakeBuildType, self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '..')
             Process.run.assert_called_once_with('ninja -v')
       testcase('', '')
-      testcase('-DSanitizerMode=ON', '-DSanitizerMode=ON')
-      testcase('-DOption=ON', '-DOption=ON')
+      testcase('-DOptionA=ON', '-DOptionA=ON')
+      testcase('-DOptionB=ON', '-DOptionB=ON')
 
    def windows_cmake_build_RunsCMakes_RunsCMakeBuildToRunMSBuild_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
@@ -108,8 +108,8 @@ class BuildZenUnitTests(unittest.TestCase):
             expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.cmakeBuildType)
             Process.run.assert_called_once_with(expectedCMakeBuildCommand)
       testcase('', '')
-      testcase('-DSanitizerMode=ON', '-DSanitizerMode=ON')
-      testcase('-DOption=ON', '-DOption=ON')
+      testcase('-DOptionA=ON', '-DOptionA=ON')
+      testcase('-DOptionB=ON', '-DOptionB=ON')
 
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(BuildZenUnitTests, testNames)

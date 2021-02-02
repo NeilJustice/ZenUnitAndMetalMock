@@ -14,9 +14,9 @@ class CMakeTests(unittest.TestCase):
       @patch('os.makedirs', spec_set=True)
       @patch('os.chdir', spec_set=True)
       @patch('platform.system', spec_set=True)
-      @patch('builtins.print', spec_set=True)
       @patch('ZenUnitPy.Process.run', spec_set=True)
-      def testcase(platformSystem, cmakeDefinitions, expectedCMakeCommand, _1, _2, _3, _4, _5):
+      @patch('builtins.print', spec_set=True)
+      def testcase(platformSystem, cmakeDefinitions, expectedCMakeCommand, printMock, _2, _3, _4, _5):
          with self.subTest(f'{platformSystem}, {cmakeDefinitions}, {expectedCMakeCommand}'):
             platform.system.return_value = platformSystem
             folderPath = ''
@@ -29,7 +29,7 @@ class CMakeTests(unittest.TestCase):
             #
             os.makedirs.assert_called_once_with(folderPath, exist_ok=True)
             os.chdir.assert_called_once_with(folderPath)
-            print.assert_called_once_with('Generating CMake in folder', folderPath)
+            printMock.assert_called_once_with('Generating CMake in folder', folderPath)
             Process.run.assert_called_once_with(expectedCMakeCommand)
       testcase('Linux', '', 'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType  CMakeListsFolderPath')
       testcase('Linux', '-DSanitizersMode=ON', 'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType -DSanitizersMode=ON CMakeListsFolderPath')

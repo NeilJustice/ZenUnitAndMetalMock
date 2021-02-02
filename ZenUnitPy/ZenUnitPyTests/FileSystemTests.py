@@ -16,7 +16,7 @@ class FolderTests(unittest.TestCase):
       @patch('os.path.exists', spec_set=True)
       @patch('shutil.rmtree', spec_set=True)
       @patch('builtins.print', spec_set=True)
-      def testcase(folderExists, expectrmtreeCall, _1, _2, _3):
+      def testcase(folderExists, expectrmtreeCall, printMock, _2, _3):
          with self.subTest(f'{folderExists}, {expectrmtreeCall}'):
             os.path.exists.return_value = folderExists
             folderPath = Random.string()
@@ -26,10 +26,10 @@ class FolderTests(unittest.TestCase):
             os.path.exists.assert_called_once_with(folderPath)
             if expectrmtreeCall:
                shutil.rmtree.assert_called_once_with(folderPath)
-               print.assert_called_once_with(f'Deleted folder {folderPath}')
+               printMock.assert_called_once_with(f'Deleted folder {folderPath}')
             else:
                shutil.rmtree.assert_not_called()
-               print.assert_not_called()
+               printMock.assert_not_called()
       testcase(False, False)
       testcase(True, True)
 

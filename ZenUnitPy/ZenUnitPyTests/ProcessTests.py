@@ -45,9 +45,9 @@ class RunTests(unittest.TestCase):
 
    def run_RunsProcess_SysExitsIfExitCodeNonZero_test(self):
       @patch('ZenUnitPy.Process.run_and_get_exitcode', spec_set=True)
-      @patch('builtins.print', spec_set=True)
       @patch('sys.exit', spec_set=True)
-      def testcase(exitCode, expectPrintCommandFailedAndExit, _1, _2, _3):
+      @patch('builtins.print', spec_set=True)
+      def testcase(exitCode, expectPrintCommandFailedAndExit, printMock, _2, _3):
          with self.subTest(f'{exitCode}, {expectPrintCommandFailedAndExit}'):
             Process.run_and_get_exitcode.return_value = exitCode
             #
@@ -56,8 +56,7 @@ class RunTests(unittest.TestCase):
             Process.run_and_get_exitcode.assert_called_once_with(self.command)
             if expectPrintCommandFailedAndExit:
                expectedSingleQuotedCommand = '\'' + self.command + '\''
-               print.assert_called_once_with(
-                  'Command', expectedSingleQuotedCommand, 'failed with exit code', exitCode)
+               printMock.assert_called_once_with('Command', expectedSingleQuotedCommand, 'failed with exit code', exitCode)
                sys.exit.assert_called_once_with(exitCode)
             else:
                sys.exit.assert_not_called()
@@ -67,11 +66,11 @@ class RunTests(unittest.TestCase):
 
    def run_and_get_exitcode_CallsSubprocessCallCommand_WithShlexCommandIfNotWindows_ReturnsExitCode_test(self):
       @patch('os.getcwd', spec_set=True)
-      @patch('builtins.print', spec_set=True)
       @patch('platform.system', spec_set=True)
       @patch('shlex.split', spec_set=True)
       @patch('subprocess.call', spec_set=True)
-      def testcase(platformValue, expectShlexSplitCommand, _1, _2, _3, _4, _5):
+      @patch('builtins.print', spec_set=True)
+      def testcase(platformValue, expectShlexSplitCommand, printMock, _2, _3, _4, _5):
          with self.subTest(f'{platformValue}, {expectShlexSplitCommand}'):
             currentWorkingDirectory = Random.string()
             os.getcwd.return_value = currentWorkingDirectory
@@ -85,8 +84,7 @@ class RunTests(unittest.TestCase):
             #
             expectedSingleQuotedCommand = '\'' + self.command + '\''
             os.getcwd.assert_called_once_with()
-            print.assert_called_once_with(
-               'Running', expectedSingleQuotedCommand, 'from', currentWorkingDirectory)
+            printMock.assert_called_once_with('Running', expectedSingleQuotedCommand, 'from', currentWorkingDirectory)
             if expectShlexSplitCommand:
                shlex.split.assert_called_once_with(self.command)
                subprocess.call.assert_called_once_with(shlexedCommand)

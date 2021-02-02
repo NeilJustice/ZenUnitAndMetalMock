@@ -63,3 +63,6 @@ RelWithDebInfo/
 *.vspx
 debug.log
 install_manifest.txt
+
+# SonarQube
+.scannerwork/
