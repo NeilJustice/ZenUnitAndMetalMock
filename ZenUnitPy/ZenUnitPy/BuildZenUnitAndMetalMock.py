@@ -1,9 +1,6 @@
 import os
 import platform
 import sys
-sys.path.append('ZenUnitPy') # Jenkins
-sys.path.append('../ZenUnitPy') # Jenkins
-sys.path.append('../ZenUnit/ZenUnitPy') # MetalMock
 from ZenUnitPy import ArgParser, CMake, Process, Util
 
 def main(args):
