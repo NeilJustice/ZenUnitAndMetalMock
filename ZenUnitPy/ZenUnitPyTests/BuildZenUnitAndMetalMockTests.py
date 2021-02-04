@@ -63,11 +63,10 @@ class BuildZenUnitTests(unittest.TestCase):
             platform.system.assert_called_once_with()
             if expectLinux:
                BuildZenUnitAndMetalMock.linux_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeArchitecture, self.cmakeBuildType, self.cmakeDefinitions)
-               self.assertEqual(5, len(Process.run.call_args_list))
+               self.assertEqual(4, len(Process.run.call_args_list))
                Process.run.assert_has_calls([
                   call('MetalMockExamples/MetalMockExamples'),
                   call('MetalMockTests/MetalMockTests'),
-                  call('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests'),
                   call('ZenUnitLibraryTests/ZenUnitLibraryTests'),
                   call('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')])
                os.chdir.assert_called_once_with('..')

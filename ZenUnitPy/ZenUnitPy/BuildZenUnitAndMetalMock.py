@@ -21,7 +21,6 @@ def main(args):
          linux_cmake_build(cmakeGenerator, cmakeArch, cmakeBuildType, cmakeDefinitions)
          Process.run('MetalMockExamples/MetalMockExamples')
          Process.run('MetalMockTests/MetalMockTests')
-         Process.run('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests')
          Process.run('ZenUnitLibraryTests/ZenUnitLibraryTests')
          Process.run('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
          os.chdir('..')
