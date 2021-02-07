@@ -1488,7 +1488,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
 ==============================================================================
 MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 ==============================================================================)", ZenUnit::Color::Red);
-            console.WriteLine("MetalMocked function signature:\n" + MetalMockedFunctionSignature);
+            console.WriteLine("MetalMocked Function:\n" + MetalMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
             console.WriteColor("\n>>------>", ZenUnit::Color::Red);
             console.WriteLine("  Completed: " + zenUnitArgs.commandLine);
