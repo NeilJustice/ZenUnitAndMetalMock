@@ -11,6 +11,7 @@ namespace ZenUnit
 }
 
 #include <array>
+#include <charconv>
 #include <filesystem>
 #include <functional>
 #include <iostream>
@@ -733,66 +734,28 @@ namespace ZenUnit
 
       static int ToInt(std::string_view str)
       {
-         if (str.empty())
+         int intValue{};
+         std::from_chars_result fromCharsResult = std::from_chars(str.data(), str.data() + str.size(), intValue, 10);
+         if (fromCharsResult.ec != std::errc{})
          {
-            throw std::invalid_argument("ZenUnit::String::ToInt() called with empty string");
+            const std::string exceptionMessage = String::Concat(
+               "ZenUnit::String::ToInt(std::string_view str) called with str not converted to int: \"", str, "\"");
+            throw std::invalid_argument(exceptionMessage);
          }
-         const bool firstCharacterIsNegativeSign = str[0] == '-';
-         long long valueAsLongLong = 0;
-         long long place = 1;
-         const int stoppingIndex = firstCharacterIsNegativeSign ? 1 : 0;
-         for (int i = static_cast<int>(str.size() - 1); i >= stoppingIndex; --i, place *= 10)
-         {
-            char c = str[static_cast<size_t>(i)];
-            if (c < '0' || c > '9')
-            {
-               throw std::invalid_argument("ZenUnit::String::ToInt() called with a string not convertible to a 32-bit integer: \"" + std::string(str) + "\"");
-            }
-            const size_t zeroThroughNineIndex = static_cast<size_t>(c) - 48;
-            const char charDigit = "0123456789"[zeroThroughNineIndex];
-            const long long longLongDigit = static_cast<long long>(charDigit) - 48;
-            valueAsLongLong += longLongDigit * place;
-         }
-         if (firstCharacterIsNegativeSign)
-         {
-            valueAsLongLong *= -1;
-         }
-         if (valueAsLongLong < static_cast<long long>(std::numeric_limits<int>::min()))
-         {
-            throw std::invalid_argument("ZenUnit::String::ToInt() called with a string containing a number less than std::numeric_limits<int>::min(): \"" + std::to_string(valueAsLongLong) + "\"");
-         }
-         if (valueAsLongLong > static_cast<long long>(std::numeric_limits<int>::max()))
-         {
-            throw std::invalid_argument("ZenUnit::String::ToInt() called with a string containing a number greater than std::numeric_limits<int>::max(): \"" + std::to_string(valueAsLongLong) + "\"");
-         }
-         const int valueAsInt = static_cast<int>(valueAsLongLong);
-         return valueAsInt;
+         return intValue;
       }
 
       static unsigned ToUnsigned(std::string_view str)
       {
-         if (str.empty())
+         unsigned unsignedValue{};
+         std::from_chars_result fromCharsResult = std::from_chars(str.data(), str.data() + str.size(), unsignedValue, 10);
+         if (fromCharsResult.ec != std::errc{})
          {
-            throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with empty string");
+            const std::string exceptionMessage = String::Concat(
+               "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"", str, "\"");
+            throw std::invalid_argument(exceptionMessage);
          }
-         unsigned long long valueAsUnsignedLongLong = 0;
-         unsigned long long place = 1;
-         for (int i = static_cast<int>(str.size() - 1); i >= 0; --i, place *= 10)
-         {
-            const char c = str[static_cast<size_t>(i)];
-            if (c < '0' || c > '9')
-            {
-               throw std::invalid_argument("ZenUnit::String::ToUnsigned() called with string not convertible to unsigned integer: \"" + std::string(str) + "\"");
-            }
-            const unsigned long long digit = "0123456789"[c - 48] - 48ull;
-            valueAsUnsignedLongLong += digit * place;
-         }
-         if (valueAsUnsignedLongLong > std::numeric_limits<unsigned int>::max())
-         {
-            throw std::invalid_argument("ZenUnit::String::ToUnsigned called with string containing number greater than std::numeric_limits<unsigned int>::max(): \"" + std::to_string(valueAsUnsignedLongLong) + "\"");
-         }
-         const unsigned valueAsUnsigned = static_cast<unsigned>(valueAsUnsignedLongLong);
-         return valueAsUnsigned;
+         return unsignedValue;
       }
 
       static std::vector<std::string> SplitOnNonQuotedCommas(std::string_view text)
