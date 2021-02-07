@@ -28,7 +28,6 @@ namespace MetalMock
    {
       static void StaticVoid1Function(int) {}
       static void OverloadedStaticVoid1Function(float) {}
-      static void OverloadedStaticVoid1Function(double) {}
    };
 
    TESTS(MetalMockVoid1Tests_CodeCoverage)
@@ -50,7 +49,6 @@ namespace MetalMock
 
       MetalMock::Void1StaticFunctions::StaticVoid1Function(0);
       MetalMock::Void1StaticFunctions::OverloadedStaticVoid1Function(0.0f);
-      MetalMock::Void1StaticFunctions::OverloadedStaticVoid1Function(0.0);
    }
 
    RUN_TESTS(MetalMockVoid1Tests_CodeCoverage)
@@ -80,14 +78,13 @@ namespace MetalMock
    Void1FunctionsMock _mock;
    METALMOCK_VOID1_FREE(Void1Function, int)
    METALMOCK_VOID1_STATIC(MetalMock::Void1StaticFunctions, StaticVoid1Function, int)
-   METALMOCK_VOID1_STATIC(MetalMock::Void1StaticFunctions, OverloadedStaticVoid1Function, float, _float)
-   METALMOCK_VOID1_STATIC(MetalMock::Void1StaticFunctions, OverloadedStaticVoid1Function, double, _double)
+   METALMOCK_VOID1_STATIC(MetalMock::Void1StaticFunctions, OverloadedStaticVoid1Function, float)
 
    unique_ptr<MetalMock1Tester<
       Void1FunctionsMock,
       decltype(Void1FunctionMock),
       decltype(StaticVoid1FunctionMock),
-      decltype(OverloadedStaticVoid1FunctionMock_float)>> _metalMock1Tester;
+      decltype(OverloadedStaticVoid1FunctionMock)>> _metalMock1Tester;
 
    STARTUP
    {
@@ -95,7 +92,7 @@ namespace MetalMock
          Void1FunctionsMock,
          decltype(Void1FunctionMock),
          decltype(StaticVoid1FunctionMock),
-         decltype(OverloadedStaticVoid1FunctionMock_float)>>(
+         decltype(OverloadedStaticVoid1FunctionMock)>>(
          _mock,
          ExpectedVirtualFunctionSignature,
          ExpectedVirtualConstFunctionSignature,
@@ -108,7 +105,7 @@ namespace MetalMock
          StaticVoid1FunctionMock,
          StaticFunctionSignature,
 
-         OverloadedStaticVoid1FunctionMock_float,
+         OverloadedStaticVoid1FunctionMock,
          ExpectedOverloadedStaticFunctionSignatureA);
    }
 
@@ -128,7 +125,7 @@ namespace MetalMock
 
       test(Void1FunctionMock);
       test(StaticVoid1FunctionMock);
-      test(OverloadedStaticVoid1FunctionMock_float);
+      test(OverloadedStaticVoid1FunctionMock);
    }
 
    RUN_TESTS(MetalMockVoid1Tests)

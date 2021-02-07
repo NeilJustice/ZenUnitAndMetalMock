@@ -26,8 +26,7 @@ namespace ZenUnit
       METALMOCK_VOID1_CONST(Func, ElementType)
    };
 
-   using MemberForEacherType = MemberForEacher<
-      CollectionType<ElementType>, ClassType, void (ClassType::*)(ElementType) const>;
+   using MemberForEacherType = MemberForEacher<CollectionType<ElementType>, ClassType, void (ClassType::*)(ElementType) const>;
    MemberForEacherType _memberForEacher;
 
    TEST(MemberForEach_EmptyCollection_DoesNotCallFunc)
@@ -38,35 +37,33 @@ namespace ZenUnit
 
    TEST(MemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
-      ClassTypeMock classInstance;
+      ClassTypeMock classInstance{};
       classInstance.collection = { 1 };
       classInstance.FuncMock.Expect();
       //
-      _memberForEacher.MemberForEach(
-         &classInstance.collection, &classInstance, &ClassType::Func);
+      _memberForEacher.MemberForEach(&classInstance.collection, &classInstance, &ClassType::Func);
       //
       classInstance.FuncMock.CalledOnceWith(1);
    }
 
    TEST(MemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
    {
-      ClassTypeMock classInstance;
+      ClassTypeMock classInstance{};
       classInstance.collection = { 1, 2 };
       classInstance.FuncMock.Expect();
       //
-      _memberForEacher.MemberForEach(
-         &classInstance.collection, &classInstance, &ClassType::Func);
+      _memberForEacher.MemberForEach(&classInstance.collection, &classInstance, &ClassType::Func);
       //
       classInstance.FuncMock.CalledAsFollows(
-         {
-            1, 2
-         });
+      {
+         1, 2
+      });
    }
 
    TEST(CodeCoverage_ClassTypeFunc)
    {
-      ClassType classType;
-      classType.Func(ElementType{});
+      ClassType classInstance{};
+      classInstance.Func(ElementType{});
    }
 
    RUN_TEMPLATE_TESTS(MemberForEacherTests, vector, int)
