@@ -5,8 +5,6 @@ void GlobalVoid0FreeFunction() {}
 
 namespace MetalMock
 {
-   void NamespacedVoid0FreeFunction() {}
-
    class Void0Functions
    {
    public:
@@ -41,8 +39,6 @@ namespace MetalMock
 
    const string GlobalFreeFunctionSignature =
       "void GlobalVoid0FreeFunction()";
-   const string NamespacedFreeFunctionSignature =
-      "void MetalMock::NamespacedVoid0FreeFunction()";
    const string StaticFunctionSignature =
       "void MetalMock::Void0Functions::StaticVoid0Function()";
 
@@ -56,13 +52,11 @@ namespace MetalMock
       "void MetalMock::Void0Functions::NonVirtualFunctionConst() const";
 
    METALMOCK_VOID0_FREE(GlobalVoid0FreeFunction)
-   METALMOCK_VOID0_NAMESPACED_FREE(MetalMock, NamespacedVoid0FreeFunction)
    METALMOCK_VOID0_STATIC(MetalMock::Void0Functions, StaticVoid0Function)
    Void0FunctionsMock _metalMockObject;
 
    using MetalMock0ArgsTesterType = MetalMock0ArgsTester<
       decltype(GlobalVoid0FreeFunctionMock),
-      decltype(NamespacedVoid0FreeFunctionMock),
       decltype(StaticVoid0FunctionMock),
       Void0FunctionsMock>;
    unique_ptr<MetalMock0ArgsTesterType> _metalMock0ArgsTester;
@@ -72,8 +66,6 @@ namespace MetalMock
       _metalMock0ArgsTester = make_unique<MetalMock0ArgsTesterType>(
          GlobalVoid0FreeFunctionMock,
          GlobalFreeFunctionSignature,
-         NamespacedVoid0FreeFunctionMock,
-         NamespacedFreeFunctionSignature,
          StaticVoid0FunctionMock,
          StaticFunctionSignature,
          _metalMockObject,
@@ -86,7 +78,6 @@ namespace MetalMock
    TEST(OneHundredPercentCodeCoverage)
    {
       GlobalVoid0FreeFunction();
-      MetalMock::NamespacedVoid0FreeFunction();
       MetalMock::Void0Functions::StaticVoid0Function();
 
       MetalMock::Void0Functions void0Functions;
@@ -135,7 +126,6 @@ namespace MetalMock
          metalMockObject.CalledOnce();
       };
       metalmocktest(GlobalVoid0FreeFunctionMock);
-      metalmocktest(NamespacedVoid0FreeFunctionMock);
       metalmocktest(StaticVoid0FunctionMock);
 
       metalmocktest(_metalMockObject.VirtualFunctionMock);

@@ -5,7 +5,6 @@ namespace MetalMock
    template<
       typename MetalMockObjectType,
       typename FreeFunctionMockType,
-      typename NamespacedFreeFunctionMockType,
       typename StaticFunctionMockType>
    class MetalMock2ArgTester
    {
@@ -20,9 +19,6 @@ namespace MetalMock
       FreeFunctionMockType freeFunctionMockObject;
       const string freeFunctionSignature;
 
-      NamespacedFreeFunctionMockType namespacedFreeFunctionMockObject;
-      const string namespacedFreeFunctionSignature;
-
       StaticFunctionMockType staticFunctionMockObject;
       const string staticFunctionSignature;
    public:
@@ -36,9 +32,6 @@ namespace MetalMock
          FreeFunctionMockType freeFunctionMockObject,
          string freeFunctionSignature,
 
-         NamespacedFreeFunctionMockType namespacedFreeFunctionMockObject,
-         string namespacedFreeFunctionSignature,
-
          StaticFunctionMockType staticFunctionMockObject,
          string staticFunctionSignature)
          : metalMockObject(std::move(metalMockObject))
@@ -49,9 +42,6 @@ namespace MetalMock
 
          , freeFunctionMockObject(std::move(freeFunctionMockObject))
          , freeFunctionSignature(std::move(freeFunctionSignature))
-
-         , namespacedFreeFunctionMockObject(std::move(namespacedFreeFunctionMockObject))
-         , namespacedFreeFunctionSignature(std::move(namespacedFreeFunctionSignature))
 
          , staticFunctionMockObject(std::move(staticFunctionMockObject))
          , staticFunctionSignature(std::move(staticFunctionSignature))
@@ -73,9 +63,6 @@ namespace MetalMock
          function<void(int)> metalMockBoundFreeFunctionMock = BIND_1ARG_METALMOCK_OBJECT(freeFunctionMockObject);
          testcase([&] { metalMockBoundFreeFunctionMock(0); }, freeFunctionSignature);
 
-         function<void(int)> metalMockBoundNamespacedFreeFunctionMock = BIND_1ARG_METALMOCK_OBJECT(namespacedFreeFunctionMockObject);
-         testcase([&] { metalMockBoundNamespacedFreeFunctionMock(0); }, namespacedFreeFunctionSignature);
-
          function<void(int)> metalMockBoundStaticFunctionMock = BIND_1ARG_METALMOCK_OBJECT(staticFunctionMockObject);
          testcase([&] { metalMockBoundStaticFunctionMock(0); }, staticFunctionSignature);
       }
@@ -96,7 +83,6 @@ namespace MetalMock
          testcase(metalMockObject.NonVirtualConstFunctionMock);
 
          testcase(freeFunctionMockObject);
-         testcase(namespacedFreeFunctionMockObject);
          testcase(staticFunctionMockObject);
       }
    };

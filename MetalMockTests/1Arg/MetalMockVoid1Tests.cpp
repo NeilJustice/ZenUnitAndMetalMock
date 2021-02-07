@@ -67,10 +67,9 @@ namespace MetalMock
       "void MetalMock::Void1Functions::NonVirtualFunction(int)";
    const string ExpectedNonVirtualConstFunctionSignature =
       "void MetalMock::Void1Functions::NonVirtualConstFunction(int) const";
+
    const string FreeFunctionSignature =
       "void Void1Function(int)";
-   const string ExpectedNamespacedFunctionSignature =
-      "void MetalMock::Void1Function(int)";
    const string StaticFunctionSignature =
       "void MetalMock::Void1StaticFunctions::StaticFunction(int)";
    const string ExpectedOverloadedStaticFunctionSignatureA =
@@ -80,8 +79,6 @@ namespace MetalMock
 
    Void1FunctionsMock _mock;
    METALMOCK_VOID1_FREE(Void1Function, int)
-   // METALMOCK_VOID1_NAMESPACED_FREE
-   METALMOCK_VOID1_STATIC(MetalMock, Void1Function, int, _namespace)
    METALMOCK_VOID1_STATIC(MetalMock::Void1StaticFunctions, StaticVoid1Function, int)
    METALMOCK_VOID1_STATIC(MetalMock::Void1StaticFunctions, OverloadedStaticVoid1Function, float, _float)
    METALMOCK_VOID1_STATIC(MetalMock::Void1StaticFunctions, OverloadedStaticVoid1Function, double, _double)
@@ -89,7 +86,6 @@ namespace MetalMock
    unique_ptr<MetalMock1Tester<
       Void1FunctionsMock,
       decltype(Void1FunctionMock),
-      decltype(Void1FunctionMock_namespace),
       decltype(StaticVoid1FunctionMock),
       decltype(OverloadedStaticVoid1FunctionMock_float)>> _metalMock1Tester;
 
@@ -98,7 +94,6 @@ namespace MetalMock
       _metalMock1Tester = make_unique<MetalMock1Tester<
          Void1FunctionsMock,
          decltype(Void1FunctionMock),
-         decltype(Void1FunctionMock_namespace),
          decltype(StaticVoid1FunctionMock),
          decltype(OverloadedStaticVoid1FunctionMock_float)>>(
          _mock,
@@ -109,9 +104,6 @@ namespace MetalMock
 
          Void1FunctionMock,
          FreeFunctionSignature,
-
-         Void1FunctionMock_namespace,
-         ExpectedNamespacedFunctionSignature,
 
          StaticVoid1FunctionMock,
          StaticFunctionSignature,
@@ -135,7 +127,6 @@ namespace MetalMock
       test(_mock.NonVirtualConstFunctionMock);
 
       test(Void1FunctionMock);
-      test(Void1FunctionMock_namespace);
       test(StaticVoid1FunctionMock);
       test(OverloadedStaticVoid1FunctionMock_float);
    }

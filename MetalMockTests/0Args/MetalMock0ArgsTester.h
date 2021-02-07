@@ -4,7 +4,6 @@ namespace MetalMock
 {
    template<
       typename GlobalFreeFunctionMockType,
-      typename NamespaceFreeFunctionMockType,
       typename StaticFunctionMockType,
       typename MetalMockObjectType>
    class MetalMock0ArgsTester
@@ -12,9 +11,6 @@ namespace MetalMock
    private:
       GlobalFreeFunctionMockType _globalFreeFunctionMock;
       const string _globalFreeFunctionSignature;
-
-      NamespaceFreeFunctionMockType _namespacedFreeFunctionMock;
-      const string _namespacedFreeFunctionSignature;
 
       StaticFunctionMockType _staticFunctionMock;
       const string _staticFunctionSignature;
@@ -28,8 +24,6 @@ namespace MetalMock
       MetalMock0ArgsTester(
          GlobalFreeFunctionMockType globalFreeFunctionMock,
          string_view globalFreeFunctionSignature,
-         NamespaceFreeFunctionMockType namespacedFreeFunctionMock,
-         string_view namespacedFreeFunctionSignature,
          StaticFunctionMockType staticFunctionMock,
          string_view staticFunctionSignature,
          MetalMockObjectType metalMockObject,
@@ -39,8 +33,6 @@ namespace MetalMock
          string_view nonVirtualConstFunctionSignature)
          : _globalFreeFunctionMock(globalFreeFunctionMock)
          , _globalFreeFunctionSignature(globalFreeFunctionSignature)
-         , _namespacedFreeFunctionMock(namespacedFreeFunctionMock)
-         , _namespacedFreeFunctionSignature(namespacedFreeFunctionSignature)
          , _staticFunctionMock(staticFunctionMock)
          , _staticFunctionSignature(staticFunctionSignature)
          , _metalMockObject(metalMockObject)
@@ -59,7 +51,6 @@ namespace MetalMock
                MetalMock::UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature));
          };
          metalmocktest(_globalFreeFunctionMock, _globalFreeFunctionSignature);
-         metalmocktest(_namespacedFreeFunctionMock, _namespacedFreeFunctionSignature);
          metalmocktest(_staticFunctionMock, _staticFunctionSignature);
 
          metalmocktest(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
@@ -94,7 +85,6 @@ namespace MetalMock
 "File.cpp(1)");
          };
          metalmocktest(_globalFreeFunctionMock, _globalFreeFunctionSignature);
-         metalmocktest(_namespacedFreeFunctionMock, _namespacedFreeFunctionSignature);
          metalmocktest(_staticFunctionMock, _staticFunctionSignature);
 
          metalmocktest(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
@@ -108,10 +98,6 @@ namespace MetalMock
          const function<void()> metalMockBoundFreeFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_globalFreeFunctionMock);
          THROWS_EXCEPTION(metalMockBoundFreeFunctionMock(),
             UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_globalFreeFunctionSignature));
-
-         const function<void()> metalMockBoundNamespacedFreeFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_namespacedFreeFunctionMock);
-         THROWS_EXCEPTION(metalMockBoundNamespacedFreeFunctionMock(),
-            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_namespacedFreeFunctionSignature));
 
          const function<void()> metalMockBoundStaticFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_staticFunctionMock);
          THROWS_EXCEPTION(metalMockBoundStaticFunctionMock(),
@@ -160,13 +146,6 @@ namespace MetalMock
          metalMockBoundFreeFunctionMock();
          AssertBehaviorAfterSecondCall(_globalFreeFunctionMock, _globalFreeFunctionSignature);
 
-         const function<void()> metalMockBoundNamespacedFreeFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_namespacedFreeFunctionMock);
-         _namespacedFreeFunctionMock.Expect();
-         metalMockBoundNamespacedFreeFunctionMock();
-         AssertBehaviorAfterFirstCall(_namespacedFreeFunctionMock, _namespacedFreeFunctionSignature);
-         metalMockBoundNamespacedFreeFunctionMock();
-         AssertBehaviorAfterSecondCall(_namespacedFreeFunctionMock, _namespacedFreeFunctionSignature);
-
          const function<void()> metalMockBoundStaticFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_staticFunctionMock);
          _staticFunctionMock.Expect();
          metalMockBoundStaticFunctionMock();
@@ -213,11 +192,6 @@ namespace MetalMock
          _globalFreeFunctionMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
          THROWS_EXCEPTION(metalMockBoundGlobalFreeFunction(), runtime_error, exceptionMessage);
          metalmocktest(_globalFreeFunctionMock);
-
-         const function<void()> metalMockBoundNamespacedFreeFunction = BIND_0ARG_METALMOCK_OBJECT(_namespacedFreeFunctionMock);
-         _namespacedFreeFunctionMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
-         THROWS_EXCEPTION(metalMockBoundNamespacedFreeFunction(), runtime_error, exceptionMessage);
-         metalmocktest(_namespacedFreeFunctionMock);
 
          const function<void()> metalMockBoundStaticFunction = BIND_0ARG_METALMOCK_OBJECT(_staticFunctionMock);
          _staticFunctionMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);

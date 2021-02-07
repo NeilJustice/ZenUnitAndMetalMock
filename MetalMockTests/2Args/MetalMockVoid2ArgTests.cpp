@@ -66,13 +66,11 @@ namespace MetalMock
 
    Void2ArgFunctionsMock _metalMockObject;
    METALMOCK_VOID2_FREE(Void2ArgFreeFunction, int, int)
-   METALMOCK_VOID2_NAMESPACED_FREE(MetalMock, Void2ArgFreeFunction, int, int, _namespaced)
    METALMOCK_VOID2_STATIC(MetalMock::Void2ArgStaticFunctions, StaticVoid2ArgFunction, int, int)
 
    unique_ptr<MetalMock2ArgTester<
       Void2ArgFunctionsMock,
       decltype(Void2ArgFreeFunctionMock),
-      decltype(Void2ArgFreeFunctionMock_namespaced),
       decltype(StaticVoid2ArgFunctionMock)>> _metalMock2ArgTester;
 
    const string Virtual2ArgFunctionSignature =
@@ -90,9 +88,6 @@ namespace MetalMock
    const string FreeFunctionSignature =
       "void Void2ArgFreeFunction(int, int)";
 
-   const string NamespacedFreeFunctionSignature =
-      "void MetalMock::Void2ArgFreeFunction(int, int)";
-
    const string StaticFunctionSignature =
       "void MetalMock::Void2ArgStaticFunctions::StaticVoid2ArgFunction(int, int)";
 
@@ -101,7 +96,6 @@ namespace MetalMock
       _metalMock2ArgTester = make_unique<MetalMock2ArgTester<
          Void2ArgFunctionsMock,
          decltype(Void2ArgFreeFunctionMock),
-         decltype(Void2ArgFreeFunctionMock_namespaced),
          decltype(StaticVoid2ArgFunctionMock)>>(
          _metalMockObject,
 
@@ -112,9 +106,6 @@ namespace MetalMock
 
          Void2ArgFreeFunctionMock,
          FreeFunctionSignature,
-
-         Void2ArgFreeFunctionMock_namespaced,
-         NamespacedFreeFunctionSignature,
 
          StaticVoid2ArgFunctionMock,
          StaticFunctionSignature);
@@ -139,7 +130,6 @@ Argument2: )" + to_string(argument2);
       testcase(_metalMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
       testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
       testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
@@ -159,7 +149,6 @@ Argument2: )" + to_string(argument2);
       testcase(_metalMockObject.NonVirtual2ArgConstFunctionMock);
 
       testcase(Void2ArgFreeFunctionMock);
-      testcase(Void2ArgFreeFunctionMock_namespaced);
       testcase(StaticVoid2ArgFunctionMock);
    }
 
@@ -183,7 +172,6 @@ Argument2: )" + to_string(argument2);
       testcase(_metalMockObject.NonVirtual2ArgConstFunctionMock);
 
       testcase(Void2ArgFreeFunctionMock);
-      testcase(Void2ArgFreeFunctionMock_namespaced);
       testcase(StaticVoid2ArgFunctionMock);
    }
 
@@ -207,7 +195,6 @@ Argument2: )" + to_string(argument2);
       testcase(_metalMockObject.NonVirtual2ArgConstFunctionMock);
 
       testcase(Void2ArgFreeFunctionMock);
-      testcase(Void2ArgFreeFunctionMock_namespaced);
       testcase(StaticVoid2ArgFunctionMock);
    }
 
@@ -232,7 +219,6 @@ File.cpp(1))";
       testcase(_metalMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
       testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
       testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
@@ -274,7 +260,6 @@ File.cpp(1))";
       testcase(_metalMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
       testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
       testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
@@ -300,7 +285,6 @@ File.cpp(1))";
       testcase(_metalMockObject.NonVirtual2ArgConstFunctionMock, NonVirtual2ArgConstFunctionSignature);
 
       testcase(Void2ArgFreeFunctionMock, FreeFunctionSignature);
-      testcase(Void2ArgFreeFunctionMock_namespaced, NamespacedFreeFunctionSignature);
       testcase(StaticVoid2ArgFunctionMock, StaticFunctionSignature);
    }
 
