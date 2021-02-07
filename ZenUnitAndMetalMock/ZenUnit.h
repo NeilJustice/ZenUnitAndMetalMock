@@ -3560,24 +3560,18 @@ namespace ZenUnit
       };
    }
 
-   inline void WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) noexcept
+   inline void WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars)
    {
-      char* writingPointer = outChars;
-      unsigned long long runningValue = 0;
-      size_t numberOfCharactersWritten = 0;
-      do
+      ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615);
+      //                           12345678901234567890
+      constexpr size_t LengthOfSizeTMaxValue = 20;
+      const std::to_chars_result toCharsResult = std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
+      if (toCharsResult.ec != std::errc{})
       {
-         runningValue = value;
-         value /= 10;
-         unsigned long long index = 35 + (runningValue - value * 10);
-         *writingPointer++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[index];
-         ++numberOfCharactersWritten;
-      } while (value != 0);
-      char lastCharacter = *writingPointer;
-      char* const pointerToTerminatingZero = writingPointer;
-      *writingPointer-- = '\0';
-      *pointerToTerminatingZero = lastCharacter;
-      std::reverse(outChars, outChars + numberOfCharactersWritten);
+         const std::string exceptionMessage = String::Concat(
+            "ZenUnit::WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars");
+         throw std::invalid_argument(exceptionMessage);
+      }
    }
 
    template<typename... TupleTypes>

@@ -8,32 +8,35 @@ namespace ZenUnit
 
    TEST2X2(WriteUnsignedLongLongToCharArray_WritesExpectedNumberToOutCharsPointer,
       unsigned long long value, const char* expectedResultingOutChars,
-      0ull, "0",
-      1ull, "1",
-      2ull, "2",
-      3ull, "3",
-      4ull, "4",
-      5ull, "5",
-      6ull, "6",
-      7ull, "7",
-      8ull, "8",
-      9ull, "9",
-      10ull, "10",
-      11ull, "11",
-      99ull, "99",
-      100ull, "100",
-      123ull, "123",
-      9999ull, "9999",
-      10000ull, "10000",
-      1234567890ull, "1234567890",
-      std::numeric_limits<unsigned>::max(), "4294967295",
-      std::numeric_limits<unsigned long long>::max(), "18446744073709551615")
+      0ULL, "0",
+      1ULL, "1",
+      2ULL, "2",
+      3ULL, "3",
+      4ULL, "4",
+      5ULL, "5",
+      6ULL, "6",
+      7ULL, "7",
+      8ULL, "8",
+      9ULL, "9",
+      10ULL, "10",
+      11ULL, "11",
+      99ULL, "99",
+      100ULL, "100",
+      123ULL, "123",
+      9999ULL, "9999",
+      10000ULL, "10000",
+      1234567890ULL, "1234567890",
+      UINT_MAX, "4294967295",
+      ULLONG_MAX, "18446744073709551615")
    {
-      char outChars[64]{};
+      ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615);
+      //                           12345678901234567890
+      constexpr size_t LengthOfSizeTMaxValue = 20;
+      char chars[LengthOfSizeTMaxValue + 1]{};
       //
-      ZenUnit::WriteUnsignedLongLongToCharArray(value, outChars);
+      ZenUnit::WriteUnsignedLongLongToCharArray(value, chars);
       //
-      ARE_EQUAL(expectedResultingOutChars, outChars);
+      ARE_EQUAL(expectedResultingOutChars, chars);
    }
 
    RUN_TESTS(WriteUnsignedLongLongToCharArrayTests)
