@@ -11,7 +11,7 @@
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-architecture=x64 --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
+    <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <WorkingDirectory>C:\Code\ZenUnitAndMetalMock</WorkingDirectory>

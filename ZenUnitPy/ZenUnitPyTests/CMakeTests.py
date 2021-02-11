@@ -21,11 +21,10 @@ class CMakeTests(unittest.TestCase):
             platform.system.return_value = platformSystem
             folderPath = ''
             generator = 'Generator'
-            architecture = 'Architecture'
             buildType = 'BuildType'
             cmakeListsFolderPath = 'CMakeListsFolderPath'
             #
-            CMake.generate(folderPath, generator, architecture, buildType, cmakeDefinitions, cmakeListsFolderPath)
+            CMake.generate(folderPath, generator, buildType, cmakeDefinitions, cmakeListsFolderPath)
             #
             os.makedirs.assert_called_once_with(folderPath, exist_ok=True)
             os.chdir.assert_called_once_with(folderPath)
@@ -33,9 +32,9 @@ class CMakeTests(unittest.TestCase):
             Process.run.assert_called_once_with(expectedCMakeCommand)
       testcase('Linux', '', 'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType  CMakeListsFolderPath')
       testcase('Linux', '-DSanitizersMode=ON', 'cmake -G"Generator" -DCMAKE_BUILD_TYPE=BuildType -DSanitizersMode=ON CMakeListsFolderPath')
-      testcase('linux', '', 'cmake -G"Generator" -A"Architecture"  CMakeListsFolderPath')
-      testcase('Windows', '', 'cmake -G"Generator" -A"Architecture"  CMakeListsFolderPath')
-      testcase('Windows', '-DCMAKE_INSTALL_PREFIX=C:/', 'cmake -G"Generator" -A"Architecture" -DCMAKE_INSTALL_PREFIX=C:/ CMakeListsFolderPath')
+      testcase('linux', '', 'cmake -G"Generator" -Ax64  CMakeListsFolderPath')
+      testcase('Windows', '', 'cmake -G"Generator" -Ax64  CMakeListsFolderPath')
+      testcase('Windows', '-DCMAKE_INSTALL_PREFIX=C:/', 'cmake -G"Generator" -Ax64 -DCMAKE_INSTALL_PREFIX=C:/ CMakeListsFolderPath')
 
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(CMakeTests, testNames)

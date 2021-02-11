@@ -3,11 +3,16 @@
    "configurations":
    [
       {
-         "name": "Debug ZenUnitPyTests",
-         "type": "cppdbg",
+         "name": "Python",
+         "type": "python",
+         "python": "/usr/bin/python",
          "request": "launch",
-         "cwd": "${workspaceRoot}",
-         "program": "${currentFile}"
+         "program": "${file}",
+         "args": [ "" ],
+         "env": { "PYTHONPATH": ".." },
+         "stopOnEntry": false,
+         "console": "integratedTerminal",
+         "cwd": "${fileDirname}"
       }
    ]
 }
