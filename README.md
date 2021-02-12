@@ -559,24 +559,24 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit Roadmap
 
-|Future ZenUnit Feature|Estimated Delivery Month|Implementation Status|
-|----------------------|------------------------|---------------------|
-|`TUPLES_ARE_EQUAL`|January 2021|Implemented|
-|Refactor ZenUnit and MetalMock documentation into multiple pages from a single page|January 2021|In progress|
-|ctest support|February 2021|Awaiting implementation|
-|GitHub Actions build|February 2021|Awaiting implementation|
-|SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|February 2021|Awaiting implementation|
-|SonarCloud Badge|February 2021|Awaiting implementation|
-|Coverity Badge|February 2021|Awaiting implementation|
-|`main` and `dev` branches|February 2021|Awaiting implementation|
-|`ARE_NEAR` floating point assertion|March 2021|Awaiting implementation|
-|`--parallel` for parallel running of tests|April 2021|Awaiting implementation|
+|Future ZenUnit Feature|Implementation Status As Of 2/12/2021|
+|----------------------|-------------------------------------|
+|`TUPLES_ARE_EQUAL`|Implemented|
+|SonarCloud badge for ZenUnitPyUtils Python|In progress|
+|ctest support|Awaiting implementation|
+|GitHub Actions build|Awaiting implementation|
+|SonarCloud badge for ZenUnit and MetalMock C++|Awaiting implementation|
+|SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|Awaiting implementation|
+|Coverity badge|Awaiting implementation|
+|`main` and `dev` branches|Awaiting implementation|
+|`ARE_NEAR` floating point assertion|Awaiting implementation|
+|`--parallel` for parallel running of tests|Awaiting implementation|
 
 ### MetalMock Roadmap
 
-|Future MetalMock Feature|Estimated Delivery Month|Implementation Status|
-|------------------------|------------------------|---------------------|
-|Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness.|March 2021|Awaiting implementation|
+|Future MetalMock Feature|Implementation Status As Of 2/12/2021|
+|------------------------|-------------------------------------|
+|Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness.|Awaiting implementation|
 
 ### Acknowledgments
 
@@ -586,7 +586,7 @@ ZenUnit.h and MetalMock.h installed on Windows:
 * [Viktor Kirilov and the contributors to doctest](https://github.com/onqtam/doctest)
 * [Phil Nash, Martin Horenovský, and the contributors to Catch2](https://github.com/catchorg/Catch2)
 * [Blair Conrad, Thomas Levesque, and the contributors to FakeItEasy](https://github.com/FakeItEasy/FakeItEasy)
-* [Roy Osherove, author of The Art of Unit Testing, a book that early on influenced my thinking on unit testing and mocking](https://osherove.com/)
+* [Roy Osherove, author of The Art of Unit Testing, a book which early on influenced my thinking on unit testing and mocking](https://osherove.com/)
 * [The many authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)
 * [The many authors of Google Test and Google Mock](https://github.com/google/googletest)
 * [My colleagues at Quantlab](https://www.quantlab.com)
