@@ -3578,7 +3578,7 @@ namespace ZenUnit
 
    inline void WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars)
    {
-      ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615);
+      ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615ULL);
       //                           12345678901234567890
       constexpr size_t LengthOfSizeTMaxValue = 20;
       const std::to_chars_result toCharsResult = std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
