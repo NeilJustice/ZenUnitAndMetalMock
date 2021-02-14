@@ -15,12 +15,12 @@ def main(args):
       platformSystem = platform.system().casefold()
       if platformSystem == 'linux':
          linux_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
-         Process.run('MetalMockExamples/MetalMockExamples')
-         Process.run('MetalMockTests/MetalMockTests')
-         Process.run('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests')
-         Process.run('ZenUnitExamples/ZenUnitExamples')
-         Process.run('ZenUnitLibraryTests/ZenUnitLibraryTests')
-         Process.run('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
+         Process.fail_fast_run('MetalMockExamples/MetalMockExamples')
+         Process.fail_fast_run('MetalMockTests/MetalMockTests')
+         Process.fail_fast_run('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests')
+         Process.fail_fast_run('ZenUnitExamples/ZenUnitExamples')
+         Process.fail_fast_run('ZenUnitLibraryTests/ZenUnitLibraryTests')
+         Process.fail_fast_run('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
          os.chdir('..')
       else:
          windows_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
@@ -28,12 +28,12 @@ def main(args):
 
 def linux_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeBuildType, cmakeDefinitions, '..')
-   Process.run('ninja -v')
+   Process.fail_fast_run('ninja -v')
 
 def windows_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
    CMake.generate('.', cmakeGenerator, cmakeBuildType, cmakeDefinitions, '.')
-   buildCommand = f'cmake --build . --config {cmakeBuildType}'
-   Process.run(buildCommand)
+   cmakeBuildCommand = f'cmake.exe --build . --config {cmakeBuildType}'
+   Process.fail_fast_run(cmakeBuildCommand)
 
 if __name__ == "__main__": # pragma nocover
    main(sys.argv)

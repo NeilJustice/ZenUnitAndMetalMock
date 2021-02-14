@@ -12,13 +12,6 @@ def bytes_to_utf8(byteString):
    utf8 = byteString.decode('utf-8')
    return utf8
 
-def run(command):
-   shlexedCommand = shlex.split(command)
-   completedProcess = subprocess.run(shlexedCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-   completedProcess.stdout = bytes_to_utf8(completedProcess.stdout)
-   completedProcess.stderr = bytes_to_utf8(completedProcess.stderr)
-   return completedProcess
-
 def fail_fast_run(command):
    exitCode = run_and_get_exit_code(command)
    if exitCode != 0:

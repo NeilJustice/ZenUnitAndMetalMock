@@ -10,7 +10,6 @@ from unittest.mock import patch, call
 from ZenUnitPy import Process, UnitTester, Random
 
 testNames = [
-'run_RunsProcess_ReturnsStdOutStdErrAndReturnCode_test',
 'fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero_test',
 'run_and_get_exit_code_RunsProcess_ReturnsExitCode_test',
 'run_and_get_exit_code_RunsProcess_ProcessRaisesAnException_PrintsException_Exits1_test',
@@ -34,33 +33,6 @@ class ProcessTests(unittest.TestCase):
       self.shlexedCommand = Random.string()
       self.currentWorkingDirectory = Random.string()
       self.ExpectedPylintcommand = 'pylint --rcfile=.pylintrc --init-hook=\"sys.path.append(\'.\')\" '
-
-   @patch('shlex.split', spec_set=True)
-   @patch('subprocess.run', spec_set=True)
-   @patch('ZenUnitPy.Process.bytes_to_utf8', spec_set=True)
-   def run_RunsProcess_ReturnsStdOutStdErrAndReturnCode_test(self, _1, _2, _3):
-      shlex.split.return_value = self.shlexedCommand
-      args = [Random.string(), Random.string()]
-      returncode = Random.integer()
-      stdoutBytes = bytes(Random.string(), 'utf-8')
-      stderrBytes = bytes(Random.string(), 'utf-8')
-      subprocessRunReturnValue = subprocess.CompletedProcess(args, returncode, stdoutBytes, stderrBytes)
-      subprocess.run.return_value = subprocessRunReturnValue
-      stdoutUtf8 = Random.string()
-      stderrUtf8 = Random.string()
-      Process.bytes_to_utf8.side_effect = [stdoutUtf8, stderrUtf8]
-      #
-      completedProcess = Process.run(self.command)
-      #
-      shlex.split.assert_called_once_with(self.command)
-      subprocess.run.assert_called_once_with(self.shlexedCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-      self.assertEqual(2, len(Process.bytes_to_utf8.call_args_list))
-      Process.bytes_to_utf8.assert_has_calls([call(stdoutBytes), call(stderrBytes)])
-      expectedReturnValue = subprocess.CompletedProcess(args, returncode, stdoutUtf8, stderrUtf8)
-      self.assertEqual(expectedReturnValue.args, completedProcess.args)
-      self.assertEqual(expectedReturnValue.returncode, completedProcess.returncode)
-      self.assertEqual(expectedReturnValue.stdout, completedProcess.stdout)
-      self.assertEqual(expectedReturnValue.stderr, completedProcess.stderr)
 
    def fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero_test(self):
       @patch('ZenUnitPy.Process.run_and_get_exit_code', spec_set=True)

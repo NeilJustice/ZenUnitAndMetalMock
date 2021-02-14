@@ -40,7 +40,7 @@ class BuildZenUnitTests(unittest.TestCase):
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnitAndMetalMock.linux_cmake_build', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnitAndMetalMock.windows_cmake_build', spec_set=True)
-      @patch('ZenUnitPy.Process.run', spec_set=True)
+      @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
       @patch('os.chdir', spec_true=True)
       def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
@@ -59,8 +59,8 @@ class BuildZenUnitTests(unittest.TestCase):
             platform.system.assert_called_once_with()
             if expectLinux:
                BuildZenUnitAndMetalMock.linux_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-               self.assertEqual(6, len(Process.run.call_args_list))
-               Process.run.assert_has_calls([
+               self.assertEqual(6, len(Process.fail_fast_run.call_args_list))
+               Process.fail_fast_run.assert_has_calls([
                   call('MetalMockExamples/MetalMockExamples'),
                   call('MetalMockTests/MetalMockTests'),
                   call('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests'),
@@ -70,7 +70,7 @@ class BuildZenUnitTests(unittest.TestCase):
                os.chdir.assert_called_once_with('..')
             else:
                BuildZenUnitAndMetalMock.windows_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
-               Process.run.assert_not_called()
+               Process.fail_fast_run.assert_not_called()
                os.chdir.assert_not_called()
             self.assertEqual(0, exitCode)
       testcase('Linux', True)
@@ -80,29 +80,29 @@ class BuildZenUnitTests(unittest.TestCase):
 
    def linux_cmake_and_build_RunsCMakes_RunsNinja_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
-      @patch('ZenUnitPy.Process.run', spec_set=True)
+      @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument}'):
             #
             BuildZenUnitAndMetalMock.linux_cmake_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with(self.cmakeBuildType, self.cmakeGenerator, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '..')
-            Process.run.assert_called_once_with('ninja -v')
+            Process.fail_fast_run.assert_called_once_with('ninja -v')
       testcase('', '')
       testcase('-DOptionA=ON', '-DOptionA=ON')
       testcase('-DOptionB=ON', '-DOptionB=ON')
 
    def windows_cmake_build_RunsCMakes_RunsCMakeBuildToRunMSBuild_test(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
-      @patch('ZenUnitPy.Process.run', spec_set=True)
+      @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument, }'):
             #
             BuildZenUnitAndMetalMock.windows_cmake_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
-            expectedCMakeBuildCommand = 'cmake --build . --config {0}'.format(self.cmakeBuildType)
-            Process.run.assert_called_once_with(expectedCMakeBuildCommand)
+            expectedCMakeBuildCommand = 'cmake.exe --build . --config {0}'.format(self.cmakeBuildType)
+            Process.fail_fast_run.assert_called_once_with(expectedCMakeBuildCommand)
       testcase('', '')
       testcase('-DOptionA=ON', '-DOptionA=ON')
       testcase('-DOptionB=ON', '-DOptionB=ON')

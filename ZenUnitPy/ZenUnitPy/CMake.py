@@ -10,4 +10,4 @@ def generate(folderPath, generator, buildType, cmakeDefinitions, cmakeListsFolde
       cmakeCommand = f'cmake -G"{generator}" -DCMAKE_BUILD_TYPE={buildType} {cmakeDefinitions} {cmakeListsFolderPath}'
    else:
       cmakeCommand = f'cmake -G"{generator}" -Ax64 {cmakeDefinitions} {cmakeListsFolderPath}'
-   Process.run(cmakeCommand)
+   Process.fail_fast_run(cmakeCommand)
