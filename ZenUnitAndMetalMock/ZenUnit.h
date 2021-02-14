@@ -7369,15 +7369,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T RandomBetween(long long inclusiveLowerBound, long long inclusiveUpperBound)
    {
-      std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
       if (inclusiveLowerBound == inclusiveUpperBound)
       {
          return static_cast<T>(inclusiveLowerBound);
       }
       std::uniform_int_distribution<int> uniformIntDistribution(1, 10);
       static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      const int equivalenceClass1Through5 = uniformIntDistribution(defaultRandomEngine);
-      switch (equivalenceClass1Through5)
+      const int randomIntBetween1And10 = uniformIntDistribution(defaultRandomEngine);
+      switch (randomIntBetween1And10)
       {
       case 1: return static_cast<T>(inclusiveLowerBound);
       case 2: return static_cast<T>(inclusiveLowerBound + 1LL);
@@ -7388,6 +7387,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 7:
       case 8:
       {
+         std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
          const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformLongLongDistribution(defaultRandomEngine);
          const T randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT =
             static_cast<T>(randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound);
@@ -7396,6 +7396,36 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 9: return static_cast<T>(inclusiveUpperBound - 1LL);
       case 10:
       default: return static_cast<T>(inclusiveUpperBound);
+      }
+   }
+
+   inline size_t RandomSizeTBetween(size_t inclusiveLowerBound, size_t inclusiveUpperBound)
+   {
+      if (inclusiveLowerBound == inclusiveUpperBound)
+      {
+         return inclusiveLowerBound;
+      }
+      std::uniform_int_distribution<int> uniformIntDistribution(1, 10);
+      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
+      const int randomIntBetween1And10 = uniformIntDistribution(defaultRandomEngine);
+      switch (randomIntBetween1And10)
+      {
+      case 1: return inclusiveLowerBound;
+      case 2: return inclusiveLowerBound + 1ULL;
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      {
+         std::uniform_int_distribution<size_t> uniformSizeTDistribution(inclusiveLowerBound, inclusiveUpperBound);
+         const size_t randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformSizeTDistribution(defaultRandomEngine);
+         return randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound;
+      }
+      case 9: return inclusiveUpperBound - 1ULL;
+      case 10:
+      default: return inclusiveUpperBound;
       }
    }
 
@@ -8016,9 +8046,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual size_t SizeTBetween(size_t inclusiveLowerBound, size_t inclusiveUpperBound) const
       {
-         const size_t randomSizeT = RandomBetween<size_t>(
-            static_cast<long long>(inclusiveLowerBound), static_cast<long long>(inclusiveUpperBound));
-         return randomSizeT;
+         const size_t randomSizeTBetween = RandomSizeTBetween(inclusiveLowerBound, inclusiveUpperBound);
+         return randomSizeTBetween;
       }
 
       virtual float Float() const

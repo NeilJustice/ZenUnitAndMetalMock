@@ -46,9 +46,10 @@ namespace ZenUnit
 
       const size_t randomSizeTBetween1And3 = _randomGenerator.SizeTBetween(1, 3);
       IS_TRUE(randomSizeTBetween1And3 >= 1 && randomSizeTBetween1And3 <= 3);
-
       const size_t randomSizeTBetween5And7 = _randomGenerator.SizeTBetween(5, 7);
       IS_TRUE(randomSizeTBetween5And7 >= 5 && randomSizeTBetween1And3 <= 7);
+      const size_t randomSizeTBetweenLongLongMaxPlus1AndSizeTMax = _randomGenerator.SizeTBetween(static_cast<size_t>(numeric_limits<long long>::max()) + 1, numeric_limits<size_t>::max());
+      IS_TRUE(randomSizeTBetweenLongLongMaxPlus1AndSizeTMax >= static_cast<size_t>(numeric_limits<long long>::max()) + 1 && randomSizeTBetweenLongLongMaxPlus1AndSizeTMax <= numeric_limits<size_t>::max());
 
       const float randomFloat = _randomGenerator.Float();
       ARE_EQUAL(randomFloat, randomFloat);
