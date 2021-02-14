@@ -17,6 +17,8 @@ def main(args):
          linux_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
          Process.run('MetalMockExamples/MetalMockExamples')
          Process.run('MetalMockTests/MetalMockTests')
+         Process.run('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests')
+         Process.run('ZenUnitExamples/ZenUnitExamples')
          Process.run('ZenUnitLibraryTests/ZenUnitLibraryTests')
          Process.run('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests')
          os.chdir('..')
@@ -35,3 +37,8 @@ def windows_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
 
 if __name__ == "__main__": # pragma nocover
    main(sys.argv)
+
+# Example command line arguments:
+# --cmake-generator="Visual Studio 16 2019" --cmake-build-type=Debug --cmake-definitions=""
+# Working directory:
+# C:\Code\ZenUnitAndMetalMock
