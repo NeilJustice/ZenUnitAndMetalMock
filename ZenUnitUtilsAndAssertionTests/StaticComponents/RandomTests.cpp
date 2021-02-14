@@ -23,6 +23,7 @@ namespace ZenUnit
    AFACT(Random_String_ReturnsRandomString1Through10)
    AFACT(Random_WideString_CodeCoverage)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   AFACT(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
    FACTS(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue)
    EVIDENCE
@@ -307,6 +308,66 @@ namespace ZenUnit
       IS_TRUE(randomBetweenReturnedPositive1);
       IS_TRUE(randomBetweenReturnedPositive2);
       IS_TRUE(randomBetweenReturnedPositive3);
+   }
+
+   TEST(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   {
+      bool randomBetweenReturned3 = false;
+      bool randomBetweenReturned4 = false;
+      bool randomBetweenReturned5 = false;
+      bool randomBetweenReturned6 = false;
+      bool randomBetweenReturned7 = false;
+      bool randomBetweenReturned8 = false;
+      bool randomBetweenReturned9 = false;
+      for (size_t i = 0; i < 100000; ++i)
+      {
+         const size_t randomSizeT = RandomSizeTBetween(3, 9);
+         if (randomSizeT == 3)
+         {
+            randomBetweenReturned3 = true;
+         }
+         else if (randomSizeT == 4)
+         {
+            randomBetweenReturned4 = true;
+         }
+         else if (randomSizeT == 5)
+         {
+            randomBetweenReturned5 = true;
+         }
+         else if (randomSizeT == 6)
+         {
+            randomBetweenReturned6 = true;
+         }
+         else if (randomSizeT == 7)
+         {
+            randomBetweenReturned7 = true;
+         }
+         else if (randomSizeT == 8)
+         {
+            randomBetweenReturned8 = true;
+         }
+         else if (randomSizeT == 9)
+         {
+            randomBetweenReturned9 = true;
+         }
+         if (randomBetweenReturned3 &&
+             randomBetweenReturned4 &&
+             randomBetweenReturned5 &&
+             randomBetweenReturned6 &&
+             randomBetweenReturned7 &&
+             randomBetweenReturned8 &&
+             randomBetweenReturned9)
+         {
+            break;
+         }
+      }
+      IS_TRUE(randomBetweenReturned3);
+      IS_TRUE(randomBetweenReturned4);
+      IS_TRUE(randomBetweenReturned5);
+      IS_TRUE(randomBetweenReturned6);
+      IS_TRUE(randomBetweenReturned7);
+      IS_TRUE(randomBetweenReturned8);
+      IS_TRUE(randomBetweenReturned9);
    }
 
    TEST(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
