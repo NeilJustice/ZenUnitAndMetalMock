@@ -251,15 +251,21 @@ namespace ZenUnit
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    {
+      bool randomBetweenReturnedNegative3 = false;
       bool randomBetweenReturnedNegative2 = false;
       bool randomBetweenReturnedNegative1 = false;
       bool randomBetweenReturned0 = false;
       bool randomBetweenReturnedPositive1 = false;
       bool randomBetweenReturnedPositive2 = false;
-      for (size_t i = 0; i < 10000; ++i)
+      bool randomBetweenReturnedPositive3 = false;
+      for (size_t i = 0; i < 100000; ++i)
       {
-         const long long randomLongLong = RandomBetween<long long>(-2, 2);
-         if (randomLongLong == -2)
+         const long long randomLongLong = RandomBetween<long long>(-3, 3);
+         if (randomLongLong == -3)
+         {
+            randomBetweenReturnedNegative3 = true;
+         }
+         else if (randomLongLong == -2)
          {
             randomBetweenReturnedNegative2 = true;
          }
@@ -279,20 +285,28 @@ namespace ZenUnit
          {
             randomBetweenReturnedPositive2 = true;
          }
-         if (randomBetweenReturnedNegative2 &&
+         else if (randomLongLong == 3)
+         {
+            randomBetweenReturnedPositive3 = true;
+         }
+         if (randomBetweenReturnedNegative3 &&
+             randomBetweenReturnedNegative2 &&
              randomBetweenReturnedNegative1 &&
              randomBetweenReturned0 &&
              randomBetweenReturnedPositive1 &&
-             randomBetweenReturnedPositive2)
+             randomBetweenReturnedPositive2 &&
+             randomBetweenReturnedPositive3)
          {
             break;
          }
       }
+      IS_TRUE(randomBetweenReturnedNegative3);
       IS_TRUE(randomBetweenReturnedNegative2);
       IS_TRUE(randomBetweenReturnedNegative1);
       IS_TRUE(randomBetweenReturned0);
       IS_TRUE(randomBetweenReturnedPositive1);
       IS_TRUE(randomBetweenReturnedPositive2);
+      IS_TRUE(randomBetweenReturnedPositive3);
    }
 
    TEST(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)

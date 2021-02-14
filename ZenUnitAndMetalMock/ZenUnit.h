@@ -7374,7 +7374,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return static_cast<T>(inclusiveLowerBound);
       }
-      std::uniform_int_distribution<int> uniformIntDistribution(1, 5);
+      std::uniform_int_distribution<int> uniformIntDistribution(1, 10);
       static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       const int equivalenceClass1Through5 = uniformIntDistribution(defaultRandomEngine);
       switch (equivalenceClass1Through5)
@@ -7382,15 +7382,19 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 1: return static_cast<T>(inclusiveLowerBound);
       case 2: return static_cast<T>(inclusiveLowerBound + 1LL);
       case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
       {
-         const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound =
-            uniformLongLongDistribution(defaultRandomEngine);
+         const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformLongLongDistribution(defaultRandomEngine);
          const T randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT =
             static_cast<T>(randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound);
          return randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT;
       }
-      case 4: return static_cast<T>(inclusiveUpperBound - 1LL);
-      case 5:
+      case 9: return static_cast<T>(inclusiveUpperBound - 1LL);
+      case 10:
       default: return static_cast<T>(inclusiveUpperBound);
       }
    }
