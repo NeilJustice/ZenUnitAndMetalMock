@@ -675,6 +675,10 @@ namespace ZenUnit
 
    inline std::default_random_engine& RandomEngineForCurrentTestRun()
    {
+      if (globalZenUnitMode.randomEngineForCurrentTestRun == nullptr)
+      {
+         SetNewRandomEngineForNewTestRun();
+      }
       return *globalZenUnitMode.randomEngineForCurrentTestRun;
    }
 
