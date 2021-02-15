@@ -1,4 +1,4 @@
-// C++ Unit Testing Framework ZenUnit v0.8.0
+// C++ Unit Testing Framework ZenUnit v0.9.0
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
@@ -7,7 +7,7 @@
 
 namespace ZenUnit
 {
-   inline const char* const VersionNumber = "0.8.0";
+   inline const char* const VersionNumber = "0.9.0";
 }
 
 #include <array>
@@ -664,8 +664,19 @@ namespace ZenUnit
    {
       bool selfTest = false;
       unsigned randomSeed = 0;
+      std::unique_ptr<std::default_random_engine> randomEngineForCurrentTestRun;
    };
    inline ZenUnitMode globalZenUnitMode;
+
+   inline void SetNewRandomEngineForNewTestRun()
+   {
+      globalZenUnitMode.randomEngineForCurrentTestRun = std::make_unique<std::default_random_engine>(globalZenUnitMode.randomSeed);
+   }
+
+   inline std::default_random_engine& RandomEngineForCurrentTestRun()
+   {
+      return *globalZenUnitMode.randomEngineForCurrentTestRun;
+   }
 
    struct FilePathLineNumber
    {
@@ -5439,6 +5450,7 @@ Fatal Windows C++ Runtime Assertion
 
       int RunTests(size_t testRunIndex, size_t numberOfTestRuns)
       {
+         SetNewRandomEngineForNewTestRun();
          const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
             this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs);
          ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
@@ -7374,8 +7386,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return static_cast<T>(inclusiveLowerBound);
       }
       std::uniform_int_distribution<int> uniformIntDistribution(1, 10);
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      const int randomIntBetween1And10 = uniformIntDistribution(defaultRandomEngine);
+      const int randomIntBetween1And10 = uniformIntDistribution(RandomEngineForCurrentTestRun());
       switch (randomIntBetween1And10)
       {
       case 1: return static_cast<T>(inclusiveLowerBound);
@@ -7388,7 +7399,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 8:
       {
          std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
-         const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformLongLongDistribution(defaultRandomEngine);
+         const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformLongLongDistribution(RandomEngineForCurrentTestRun());
          const T randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT =
             static_cast<T>(randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound);
          return randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT;
@@ -7406,8 +7417,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return inclusiveLowerBound;
       }
       std::uniform_int_distribution<int> uniformIntDistribution(1, 10);
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
-      const int randomIntBetween1And10 = uniformIntDistribution(defaultRandomEngine);
+      const int randomIntBetween1And10 = uniformIntDistribution(RandomEngineForCurrentTestRun());
       switch (randomIntBetween1And10)
       {
       case 1: return inclusiveLowerBound;
@@ -7420,7 +7430,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 8:
       {
          std::uniform_int_distribution<size_t> uniformSizeTDistribution(inclusiveLowerBound, inclusiveUpperBound);
-         const size_t randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformSizeTDistribution(defaultRandomEngine);
+         const size_t randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformSizeTDistribution(RandomEngineForCurrentTestRun());
          return randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound;
       }
       case 9: return inclusiveUpperBound - 1ULL;
@@ -7441,10 +7451,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 2:
       default:
       {
-         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
          const T inclusiveUpperBound = exclusiveUpperBound - T{1};
          std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
-         const T randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1 = uniformTDistribution(defaultRandomEngine);
+         const T randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1 = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1;
       }
       }
@@ -7461,10 +7470,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 3:
       default:
       {
-         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
          constexpr T minTValue = std::numeric_limits<T>::min();
          std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
-         const T randomIntegerBetweenMinValueAndInclusiveUpperBound = uniformTDistribution(defaultRandomEngine);
+         const T randomIntegerBetweenMinValueAndInclusiveUpperBound = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenMinValueAndInclusiveUpperBound;
       }
       }
@@ -7482,10 +7490,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 2:
       default:
       {
-         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
          const T inclusiveLowerBound = exclusiveLowerBound + T{1};
          std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
-         const T randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue = uniformTDistribution(defaultRandomEngine);
+         const T randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue;
       }
       }
@@ -7502,10 +7509,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 3:
       default:
       {
-         static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
          constexpr T maxTValue = std::numeric_limits<T>::max();
          std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
-         const T randomIntegerBetweenInclusiveLowerBoundAndMaxValue = uniformTDistribution(defaultRandomEngine);
+         const T randomIntegerBetweenInclusiveLowerBoundAndMaxValue = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenInclusiveLowerBoundAndMaxValue;
       }
       }
@@ -7537,18 +7543,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline unsigned long long RandomUnsignedLongLong()
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
       std::uniform_int_distribution<unsigned long long> distribution(0, maximumUnsignedLongLong);
-      const unsigned long long randomUnsignedLongLong = distribution(defaultRandomEngine);
+      const unsigned long long randomUnsignedLongLong = distribution(RandomEngineForCurrentTestRun());
       return randomUnsignedLongLong;
    }
 
    inline unsigned long long RandomUnsignedLongLongBetween0AndValue(unsigned long long inclusiveMaxValue)
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       std::uniform_int_distribution<unsigned long long> distribution(0, inclusiveMaxValue);
-      const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue = distribution(defaultRandomEngine);
+      const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue = distribution(RandomEngineForCurrentTestRun());
       return randomUnsignedLongLongBetween0AndInclusiveMaxValue;
    }
 
@@ -7805,22 +7809,20 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline float Random<float>()
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr float minFloatValue = std::numeric_limits<float>::min();
       constexpr float maxFloatValue = std::numeric_limits<float>::max();
       std::uniform_real_distribution<float> uniformFloatDistribution(minFloatValue, maxFloatValue);
-      const float randomFloat = uniformFloatDistribution(defaultRandomEngine);
+      const float randomFloat = uniformFloatDistribution(RandomEngineForCurrentTestRun());
       return randomFloat;
    }
 
    template<>
    inline double Random<double>()
    {
-      static std::default_random_engine defaultRandomEngine(globalZenUnitMode.randomSeed);
       constexpr double minDoubleValue = std::numeric_limits<double>::min();
       constexpr double maxDoubleValue = std::numeric_limits<double>::max();
       std::uniform_real_distribution<double> uniformDoubleDistribution(minDoubleValue, maxDoubleValue);
-      const double randomDouble = uniformDoubleDistribution(defaultRandomEngine);
+      const double randomDouble = uniformDoubleDistribution(RandomEngineForCurrentTestRun());
       return randomDouble;
    }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-static inline const string ExpectedCommandLineUsage = R"(C++ Unit Testing Framework ZenUnit v0.8.0
+static inline const string ExpectedCommandLineUsage = R"(C++ Unit Testing Framework ZenUnit v0.9.0
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
