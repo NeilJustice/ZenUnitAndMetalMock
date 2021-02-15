@@ -173,12 +173,98 @@ namespace ZenUnit
 
    TEST(Random_Float_ReturnsRandomFloat)
    {
-      Random<float>();
+      bool didReturnLowestFloatValue = false;
+      bool didReturnValueBetweenFloatMinValueAnd0 = false;
+      bool didReturnFloat0 = false;
+      bool didReturnValueBetweenFloat0AndFloatMaxValue = false;
+      bool didReturnMaxFloatValue = false;
+      //
+      for (size_t i = 0; i < 10000; ++i)
+      {
+         const float randomFloat = Random<float>();
+         if (randomFloat == std::numeric_limits<float>::lowest())
+         {
+            didReturnLowestFloatValue = true;
+         }
+         else if (randomFloat == 0.0f)
+         {
+            didReturnFloat0 = true;
+         }
+         else if (randomFloat == FLT_MAX)
+         {
+            didReturnMaxFloatValue = true;
+         }
+         else if (randomFloat < 0.0f)
+         {
+            didReturnValueBetweenFloatMinValueAnd0 = true;
+         }
+         else
+         {
+            didReturnValueBetweenFloat0AndFloatMaxValue = true;
+         }
+         if (didReturnLowestFloatValue &&
+             didReturnValueBetweenFloatMinValueAnd0 &&
+             didReturnFloat0 &&
+             didReturnValueBetweenFloat0AndFloatMaxValue &&
+             didReturnMaxFloatValue)
+         {
+            break;
+         }
+      }
+      //
+      IS_TRUE(didReturnLowestFloatValue);
+      IS_TRUE(didReturnValueBetweenFloatMinValueAnd0);
+      IS_TRUE(didReturnFloat0);
+      IS_TRUE(didReturnValueBetweenFloat0AndFloatMaxValue);
+      IS_TRUE(didReturnMaxFloatValue);
    }
 
    TEST(Random_Double_ReturnsRandomDouble)
    {
-      Random<double>();
+      bool didReturnLowestDoubleValue = false;
+      bool didReturnValueBetweenDoubleMinValueAnd0 = false;
+      bool didReturnDouble0 = false;
+      bool didReturnValueBetweenDouble0AndDoubleMaxValue = false;
+      bool didReturnMaxDoubleValue = false;
+      //
+      for (size_t i = 0; i < 10000; ++i)
+      {
+         const double randomDouble = Random<double>();
+         if (randomDouble == std::numeric_limits<double>::lowest())
+         {
+            didReturnLowestDoubleValue = true;
+         }
+         else if (randomDouble == 0.0)
+         {
+            didReturnDouble0 = true;
+         }
+         else if (randomDouble == DBL_MAX)
+         {
+            didReturnMaxDoubleValue = true;
+         }
+         else if (randomDouble < 0.0)
+         {
+            didReturnValueBetweenDoubleMinValueAnd0 = true;
+         }
+         else
+         {
+            didReturnValueBetweenDouble0AndDoubleMaxValue = true;
+         }
+         if (didReturnLowestDoubleValue &&
+             didReturnValueBetweenDoubleMinValueAnd0 &&
+             didReturnDouble0 &&
+             didReturnValueBetweenDouble0AndDoubleMaxValue &&
+             didReturnMaxDoubleValue)
+         {
+            break;
+         }
+      }
+      //
+      IS_TRUE(didReturnLowestDoubleValue);
+      IS_TRUE(didReturnValueBetweenDoubleMinValueAnd0);
+      IS_TRUE(didReturnDouble0);
+      IS_TRUE(didReturnValueBetweenDouble0AndDoubleMaxValue);
+      IS_TRUE(didReturnMaxDoubleValue);
    }
 
    TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)

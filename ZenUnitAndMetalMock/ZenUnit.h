@@ -7809,21 +7809,73 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline float Random<float>()
    {
-      constexpr float minFloatValue = std::numeric_limits<float>::min();
-      constexpr float maxFloatValue = std::numeric_limits<float>::max();
-      std::uniform_real_distribution<float> uniformFloatDistribution(minFloatValue, maxFloatValue);
-      const float randomFloat = uniformFloatDistribution(RandomEngineForCurrentTestRun());
-      return randomFloat;
+      const int randomIntBetween1And6 = RandomBetween<int>(1, 6);
+      switch (randomIntBetween1And6)
+      {
+      case 1:
+      {
+         constexpr float lowestFloatValue = std::numeric_limits<float>::lowest();
+         return lowestFloatValue;
+      }
+      case 2:
+      {
+         return 0.0f;
+      }
+      case 3:
+      case 4:
+      case 5:
+      {
+         std::uniform_real_distribution<float> uniformFloatDistribution(0, FLT_MAX);
+         float randomFloat = uniformFloatDistribution(RandomEngineForCurrentTestRun());
+         const bool randomNegativeSign = Random<bool>();
+         if (randomNegativeSign)
+         {
+            randomFloat *= -1;
+         }
+         return randomFloat;
+      }
+      case 6:
+      default:
+      {
+         return FLT_MAX;
+      }
+      }
    }
 
    template<>
    inline double Random<double>()
    {
-      constexpr double minDoubleValue = std::numeric_limits<double>::min();
-      constexpr double maxDoubleValue = std::numeric_limits<double>::max();
-      std::uniform_real_distribution<double> uniformDoubleDistribution(minDoubleValue, maxDoubleValue);
-      const double randomDouble = uniformDoubleDistribution(RandomEngineForCurrentTestRun());
-      return randomDouble;
+      const int randomIntBetween1And6 = RandomBetween<int>(1, 6);
+      switch (randomIntBetween1And6)
+      {
+      case 1:
+      {
+         constexpr double lowestDoubleValue = std::numeric_limits<double>::lowest();
+         return lowestDoubleValue;
+      }
+      case 2:
+      {
+         return 0.0;
+      }
+      case 3:
+      case 4:
+      case 5:
+      {
+         std::uniform_real_distribution<double> uniformDoubleDistribution(0, DBL_MAX);
+         double randomDouble = uniformDoubleDistribution(RandomEngineForCurrentTestRun());
+         const bool randomNegativeSign = Random<bool>();
+         if (randomNegativeSign)
+         {
+            randomDouble *= -1;
+         }
+         return randomDouble;
+      }
+      case 6:
+      default:
+      {
+         return DBL_MAX;
+      }
+      }
    }
 
    template<>

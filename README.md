@@ -33,7 +33,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
    * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](Documentation/HowToWriteACustomZenUnitEqualizer.md)
    * [Guide To MetalMock](Documentation/GuideToMetalMock.md)
-   * [Maximize Mutation Coverage By Testing With Random Values](#maximize-mutation-coverage-by-testing-with-random-values)
+   * [Mutation Coverage Can Be Maximized By Testing With Random Values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
    * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
    * [ZenUnit And MetalMock Code Structure As It Appears In Visual Studio Code](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code)
@@ -456,7 +456,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |`SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### Maximize Mutation Coverage By Testing With Random Values
+### Mutation Coverage Can Be Maximized By Testing With Random Values
 
 ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage.
 
@@ -476,8 +476,8 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomUnsignedLongLong()`|Returns a random `unsigned long long` selected from a `std::uniform_int_distribution<unsigned long long>`.|
 |`ZenUnit::RandomUnsignedLongLongBetween0AndValue(unsigned long long inclusiveMaxValue)`|Returns a random `unsigned long long` selected from a `std::uniform_int_distribution<unsigned long long>` between `0` and `inclusiveMaxValue`.|
 |`ZenUnit::RandomEnum<EnumType>()`|Returns a random `EnumType` value between `0` and `EnumType::MaxValue - 1`, selected from a `std::uniform_int_distribution<long long>`.|
-|`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::min()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>`.|
-|`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::min()` and `std::numeric_limits<double>::max()` selected from a `std::uniform_real_distribution<double>`.|
+|`ZenUnit::Random<float>()`|Returns a random float between `std::numeric_limits<float>::lowest()` and `std::numeric_limits<float>::max()` selected from a `std::uniform_real_distribution<float>` with the following probabilities:<br>1/6 probability: `std::numeric_limits<double>::lowest()`<br>1/6 probability: `0.0f`<br>3/6 probability: float value between `std::numeric_limits<double>::lowest()` and `std::numeric_limits<double>::max()` inclusive<br>1/6 probability: `std::numeric_limits<double>::max()`|
+|`ZenUnit::Random<double>()`|Returns a random double between `std::numeric_limits<double>::lowest()` and `std::numeric_limits<double>::max()` selected from a `std::uniform_real_distribution<double>`  with the following probabilities:<br>1/6 probability: `std::numeric_limits<double>::lowest()`<br>1/6 probability: `0.0f`<br>3/6 probability: float value between `std::numeric_limits<double>::lowest()` and `std::numeric_limits<double>::max()` inclusive<br>1/6 probability: `std::numeric_limits<double>::max()`|
 
 |Random String-Generating Functions|Behavior|
 |----------------------------------|--------|
