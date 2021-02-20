@@ -1592,6 +1592,28 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<>
+   struct ArgumentStorage<std::span<char>>
+   {
+      std::string value;
+
+      ArgumentStorage() = default;
+
+      ArgumentStorage(std::span<char> dynamicCharSpan)
+         : value(dynamicCharSpan.data(), dynamicCharSpan.size()) {}
+   };
+
+   template<>
+   struct ArgumentStorage<std::span<const char>>
+   {
+      std::string value;
+
+      ArgumentStorage() = default;
+
+      ArgumentStorage(std::span<const char> dynamicCharSpan)
+         : value(dynamicCharSpan.data(), dynamicCharSpan.size()) {}
+   };
+
+   template<>
    struct ArgumentStorage<std::string_view>
    {
       std::string value;

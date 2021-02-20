@@ -18,6 +18,7 @@ namespace ZenUnit
 #include <map>
 #include <random>
 #include <set>
+#include <span>
 #include <sstream>
 #include <typeindex>
 #include <unordered_map>
