@@ -25,6 +25,9 @@ namespace ZenUnit
    AFACT(Random_String_ReturnsRandomString1Through10)
    AFACT(Random_WideString_CodeCoverage)
    AFACT(RandomLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
+   AFACT(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
+   AFACT(RandomStringWithLength_ReturnsRandomStringWithLength)
+   AFACT(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
@@ -410,6 +413,60 @@ namespace ZenUnit
       }
       IS_TRUE(uppercaseLetterReturned);
       IS_TRUE(lowercaseLetterReturned);
+   }
+
+   TEST(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
+   {
+      bool uppercaseLetterReturned = false;
+      bool lowercaseLetterReturned = false;
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const wchar_t randomWideLetter = ZenUnit::RandomWideLetter();
+         if (isupper(randomWideLetter))
+         {
+            uppercaseLetterReturned = true;
+         }
+         if (islower(randomWideLetter))
+         {
+            lowercaseLetterReturned = true;
+         }
+         if (uppercaseLetterReturned && lowercaseLetterReturned)
+         {
+            break;
+         }
+      }
+      IS_TRUE(uppercaseLetterReturned);
+      IS_TRUE(lowercaseLetterReturned);
+   }
+
+   TEST(RandomStringWithLength_ReturnsRandomStringWithLength)
+   {
+      const size_t length = ZenUnit::RandomBetween<size_t>(0, 3);
+      //
+      const string randomStringWithLength = ZenUnit::RandomStringWithLength(length);
+      //
+      ARE_EQUAL(length, randomStringWithLength.size());
+      for (size_t i = 0; i < length; ++i)
+      {
+         const char ithCharacter = randomStringWithLength[i];
+         IS_GTE(ithCharacter, 'A');
+         IS_LTE(ithCharacter, 'z');
+      }
+   }
+
+   TEST(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
+   {
+      const size_t length = ZenUnit::RandomBetween<size_t>(0, 3);
+      //
+      const wstring randomWideStringWithLength = ZenUnit::RandomWideStringWithLength(length);
+      //
+      ARE_EQUAL(length, randomWideStringWithLength.size());
+      for (size_t i = 0; i < length; ++i)
+      {
+         const wchar_t ithWideCharacter = randomWideStringWithLength[i];
+         IS_GTE(ithWideCharacter, L'A');
+         IS_LTE(ithWideCharacter, L'z');
+      }
    }
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)

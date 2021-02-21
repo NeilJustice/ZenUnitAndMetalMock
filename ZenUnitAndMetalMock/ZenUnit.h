@@ -7979,16 +7979,55 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       const bool randomBool = ZenUnit::Random<bool>();
       if (randomBool)
       {
+         ZENUNIT_ASSERT(65 == static_cast<int>('A'));
+         ZENUNIT_ASSERT(90 == static_cast<int>('Z'));
          const int randomUppercaseLetterInt = ZenUnit::RandomBetween<int>(65, 90);
          const char randomUppercaseLetter = static_cast<char>(randomUppercaseLetterInt);
          return randomUppercaseLetter;
       }
       else
       {
+         ZENUNIT_ASSERT(97 == static_cast<int>('a'));
+         ZENUNIT_ASSERT(122 == static_cast<int>('z'));
          const int randomLowercaseLetterInt = ZenUnit::RandomBetween<int>(97, 122);
          const char randomLowercaseLetter = static_cast<char>(randomLowercaseLetterInt);
          return randomLowercaseLetter;
       }
+   }
+
+   inline wchar_t RandomWideLetter()
+   {
+      const bool randomBool = ZenUnit::Random<bool>();
+      if (randomBool)
+      {
+         ZENUNIT_ASSERT(65 == static_cast<int>(L'A'));
+         ZENUNIT_ASSERT(90 == static_cast<int>(L'Z'));
+         const int randomUppercaseLetterInt = ZenUnit::RandomBetween<int>(65, 90);
+         const wchar_t randomUppercaseWideLetter = static_cast<wchar_t>(randomUppercaseLetterInt);
+         return randomUppercaseWideLetter;
+      }
+      else
+      {
+         ZENUNIT_ASSERT(97 == static_cast<int>(L'a'));
+         ZENUNIT_ASSERT(122 == static_cast<int>(L'z'));
+         const int randomLowercaseLetterInt = ZenUnit::RandomBetween<int>(97, 122);
+         const wchar_t randomLowercaseWideLetter = static_cast<wchar_t>(randomLowercaseLetterInt);
+         return randomLowercaseWideLetter;
+      }
+   }
+
+   inline std::string RandomStringWithLength(size_t length)
+   {
+      std::string stringWithLength(length, 0);
+      std::generate(std::begin(stringWithLength), std::end(stringWithLength), []() { return ZenUnit::RandomLetter(); });
+      return stringWithLength;
+   }
+
+   inline std::wstring RandomWideStringWithLength(size_t length)
+   {
+      std::wstring wideStringWithLength(length, 0);
+      std::generate(std::begin(wideStringWithLength), std::end(wideStringWithLength), []() { return ZenUnit::RandomWideLetter(); });
+      return wideStringWithLength;
    }
 
    template<>

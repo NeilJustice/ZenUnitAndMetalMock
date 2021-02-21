@@ -486,10 +486,13 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::Random<const wchar_t*>()`|Returns `L"RandomWideConstCharPointer1"` with 10% probability, `L"RandomWideConstCharPointer2"` with 10% probability, ..., `L"RandomWideConstCharPointer10"` with 10% probability.|
 |`ZenUnit::Random<std::string>()`|Returns `"RandomString1"` with 10% probability, `"RandomString2"` with 10% probability, ..., `"RandomString10"` with 10% probability.|
 |`ZenUnit::Random<std::wstring>()`|Returns `L"RandomWString1"` with 10% probability, `L"RandomWString2"` with 10% probability, ..., `L"RandomWString10"` with 10% probability.|
+|`ZenUnit::RandomStringWithLength(size_t length)`|Returns a `std::string` with length `length` with each character a `ZenUnit::RandomLetter()`.|
+|`ZenUnit::RandomWideStringWithLength(size_t length)`|Returns a `std::wstring` with length `length` with each character a `ZenUnit::RandomWideLetter()`.|
 
 |Random Character-Generating Functions|Behavior|
 |-------------------------------------|--------|
-|`ZenUnit::RandomLetter()`|Returns an `A-Z` letter with 50% probabilitiy or an `a-z` letter with 50% probability.|
+|`ZenUnit::RandomLetter()`|Returns an `'A-Z'` letter with 50% probabilitiy or an `'a-z'` letter with 50% probability.|
+|`ZenUnit::RandomWideLetter()`|Returns an `L'A-Z'` letter with 50% probabilitiy or an `L'a-z'` letter with 50% probability.|
 
 |Random Tuple-Generating Functions|Behavior|
 |---------------------------------|--------|
