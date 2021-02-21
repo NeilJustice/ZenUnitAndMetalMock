@@ -4563,98 +4563,84 @@ namespace ZenUnit
    static_assert(std::is_move_constructible_v<TestClassResult>);
    static_assert(std::is_move_assignable_v<TestClassResult>);
 
+#if defined __linux__ || defined __APPLE__
+
    class EnvironmentService
    {
-      friend class EnvironmentServiceTests;
+      friend class LinuxEnvironmentServiceTests;
    private:
       std::function<std::filesystem::path()> _call_filesystem_current_path;
-#if defined __linux__ || defined __APPLE__
       std::function<int(char*, size_t)> _call_gethostname;
-#elif defined _WIN32
-      std::function<BOOL(LPSTR, LPDWORD)> _call_GetComputerNameA;
-      std::function<BOOL(LPSTR, LPDWORD)> _call_GetUserNameA;
-#endif
    public:
       EnvironmentService() noexcept
          : _call_filesystem_current_path(static_cast<std::filesystem::path(*)()>(std::filesystem::current_path))
-#if defined __linux__ || defined __APPLE__
          , _call_gethostname(::gethostname)
-#elif defined _WIN32
-         , _call_GetComputerNameA(::GetComputerNameA)
-         , _call_GetUserNameA(::GetUserNameA)
-#endif
       {
       }
 
       virtual ~EnvironmentService() = default;
 
-      virtual std::string GetCurrentDirectoryPath() const
+      virtual std::string CurrentDirectoryPath() const
       {
-         std::string currentDirectoryPath = _call_filesystem_current_path().string();
-         return currentDirectoryPath;
+         const std::filesystem::path currentDirectoryPath = _call_filesystem_current_path();
+         std::string currentDirectoryPathString = currentDirectoryPath.string();
+         return currentDirectoryPathString;
       }
 
-      virtual std::string GetMachineName() const
-      {
-#if defined __linux__ || defined __APPLE__
-         return GetLinuxMachineName();
-#elif defined _WIN32
-         return GetWindowsMachineName();
-#endif
-      }
-
-      virtual std::string GetUserNameRunningThisProgram() const
-      {
-#if defined __linux__ || defined __APPLE__
-         return GetLinuxUserName();
-#elif defined _WIN32
-         return GetWindowsUserName();
-#endif
-      }
-   private:
-#if defined __linux__ || defined __APPLE__
-      virtual std::string GetLinuxMachineName() const
+      virtual std::string MachineName() const
       {
          char hostname[65]{};
          const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
          ZENUNIT_ASSERT(gethostnameResult == 0);
-         std::string linuxMachineName(hostname);
-         return linuxMachineName;
+         std::string machineName(hostname);
+         return machineName;
       }
+
+      virtual std::string UserName() const
+      {
+         const uid_t uidValue = _call_geteuid();
+         struct passwd* const passwdValue = _call_getpwuid(uidValue);
+         std::string userName(passwdValue->pw_name);
+         return userName;
+      }
+   };
+
 #elif defined _WIN32
-      virtual std::string GetWindowsMachineName() const
+
+   class EnvironmentService
+   {
+      friend class WindowsEnvironmentServiceTests;
+   public:
+      virtual ~EnvironmentService() = default;
+
+      virtual std::string CurrentDirectoryPath() const
+      {
+         const std::filesystem::path currentDirectoryPath = std::filesystem::current_path();
+         std::string currentDirectoryPathString = currentDirectoryPath.string();
+         return currentDirectoryPathString;
+      }
+
+      virtual std::string MachineName() const
       {
          CHAR computerNameChars[41]{};
          DWORD size = sizeof(computerNameChars);
-         const BOOL didGetComputerName = _call_GetComputerNameA(computerNameChars, &size);
+         const BOOL didGetComputerName = ::GetComputerNameA(computerNameChars, &size);
          ZENUNIT_ASSERT(didGetComputerName == TRUE);
-         std::string windowsMachineName(computerNameChars);
-         return windowsMachineName;
+         std::string machineName(computerNameChars);
+         return machineName;
       }
-#endif
 
-#if defined __linux__ || defined __APPLE__
-      virtual std::string GetLinuxUserName() const
+      virtual std::string UserName() const
       {
-         return "LinuxUserNamePlaceholder";
-         //char usernameChars[_SC_LOGIN_NAME_MAX];
-         //const int getloginReturnValue = getlogin_r(usernameChars, sizeof(usernameChars));
-         //ZENUNIT_ASSERT(getloginReturnValue == 0);
-         //std::string username(usernameChars);
-         //return username;
-      }
-#elif defined _WIN32
-      virtual std::string GetWindowsUserName() const
-      {
-         CHAR windowsUserNameCharacters[257];
-         DWORD size = sizeof(windowsUserNameCharacters);
-         const BOOL didGetUserName = _call_GetUserNameA(windowsUserNameCharacters, &size);
+         CHAR userNameCharacters[257]{};
+         DWORD size = sizeof(userNameCharacters);
+         const BOOL didGetUserName = ::GetUserNameA(userNameCharacters, &size);
          ZENUNIT_ASSERT(didGetUserName == TRUE);
-         std::string windowsUserName(windowsUserNameCharacters);
-         return windowsUserName;
+         std::string userName(userNameCharacters);
+         return userName;
       }
-#endif
    };
+#endif
 
    template<typename T, typename ClassType, typename MemberFunctionType, typename Arg2Type>
    class TwoArgMemberForEacher
@@ -4997,16 +4983,16 @@ namespace ZenUnit
          _console->WriteLine("     Running: " + zenUnitArgs.commandLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string currentDirectoryPath = _environmentService->GetCurrentDirectoryPath();
+         const std::string currentDirectoryPath = _environmentService->CurrentDirectoryPath();
          _console->WriteLine("   Directory: " + currentDirectoryPath);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string machineName = _environmentService->GetMachineName();
+         const std::string machineName = _environmentService->MachineName();
          _console->WriteLine(" MachineName: " + machineName);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string userNameRunningThisProgram = _environmentService->GetUserNameRunningThisProgram();
-         _console->WriteLine("    UserName: " + userNameRunningThisProgram);
+         const std::string userName = _environmentService->UserName();
+         _console->WriteLine("    UserName: " + userName);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          _console->WriteLine("  RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));

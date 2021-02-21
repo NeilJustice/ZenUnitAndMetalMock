@@ -38,11 +38,11 @@ namespace ZenUnit
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
 
-      const string currentDirectoryPath = _environmentServiceMock->GetCurrentDirectoryPathMock.ReturnRandom();
+      const string currentDirectoryPath = _environmentServiceMock->CurrentDirectoryPathMock.ReturnRandom();
 
-      const string machineName = _environmentServiceMock->GetMachineNameMock.ReturnRandom();
+      const string machineName = _environmentServiceMock->MachineNameMock.ReturnRandom();
 
-      const string userNameRunningThisProgram = _environmentServiceMock->GetUserNameRunningThisProgramMock.ReturnRandom();
+      const string userName = _environmentServiceMock->UserNameMock.ReturnRandom();
 
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
 
@@ -59,16 +59,16 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
       METALMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
       METALMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
-      METALMOCK(_environmentServiceMock->GetCurrentDirectoryPathMock.CalledOnce());
-      METALMOCK(_environmentServiceMock->GetMachineNameMock.CalledOnce());
-      METALMOCK(_environmentServiceMock->GetUserNameRunningThisProgramMock.CalledOnce());
+      METALMOCK(_environmentServiceMock->CurrentDirectoryPathMock.CalledOnce());
+      METALMOCK(_environmentServiceMock->MachineNameMock.CalledOnce());
+      METALMOCK(_environmentServiceMock->UserNameMock.CalledOnce());
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { "     Running: " + args.commandLine },
          { "   Directory: " + currentDirectoryPath },
          { " MachineName: " + machineName },
-         { "    UserName: " + userNameRunningThisProgram },
+         { "    UserName: " + userName },
          { "  RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed) },
          { " TestClasses: " + std::to_string(numberOfTestClassesToBeRun) },
          { "   StartTime: " + startDateTime + "\n" }

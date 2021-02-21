@@ -2,106 +2,91 @@
 
 namespace ZenUnit
 {
-   TESTS(EnvironmentServiceTests)
-   AFACT(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
-   AFACT(GetCurrentDirectoryPath_ReturnsCurrentDirectoryPath)
 #if defined __linux__ || defined __APPLE__
-   AFACT(GetCurrentMachineName_LinuxOrApple_ReturnsCallToGetLinuxMachineName)
-   AFACT(GetLinuxMachineName_ReturnsResultOfgethostname)
-   AFACT(GetLinuxUserName_ReturnsResultOf)
-#elif defined _WIN32
-   AFACT(GetMachineName_Windows_ReturnsCallToGetWindowsMachineName)
-   AFACT(GetWindowsMachineNameW_ReturnsResultOfGetComputerName)
-   AFACT(GetWindowsUserNameW_ReturnsResultOfGetUserName)
-#endif
+
+   TESTS(LinuxEnvironmentServiceTests)
+   AFACT(CurrentDirectoryPath_ReturnsCurrentDirectoryPath)
+   AFACT(MachineName_ReturnsResultOfgethostname)
+   AFACT(UserName_ReturnsResultOf)
    EVIDENCE
 
-   class EnvironmentServiceSelfMocked : public Metal::Mock<EnvironmentService>
+   EnvironmentService _environmentService;
+
+   TEST(CurrentDirectoryPath_ReturnsCurrentDirectoryPath)
    {
-   public:
-#if defined __linux__ || defined __APPLE__
-      METALMOCK_NONVOID0_CONST(string, GetLinuxMachineName)
+      const string currentDirectoryPath = _environmentService.CurrentDirectoryPath();
+      //
+      const std::filesystem::path expectedCurrentPath = std::filesystem::current_path();
+      const string expectedCurrentPathString = expectedCurrentPath.string();
+      ARE_EQUAL(expectedCurrentPathString, currentDirectoryPath);
+   }
+
+   TEST(MachineName_ReturnsResultOfgethostname)
+   {
+      const string machineName = _environmentService.MachineName();
+      //
+      char hostname[65]{};
+      const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
+      const string expectedMachineName(hostname);
+      ARE_EQUAL(expectedMachineName, machineName);
+   }
+
+   TEST(UserName_ReturnsResultOf)
+   {
+      const string userName = _environmentService.UserName();
+      //
+      const uid_t uidValue = _call_geteuid();
+      struct passwd* const passwdValue = _call_getpwuid(uidValue);
+      const string expectedUserName(passwdValue->pw_name);
+      ARE_EQUAL(expectedUserName, userName);
+   }
+
+   RUN_TESTS(LinuxEnvironmentServiceTests)
+
 #elif defined _WIN32
-      METALMOCK_NONVOID0_CONST(string, GetWindowsMachineName)
-#endif
-   } _environmentServiceSelfMocked;
+
+   TESTS(WindowsEnvironmentServiceTests)
+   AFACT(CurrentDirectoryPath_ReturnsCurrentDirectoryPath)
+   AFACT(MachineName_ReturnsResultOfCallingGetComputerNameA)
+   AFACT(UserName_ReturnsResultOfCallingGetUserNameA)
+   EVIDENCE
 
    EnvironmentService _environmentService;
-   METALMOCK_NONVOID0_FREE(std::filesystem::path, current_path)
-#if defined __linux__ || defined __APPLE__
-   METALMOCK_NONVOID2_FREE(int, gethostname, char*, size_t)
-#elif defined _WIN32
-   METALMOCK_NONVOID2_FREE(BOOL, GetComputerNameA, LPSTR, LPDWORD)
-   METALMOCK_NONVOID2_FREE(BOOL, GetUserNameA, LPSTR, LPDWORD)
-#endif
 
-   STARTUP
+   TEST(CurrentDirectoryPath_ReturnsCurrentDirectoryPath)
    {
-      _environmentService._call_filesystem_current_path = BIND_0ARG_METALMOCK_OBJECT(current_pathMock);
-#if defined __linux__ || defined __APPLE__
-      _environmentService._call_gethostname = BIND_2ARG_METALMOCK_OBJECT(gethostnameMock);
-#elif defined _WIN32
-      _environmentService._call_GetComputerNameA = BIND_2ARG_METALMOCK_OBJECT(GetComputerNameAMock);
-#endif
-   }
-
-   TEST(Constructor_SetsGetHostNameOrGetComputerNameFunctions)
-   {
-      EnvironmentService environmentService;
-#if defined __linux__ || defined __APPLE__
-      STD_FUNCTION_TARGETS(::gethostname, environmentService._call_gethostname);
-#elif defined _WIN32
-      STD_FUNCTION_TARGETS(::GetComputerNameA, environmentService._call_GetComputerNameA);
-      STD_FUNCTION_TARGETS(::GetUserNameA, environmentService._call_GetUserNameA);
-#endif
-   }
-
-   TEST(GetCurrentDirectoryPath_ReturnsCurrentDirectoryPath)
-   {
-      const std::filesystem::path currentDirectoryPath = current_pathMock.ReturnRandom();
+      const string currentDirectoryPath = _environmentService.CurrentDirectoryPath();
       //
-      const string returnedCurrentDirectoryPath = _environmentService.GetCurrentDirectoryPath();
+      const std::filesystem::path expectedCurrentPath = std::filesystem::current_path();
+      const string expectedCurrentPathString = expectedCurrentPath.string();
+      ARE_EQUAL(expectedCurrentPathString, currentDirectoryPath);
+   }
+
+   TEST(MachineName_ReturnsResultOfCallingGetComputerNameA)
+   {
+      const string machineName = _environmentService.MachineName();
       //
-      METALMOCK(current_pathMock.CalledOnce());
-      ARE_EQUAL(currentDirectoryPath, returnedCurrentDirectoryPath);
+      CHAR computerNameChars[41]{};
+      DWORD size = sizeof(computerNameChars);
+      ::GetComputerNameA(computerNameChars, &size);
+      const string expectedMachineName(computerNameChars);
+
+      ARE_EQUAL(expectedMachineName, machineName);
    }
 
-#if defined __linux__ || defined __APPLE__
-   TEST(GetMachineName_ReturnsEitherCallToGetLinuxOrGetWindowsMachineName)
+   TEST(UserName_ReturnsResultOfCallingGetUserNameA)
    {
-   }
-
-   TEST(GetCurrentMachineName_LinuxOrApple_ReturnsCallToGetLinuxMachineName)
-   {
-   }
-
-   TEST(GetLinuxMachineName_ReturnsResultOfgethostname)
-   {
-   }
-
-   TEST(GetLinuxUserName_ReturnsResultOf)
-   {
-   }
-
-#elif defined _WIN32
-   TEST(GetMachineName_Windows_ReturnsCallToGetWindowsMachineName)
-   {
-      const string machineName = _environmentServiceSelfMocked.GetWindowsMachineNameMock.ReturnRandom();
+      const string userName = _environmentService.UserName();
       //
-      const string returnedMachineName = _environmentServiceSelfMocked.GetMachineName();
-      //
-      METALMOCK(_environmentServiceSelfMocked.GetWindowsMachineNameMock.CalledOnce());
-      ARE_EQUAL(machineName, returnedMachineName);
+      CHAR userNameCharacters[257]{};
+      DWORD size = sizeof(userNameCharacters);
+      ::GetUserNameA(userNameCharacters, &size);
+      const std::string expectedUserName(userNameCharacters);
+
+      ARE_EQUAL(expectedUserName, userName);
    }
 
-   TEST(GetWindowsMachineNameW_ReturnsResultOfGetComputerName)
-   {
-   }
-
-   TEST(GetWindowsUserNameW_ReturnsResultOfGetUserName)
-   {
-   }
-#endif
-
-   RUN_TESTS(EnvironmentServiceTests)
+   RUN_TESTS(WindowsEnvironmentServiceTests)
 }
+
+#endif
