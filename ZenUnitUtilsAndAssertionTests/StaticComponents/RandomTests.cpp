@@ -24,6 +24,7 @@ namespace ZenUnit
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
    AFACT(Random_String_ReturnsRandomString1Through10)
    AFACT(Random_WideString_CodeCoverage)
+   AFACT(RandomLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
@@ -385,6 +386,30 @@ namespace ZenUnit
       {
          Random<wstring>();
       }
+   }
+
+   TEST(RandomLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
+   {
+      bool uppercaseLetterReturned = false;
+      bool lowercaseLetterReturned = false;
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const char randomLetter = ZenUnit::RandomLetter();
+         if (isupper(randomLetter))
+         {
+            uppercaseLetterReturned = true;
+         }
+         if (islower(randomLetter))
+         {
+            lowercaseLetterReturned = true;
+         }
+         if (uppercaseLetterReturned && lowercaseLetterReturned)
+         {
+            break;
+         }
+      }
+      IS_TRUE(uppercaseLetterReturned);
+      IS_TRUE(lowercaseLetterReturned);
    }
 
    TEST(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)

@@ -487,6 +487,10 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::Random<std::string>()`|Returns `"RandomString1"` with 10% probability, `"RandomString2"` with 10% probability, ..., `"RandomString10"` with 10% probability.|
 |`ZenUnit::Random<std::wstring>()`|Returns `L"RandomWString1"` with 10% probability, `L"RandomWString2"` with 10% probability, ..., `L"RandomWString10"` with 10% probability.|
 
+|Random Character-Generating Functions|Behavior|
+|-------------------------------------|--------|
+|`ZenUnit::RandomLetter()`|Returns an `A-Z` letter with 50% probabilitiy or an `a-z` letter with 50% probability.|
+
 |Random Tuple-Generating Functions|Behavior|
 |---------------------------------|--------|
 |`ZenUnit::RandomPair<FirstType, SecondType>`|Returns a random `std::pair<FirstType, SecondType>` with `pair.first` generated with `ZenUnit::Random<FirstType>()` and `pair.second` generated with `ZenUnit::Random<SecondType>()`.

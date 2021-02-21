@@ -7974,6 +7974,23 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
+   inline char RandomLetter()
+   {
+      const bool randomBool = ZenUnit::Random<bool>();
+      if (randomBool)
+      {
+         const int randomUppercaseLetterInt = ZenUnit::RandomBetween<int>(65, 90);
+         const char randomUppercaseLetter = static_cast<char>(randomUppercaseLetterInt);
+         return randomUppercaseLetter;
+      }
+      else
+      {
+         const int randomLowercaseLetterInt = ZenUnit::RandomBetween<int>(97, 122);
+         const char randomLowercaseLetter = static_cast<char>(randomLowercaseLetterInt);
+         return randomLowercaseLetter;
+      }
+   }
+
    template<>
    inline std::filesystem::path Random<std::filesystem::path>()
    {
