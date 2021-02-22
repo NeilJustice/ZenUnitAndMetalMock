@@ -8172,10 +8172,22 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomFloat;
       }
 
+      virtual std::vector<float> FloatVector() const
+      {
+         std::vector<float> randomFloatVector = RandomVector<float>();
+         return randomFloatVector;
+      }
+
       virtual double Double() const
       {
          const double randomDouble = Random<double>();
          return randomDouble;
+      }
+
+      virtual std::vector<double> DoubleVector() const
+      {
+         std::vector<double> randomDoubleVector = RandomVector<double>();
+         return randomDoubleVector;
       }
 
       virtual const char* ConstCharPointer() const

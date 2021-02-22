@@ -54,8 +54,14 @@ namespace ZenUnit
       const float randomFloat = _randomGenerator.Float();
       ARE_EQUAL(randomFloat, randomFloat);
 
+      const vector<float> randomFloatVector = _randomGenerator.FloatVector();
+      ARE_EQUAL(randomFloatVector, randomFloatVector);
+
       const double randomDouble = _randomGenerator.Double();
       ARE_EQUAL(randomDouble, randomDouble);
+
+      const vector<double> randomDoubleVector = _randomGenerator.DoubleVector();
+      ARE_EQUAL(randomDoubleVector, randomDoubleVector);
 
       const char* const randomConstCharPointer = _randomGenerator.ConstCharPointer();
       ARE_EQUAL(randomConstCharPointer, randomConstCharPointer);
