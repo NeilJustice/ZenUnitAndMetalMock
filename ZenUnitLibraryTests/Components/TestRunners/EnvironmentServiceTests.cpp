@@ -26,7 +26,7 @@ namespace ZenUnit
       const string machineName = _environmentService.MachineName();
       //
       char hostname[65]{};
-      const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
+      const int gethostnameResult = gethostname(hostname, sizeof(hostname));
       const string expectedMachineName(hostname);
       ARE_EQUAL(expectedMachineName, machineName);
    }
@@ -35,8 +35,8 @@ namespace ZenUnit
    {
       const string userName = _environmentService.UserName();
       //
-      const uid_t uidValue = _call_geteuid();
-      struct passwd* const passwdValue = _call_getpwuid(uidValue);
+      const uid_t uidValue = geteuid();
+      struct passwd* const passwdValue = getpwuid(uidValue);
       const string expectedUserName(passwdValue->pw_name);
       ARE_EQUAL(expectedUserName, userName);
    }
@@ -87,6 +87,6 @@ namespace ZenUnit
    }
 
    RUN_TESTS(WindowsEnvironmentServiceTests)
-}
 
 #endif
+}

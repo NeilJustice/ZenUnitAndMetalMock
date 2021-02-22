@@ -26,11 +26,13 @@ namespace ZenUnit
 
 #if defined __linux__ || defined __APPLE__
 #include <climits>
+#include <cfloat>
 #include <cxxabi.h>
 #include <climits>
 #include <cxxabi.h>
 #include <iomanip>
 #include <memory>
+#include <pwd.h>
 #include <string.h>
 #include <unistd.h>
 #include <utility>
@@ -4570,11 +4572,9 @@ namespace ZenUnit
       friend class LinuxEnvironmentServiceTests;
    private:
       std::function<std::filesystem::path()> _call_filesystem_current_path;
-      std::function<int(char*, size_t)> _call_gethostname;
    public:
       EnvironmentService() noexcept
          : _call_filesystem_current_path(static_cast<std::filesystem::path(*)()>(std::filesystem::current_path))
-         , _call_gethostname(::gethostname)
       {
       }
 
@@ -4590,7 +4590,7 @@ namespace ZenUnit
       virtual std::string MachineName() const
       {
          char hostname[65]{};
-         const int gethostnameResult = _call_gethostname(hostname, sizeof(hostname));
+         const int gethostnameResult = gethostname(hostname, sizeof(hostname));
          ZENUNIT_ASSERT(gethostnameResult == 0);
          std::string machineName(hostname);
          return machineName;
@@ -4598,8 +4598,8 @@ namespace ZenUnit
 
       virtual std::string UserName() const
       {
-         const uid_t uidValue = _call_geteuid();
-         struct passwd* const passwdValue = _call_getpwuid(uidValue);
+         const uid_t uidValue = geteuid();
+         struct passwd* const passwdValue = getpwuid(uidValue);
          std::string userName(passwdValue->pw_name);
          return userName;
       }
