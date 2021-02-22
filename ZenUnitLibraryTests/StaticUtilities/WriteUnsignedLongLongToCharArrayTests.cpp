@@ -29,7 +29,7 @@ namespace ZenUnit
       UINT_MAX, "4294967295",
       ULLONG_MAX, "18446744073709551615")
    {
-      ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615);
+      ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615ULL);
       //                           12345678901234567890
       constexpr size_t LengthOfSizeTMaxValue = 20;
       char chars[LengthOfSizeTMaxValue + 1]{};
