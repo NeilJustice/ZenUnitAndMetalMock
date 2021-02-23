@@ -47,7 +47,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
 ### ZenUnit Command Line Usage
 
 ```
-C++ Unit Testing Framework ZenUnit v0.8.0
+C++ Unit Testing Framework ZenUnit v0.9.0
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
