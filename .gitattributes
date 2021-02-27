@@ -1,0 +1,3 @@
+*.sh     eol=lf
+*.sln    eol=crlf
+*.pyproj eol=crlf
