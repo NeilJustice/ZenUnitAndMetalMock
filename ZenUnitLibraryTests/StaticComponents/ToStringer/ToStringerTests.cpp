@@ -74,15 +74,17 @@ namespace ZenUnit
       ARE_EQUAL("0", ToStringer::ToString(0));
       ARE_EQUAL("1", ToStringer::ToString(1));
 
-      ARE_EQUAL("-1.123457f", ToStringer::ToString(-1.1234567f));
-      ARE_EQUAL("0.000000f", ToStringer::ToString(0.0f));
-      ARE_EQUAL("1.100000f", ToStringer::ToString(1.1f));
-      ARE_EQUAL("1.123457f", ToStringer::ToString(1.1234567f));
+      ARE_EQUAL("-1.12346", ToStringer::ToString(-1.123456f));
+      ARE_EQUAL("0", ToStringer::ToString(0.0f));
+      ARE_EQUAL("1.1", ToStringer::ToString(1.1f));
+      ARE_EQUAL("1.12346", ToStringer::ToString(1.123456f));
 
-      ARE_EQUAL("-1.123457", ToStringer::ToString(-1.1234567));
-      ARE_EQUAL("0.000000", ToStringer::ToString(0.0));
-      ARE_EQUAL("1.100000", ToStringer::ToString(1.1));
-      ARE_EQUAL("1.123457", ToStringer::ToString(1.1234567));
+      ARE_EQUAL("-1.12345678901235", ToStringer::ToString(-1.123456789012345));
+      ARE_EQUAL("-0.123456789012345", ToStringer::ToString(-0.123456789012345));
+      ARE_EQUAL("0", ToStringer::ToString(0.0));
+      ARE_EQUAL("1.1", ToStringer::ToString(1.1));
+      ARE_EQUAL("0.123456789012345", ToStringer::ToString(0.123456789012345));
+      ARE_EQUAL("1.12345678901235", ToStringer::ToString(1.123456789012345));
    }
 
    TEST(ToString_Enum_ReturnsStdToStringOnTheValue)

@@ -56,15 +56,15 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST1X1(DoubleIsNotZero_ThrowsAnomaly,
-      double value,
-      -1.0,
-      1.0)
+   TEST2X2(DoubleIsNotZero_ThrowsAnomaly,
+      double value, const string& expectedValueAsString,
+      -1.0, "-1",
+      1.0, "1")
    {
       THROWS_EXCEPTION(IS_DEFAULT_VALUE(value), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_DEFAULT_VALUE(value)",
-"Expected: 0.000000",
-"  Actual: " + to_string(value),
+"Expected: 0",
+"  Actual: " + expectedValueAsString,
 "File.cpp(1)"));
    }
 

@@ -4,10 +4,10 @@ namespace ZenUnit
 {
    TESTS(IS_ZEROTests)
    AFACT(ValueIsZero_DoesNotThrowException)
-   FACTS(IntNotZero_ThrowsAnomaly)
-   FACTS(DoubleNotZero_ThrowsAnomaly)
-   AFACT(UserTypeZero_DoesNotThrowException)
-   AFACT(UserTypeNotZero_ThrowsAnomaly__MessagesTestCase)
+   FACTS(IntIsNotZero_ThrowsAnomaly)
+   FACTS(DoubleIsNotZero_ThrowsAnomaly)
+   AFACT(UserTypeIsZero_DoesNotThrowException)
+   AFACT(UserTypeIsNotZero_ThrowsAnomaly__MessagesTestCase)
    AFACT(IntializerConstructable_IsZero_DoesNotThrowException)
    AFACT(IntializerConstructable_IsNotZero_ThrowsAnomaly)
    EVIDENCE
@@ -52,7 +52,7 @@ namespace ZenUnit
       IS_ZERO(doubleZero);
    }
 
-   TEST1X1(IntNotZero_ThrowsAnomaly,
+   TEST1X1(IntIsNotZero_ThrowsAnomaly,
       int value,
       -1,
       1)
@@ -64,25 +64,25 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST1X1(DoubleNotZero_ThrowsAnomaly,
-      double value,
-      -1.0,
-      1.0)
+   TEST2X2(DoubleIsNotZero_ThrowsAnomaly,
+      double value, const string& expectedValueAsString,
+      -1.0, "-1",
+      1.0, "1")
    {
       THROWS_EXCEPTION(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_ZERO(value)",
-"Expected: 0.000000",
-"  Actual: " + to_string(value),
+"Expected: 0",
+"  Actual: " + expectedValueAsString,
 "File.cpp(1)"));
    }
 
-   TEST(UserTypeZero_DoesNotThrowException)
+   TEST(UserTypeIsZero_DoesNotThrowException)
    {
       const UserType userType0(0);
       IS_ZERO(userType0);
    }
 
-   TEST(UserTypeNotZero_ThrowsAnomaly__MessagesTestCase)
+   TEST(UserTypeIsNotZero_ThrowsAnomaly__MessagesTestCase)
    {
       const UserType userType1(1);
       const string messageA = "A", messageB = "B";

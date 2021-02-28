@@ -60,7 +60,7 @@ namespace ZenUnit
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0f), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0.0f)",
 "Expected: Not T{}",
-"  Actual: 0.000000f",
+"  Actual: 0",
 "File.cpp(1)"));
    }
 
@@ -69,7 +69,7 @@ namespace ZenUnit
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0.0)",
 "Expected: Not T{}",
-"  Actual: 0.000000",
+"  Actual: 0",
 "File.cpp(1)"));
    }
 

@@ -1462,9 +1462,17 @@ namespace ZenUnit
                oss << '\'' << value << "\' (" << static_cast<int>(value) << ")";
             }
          }
+         else if constexpr (std::is_same_v<T, double>)
+         {
+            const std::streamsize startingPecision = oss.precision();
+            oss << std::setprecision(15) << value;
+            oss.precision(startingPecision);
+         }
          else if constexpr (std::is_same_v<T, float>)
          {
-            oss << std::to_string(value) << 'f';
+            const std::streamsize startingPecision = oss.precision();
+            oss << std::setprecision(6) << value;
+            oss.precision(startingPecision);
          }
          else if constexpr (has_to_string<T>::value)
          {
@@ -2698,27 +2706,29 @@ namespace ZenUnit
       }
    }
 
-   template<typename ExpectedFloatingPointType, typename ActualFloatingPointType, typename ToleranceType, typename... MessageTypes>
+   template<typename ExpectedFloatingPointType, typename ActualFloatingPointType, typename... MessageTypes>
    NOINLINE void ARE_WITHIN_ThrowAnomaly(
       ExpectedFloatingPointType expectedFloatingPointValue, const char* expectedFloatingPointValueText,
       ActualFloatingPointType actualFloatingPointValue, const char* actualFloatingPointValueText,
-      ToleranceType expectedAbsoluteMaxDifference, const char* expectedAbsoluteMaxDifferenceText,
+      double expectedAbsoluteMaxDifference, const char* expectedAbsoluteMaxDifferenceText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
    {
       const std::string toStringedExpectedFloatingPointValue = ToStringer::ToString(expectedFloatingPointValue);
       const std::string toStringedActualFloatingPointValue = ToStringer::ToString(actualFloatingPointValue);
-      const std::string expectedToleranceLine = "Expected Tolerance: " + std::to_string(expectedAbsoluteMaxDifference);
+      std::ostringstream expectedToleranceLineBuilder;
+      expectedToleranceLineBuilder << std::setprecision(15) << expectedAbsoluteMaxDifference;
+      const std::string expectedToleranceLine = "Expected Tolerance: " + expectedToleranceLineBuilder.str();
       Anomaly::ThrowThreeLineAssertionAnomaly(
          "ARE_WITHIN", expectedFloatingPointValueText, actualFloatingPointValueText, expectedAbsoluteMaxDifferenceText, messagesText,
          toStringedExpectedFloatingPointValue, toStringedActualFloatingPointValue, expectedToleranceLine,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename ExpectedFloatingPointType, typename ActualFloatingPointType, typename ToleranceType, typename... MessageTypes>
+   template<typename ExpectedFloatingPointType, typename ActualFloatingPointType, typename... MessageTypes>
    void ARE_WITHIN_Defined(
       ExpectedFloatingPointType expectedFloatingPointValue, const char* expectedFloatingPointValueText,
       ActualFloatingPointType  actualFloatingPointValue, const char* actualFloatingPointValueText,
-      ToleranceType expectedAbsoluteMaxDifference, const char* expectedAbsoluteMaxDifferenceText,
+      double expectedAbsoluteMaxDifference, const char* expectedAbsoluteMaxDifferenceText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
    {
       const double difference = static_cast<double>(expectedFloatingPointValue) - static_cast<double>(actualFloatingPointValue);

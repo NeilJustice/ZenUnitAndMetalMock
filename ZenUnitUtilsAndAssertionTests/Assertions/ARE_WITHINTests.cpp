@@ -31,9 +31,9 @@ namespace ZenUnit
       THROWS_EXCEPTION(ARE_WITHIN(0.0f, 0.2f, 0.1),
          Anomaly, R"(
   Failed: ARE_WITHIN(0.0f, 0.2f, 0.1)
-Expected: 0.000000f
-  Actual: 0.200000f
-Expected Tolerance: 0.100000
+Expected: 0
+  Actual: 0.2
+Expected Tolerance: 0.1
 File.cpp(1))");
    }
 
@@ -57,9 +57,9 @@ File.cpp(1))");
       THROWS_EXCEPTION(ARE_WITHIN(0.0, 0.2, 0.1),
          Anomaly, R"(
   Failed: ARE_WITHIN(0.0, 0.2, 0.1)
-Expected: 0.000000
-  Actual: 0.200000
-Expected Tolerance: 0.100000
+Expected: 0
+  Actual: 0.2
+Expected Tolerance: 0.1
 File.cpp(1))");
    }
 
