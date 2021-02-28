@@ -67,7 +67,8 @@ namespace ZenUnit
    TEST2X2(DoubleIsNotZero_ThrowsAnomaly,
       double value, const string& expectedValueAsString,
       -1.0, "-1",
-      1.0, "1")
+      1.0, "1",
+      0.000000000000001, "1e-15")
    {
       THROWS_EXCEPTION(IS_ZERO(value), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_ZERO(value)",

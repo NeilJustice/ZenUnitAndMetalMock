@@ -43,6 +43,8 @@ namespace ZenUnit
 
    TESTS(ToStringerTests)
    AFACT(ToString_Arithmetic_ReturnsResultOfStdToString)
+   AFACT(ToString_Float_Returns6PrecisionString)
+   AFACT(ToString_Double_Returns15PrecisionString)
    AFACT(ToString_Enum_ReturnsStdToStringOnTheValue)
    AFACT(ToString_EnumClass_ReturnsStdToStringOnTheValue)
    AFACT(ToString_Nullptr_ReturnsNullptrInBrackets)
@@ -73,15 +75,27 @@ namespace ZenUnit
       ARE_EQUAL("-1", ToStringer::ToString(-1));
       ARE_EQUAL("0", ToStringer::ToString(0));
       ARE_EQUAL("1", ToStringer::ToString(1));
+   }
 
+   TEST(ToString_Float_Returns6PrecisionString)
+   {
+      ARE_EQUAL("-0.123456", ToStringer::ToString(-0.123456f));
       ARE_EQUAL("-1.12346", ToStringer::ToString(-1.123456f));
+      ARE_EQUAL("-1e-06", ToStringer::ToString(-0.000001f));
       ARE_EQUAL("0", ToStringer::ToString(0.0f));
+      ARE_EQUAL("1e-06", ToStringer::ToString(0.000001f));
       ARE_EQUAL("1.1", ToStringer::ToString(1.1f));
+      ARE_EQUAL("0.123456", ToStringer::ToString(0.123456f));
       ARE_EQUAL("1.12346", ToStringer::ToString(1.123456f));
+   }
 
+   TEST(ToString_Double_Returns15PrecisionString)
+   {
       ARE_EQUAL("-1.12345678901235", ToStringer::ToString(-1.123456789012345));
       ARE_EQUAL("-0.123456789012345", ToStringer::ToString(-0.123456789012345));
+      ARE_EQUAL("-1e-15", ToStringer::ToString(-0.000000000000001));
       ARE_EQUAL("0", ToStringer::ToString(0.0));
+      ARE_EQUAL("1e-15", ToStringer::ToString(0.000000000000001));
       ARE_EQUAL("1.1", ToStringer::ToString(1.1));
       ARE_EQUAL("0.123456789012345", ToStringer::ToString(0.123456789012345));
       ARE_EQUAL("1.12345678901235", ToStringer::ToString(1.123456789012345));
