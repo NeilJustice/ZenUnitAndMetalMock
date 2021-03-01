@@ -7400,10 +7400,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 8:
       {
          std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
-         const long long randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformLongLongDistribution(RandomEngineForCurrentTestRun());
-         const T randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT =
-            static_cast<T>(randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBound);
-         return randomIntegerBetweenInclusiveLowerBoundAndInclusiveUpperBoundAsT;
+         const long long randomIntegerAsLongLong = uniformLongLongDistribution(RandomEngineForCurrentTestRun());
+         const T randomIntegerAsT = static_cast<T>(randomIntegerAsLongLong);
+         return randomIntegerAsT;
       }
       case 9: return static_cast<T>(inclusiveUpperBound - 1LL);
       case 10:
@@ -7438,6 +7437,41 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 10:
       default: return inclusiveUpperBound;
       }
+   }
+
+   template<std::floating_point FloatingPointType>
+   FloatingPointType RandomFloatOrDoubleBetween(FloatingPointType inclusiveLowerBound, FloatingPointType inclusiveUpperBound)
+   {
+      if (inclusiveLowerBound == inclusiveUpperBound)
+      {
+         return inclusiveLowerBound;
+      }
+      std::uniform_int_distribution<int> uniformIntDistribution(1, 6);
+      const int randomIntBetween1And10 = uniformIntDistribution(RandomEngineForCurrentTestRun());
+      switch (randomIntBetween1And10)
+      {
+      case 1: return inclusiveLowerBound;
+      case 2: return FloatingPointType{};
+      case 3: return inclusiveUpperBound;
+      case 4:
+      case 5:
+      default:
+      {
+         std::uniform_real_distribution<FloatingPointType> uniformRealDistribution(inclusiveLowerBound, inclusiveUpperBound);
+         const FloatingPointType randomFloatingPointValue = uniformRealDistribution(RandomEngineForCurrentTestRun());
+         return randomFloatingPointValue;
+      }
+      }
+   }
+
+   inline float RandomFloatBetween(float inclusiveLowerBound, float inclusiveUpperBound)
+   {
+      return RandomFloatOrDoubleBetween<float>(inclusiveLowerBound, inclusiveUpperBound);
+   }
+
+   inline double RandomDoubleBetween(double inclusiveLowerBound, double inclusiveUpperBound)
+   {
+      return RandomFloatOrDoubleBetween<double>(inclusiveLowerBound, inclusiveUpperBound);
    }
 
    template<typename T>

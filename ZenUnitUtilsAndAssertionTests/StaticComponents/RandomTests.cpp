@@ -30,6 +30,8 @@ namespace ZenUnit
    AFACT(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   AFACT(RandomFloatBetween_ReturnsRandomFloatBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   AFACT(RandomDoubleBetween_ReturnsRandomDoubleBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
    FACTS(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue)
    EVIDENCE
@@ -529,6 +531,70 @@ namespace ZenUnit
       IS_TRUE(randomBetweenReturnedPositive3);
    }
 
+   TEST(RandomFloatBetween_ReturnsRandomFloatBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   {
+      bool randomBetweenReturnedNegative3 = false;
+      bool randomBetweenFloatInTheMiddle = false;
+      bool randomBetweenReturnedPositive3 = false;
+      for (size_t i = 0; i < 10000; ++i)
+      {
+         const float randomFloat = ZenUnit::RandomFloatBetween(-3.0f, 3.0f);
+         if (randomFloat == -3.0f)
+         {
+            randomBetweenReturnedNegative3 = true;
+         }
+         else if (randomFloat > -3.0f && randomFloat < 3.0f)
+         {
+            randomBetweenFloatInTheMiddle = true;
+         }
+         else if (randomFloat == 3.0f)
+         {
+            randomBetweenReturnedPositive3 = true;
+         }
+         if (randomBetweenReturnedNegative3 &&
+             randomBetweenFloatInTheMiddle &&
+             randomBetweenReturnedPositive3)
+         {
+            break;
+         }
+      }
+      IS_TRUE(randomBetweenReturnedNegative3);
+      IS_TRUE(randomBetweenFloatInTheMiddle);
+      IS_TRUE(randomBetweenReturnedPositive3);
+   }
+
+   TEST(RandomDoubleBetween_ReturnsRandomDoubleBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   {
+      bool randomBetweenReturnedNegative3 = false;
+      bool randomBetweenDoubleInTheMiddle = false;
+      bool randomBetweenReturnedPositive3 = false;
+      for (size_t i = 0; i < 10000; ++i)
+      {
+         const double randomDouble = ZenUnit::RandomDoubleBetween(-3.0, 3.0);
+         if (randomDouble == -3.0)
+         {
+            randomBetweenReturnedNegative3 = true;
+         }
+         else if (randomDouble > -3.0 && randomDouble < 3.0)
+         {
+            randomBetweenDoubleInTheMiddle = true;
+         }
+         else if (randomDouble == 3.0)
+         {
+            randomBetweenReturnedPositive3 = true;
+         }
+         if (randomBetweenReturnedNegative3 &&
+             randomBetweenDoubleInTheMiddle &&
+             randomBetweenReturnedPositive3)
+         {
+            break;
+         }
+      }
+      IS_TRUE(randomBetweenReturnedNegative3);
+      IS_TRUE(randomBetweenDoubleInTheMiddle);
+      IS_TRUE(randomBetweenReturnedPositive3);
+   }
+
    TEST(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    {
       bool randomBetweenReturned3 = false;
@@ -538,7 +604,7 @@ namespace ZenUnit
       bool randomBetweenReturned7 = false;
       bool randomBetweenReturned8 = false;
       bool randomBetweenReturned9 = false;
-      for (size_t i = 0; i < 100000; ++i)
+      for (size_t i = 0; i < 10000; ++i)
       {
          const size_t randomSizeT = RandomSizeTBetween(3, 9);
          if (randomSizeT == 3)
@@ -613,9 +679,8 @@ namespace ZenUnit
       //
       for (size_t i = 0; i < 1000; ++i)
       {
-         const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue =
-            ZenUnit::RandomUnsignedLongLongBetween0AndValue(inclusiveMaxValue);
-         uniqueRandomValues.insert(randomUnsignedLongLongBetween0AndInclusiveMaxValue);
+         const unsigned long long randomUnsignedLongLong = ZenUnit::RandomUnsignedLongLongBetween0AndValue(inclusiveMaxValue);
+         uniqueRandomValues.insert(randomUnsignedLongLong);
       }
       //
       unordered_set<unsigned long long> expectedUniqueRandomValues;
@@ -627,10 +692,8 @@ namespace ZenUnit
    }
 
    RUN_TESTS(RandomTests)
-}
 
-namespace ZenUnit
-{
+
    template<typename T>
    TEMPLATE_TESTS(RandomLessThanTests, T)
    AFACT(RandomLessThan_ReturnsARandomValueBetweenTMinValueAndExclusiveUpperBoundMinus1)
