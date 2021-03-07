@@ -55,7 +55,7 @@ namespace ZenUnit
 #define ZENUNIT_VA_ARGS_TEXT_IMPL(placeholder, ...) #__VA_ARGS__
 #define ZENUNIT_VA_ARGS_TEXT(...) ZENUNIT_VA_ARGS_TEXT_IMPL("", __VA_ARGS__)
 
-// NOINLINE applied to error-handling functions boosts instruction cache performance on the hot path
+// NOINLINE boosts instruction cache performance by uninlining error handling code from the hot path
 #if defined __linux__ || defined __APPLE__
 #define NOINLINE __attribute__((noinline))
 #elif defined _WIN32
@@ -864,11 +864,7 @@ namespace ZenUnit
       exit(1);
    }
 
-   inline void AssertTrue(
-      bool predicateResult,
-      const char* predicateText,
-      FilePathLineNumber filePathLineNumber,
-      const char* functionName)
+   inline void AssertTrue(bool predicateResult, const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName)
    {
       if (!predicateResult)
       {
