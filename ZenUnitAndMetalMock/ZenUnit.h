@@ -8041,16 +8041,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline std::string RandomStringWithLength(size_t length)
    {
-      std::string stringWithLength(length, 0);
-      std::generate(std::begin(stringWithLength), std::end(stringWithLength), []() { return ZenUnit::RandomLetter(); });
-      return stringWithLength;
+      std::string randomStringWithLength(length, 0);
+      std::generate(std::begin(randomStringWithLength), std::end(randomStringWithLength), []() { return ZenUnit::RandomLetter(); });
+      return randomStringWithLength;
    }
 
    inline std::wstring RandomWideStringWithLength(size_t length)
    {
-      std::wstring wideStringWithLength(length, 0);
-      std::generate(std::begin(wideStringWithLength), std::end(wideStringWithLength), []() { return ZenUnit::RandomWideLetter(); });
-      return wideStringWithLength;
+      std::wstring randomWideStringWithLength(length, 0);
+      std::generate(std::begin(randomWideStringWithLength), std::end(randomWideStringWithLength), []() { return ZenUnit::RandomWideLetter(); });
+      return randomWideStringWithLength;
    }
 
    template<>
