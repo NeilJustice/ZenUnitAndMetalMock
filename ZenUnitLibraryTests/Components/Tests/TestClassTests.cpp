@@ -62,7 +62,7 @@ namespace ZenUnit
 
 Unexpectedly, a corresponding TESTNXN(TestName, ...) test definition was not found in the EVIDENCE section of this test class.
 
-To fix this mismatch, either change FACTS(TestName) to AFACT(TestName) in the test declaration section of this test class,
+To fix this mismatch either change FACTS(TestName) to AFACT(TestName) in the test declaration section of this test class
 
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10, in the EVIDENCE section of this test class.
 )");
