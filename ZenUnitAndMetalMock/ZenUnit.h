@@ -7435,36 +7435,21 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<std::floating_point FloatingPointType>
    FloatingPointType RandomFloatOrDoubleBetween(FloatingPointType inclusiveLowerBound, FloatingPointType inclusiveUpperBound)
    {
-      if (inclusiveLowerBound == inclusiveUpperBound)
-      {
-         return inclusiveLowerBound;
-      }
-      std::uniform_int_distribution<int> uniformIntDistribution(1, 6);
-      const int randomIntBetween1And10 = uniformIntDistribution(RandomEngineForCurrentTestRun());
-      switch (randomIntBetween1And10)
-      {
-      case 1: return inclusiveLowerBound;
-      case 2: return FloatingPointType{};
-      case 3: return inclusiveUpperBound;
-      case 4:
-      case 5:
-      default:
-      {
-         std::uniform_real_distribution<FloatingPointType> uniformRealDistribution(inclusiveLowerBound, inclusiveUpperBound);
-         const FloatingPointType randomFloatingPointValue = uniformRealDistribution(RandomEngineForCurrentTestRun());
-         return randomFloatingPointValue;
-      }
-      }
+      std::uniform_real_distribution<FloatingPointType> uniformRealDistribution(inclusiveLowerBound, inclusiveUpperBound);
+      const FloatingPointType randomFloatOrDoubleBetween = uniformRealDistribution(RandomEngineForCurrentTestRun());
+      return randomFloatOrDoubleBetween;
    }
 
    inline float RandomFloatBetween(float inclusiveLowerBound, float inclusiveUpperBound)
    {
-      return RandomFloatOrDoubleBetween<float>(inclusiveLowerBound, inclusiveUpperBound);
+      const float randomFloatBetween = RandomFloatOrDoubleBetween(inclusiveLowerBound, inclusiveUpperBound);
+      return randomFloatBetween;
    }
 
    inline double RandomDoubleBetween(double inclusiveLowerBound, double inclusiveUpperBound)
    {
-      return RandomFloatOrDoubleBetween<double>(inclusiveLowerBound, inclusiveUpperBound);
+      const double randomDoubleBetween = RandomFloatOrDoubleBetween(inclusiveLowerBound, inclusiveUpperBound);
+      return randomDoubleBetween;
    }
 
    template<typename T>
@@ -7813,8 +7798,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       else if constexpr (is_pair_v<T>)
       {
-         std::pair<typename T::first_type, typename T::second_type> randomPair =
-            RandomPair<typename T::first_type, typename T::second_type>();
+         std::pair<typename T::first_type, typename T::second_type> randomPair = RandomPair<typename T::first_type, typename T::second_type>();
          return randomPair;
       }
       else if constexpr (is_vector_v<T>)
@@ -7825,14 +7809,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       else if constexpr (is_unordered_map_v<T>)
       {
-         std::unordered_map<typename T::key_type, typename T::mapped_type> randomUnorderedMap =
-            RandomUnorderedMap<typename T::key_type, typename T::mapped_type>();
+         std::unordered_map<typename T::key_type, typename T::mapped_type> randomUnorderedMap = RandomUnorderedMap<typename T::key_type, typename T::mapped_type>();
          return randomUnorderedMap;
       }
       else if constexpr (is_unordered_set_v<T>)
       {
-         std::unordered_set<typename T::key_type> randomUnorderedSet =
-            RandomUnorderedSet<typename T::key_type>();
+         std::unordered_set<typename T::key_type> randomUnorderedSet = RandomUnorderedSet<typename T::key_type>();
          return randomUnorderedSet;
       }
       else if constexpr (std::is_same_v<T, unsigned long long>)
@@ -7852,23 +7834,30 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline float Random<float>()
    {
-      const int randomIntBetween1And6 = RandomBetween<int>(1, 6);
-      switch (randomIntBetween1And6)
+      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
+      switch (randomIntBetween1And10)
       {
       case 1:
       {
-         constexpr float lowestFloatValue = std::numeric_limits<float>::lowest();
-         return lowestFloatValue;
+         constexpr float lowestFloat = std::numeric_limits<float>::lowest();
+         return lowestFloat;
       }
       case 2:
       {
-         return 0.0f;
+         const float nextLowestFloat = std::nextafterf(std::numeric_limits<float>::lowest(), 0.0f);
+         return nextLowestFloat;
       }
       case 3:
+      {
+         return 0.0f;
+      }
       case 4:
       case 5:
+      case 6:
+      case 7:
+      case 8:
       {
-         std::uniform_real_distribution<float> uniformFloatDistribution(0, FLT_MAX);
+         std::uniform_real_distribution<float> uniformFloatDistribution(0.0f, std::numeric_limits<float>::max());
          float randomFloat = uniformFloatDistribution(RandomEngineForCurrentTestRun());
          const bool randomNegativeSign = Random<bool>();
          if (randomNegativeSign)
@@ -7877,10 +7866,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          }
          return randomFloat;
       }
-      case 6:
+      case 9:
+      {
+         const float floatOneBeforeMaxFloat = std::nextafterf(std::numeric_limits<float>::max(), 0.0f);
+         return floatOneBeforeMaxFloat;
+      }
       default:
       {
-         return FLT_MAX;
+         return std::numeric_limits<float>::max();
       }
       }
    }
@@ -7888,23 +7881,30 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<>
    inline double Random<double>()
    {
-      const int randomIntBetween1And6 = RandomBetween<int>(1, 6);
-      switch (randomIntBetween1And6)
+      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
+      switch (randomIntBetween1And10)
       {
       case 1:
       {
-         constexpr double lowestDoubleValue = std::numeric_limits<double>::lowest();
-         return lowestDoubleValue;
+         constexpr double lowestDouble = std::numeric_limits<double>::lowest();
+         return lowestDouble;
       }
       case 2:
       {
-         return 0.0;
+         const double nextLowestDouble = std::nextafter(std::numeric_limits<double>::lowest(), 0.0);
+         return nextLowestDouble;
       }
       case 3:
+      {
+         return 0.0;
+      }
       case 4:
       case 5:
+      case 6:
+      case 7:
+      case 8:
       {
-         std::uniform_real_distribution<double> uniformDoubleDistribution(0, DBL_MAX);
+         std::uniform_real_distribution<double> uniformDoubleDistribution(0.0, std::numeric_limits<double>::max());
          double randomDouble = uniformDoubleDistribution(RandomEngineForCurrentTestRun());
          const bool randomNegativeSign = Random<bool>();
          if (randomNegativeSign)
@@ -7913,10 +7913,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          }
          return randomDouble;
       }
-      case 6:
+      case 9:
+      {
+         const double doubleOneBeforeMaxFloat = std::nextafter(std::numeric_limits<double>::max(), 0.0);
+         return doubleOneBeforeMaxFloat;
+      }
       default:
       {
-         return DBL_MAX;
+         return std::numeric_limits<double>::max();
       }
       }
    }

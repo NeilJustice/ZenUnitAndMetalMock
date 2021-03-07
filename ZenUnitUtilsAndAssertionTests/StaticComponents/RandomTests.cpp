@@ -533,66 +533,26 @@ namespace ZenUnit
 
    TEST(RandomFloatBetween_ReturnsRandomFloatBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    {
-      bool randomBetweenReturnedNegative3 = false;
-      bool randomBetweenFloatInTheMiddle = false;
-      bool randomBetweenReturnedPositive3 = false;
       for (size_t i = 0; i < 10000; ++i)
       {
-         const float randomFloat = ZenUnit::RandomFloatBetween(-3.0f, 3.0f);
-         if (randomFloat == -3.0f)
+         const float randomFloatBetween = ZenUnit::RandomFloatBetween(-3.0f, 3.0f);
+         if (randomFloatBetween < -3.0f || randomFloatBetween > 3.0f)
          {
-            randomBetweenReturnedNegative3 = true;
-         }
-         else if (randomFloat > -3.0f && randomFloat < 3.0f)
-         {
-            randomBetweenFloatInTheMiddle = true;
-         }
-         else if (randomFloat == 3.0f)
-         {
-            randomBetweenReturnedPositive3 = true;
-         }
-         if (randomBetweenReturnedNegative3 &&
-             randomBetweenFloatInTheMiddle &&
-             randomBetweenReturnedPositive3)
-         {
-            break;
+            FAIL_TEST("ZenUnit::RandomFloatBetween(-3.0f, 3.0f) unexpectedly returned out-of-bounds value"); // LCOV_EXCL_LINE
          }
       }
-      IS_TRUE(randomBetweenReturnedNegative3);
-      IS_TRUE(randomBetweenFloatInTheMiddle);
-      IS_TRUE(randomBetweenReturnedPositive3);
    }
 
    TEST(RandomDoubleBetween_ReturnsRandomDoubleBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    {
-      bool randomBetweenReturnedNegative3 = false;
-      bool randomBetweenDoubleInTheMiddle = false;
-      bool randomBetweenReturnedPositive3 = false;
       for (size_t i = 0; i < 10000; ++i)
       {
-         const double randomDouble = ZenUnit::RandomDoubleBetween(-3.0, 3.0);
-         if (randomDouble == -3.0)
+         const double randomDoubleBetween = ZenUnit::RandomDoubleBetween(-3.0, 3.0);
+         if (randomDoubleBetween < -3.0 || randomDoubleBetween > 3.0)
          {
-            randomBetweenReturnedNegative3 = true;
-         }
-         else if (randomDouble > -3.0 && randomDouble < 3.0)
-         {
-            randomBetweenDoubleInTheMiddle = true;
-         }
-         else if (randomDouble == 3.0)
-         {
-            randomBetweenReturnedPositive3 = true;
-         }
-         if (randomBetweenReturnedNegative3 &&
-             randomBetweenDoubleInTheMiddle &&
-             randomBetweenReturnedPositive3)
-         {
-            break;
+            FAIL_TEST("ZenUnit::RandomDoubleBetween(-3.0, 3.0) unexpectedly returned out-of-bounds value"); // LCOV_EXCL_LINE
          }
       }
-      IS_TRUE(randomBetweenReturnedNegative3);
-      IS_TRUE(randomBetweenDoubleInTheMiddle);
-      IS_TRUE(randomBetweenReturnedPositive3);
    }
 
    TEST(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
