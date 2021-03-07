@@ -7936,7 +7936,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 7: return "RandomConstCharPointer7";
       case 8: return "RandomConstCharPointer8";
       case 9: return "RandomConstCharPointer9";
-      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return "RandomConstCharPointer10";
+      default: return "RandomConstCharPointer10";
       }
    }
 
@@ -7955,7 +7955,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 7: return L"RandomWideConstCharPointer7";
       case 8: return L"RandomWideConstCharPointer8";
       case 9: return L"RandomWideConstCharPointer9";
-      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return L"RandomWideConstCharPointer10";
+      default: return L"RandomWideConstCharPointer10";
       }
    }
 
@@ -7974,7 +7974,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 7: return "RandomString7";
       case 8: return "RandomString8";
       case 9: return "RandomString9";
-      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return "RandomString10";
+      default: return "RandomString10";
       }
    }
 
@@ -7993,7 +7993,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 7: return L"RandomWString7";
       case 8: return L"RandomWString8";
       case 9: return L"RandomWString9";
-      default: ZENUNIT_ASSERT(randomIntBetween1And10 == 10); return L"RandomWString10";
+      default: return L"RandomWString10";
       }
    }
 
