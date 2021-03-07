@@ -6419,7 +6419,7 @@ Fatal Windows C++ Runtime Assertion
          {
             RunTestCaseIfNotFilteredOut(_currentTestCaseNumber, zenUnitArgs, splitTestCaseArgs);
          }
-         Exit1IfNonExistentTestCaseNumberSpecified();
+         Exit1IfInvalidTestCaseNumberSpecified();
          // Reset _currentTestCaseNumber to 1 to ready this TestNXN for another test run in case --test-runs=N is specified
          _currentTestCaseNumber = 1;
          return _testResults;
@@ -6461,11 +6461,11 @@ Fatal Windows C++ Runtime Assertion
          return testResult;
       }
 
-      virtual void Exit1IfNonExistentTestCaseNumberSpecified() const
+      virtual void Exit1IfInvalidTestCaseNumberSpecified() const
       {
          if (_testResults.empty())
          {
-            const std::string errorMessage = "\nError: Non-existent test case number specified in --run filter. Exiting with code 1.";
+            const std::string errorMessage = "\nError: Invalid test case number specified in --run filter. Exiting with code 1.";
             _console->WriteLine(errorMessage);
             _call_exit(1);
          }

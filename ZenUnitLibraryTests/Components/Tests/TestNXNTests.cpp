@@ -22,8 +22,8 @@ namespace ZenUnit
    AFACT(RunTestCaseIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCase)
    AFACT(RunTestCase_1X1_DoesSo)
    AFACT(RunTestCase_2X2_DoesSo)
-   AFACT(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
-   AFACT(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
+   AFACT(Exit1IfInvalidTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
+   AFACT(Exit1IfInvalidTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
    AFACT(ShouldRunTestCase_TestNameFiltersAreEmpty_ReturnsTrue)
    FACTS(ShouldRunTestCase_TestNameFiltersAreNonEmpty_ReturnsTrueIfAnyTestNameFilterMatchesTestClassNameTestNameTestCaseNumber)
    AFACT(TestNameFilterMatchesTestCase_ReturnsTrueIfTestNameFilterMatchesTestCaseNumberAndTestClassNameAndTestName)
@@ -139,7 +139,7 @@ namespace ZenUnit
       {
       public:
          METALMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
-         METALMOCK_VOID0_CONST(Exit1IfNonExistentTestCaseNumberSpecified)
+         METALMOCK_VOID0_CONST(Exit1IfInvalidTestCaseNumberSpecified)
          METALMOCK_NONVOID1_STATIC(std::shared_ptr<ITestCaseNumberGenerator>, ITestCaseNumberGenerator, FactoryNew, bool)
 
          Test1X1SelfMocked() noexcept
@@ -175,7 +175,7 @@ namespace ZenUnit
       SplitOnNonQuotedCommasMock.Return(splitTestCaseArgs);
       test1X1SelfMocked._call_String_SplitOnNonQuotedCommas = BIND_0ARG_METALMOCK_OBJECT(SplitOnNonQuotedCommasMock);
 
-      test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.Expect();
+      test1X1SelfMocked.Exit1IfInvalidTestCaseNumberSpecifiedMock.Expect();
 
       TestResult firstTestResult;
       const string firstTestName = ZenUnit::Random<string>();
@@ -199,7 +199,7 @@ namespace ZenUnit
          { 1, args, splitTestCaseArgs },
          { 2, args, splitTestCaseArgs }
       }));
-      METALMOCK(test1X1SelfMocked.Exit1IfNonExistentTestCaseNumberSpecifiedMock.CalledOnce());
+      METALMOCK(test1X1SelfMocked.Exit1IfInvalidTestCaseNumberSpecifiedMock.CalledOnce());
       ARE_EQUAL(1, test1X1SelfMocked._currentTestCaseNumber);
       IS_EMPTY(testResults);
    }
@@ -346,22 +346,21 @@ namespace ZenUnit
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
 
-   TEST(Exit1IfNonExistentTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
+   TEST(Exit1IfInvalidTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
    {
       _testNXN->_testResults.resize(1);
-      _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
+      _testNXN->Exit1IfInvalidTestCaseNumberSpecified();
    }
 
-   TEST(Exit1IfNonExistentTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
+   TEST(Exit1IfInvalidTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
    {
       _consoleMock->WriteLineMock.Expect();
       exitMock.Expect();
       IS_EMPTY(_testNXN->_testResults);
       //
-      _testNXN->Exit1IfNonExistentTestCaseNumberSpecified();
+      _testNXN->Exit1IfInvalidTestCaseNumberSpecified();
       //
-      const std::string expectedErrorMessage =
-         "\nError: Non-existent test case number specified in --run filter. Exiting with code 1.";
+      const std::string expectedErrorMessage = "\nError: Invalid test case number specified in --run filter. Exiting with code 1.";
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
       METALMOCK(exitMock.CalledOnceWith(1));
    }
