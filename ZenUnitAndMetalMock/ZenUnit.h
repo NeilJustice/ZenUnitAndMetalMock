@@ -62,14 +62,15 @@ namespace ZenUnit
 #define NOINLINE __declspec(noinline)
 #endif
 
-// COMMA is for those special occasions when parentheses are not enough parsing disambiguation for the compiler
+// COMMA is for those times when parentheses are not enough parsing disambiguation for the compiler
 #define COMMA ,
 
-// Example ZenUnit COMMA usage to "escape" std::unordered_map's comma within the IS_TRUE assertion:
+// Example ZenUnit COMMA usage to escape std::unordered_map's comma within the ZenUnit IS_TRUE assertion:
 // IS_TRUE(ZenUnit::has_ZenUnitPrinter<std::unordered_map<int COMMA int>>::value);
 
-// Example MetalMock COMMA usage to "escape" std::unordered_map's comma
-// within the MetalMock object defining macro METALMOCK_NONVOID3_CONST:
+// Example MetalMock COMMA usage to escape std::unordered_map's comma
+// within the MetalMock-object-defining macro METALMOCK_NONVOID3_CONST:
+
 // class Component
 // {
 // public:
@@ -4506,7 +4507,6 @@ namespace ZenUnit
          _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
       }
 
-      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
       virtual long long SumOfTestResultMicroseconds() const
       {
          long long sumOfTestResultMicroseconds = 0;
@@ -4924,7 +4924,6 @@ namespace ZenUnit
          return testClassResults;
       }
    private:
-      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
       size_t SumNumberOfTestCasesInAllTestClassRunners() const
       {
          size_t numberOfTestCasesInAllTestClassRunners = 0;
@@ -5201,7 +5200,6 @@ namespace ZenUnit
          _numberOfFailedTestCases = 0;
       }
    private:
-      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
       virtual size_t CalculateNumberOfFailedTestCases(const std::vector<TestClassResult>& testClassResults) const
       {
          size_t numberOfFailedTestCasesForAllTestClasses = 0;
@@ -6001,7 +5999,6 @@ Fatal Windows C++ Runtime Assertion
          return testNameFilterMatchesTestName;
       }
 
-      // Hand-written std::accumulate() to minimize ZenUnit compile time by not including <numeric>
       size_t NumberOfTestCases() const override
       {
          size_t numberOfTestCasesInTestClass = 0;
@@ -6169,8 +6166,8 @@ Fatal Windows C++ Runtime Assertion
       }
    };
 
-   // PmfToken provides the address of a static variable unique to a pointer to member function for use as a key in
-   // ZenUnit::TestClass's std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> map
+   // PmfToken provides the address of a unique static variable for use as a unique key in
+   // ZenUnit::TestClass's std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>
    struct PmfToken
    {
       PmfToken() noexcept = default;
@@ -7372,10 +7369,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    };
 
-   //
-   // Random Value Generators
-   //
-
    template<typename T>
    T Random();
 
@@ -8158,7 +8151,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
 
       // Example Enum(int exclusiveEnumMaxValue) usage:
-      // enum Color
+      // enum class Color
       // {
       //    Red,
       //    White,
@@ -8166,7 +8159,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       //    MaxValue
       // };
       // const ZenUnit::RandomGenerator* const zenUnitRandomGenerator = ZenUnit::RandomGenerator::Instance();
-      // const Color randomColor = static_cast<Color>(zenUnitRandomGenerator->Enum(Color::MaxValue));
+      // const Color randomColor = static_cast<Color>(zenUnitRandomGenerator->Enum(static_cast<int>(Color::MaxValue)));
       virtual int Enum(int exclusiveEnumMaxValue) const
       {
          const int inclusiveEnumMaxValue = exclusiveEnumMaxValue - 1;
@@ -8333,4 +8326,4 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 }
 
-#endif
+#endif // ZENUNITDOTH
