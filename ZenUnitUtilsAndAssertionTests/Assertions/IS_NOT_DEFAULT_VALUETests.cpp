@@ -85,10 +85,11 @@ namespace ZenUnit
    TEST(IntVectorIsEmpty_ThrowsAnomaly)
    {
       const vector<int> defaultIntVector;
+      const string expectedIntVectorTypeName = *Type::GetName<vector<int>>();
       THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultIntVector)",
 "Expected: Not T{}",
-"  Actual: std::vector<int> (size 0):",
+"  Actual: " + expectedIntVectorTypeName + " (size 0):",
 "{",
 "}",
 "File.cpp(1)"));

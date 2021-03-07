@@ -12,29 +12,25 @@ namespace ZenUnit
    TEST(Print_PrintsEachSetElementsUsingZenUnitPrinterPrint)
    {
       ostringstream expectedMessageBuilder;
-
       const string expectedSetTypeName = *Type::GetName<SetType<T>>();
-
       ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, {});
-      ARE_EQUAL(expectedSetTypeName + R"(
+      ARE_EQUAL(expectedSetTypeName + R"( (size 0):
 {
 })", expectedMessageBuilder.str());
       expectedMessageBuilder = ostringstream();
-
       ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, { 1 });
-      ARE_EQUAL(expectedSetTypeName + R"(
+      ARE_EQUAL(expectedSetTypeName + R"( (size 1):
 {
    1
 })", expectedMessageBuilder.str());
       expectedMessageBuilder = ostringstream();
-
       ZenUnit::Printer<SetType<T>>::Print(expectedMessageBuilder, { 1, 2 });
-      const string zenUnitPrintedSetPossibility1 = expectedSetTypeName + R"(
+      const string zenUnitPrintedSetPossibility1 = expectedSetTypeName + R"( (size 2):
 {
    1,
    2
 })";
-      const string zenUnitPrintedSetPossibility2 = expectedSetTypeName + R"(
+      const string zenUnitPrintedSetPossibility2 = expectedSetTypeName + R"( (size 2):
 {
    2,
    1

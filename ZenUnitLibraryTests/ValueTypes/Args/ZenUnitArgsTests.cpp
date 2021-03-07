@@ -11,7 +11,7 @@ namespace ZenUnit
 
    TEST(VersionNumber_IsExpectedString)
    {
-      ARE_EQUAL("0.9.0", ZenUnit::VersionNumber);
+      ARE_EQUAL("v0.10.0", ZenUnit::Version);
    }
 
    TEST(DefaultConstructor_SetsFieldsToDefaults)

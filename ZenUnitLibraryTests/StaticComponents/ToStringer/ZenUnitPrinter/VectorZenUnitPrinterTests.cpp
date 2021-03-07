@@ -9,17 +9,17 @@ namespace ZenUnit
    AFACT(ZenUnitPrinterPrint_VectorHasElevenElements_PrintsAllElevenElements)
    EVIDENCE
 
-   const string _expectedVectorTypePrefix = "std::vector<" + *Type::GetName<T>() + "> (size ";
+   const string _expectedVectorTypeName = *Type::GetName<vector<T>>();
    ostringstream _oss;
 
    TEST(ZenUnitPrinterPrint_VectorIsEmpty_PrintsEmptyBrackets)
    {
       const vector<T> vec;
       //
-      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
+      ZenUnit::Printer<vector<T>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypeName + " (size 0):" + TestUtil::NewlineConcat("",
          "{",
          "}"), vectorAsString);
    }
@@ -28,10 +28,10 @@ namespace ZenUnit
    {
       const vector<T> vec = { 1 };
       //
-      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
+      ZenUnit::Printer<vector<T>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypePrefix + "1):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 1):" + TestUtil::NewlineConcat("",
          "{",
          "   1",
          "}");
@@ -42,10 +42,10 @@ namespace ZenUnit
    {
       const vector<T> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
       //
-      ZenUnit::Printer<decltype(vec)>::Print(_oss, vec);
+      ZenUnit::Printer<vector<T>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypePrefix + "11):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 11):" + TestUtil::NewlineConcat("",
          "{",
          "   1,",
          "   2,",
@@ -72,7 +72,7 @@ namespace ZenUnit
    AFACT(ZenUnitPrinterPrint_VectorHasElevenElements_PrintsAllElevenElements)
    EVIDENCE
 
-   const string _expectedVectorTypePrefix = "std::vector<UserType> (size ";
+   const string _expectedVectorTypeName = *Type::GetName<vector<UserType>>();
    ostringstream _oss;
 
    TEST(ZenUnitPrinterPrint_VectorIsEmpty_PrintsEmptyBrackets)
@@ -82,7 +82,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<UserType>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypePrefix + "0):" + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypeName + " (size 0):" + TestUtil::NewlineConcat("",
          "{",
          "}"), vectorAsString);
    }
@@ -94,7 +94,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<UserType>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypePrefix + "1):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 1):" + TestUtil::NewlineConcat("",
          "{",
          "   UserType@1",
          "}");
@@ -121,7 +121,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<UserType>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypePrefix + "11):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 11):" + TestUtil::NewlineConcat("",
          "{",
          "   UserType@1,",
          "   UserType@2,",

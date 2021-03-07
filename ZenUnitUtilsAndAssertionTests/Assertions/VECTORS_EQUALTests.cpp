@@ -14,6 +14,7 @@ namespace ZenUnit
    const string TypeName = *Type::GetName<T>();
    const string _messageA = ZenUnit::Random<string>();
    const string _messageB = ZenUnit::Random<string>();
+   const string _expectedVectorTypeName = *Type::GetName<vector<T>>();
 
    TEST(VectorSizesAreEqualAndVectorElementsAreEqual_DoesNotThrowException)
    {
@@ -45,11 +46,11 @@ namespace ZenUnit
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(expectedVector, actualVector),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
-"Expected: std::vector<" + TypeName + "> (size 1):",
+"Expected: " + _expectedVectorTypeName + " (size 1):",
 "{",
 "   " + ToStringer::ToString(expectedVector[0]),
 "}",
-"  Actual: std::vector<" + TypeName + "> (size 0):",
+"  Actual: " + _expectedVectorTypeName + " (size 0):",
 "{",
 "}",
 " Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed",
@@ -66,11 +67,11 @@ namespace ZenUnit
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(expectedVector, actualVector, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector, _messageA, _messageB)",
-"Expected: std::vector<" + TypeName + "> (size 1):",
+"Expected: " + _expectedVectorTypeName + " (size 1):",
 "{",
 "   " + ToStringer::ToString(expectedVector[0]),
 "}",
-"  Actual: std::vector<" + TypeName + "> (size 0):",
+"  Actual: " + _expectedVectorTypeName + " (size 0):",
 "{",
 "}",
 " Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed",
@@ -89,11 +90,11 @@ namespace ZenUnit
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(vector1, vector2, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(vector1, vector2, _messageA, _messageB)",
-"Expected: std::vector<" + TypeName + "> (size 1):",
+"Expected: " + _expectedVectorTypeName + " (size 1):",
 "{",
 "   " + ToStringer::ToString(vector1[0]),
 "}",
-"  Actual: std::vector<" + TypeName + "> (size 1):",
+"  Actual: " + _expectedVectorTypeName + " (size 1):",
 "{",
 "   " + ToStringer::ToString(vector2[0]),
 "}",
@@ -112,16 +113,16 @@ namespace ZenUnit
       const T randomElement1 = RandomBetween<T>(1, 3);
       const T randomElement2 = randomElement1 + RandomBetween<T>(1, 3);
       const vector<T> vector1 { randomElement0, randomElement1 };
-      const vector<T> vector2{ randomElement0, randomElement2 };
+      const vector<T> vector2 { randomElement0, randomElement2 };
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(vector1, vector2),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(vector1, vector2)",
-"Expected: std::vector<" + TypeName + "> (size 2):",
+"Expected: " + _expectedVectorTypeName + " (size 2):",
 "{",
 "   " + ToStringer::ToString(vector1[0]) + ",",
 "   " + ToStringer::ToString(vector1[1]),
 "}",
-"  Actual: std::vector<" + TypeName + "> (size 2):",
+"  Actual: " + _expectedVectorTypeName + " (size 2):",
 "{",
 "   " + ToStringer::ToString(vector2[0]) + ",",
 "   " + ToStringer::ToString(vector2[1]),

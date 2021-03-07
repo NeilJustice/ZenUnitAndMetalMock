@@ -1,4 +1,4 @@
-// C++ Mocking Framework MetalMock v0.9.0
+// C++ Mocking Framework MetalMock v0.10.0
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 

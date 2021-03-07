@@ -209,14 +209,15 @@ File.cpp(1))");
       const int zero = 0;
       const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ zero };
       //
+      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
       THROWS_EXCEPTION(_metalMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
 "  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature)\n"
-"Expected: std::vector<MetalMock::OneArgumentFunctionCallReference<int>> (size 1):\n"
+"Expected: " + expectedVectorTypeName + " (size 1):\n"
 "{\n"
 "   MetalMock::OneArgumentFunctionCall:\n"
 "Argument: 0\n"
 "}\n"
-"  Actual: std::vector<MetalMock::OneArgumentFunctionCallReference<int>> (size 0):\n"
+"  Actual: " + expectedVectorTypeName + " (size 0):\n"
 "{\n"
 "}\n"
 " Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed\n"
@@ -236,16 +237,17 @@ File.cpp(1))");
       const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ x, y };
       _metalMocker->metalMockedFunctionCallHistory = { 10, 20 };
       //
+      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
       THROWS_EXCEPTION(_metalMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
 "  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature)\n"
-"Expected: std::vector<MetalMock::OneArgumentFunctionCallReference<int>> (size 2):\n"
+"Expected: " + expectedVectorTypeName + " (size 2):\n"
 "{\n"
 "   MetalMock::OneArgumentFunctionCall:\n"
 "Argument: 10,\n"
 "   MetalMock::OneArgumentFunctionCall:\n"
 "Argument: 10\n"
 "}\n"
-"  Actual: std::vector<MetalMock::OneArgumentFunctionCallReference<int>> (size 2):\n"
+"  Actual: " + expectedVectorTypeName + " (size 2):\n"
 "{\n"
 "   MetalMock::OneArgumentFunctionCall:\n"
 "Argument: 10,\n"

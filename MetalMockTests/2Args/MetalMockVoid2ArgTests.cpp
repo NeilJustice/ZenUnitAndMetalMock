@@ -228,19 +228,16 @@ File.cpp(1))";
       {
          const int argument1 = ZenUnit::Random<int>();
          const int argument2 = ZenUnit::Random<int>();
-         string spaceIfLinux;
-#if defined __linux__ || defined __APPLE__
-         spaceIfLinux = " ";
-#endif
+         const string expectedVectorTypeName = *Type::GetName<vector<TwoArgumentFunctionCallReferences<int, int>>>();
          const string expectedExceptionMessage = R"(
   Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature)
-Expected: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,)" + spaceIfLinux + R"(int>> (size 1):
+Expected: )" + expectedVectorTypeName + R"( (size 1):
 {
    MetalMock::TwoArgumentFunctionCall:
 Argument1: )" + to_string(argument1) + R"(
 Argument2: )" + to_string(argument2) + R"(
 }
-  Actual: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,)" + spaceIfLinux + R"(int>> (size 0):
+  Actual: )" + expectedVectorTypeName + R"( (size 0):
 {
 }
  Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed

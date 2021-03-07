@@ -1,4 +1,4 @@
-// C++ Unit Testing Framework ZenUnit v0.9.0
+// C++ Unit Testing Framework ZenUnit v0.10.0
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
@@ -7,7 +7,7 @@
 
 namespace ZenUnit
 {
-   inline const char* const VersionNumber = "0.9.0";
+   inline const char* const Version = "v0.10.0";
 }
 
 #include <array>
@@ -103,7 +103,7 @@ namespace ZenUnit
       bool globalRandomSeedSetByUser = false;
       unsigned maxTestMilliseconds = 0;
 
-      static inline const std::string CommandLineUsage = "C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + R"(
+      static inline const std::string CommandLineUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Version) + R"(
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
@@ -2281,7 +2281,7 @@ namespace ZenUnit
             }
             else if (arg == "--version")
             {
-               _console->WriteLineAndExit(VersionNumber, 0);
+               _console->WriteLineAndExit(Version, 0);
             }
             else if (!String::Contains(arg, "="))
             {
@@ -4981,7 +4981,7 @@ namespace ZenUnit
       virtual std::string PrintPreambleLinesAndGetStartDateTime(
          const ZenUnitArgs& zenUnitArgs, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
-         const std::string zenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit v" + std::string(VersionNumber) + "]";
+         const std::string zenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit " + std::string(Version) + "]";
          _console->WriteLineColor(zenUnitVersionLine, Color::Green);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
@@ -7178,7 +7178,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    inline void PrintCollection(std::ostream& os, const CollectionType& collection)
    {
       std::ostringstream collectionAsStringBuilder;
-      const std::string& collectionTypeName = *Type::GetName<CollectionType>();
+      const std::string collectionTypeName = *Type::GetName<CollectionType>();
       const std::size_t collectionSize = collection.size();
       collectionAsStringBuilder << collectionTypeName << " (size " << collectionSize << "):";
       if (collectionSize == 0)
@@ -7209,51 +7209,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       os << collectionAsString;
    }
 
-   template<typename T, typename Allocator>
-   class Printer<const std::vector<T, Allocator>>
+   template<typename T>
+   class Printer<std::vector<T>>
    {
    public:
-      static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
+      static void Print(std::ostream& os, const std::vector<T>& vec)
       {
-         std::ostringstream vectorAsStringBuilder;
-         const std::string* const typeName = Type::GetName<T>();
-         const std::size_t vectorSize = vec.size();
-         vectorAsStringBuilder << "std::vector<" << *typeName << "> (size " << vectorSize << "):";
-         if (vectorSize == 0)
-         {
-            vectorAsStringBuilder << R"(
-{
-})";
-            const std::string vectorAsString = vectorAsStringBuilder.str();
-            os << vectorAsString;
-            return;
-         }
-         vectorAsStringBuilder << R"(
-{
-   )";
-         for (std::size_t i = 0; i < vectorSize; ++i)
-         {
-            const T& element = vec[i];
-            const std::string elementAsString = ToStringer::ToString(element);
-            vectorAsStringBuilder << elementAsString;
-            if (i < vectorSize - 1)
-            {
-               vectorAsStringBuilder << ",\n   ";
-            }
-         }
-         vectorAsStringBuilder << "\n}";
-         const std::string vectorAsString = vectorAsStringBuilder.str();
-         os << vectorAsString;
-      }
-   };
-
-   template<typename T, typename Allocator>
-   class Printer<std::vector<T, Allocator>>
-   {
-   public:
-      static void Print(std::ostream& os, const std::vector<T, Allocator>& vec)
-      {
-         Printer<const std::vector<T, Allocator>>::Print(os, vec);
+         PrintCollection(os, vec);
       }
    };
 
@@ -7277,36 +7239,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    };
 
-   template<typename SetType>
-   inline void DoPrintSet(std::ostream& os, const SetType& s)
-   {
-      const std::string setTypeName = *Type::GetName<SetType>();
-      os << setTypeName << R"(
-{
-)";
-      const size_t numberOfElements = s.size();
-      size_t i = 0;
-      for (const auto& element : s)
-      {
-         const std::string elementAsString = ToStringer::ToString(element);
-         os << "   " << elementAsString;
-         if (i < numberOfElements - 1)
-         {
-            os << ',';
-         }
-         os << '\n';
-         ++i;
-      }
-      os << "}";
-   }
-
    template<typename T, typename LessComparator, typename Allocator>
    class Printer<std::set<T, LessComparator, Allocator>>
    {
    public:
-      static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>& s)
+      static void Print(std::ostream& os, const std::set<T, LessComparator, Allocator>& orderedSet)
       {
-         DoPrintSet(os, s);
+         PrintCollection(os, orderedSet);
       }
    };
 
@@ -7314,9 +7253,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    class Printer<std::unordered_set<T, Hasher, EqualityComparator, Allocator>>
    {
    public:
-      static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>& s)
+      static void Print(std::ostream& os, const std::unordered_set<T, Hasher, EqualityComparator, Allocator>& unorderedSet)
       {
-         DoPrintSet(os, s);
+         PrintCollection(os, unorderedSet);
       }
    };
 
