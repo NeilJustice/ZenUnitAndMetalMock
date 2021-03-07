@@ -7174,6 +7174,41 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    };
 
+   template<typename CollectionType>
+   inline void PrintCollection(std::ostream& os, const CollectionType& collection)
+   {
+      std::ostringstream collectionAsStringBuilder;
+      const std::string& collectionTypeName = *Type::GetName<CollectionType>();
+      const std::size_t collectionSize = collection.size();
+      collectionAsStringBuilder << collectionTypeName << " (size " << collectionSize << "):";
+      if (collectionSize == 0)
+      {
+         collectionAsStringBuilder << R"(
+{
+})";
+         const std::string collectionAsString = collectionAsStringBuilder.str();
+         os << collectionAsString;
+         return;
+      }
+      collectionAsStringBuilder << R"(
+{
+   )";
+      std::size_t i = 0;
+      for (const auto& element : collection)
+      {
+         const std::string elementAsString = ToStringer::ToString(element);
+         collectionAsStringBuilder << elementAsString;
+         if (i < collectionSize - 1)
+         {
+            collectionAsStringBuilder << ",\n   ";
+         }
+         ++i;
+      }
+      collectionAsStringBuilder << "\n}";
+      const std::string collectionAsString = collectionAsStringBuilder.str();
+      os << collectionAsString;
+   }
+
    template<typename T, typename Allocator>
    class Printer<const std::vector<T, Allocator>>
    {
@@ -7226,9 +7261,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    class Printer<std::map<TKey, TValue, LessComparator, Allocator>>
    {
    public:
-      static void Print(std::ostream& os, const std::map<TKey, TValue, LessComparator, Allocator>&)
+      static void Print(std::ostream& os, const std::map<TKey, TValue, LessComparator, Allocator>& orderedMap)
       {
-         os << "std::map<TKey, TValue>";
+         PrintCollection(os, orderedMap);
       }
    };
 
@@ -7236,17 +7271,17 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    class Printer<std::unordered_map<TKey, TValue, Hasher, EqualityComparator, Allocator>>
    {
    public:
-      static void Print(std::ostream& os, const std::unordered_map<TKey, TValue, Hasher, EqualityComparator, Allocator>&)
+      static void Print(std::ostream& os, const std::unordered_map<TKey, TValue, Hasher, EqualityComparator, Allocator>& unorderedMap)
       {
-         os << "std::unordered_map<TKey, TValue>";
+         PrintCollection(os, unorderedMap);
       }
    };
 
    template<typename SetType>
    inline void DoPrintSet(std::ostream& os, const SetType& s)
    {
-      const std::string setName = *Type::GetName<SetType>();
-      os << setName << R"(
+      const std::string setTypeName = *Type::GetName<SetType>();
+      os << setTypeName << R"(
 {
 )";
       const size_t numberOfElements = s.size();
