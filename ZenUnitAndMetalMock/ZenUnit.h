@@ -7670,37 +7670,37 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename KeyType, typename ValueType>
-   std::map<KeyType, ValueType> RandomMapWithSize(size_t size)
+   std::map<KeyType, ValueType> RandomOrderedMapWithSize(size_t size)
    {
       size_t numberOfIterations = size;
-      std::map<KeyType, ValueType> randomMap;
+      std::map<KeyType, ValueType> randomOrderedMap;
       for (size_t i = 0; i < numberOfIterations; ++i)
       {
          KeyType randomKey = ZenUnit::Random<KeyType>();
          ValueType randomValue = ZenUnit::Random<ValueType>();
-         const auto emplaceResult = randomMap.emplace(std::move(randomKey), std::move(randomValue));
+         const auto emplaceResult = randomOrderedMap.emplace(std::move(randomKey), std::move(randomValue));
          const bool didEmplaceNewKeyIntoMap = emplaceResult.second;
          if (!didEmplaceNewKeyIntoMap)
          {
             ++numberOfIterations;
          }
       }
-      ZENUNIT_ASSERT(randomMap.size() == size);
-      return randomMap;
+      ZENUNIT_ASSERT(randomOrderedMap.size() == size);
+      return randomOrderedMap;
    }
 
    template<typename KeyType, typename ValueType>
-   std::map<KeyType, ValueType> RandomMap()
+   std::map<KeyType, ValueType> RandomOrderedMap()
    {
-      const std::size_t randomMapSize = RandomBetween<size_t>(0, 3);
-      return RandomMapWithSize<KeyType, ValueType>(randomMapSize);
+      const std::size_t randomOrderedMapSize = RandomBetween<size_t>(0, 3);
+      return RandomOrderedMapWithSize<KeyType, ValueType>(randomOrderedMapSize);
    }
 
    template<typename KeyType, typename ValueType>
    std::map<KeyType, ValueType> RandomNonEmptyMap()
    {
-      const std::size_t randomMapSize = RandomBetween<size_t>(1, 3);
-      return RandomMapWithSize<KeyType, ValueType>(randomMapSize);
+      const std::size_t randomOrderedMapSize = RandomBetween<size_t>(1, 3);
+      return RandomOrderedMapWithSize<KeyType, ValueType>(randomOrderedMapSize);
    }
 
    template<typename KeyType, typename ValueType>
@@ -8304,10 +8304,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual ~RandomMapGenerator() = default;
 
-      virtual std::map<KeyType, ValueType> Map() const
+      virtual std::map<KeyType, ValueType> OrderedMap() const
       {
-         std::map<KeyType, ValueType> randomMap = RandomMap<KeyType, ValueType>();
-         return randomMap;
+         std::map<KeyType, ValueType> randomOrderedMap = RandomOrderedMap<KeyType, ValueType>();
+         return randomOrderedMap;
       }
 
       virtual std::unordered_map<KeyType, ValueType> UnorderedMap() const
