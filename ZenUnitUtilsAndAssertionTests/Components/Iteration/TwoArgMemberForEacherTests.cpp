@@ -41,7 +41,7 @@ namespace ZenUnit
 
    TEST(TwoArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
-      ClassTypeMock classInstance;
+      ClassTypeMock classInstance{};
       classInstance.vec = { 1 };
       classInstance.TwoArgFunctionMock.Expect();
       //
@@ -53,7 +53,7 @@ namespace ZenUnit
 
    TEST(TwoArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwice)
    {
-      ClassTypeMock classInstance;
+      ClassTypeMock classInstance{};
       classInstance.vec = { 1, 2 };
       classInstance.TwoArgFunctionMock.Expect();
       //
@@ -61,10 +61,10 @@ namespace ZenUnit
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20);
       //
       classInstance.TwoArgFunctionMock.CalledAsFollows(
-         {
-            { 1, 20 },
+      {
+         { 1, 20 },
          { 2, 20 }
-         });
+      });
    }
 
    TEST(RandomTwoArgMemberForEach_EmptyCollection_DoesNotCallFunc)
@@ -76,7 +76,7 @@ namespace ZenUnit
 
    TEST(RandomTwoArgMemberForEach_OneItemCollection_CallsThisPointerBoundFuncOnce)
    {
-      ClassTypeMock classInstance;
+      ClassTypeMock classInstance{};
       classInstance.vec = { 1 };
       classInstance.TwoArgFunctionMock.Expect();
       //
@@ -88,7 +88,7 @@ namespace ZenUnit
 
    TEST(RandomTwoArgMemberForEach_TwoItemCollection_CallsThisPointerBoundFuncTwiceInRandomOrder)
    {
-      ClassTypeMock classInstance;
+      ClassTypeMock classInstance{};
       classInstance.vec = { 1, 2 };
       classInstance.TwoArgFunctionMock.Expect();
       //
@@ -99,24 +99,24 @@ namespace ZenUnit
       try
       {
          classInstance.TwoArgFunctionMock.CalledAsFollows(
-            {
-               { 1, 20 },
+         {
+            { 1, 20 },
             { 2, 20 }
-            });
+         });
       }
       catch (const exception&)
       {
          classInstance.TwoArgFunctionMock.CalledAsFollows(
-            {
-               { 2, 20 },
+         {
+            { 2, 20 },
             { 1, 20 }
-            });
+         });
       }
    }
 
    TEST(CodeCoverage_ClassTypeTwoArgFunction)
    {
-      ClassType classType;
+      ClassType classType{};
       classType.TwoArgFunction(ElementType{}, Arg2Type{});
    };
 
