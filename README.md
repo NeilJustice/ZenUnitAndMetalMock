@@ -231,44 +231,42 @@ int main(int argc, char* argv[])
 
 ### How To Unit Test Templated Class PredicateCounter's CountWhere() Function With ZenUnit's Type-Parameterized Test Syntax
 
-How might the correctness of this templated class PredicateCounter with its CountWhere() function be confirmed across various types of T?
+How could the correctness of this templated class `PredicateCounter` with its `CountWhere` function be confirmed across various types of `ContainerType` and `T`?
+
+(`std::count_if` is of course the standard way of counting elements matching a given predicate. class `PredicateCounter` provides mockability by way of its `CountWhere` function being virtual.)
 
 ```cpp
-namespace Utils
+template<
+   template<typename...>
+   typename ContainerType, typename T>
+class PredicateCounter
 {
-   template<
-      template<typename T>
-      typename ContainerType, typename T>
-   class PredicateCounter
+public:
+   virtual size_t CountWhere(const ContainerType<T>& elements, bool(*elementPredicate)(const T&)) const
    {
-   public:
-      virtual size_t CountWhere(
-         const ContainerType<T>& elements, bool(*elementPredicate)(const T&)) const
+      size_t numberOfMatchingElements = 0;
+      for (const T& element : elements)
       {
-         size_t numberOfMatchingElements = 0;
-         for (const T& element : elements)
+         const bool elementMatchesPredicate = elementPredicate(element);
+         if (elementMatchesPredicate)
          {
-            const bool elementMatchesPredicate = elementPredicate(element);
-            if (elementMatchesPredicate)
-            {
-               ++numberOfMatchingElements;
-            }
+            ++numberOfMatchingElements;
          }
-         return numberOfMatchingElements;
       }
+      return numberOfMatchingElements;
+   }
 
-      virtual ~PredicateCounter() = default;
-   };
-}
+   virtual ~PredicateCounter() = default;
+};
 ```
 
-Here is how the CountWhere() function's correctness can be confirmed across multiple `ContainerType` types and `T` types by using ZenUnit's type-parameterized test class syntax `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, and `THEN_RUN_TEMPLATE_TESTS`:
+Here is how the correctness of `CountWhere` can be confirmed across multiple `ContainerType` and `T` types by using ZenUnit's type-parameterized test class syntax:
 
 ```cpp
 #include "ZenUnitAndMetalMock/ZenUnit.h"
 
 template<
-   template<typename T>
+   template<typename...>
    typename ContainerType, typename T>
 TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
 AFACT(CountWhere_ElementsAreEmpty_Returns0)
@@ -277,7 +275,7 @@ AFACT(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
 AFACT(CountWhere_ElementsAreSize4_TwoElementsMatchOutOf4_Returns2)
 EVIDENCE
 
-Utils::PredicateCounter<ContainerType, T> _predicateCounter;
+PredicateCounter<ContainerType, T> _predicateCounter;
 
 static bool IsEven(const T& element)
 {
