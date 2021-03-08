@@ -91,12 +91,24 @@ namespace ZenUnit
       ZenUnit::Printer<unordered_map<TKey, TValue>>::Print(oss, nonEmptyUnorderedMap);
       //
       const string unorderedMapAsString = oss.str();
-      const string expectedUnorderedMapAsString = _expectedUnorderedMapTypeName + R"( (size 2):
+      const string expectedUnorderedMapAsString_ordering1 = _expectedUnorderedMapTypeName + R"( (size 2):
 {
    (1, 1),
    (2, 2)
 })";
-      ARE_EQUAL(expectedUnorderedMapAsString, unorderedMapAsString);
+      try
+      {
+         ARE_EQUAL(expectedUnorderedMapAsString_ordering1, unorderedMapAsString);
+      }
+      catch (const exception& e)
+      {
+         const string expectedUnorderedMapAsString_ordering2 = _expectedUnorderedMapTypeName + R"( (size 2):
+{
+   (2, 2),
+   (1, 1)
+})";
+         ARE_EQUAL(expectedUnorderedMapAsString_ordering2, unorderedMapAsString);
+      }
    }
 
    RUN_TEMPLATE_TESTS(MapZenUnitPrinterTests, int, int)
