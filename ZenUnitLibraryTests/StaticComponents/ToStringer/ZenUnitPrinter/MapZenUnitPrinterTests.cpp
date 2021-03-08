@@ -100,7 +100,7 @@ namespace ZenUnit
       {
          ARE_EQUAL(expectedUnorderedMapAsString_ordering1, unorderedMapAsString);
       }
-      catch (const exception& e)
+      catch (const exception&)
       {
          const string expectedUnorderedMapAsString_ordering2 = _expectedUnorderedMapTypeName + R"( (size 2):
 {
