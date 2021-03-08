@@ -568,24 +568,22 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit Roadmap
 
-|Future ZenUnit Feature|Implementation Status As Of 2/12/2021|
+|Future ZenUnit Feature|Implementation Status As Of 3/8/2021|
 |----------------------|-------------------------------------|
-|`TUPLES_ARE_EQUAL`|Implemented|
-|SonarCloud badge for ZenUnitPyUtils Python|In progress|
-|ctest support|Awaiting implementation|
+|`ARE_NEAR` floating point assertion|In progress|
 |GitHub Actions build|Awaiting implementation|
+|SonarCloud badge for ZenUnitPyUtils Python|Awaiting implementation|
+|ctest support|Awaiting implementation|
 |SonarCloud badge for ZenUnit and MetalMock C++|Awaiting implementation|
 |SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|Awaiting implementation|
 |Coverity badge|Awaiting implementation|
-|`main` and `dev` branches|Awaiting implementation|
-|`ARE_NEAR` floating point assertion|Awaiting implementation|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 
 ### MetalMock Roadmap
 
-|Future MetalMock Feature|Implementation Status As Of 2/12/2021|
+|Future MetalMock Feature|Implementation Status As Of 3/8/2021|
 |------------------------|-------------------------------------|
-|Ordered function call assertions because the ordering of function calls is of course extremely important to program correctness.|Awaiting implementation|
+|Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness.|Awaiting implementation|
 
 ### Acknowledgments
 
