@@ -48,7 +48,9 @@ namespace ZenUnit
       // Function Pointers
       _console._call_exit = BIND_1ARG_METALMOCK_OBJECT(_call_exitMock);
       _console._call_GetCharFromStandardInput = BIND_0ARG_METALMOCK_OBJECT(_call_GetCharFromStandardInputMock);
+#if defined _WIN32
       _console._call_IsDebuggerPresent = BIND_0ARG_METALMOCK_OBJECT(_call_IsDebuggerPresentMock);
+#endif
       // Mutable Components
       _console._consoleColorer.reset(_consoleColorerMock = new ConsoleColorerMock);
    }
