@@ -9,8 +9,8 @@ struct ConsoleMock : public Metal::Mock<Console>
    METALMOCK_VOID0_CONST(WriteNewLine)
    METALMOCK_VOID2_CONST(WriteLineAndExit, string_view, int)
    METALMOCK_VOID3_CONST(WriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
-   METALMOCK_VOID1_CONST(WaitForAnyKeyIfDebuggerPresentOrValueTrue, bool)
-   METALMOCK_VOID0_CONST(WaitForAnyKey)
+   METALMOCK_VOID1_CONST(WaitForEnterKeyIfDebuggerPresentOrValueTrue, bool)
+   METALMOCK_VOID0_CONST(WaitForEnterKey)
    METALMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
 };
 

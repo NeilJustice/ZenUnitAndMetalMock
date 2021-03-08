@@ -35,9 +35,9 @@ namespace ZenUnit
    AFACT(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
    AFACT(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsFalse_SetsGlobalZenUnitModeRandomSeedToSecondsSince1970)
    AFACT(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsTrue_DoesNothing)
-   AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
-   AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
-   AFACT(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
+   AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
+   AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    EVIDENCE
 
    ZenUnitTestRunner _zenUnitTestRunner;
@@ -51,7 +51,7 @@ namespace ZenUnit
    VoidOneArgMemberFunctionCallerMockType* _caller_SetNextGlobalZenUnitModeRandomSeedMock = nullptr;
 
    using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool>;
-   NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
+   NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
 
    NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>* _nTimesMemberFunctionAccumulator_RunTestsMock = nullptr;
    // Function Pointers
@@ -87,8 +87,8 @@ namespace ZenUnit
          _caller_RunTestClassesMock = new VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>);
       _zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed.reset(
          _caller_SetNextGlobalZenUnitModeRandomSeedMock = new VoidOneArgMemberFunctionCallerMockType);
-      _zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(
-         _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
+      _zenUnitTestRunner._caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(
+         _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
       _zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests.reset(
          _nTimesMemberFunctionAccumulator_RunTestsMock = new NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>);
       // Function Pointers
@@ -113,7 +113,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_RunTestClasses);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed);
-      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests);
       // Function Pointers
 #if defined _WIN32 && defined _DEBUG
@@ -176,7 +176,7 @@ namespace ZenUnit
       const int numberOfFailedTestRuns =
          _nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.ReturnRandom();
 
-      _consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.Expect();
+      _consoleMock->WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
       const vector<string> commandLineArgs = ZenUnit::RandomVector<string>();
       //
@@ -189,7 +189,7 @@ namespace ZenUnit
       METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
       METALMOCK(_nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.CalledOnceWith(
          expectedNumberOfTestRuns, &_zenUnitTestRunner, &ZenUnitTestRunner::RunTests));
-      METALMOCK(_consoleMock->WaitForAnyKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
+      METALMOCK(_consoleMock->WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
       ARE_EQUAL(numberOfFailedTestRuns, returnedNumberOfFailedTestRuns);
    }
 
@@ -221,7 +221,7 @@ namespace ZenUnit
    TEST(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    {
       const bool waitForAnyKeyIfPauseModeReturnValue = ZenUnit::Random<bool>();
-      _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->CallConstMemberFunctionMock.Return(waitForAnyKeyIfPauseModeReturnValue);
+      _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock->CallConstMemberFunctionMock.Return(waitForAnyKeyIfPauseModeReturnValue);
       const bool havePausedInitialValue = ZenUnit::Random<bool>();
       _zenUnitTestRunner._havePaused = havePausedInitialValue;
 
@@ -243,8 +243,8 @@ namespace ZenUnit
       //
       const int exitCode = _zenUnitTestRunner.PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(zenUnitArgs);
       //
-      METALMOCK(_caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPausedMock->CallConstMemberFunctionMock.CalledOnceWith(
-         &_zenUnitTestRunner, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused,
+      METALMOCK(_caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock->CallConstMemberFunctionMock.CalledOnceWith(
+         &_zenUnitTestRunner, &ZenUnitTestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused,
          zenUnitArgs.pauseBefore, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _zenUnitTestRunner._havePaused);
       METALMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
@@ -292,29 +292,28 @@ namespace ZenUnit
       _zenUnitTestRunner.SetNextGlobalZenUnitModeRandomSeed(true);
    }
 
-   TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
+   TEST(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
    {
-      const bool newValueForHavePaused = _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(false, ZenUnit::Random<bool>());
+      const bool newValueForHavePaused = _zenUnitTestRunner.WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(false, ZenUnit::Random<bool>());
       IS_FALSE(newValueForHavePaused);
    }
 
-   TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   TEST(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
    {
-      const bool newValueForHavePaused = _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(true, true);
+      const bool newValueForHavePaused = _zenUnitTestRunner.WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(true, true);
       IS_TRUE(newValueForHavePaused);
    }
 
-   TEST(WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
+   TEST(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    {
       _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WaitForAnyKeyMock.Expect();
+      _consoleMock->WaitForEnterKeyMock.Expect();
       //
-      const bool newValueForHavePaused =
-         _zenUnitTestRunner.WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(true, false);
+      const bool newValueForHavePaused = _zenUnitTestRunner.WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(true, false);
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
-         "ZenUnit test runner paused before running tests. Press any key to run tests..."));
-      METALMOCK(_consoleMock->WaitForAnyKeyMock.CalledOnce());
+         "ZenUnit test runner paused before running tests. Press enter to run tests..."));
+      METALMOCK(_consoleMock->WaitForEnterKeyMock.CalledOnce());
       IS_TRUE(newValueForHavePaused);
    }
 

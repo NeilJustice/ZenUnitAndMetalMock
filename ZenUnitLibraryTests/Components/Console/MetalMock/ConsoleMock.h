@@ -11,8 +11,8 @@ public:
    METALMOCK_VOID2_CONST(WriteNewLineIfValuesAreNotEqual, size_t, size_t)
    METALMOCK_VOID2_CONST(WriteLineAndExit, std::string_view, int)
    METALMOCK_VOID3_CONST(WriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
-   METALMOCK_VOID1_CONST(WaitForAnyKeyIfDebuggerPresentOrValueTrue, bool)
-   METALMOCK_VOID0_CONST(WaitForAnyKey)
+   METALMOCK_VOID1_CONST(WaitForEnterKeyIfDebuggerPresentOrValueTrue, bool)
+   METALMOCK_VOID0_CONST(WaitForEnterKey)
    METALMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
 };
 

@@ -1105,8 +1105,8 @@ namespace ZenUnit
    private:
       // Function Pointers
       std::function<void(int)> _call_exit;
+      std::function<int()> _call_GetCharFromStandardInput;
 #if defined _WIN32
-      std::function<int()> _call_getch;
       std::function<int()> _call_IsDebuggerPresent;
 #endif
       // Mutable Components
@@ -1115,8 +1115,8 @@ namespace ZenUnit
       Console() noexcept
          // Function Pointers
          : _call_exit(::exit)
+         , _call_GetCharFromStandardInput(GetCharFromStandardInput)
 #if defined _WIN32
-         , _call_getch(_getch)
          , _call_IsDebuggerPresent(::IsDebuggerPresent)
 #endif
          // Mutable Components
@@ -1181,21 +1181,25 @@ namespace ZenUnit
          DoWriteStringsCommaSeparated(strings, startIndex, numberOfStringsToWrite);
       }
 
-      virtual void WaitForAnyKeyIfDebuggerPresentOrValueTrue(bool doWait) const
+      virtual void WaitForEnterKeyIfDebuggerPresentOrValueTrue(bool doWait) const
       {
          if (doWait || DebuggerIsPresent())
          {
-            WriteLine("Press any key to continue . . .");
-            WaitForAnyKey();
+            WriteLine("Press enter to continue...");
+            WaitForEnterKey();
          }
       }
 
-      virtual void WaitForAnyKey() const
+      virtual void WaitForEnterKey() const
       {
-#if defined __linux__ || defined __APPLE__
-#elif defined _WIN32
-         _call_getch();
-#endif
+         while (true)
+         {
+            const int c = _call_GetCharFromStandardInput();
+            if (c == static_cast<int>('\n'))
+            {
+               break;
+            }
+         }
       }
 
       virtual bool DebuggerIsPresent() const
@@ -1210,8 +1214,13 @@ namespace ZenUnit
       }
 
    private:
-      virtual void DoWriteStringsCommaSeparated(
-         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
+      static int GetCharFromStandardInput() // LCOV_EXCL_LINE
+      {
+         const int c = std::cin.get();
+         return c;
+      }
+
+      virtual void DoWriteStringsCommaSeparated(const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
       {
          const size_t endIndex = startIndex + numberOfStringsToWrite - 1;
          for (size_t i = startIndex; i <= endIndex; ++i)
@@ -5318,7 +5327,7 @@ namespace ZenUnit
       std::unique_ptr<const VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>
          _caller_SetNextGlobalZenUnitModeRandomSeed;
       std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>
-         _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused;
+         _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused;
       std::unique_ptr<const NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>
          _nTimesMemberFunctionAccumulator_RunTests;
       // Function Pointers
@@ -5347,7 +5356,7 @@ namespace ZenUnit
             std::make_unique<VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>())
          , _caller_SetNextGlobalZenUnitModeRandomSeed(
             std::make_unique<VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>())
-         , _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(
+         , _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(
             std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
          , _nTimesMemberFunctionAccumulator_RunTests(
             std::make_unique<NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>())
@@ -5417,7 +5426,7 @@ namespace ZenUnit
             std::numeric_limits<size_t>::max() : static_cast<size_t>(_zenUnitArgs.testRuns);
          const int numberOfFailedTestRuns = _nTimesMemberFunctionAccumulator_RunTests->
             AccumulateNonConstMemberFunctionNTimes(numberOfTestRuns, this, &ZenUnitTestRunner::RunTests);
-         _console->WaitForAnyKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
+         _console->WaitForEnterKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
          return numberOfFailedTestRuns;
       }
 
@@ -5460,8 +5469,8 @@ Fatal Windows C++ Runtime Assertion
       {
          const std::string startDateTime =
             _preamblePrinter->PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, _testClassRunnerRunner.get());
-         _havePaused = _caller_WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused->CallConstMemberFunction(
-            this, &ZenUnitTestRunner::WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
+         _havePaused = _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused->CallConstMemberFunction(
+            this, &ZenUnitTestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();
          _caller_RunTestClasses->CallNonConstMemberFunction(this, &ZenUnitTestRunner::RunTestClasses);
          _testRunResult->PrintTestFailuresAndSkips();
@@ -5486,7 +5495,7 @@ Fatal Windows C++ Runtime Assertion
          }
       }
 
-      bool WaitForAnyKeyIfPauseModeAndHaveNotPreviouslyPaused(bool pauseMode, bool havePaused) const
+      bool WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(bool pauseMode, bool havePaused) const
       {
          if (!pauseMode)
          {
@@ -5496,8 +5505,8 @@ Fatal Windows C++ Runtime Assertion
          {
             return true;
          }
-         _console->WriteLine("ZenUnit test runner paused before running tests. Press any key to run tests...");
-         _console->WaitForAnyKey();
+         _console->WriteLine("ZenUnit test runner paused before running tests. Press enter to run tests...");
+         _console->WaitForEnterKey();
          return true;
       }
    };
