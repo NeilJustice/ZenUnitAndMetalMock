@@ -340,7 +340,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 
 ### Console Output When Running ZenUnit Type-Parameterized Tests
 
-![Console Output When Running ZenUnit Type-Parameterized Tests](Screenshots/ConsoleOutputWhenRunningZenUnitTypeParameterizedTests.png)
+![Console Output When Running ZenUnit Type-Parameterized Tests](Screenshots/Linux/ConsoleOutputWhenRunningZenUnitTypeParameterizedTests.png)
 
 ## ZenUnit Assertions
 
