@@ -315,7 +315,9 @@ TEST(CountWhere_ElementsAreSize2_ElementDoNotMatch_Returns0)
 
 TEST(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
 {
-   const ContainerType<T> elements{ ZenUnit::Random<T>(), ZenUnit::Random<T>() };
+   const T element1 = ZenUnit::Random<T>();
+   const T element2 = ZenUnit::RandomNotEqualToValue<T>(element1);
+   const ContainerType<T> elements{ element1, element2 };
    //
    const size_t numberOfMatchingElements =
       _predicateCounter.CountWhere(elements, AlwaysMatchingPredicate);
