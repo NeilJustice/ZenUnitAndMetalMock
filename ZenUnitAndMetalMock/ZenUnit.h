@@ -7513,14 +7513,15 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T RandomNon0NotEqualToValue(T notEqualValue)
+   T RandomNon0NotEqualToValue(const T& notEqualValue)
    {
-      if (notEqualValue == T{0})
+      static const T zeroTValue{0};
+      if (notEqualValue == zeroTValue)
       {
-         throw std::invalid_argument("ZenUnit::RandomNon0NotEqualToValue<T>(T notEqualValue) called with notEqualValue == T{0}");
+         throw std::invalid_argument("ZenUnit::RandomNon0NotEqualToValue<T>(const T& notEqualValue) called with notEqualValue == T{0}");
       }
       T randomValue = Random<T>();
-      while (randomValue == 0 || randomValue == notEqualValue)
+      while (randomValue == zeroTValue || randomValue == notEqualValue)
       {
          randomValue = Random<T>();
       }
@@ -7528,7 +7529,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T RandomNotEqualToValue(T notEqualValue)
+   T RandomNotEqualToValue(const T& notEqualValue)
    {
       T randomValue = Random<T>();
       while (randomValue == notEqualValue)
