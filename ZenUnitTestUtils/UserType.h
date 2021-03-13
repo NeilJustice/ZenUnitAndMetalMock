@@ -4,7 +4,7 @@ struct UserType
 {
    int value;
    UserType() noexcept;
-   UserType(int value);
+   explicit UserType(int value);
 
    friend bool operator<(const UserType& left, const UserType& right);
    friend bool operator==(const UserType& left, const UserType& right);

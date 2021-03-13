@@ -3698,11 +3698,11 @@ namespace ZenUnit
       size_t numberOfElementsToCompare,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
    {
-      constexpr size_t IEqualsSignLength = 2;
-      constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
-      char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
       try
       {
+         constexpr size_t IEqualsSignLength = 2;
+         constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+         char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
          for (size_t i = 0; i < numberOfElementsToCompare; ++i)
          {
             const auto& ithExpectedElement = expectedArray[i];
@@ -3739,12 +3739,12 @@ namespace ZenUnit
       const StdArrayType& actualStdArray, const char* actualStdArrayText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::size_t expectedStdArraySize = expectedStdArray.size();
-      constexpr size_t IEqualsSignLength = 2;
-      constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
-      char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
       try
       {
+         const std::size_t expectedStdArraySize = expectedStdArray.size();
+         constexpr size_t IEqualsSignLength = 2;
+         constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+         char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
          for (size_t i = 0; i < expectedStdArraySize; ++i)
          {
             const auto& ithExpectedElement = expectedStdArray[i];
@@ -4079,7 +4079,7 @@ namespace ZenUnit
       {
       }
 
-      AnomalyOrException(const Anomaly& anomaly)
+      explicit AnomalyOrException(const Anomaly& anomaly)
          : anomaly(std::make_shared<Anomaly>(anomaly))
          , exceptionTypeName(nullptr)
       {
@@ -4514,11 +4514,8 @@ namespace ZenUnit
 
       virtual long long SumOfTestResultMicroseconds() const
       {
-         long long sumOfTestResultMicroseconds = 0;
-         for (const TestResult& testResult : _testResults)
-         {
-            sumOfTestResultMicroseconds += testResult.microseconds;
-         }
+         const long long sumOfTestResultMicroseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0LL,
+            [](long long runningSum, const TestResult& testResult) { return runningSum + testResult.microseconds; });
          return sumOfTestResultMicroseconds;
       }
 
@@ -5957,8 +5954,8 @@ Fatal Windows C++ Runtime Assertion
          SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgMemberFunctionCaller;
 
       // Mutable Fields
-      const char* _testClassName;
       NewableDeletableTest<TestClassType> _newableDeletableTest;
+      const char* _testClassName;
       std::vector<std::unique_ptr<Test>> _tests;
       TestClassResult _testClassResult;
    public:
@@ -5975,10 +5972,10 @@ Fatal Windows C++ Runtime Assertion
          , _voidOneArgMemberFunctionCaller(std::make_unique<
             VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          // Mutable Fields
-         , _testClassName(testClassName)
          , _newableDeletableTest(testClassName)
+         , _testClassName(testClassName)
+         , _tests(TestClassType::GetTests(testClassName))
       {
-         _tests = TestClassType::GetTests(testClassName);
       }
 
       const char* TestClassName() const override

@@ -5,7 +5,7 @@ namespace ZenUnit
    TESTS(TestPhaseResultEqualizerAndRandomTests)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AFACT(TestableRandomTestPhaseResult_ReturnsTestPhaseResultWithAllRandomFields)
-   AFACT(RandomTestPhaseResult_DoesNotThrowException)
+   AFACT(RandomTestPhaseResult_CodeCoverage)
    EVIDENCE
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -43,9 +43,9 @@ namespace ZenUnit
       ARE_EQUAL(expectedRandomTestPhaseResult, randomTestPhaseResult);
    }
 
-   TEST(RandomTestPhaseResult_DoesNotThrowException)
+   TEST(RandomTestPhaseResult_CodeCoverage)
    {
-      const TestPhaseResult randomTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
+      ZenUnit::Random<TestPhaseResult>();
    }
 
    RUN_TESTS(TestPhaseResultEqualizerAndRandomTests)

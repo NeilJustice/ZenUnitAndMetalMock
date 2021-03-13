@@ -6,7 +6,7 @@ namespace ZenUnit
    TESTS(ZenUnitArgsEqualizerAndRandomTests)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AFACT(TestableRandomZenUnitArgs_ReturnsZenUnitArgsWithAllRandomFields)
-   AFACT(RandomZenUnitArgs_DoesNotThrowException)
+   AFACT(RandomZenUnitArgs_CodeCoverage)
    EVIDENCE
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -74,9 +74,9 @@ namespace ZenUnit
       ARE_EQUAL(maxTestMilliseconds, randomZenUnitArgs.maxTestMilliseconds);
    }
 
-   TEST(RandomZenUnitArgs_DoesNotThrowException)
+   TEST(RandomZenUnitArgs_CodeCoverage)
    {
-      const ZenUnitArgs randomZenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      ZenUnit::Random<ZenUnitArgs>();
    }
 
    RUN_TESTS(ZenUnitArgsEqualizerAndRandomTests)

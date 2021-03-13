@@ -3,7 +3,7 @@
 struct NonDefaultConstructible
 {
    int field;
-   NonDefaultConstructible(int field)
+   explicit NonDefaultConstructible(int field)
       : field(field) {}
 };
 

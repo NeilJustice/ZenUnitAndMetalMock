@@ -13,7 +13,7 @@ namespace ZenUnit
       mutable int argValue;
       mutable size_t numberOfCalls;
 
-      ToStringerTestStruct(int value)
+      explicit ToStringerTestStruct(int value)
          : value(value)
          , argValue(0)
          , numberOfCalls(0)

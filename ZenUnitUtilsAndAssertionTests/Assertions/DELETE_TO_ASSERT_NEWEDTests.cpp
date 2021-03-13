@@ -19,7 +19,7 @@ namespace ZenUnit
    public:
       const function<void()> _incrementDestructorCallCount;
 
-      DestructorCountingElement(function<void()> incrementDestructorCallCount)
+      explicit DestructorCountingElement(function<void()> incrementDestructorCallCount)
          : _incrementDestructorCallCount(std::move(incrementDestructorCallCount))
       {
       }

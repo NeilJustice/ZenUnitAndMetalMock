@@ -149,10 +149,10 @@ namespace ZenUnit
    TEST(MapSizesAreEqual_UserTypeKeysAreNotEqual_ThrowsAnomaly)
    {
       MapType<UserType, int> expectedMap;
-      expectedMap.insert({ 10, 0 });
+      expectedMap.insert({ UserType{10}, 0 });
 
       MapType<UserType, int> actualMap;
-      actualMap.insert({ 20, 0 });
+      actualMap.insert({ UserType{20}, 0 });
 
       THROWS_EXCEPTION(MAPS_ARE_EQUAL(expectedMap, actualMap), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
 " Failed: MAPS_ARE_EQUAL(expectedMap, actualMap)",
@@ -164,10 +164,10 @@ namespace ZenUnit
    TEST(MapSizesAreEqual_UserTypeKeysAreEqual_ValuesAreNotEqual_ThrowsAnomaly)
    {
       MapType<string, UserType> expectedMap;
-      expectedMap.insert({ "key", 10 });
+      expectedMap.insert({ "key", UserType{10} });
 
       MapType<string, UserType> actualMap;
-      actualMap.insert({ "key", 20 });
+      actualMap.insert({ "key", UserType{20} });
 
       THROWS_EXCEPTION(MAPS_ARE_EQUAL(expectedMap, actualMap), ZenUnit::Anomaly, TestUtil::NewlineConcat("",
 " Failed: MAPS_ARE_EQUAL(expectedMap, actualMap)",
@@ -179,6 +179,6 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   RUN_TEMPLATE_TESTS(MAPS_ARE_EQUALTests, map)
-   THEN_RUN_TEMPLATE_TESTS(MAPS_ARE_EQUALTests, unordered_map)
+   RUN_TEMPLATE_TESTS(MAPS_ARE_EQUALTests, std::map)
+   THEN_RUN_TEMPLATE_TESTS(MAPS_ARE_EQUALTests, std::unordered_map)
 }

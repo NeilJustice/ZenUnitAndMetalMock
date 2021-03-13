@@ -38,7 +38,7 @@ namespace ZenUnit
    struct UserType
    {
       const int x;
-      UserType(int x) : x(x) {}
+      explicit UserType(int x) : x(x) {}
 
       friend ostream& operator<<(ostream& os, const UserType& userType)
       {

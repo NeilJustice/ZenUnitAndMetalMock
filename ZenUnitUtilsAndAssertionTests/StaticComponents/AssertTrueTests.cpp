@@ -11,7 +11,6 @@ namespace ZenUnit
       ZENUNIT_ASSERT(true);
       const bool trueBool = true;
       ZENUNIT_ASSERT(trueBool);
-      ZENUNIT_ASSERT(1 == 1);
    }
 
    RUN_TESTS(AssertTrueTests)

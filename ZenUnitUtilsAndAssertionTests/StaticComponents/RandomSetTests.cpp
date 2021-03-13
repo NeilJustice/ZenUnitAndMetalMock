@@ -25,7 +25,7 @@ namespace ZenUnit
    TEST(RandomSet_ReturnsAnOrderedSetWithSizeBetween0And3)
    {
       const set<ElementType> randomOrderedSet = ZenUnit::RandomSet<ElementType>();
-      IS_TRUE(randomOrderedSet.size() >= 0 && randomOrderedSet.size() <= 3);
+      IS_TRUE(randomOrderedSet.size() <= 3);
    }
 
    TEST(RandomNonEmptySet_ReturnsAnOrderedSetWithSizeBetween1And3)
@@ -47,7 +47,7 @@ namespace ZenUnit
    TEST(RandomUnorderedSet_ReturnsAnUnorderedSetWithSizeBetween0And3)
    {
       const unordered_set<ElementType> randomUnorderedSet = ZenUnit::RandomUnorderedSet<ElementType>();
-      IS_TRUE(randomUnorderedSet.size() >= 0 && randomUnorderedSet.size() <= 3);
+      IS_TRUE(randomUnorderedSet.size() <= 3);
    }
 
    TEST(RandomNonEmptyUnorderedSet_ReturnsAnUnorderedSetWithSizeBetween1And3)

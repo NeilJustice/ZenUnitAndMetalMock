@@ -6,7 +6,7 @@ namespace ZenUnit
    TESTS(AnomalyOrExceptionEqualizerAndRandomTests)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    AFACT(TestableRandomAnomalyOrException_ReturnsAnomalyOrExceptionWithAllRandomFields)
-   AFACT(ZenUnitRandomAnomalyOrException_DoesNotThrowException)
+   AFACT(ZenUnitRandomAnomalyOrException_CodeCoverage)
    EVIDENCE
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
@@ -33,9 +33,9 @@ namespace ZenUnit
       IS_NOT_DEFAULT_VALUE(*randomAnomalyOrException.exceptionMessage);
    }
 
-   TEST(ZenUnitRandomAnomalyOrException_DoesNotThrowException)
+   TEST(ZenUnitRandomAnomalyOrException_CodeCoverage)
    {
-      const AnomalyOrException randomAnomalyOrException = ZenUnit::Random<AnomalyOrException>();
+      ZenUnit::Random<AnomalyOrException>();
    }
 
    RUN_TESTS(AnomalyOrExceptionEqualizerAndRandomTests)

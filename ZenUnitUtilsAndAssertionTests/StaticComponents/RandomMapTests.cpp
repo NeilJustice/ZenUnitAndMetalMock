@@ -25,7 +25,7 @@ namespace ZenUnit
    TEST(RandomOrderedMap_ReturnsAMapWithSizeBetween0And3)
    {
       const map<KeyType, ValueType> randomOrderedMap = ZenUnit::RandomOrderedMap<KeyType, ValueType>();
-      IS_TRUE(randomOrderedMap.size() >= 0 && randomOrderedMap.size() <= 3);
+      IS_TRUE(randomOrderedMap.size() <= 3);
    }
 
    TEST(RandomNonEmptyMap_ReturnsAMapWithSizeBetween1And3)
@@ -47,7 +47,7 @@ namespace ZenUnit
    TEST(RandomUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween0And3)
    {
       const unordered_map<KeyType, ValueType> randomUnorderedMap = ZenUnit::RandomUnorderedMap<KeyType, ValueType>();
-      IS_TRUE(randomUnorderedMap.size() >= 0 && randomUnorderedMap.size() <= 3);
+      IS_TRUE(randomUnorderedMap.size() <= 3);
    }
 
    TEST(RandomNonEmptyUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween1And3)

@@ -22,7 +22,7 @@ namespace ZenUnit
    TEST(RandomVector_ReturnsAVectorWithSizeBetween0And2)
    {
       const vector<T> randomVector = ZenUnit::RandomVector<T>();
-      IS_TRUE(randomVector.size() >= 0 && randomVector.size() <= 3);
+      IS_TRUE(randomVector.size() <= 3);
    }
 
    TEST(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween1And3)
