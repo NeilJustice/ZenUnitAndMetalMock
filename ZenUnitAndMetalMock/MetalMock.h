@@ -1598,7 +1598,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ArgumentStorage() = default;
 
-      ArgumentStorage(std::span<char> dynamicCharSpan)
+      explicit ArgumentStorage(std::span<char> dynamicCharSpan)
          : value(dynamicCharSpan.data(), dynamicCharSpan.size()) {}
    };
 
@@ -1609,7 +1609,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ArgumentStorage() = default;
 
-      ArgumentStorage(std::span<const char> dynamicCharSpan)
+      explicit ArgumentStorage(std::span<const char> dynamicCharSpan)
          : value(dynamicCharSpan.data(), dynamicCharSpan.size()) {}
    };
 
@@ -1620,7 +1620,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ArgumentStorage() = default;
 
-      ArgumentStorage(std::string_view stringView)
+      explicit ArgumentStorage(std::string_view stringView)
          : value(stringView) {}
    };
 
@@ -1631,7 +1631,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ArgumentStorage() = default;
 
-      ArgumentStorage(std::wstring_view wideStringView)
+      explicit ArgumentStorage(std::wstring_view wideStringView)
          : value(wideStringView) {}
    };
 
@@ -1642,7 +1642,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ArgumentStorage() = delete;
 
-      ArgumentStorage(const std::unique_ptr<T>& uniquePtr)
+      explicit ArgumentStorage(const std::unique_ptr<T>& uniquePtr)
          : value(uniquePtr.get()) {}
    };
 
@@ -1654,7 +1654,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ReferenceStorage()
          : value() {}
 
-      ReferenceStorage(const T& argument)
+      explicit ReferenceStorage(const T& argument)
          : value(argument) {}
    };
 
@@ -1665,7 +1665,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ReferenceStorage() = default;
 
-      ReferenceStorage(std::string_view argument)
+      explicit ReferenceStorage(std::string_view argument)
          : value(argument) {}
    };
 
@@ -1676,7 +1676,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ReferenceStorage() = delete;
 
-      ReferenceStorage(const std::unique_ptr<T>& uniquePtr)
+      explicit ReferenceStorage(const std::unique_ptr<T>& uniquePtr)
          : value(uniquePtr.get()) {}
    };
 

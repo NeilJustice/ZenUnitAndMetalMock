@@ -6,6 +6,7 @@
 #include "ZenUnitTestUtils/EqualizersAndRandoms/FilePathLineNumberEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/TestingNonDefaultTestResult.h"
 
 namespace ZenUnit
 {
@@ -82,7 +83,7 @@ namespace ZenUnit
       const TestPhaseResult constructorFailTestPhaseResult = TestPhaseResultWithOutcome(constructorOutcome);
       _tryCatchCallerMock->RunTestPhaseMock.Return(constructorFailTestPhaseResult);
 
-      const TestResult constructorFailTestResult = TestResult::TestingNonDefault();
+      const TestResult constructorFailTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
       const TestResult testResult = _test->BaseRunTest();
@@ -102,7 +103,7 @@ namespace ZenUnit
       const TestPhaseResult destructorTestPhaseResult = TestPhaseResultWithOutcome(TestOutcome::Success);
       _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult);
 
-      const TestResult startupFailTestResult = TestResult::TestingNonDefault();
+      const TestResult startupFailTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeStartupFailMock.Return(startupFailTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();
@@ -126,7 +127,7 @@ namespace ZenUnit
       const TestPhaseResult successTestPhaseResult = TestPhaseResultWithOutcome(TestOutcome::Success);
       _tryCatchCallerMock->RunTestPhaseMock.Return(successTestPhaseResult);
 
-      const TestResult sixArgTestResult = TestResult::TestingNonDefault();
+      const TestResult sixArgTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeFullTestResultMock.Return(sixArgTestResult);
       const string testClassName = Random<string>();
       const string testName = Random<string>();

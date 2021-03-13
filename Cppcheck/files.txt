@@ -148,6 +148,7 @@ NonPrintableUserType.a1::ZenUnitTestUtils/NonPrintableUserType.cpp
 OnlyInsertionOperatorPrintableUserType.a1::ZenUnitTestUtils/OnlyInsertionOperatorPrintableUserType.cpp
 OnlyZenUnitEqualizerUserType.a1::ZenUnitTestUtils/OnlyZenUnitEqualizerUserType.cpp
 OnlyZenUnitPrintableUserType.a1::ZenUnitTestUtils/OnlyZenUnitPrintableUserType.cpp
+TestingNonDefaultTestResult.a1::ZenUnitTestUtils/TestingNonDefaultTestResult.cpp
 TestingTestClass.a1::ZenUnitTestUtils/TestingTestClass.cpp
 UserType.a1::ZenUnitTestUtils/UserType.cpp
 pch.a6::ZenUnitTestUtils/pch.cpp

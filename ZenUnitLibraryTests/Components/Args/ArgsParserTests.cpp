@@ -242,7 +242,7 @@ namespace ZenUnit
    }
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
-      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
+      _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
@@ -259,7 +259,7 @@ namespace ZenUnit
 
    TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
-      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
+      _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const vector<string> stringArgs { _testProgramPath, "--always-exit-0", "--always-exit-0" };
       //
@@ -311,7 +311,7 @@ namespace ZenUnit
 
    TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
-      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
+      _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const int testRuns = ToIntMock.ReturnRandom();
       const vector<string> stringArgs{ _testProgramPath, "--test-runs=" + to_string(testRuns) };
@@ -330,7 +330,7 @@ namespace ZenUnit
 
    TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
-      const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
+      _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const unsigned randomSeedToUnsignedReturnValue = ToUnsignedMock.ReturnRandom();
       const vector<string> stringArgs{ _testProgramPath, "--random-seed=" + to_string(randomSeed) };

@@ -1855,8 +1855,8 @@ namespace ZenUnit
             assertExpressionBuilder << ", " << messagesText;
          }
          assertExpressionBuilder << ")";
-         std::string assertExpression = assertExpressionBuilder.str();
-         return assertExpression;
+         std::string builtAssertExpression = assertExpressionBuilder.str();
+         return builtAssertExpression;
       }
    };
 
@@ -2209,8 +2209,7 @@ namespace ZenUnit
 #elif defined _WIN32
          const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
          tm tmNow{};
-         const errno_t localtimeResult = localtime_s(&tmNow, &nowTimeT);
-         ZENUNIT_ASSERT(localtimeResult == 0);
+         localtime_s(&tmNow, &nowTimeT);
          return tmNow;
 #endif
       }
@@ -4445,13 +4444,6 @@ namespace ZenUnit
          {
             console->Write(" test case " + std::to_string(testCaseNumberArgument) + "/" + std::to_string(totalTestCases));
          }
-      }
-
-      static const TestResult TestingNonDefault() noexcept
-      {
-         const FullTestName fullTestName("Non", "Default", 0);
-         TestResult constructorFail = TestResult::ConstructorFail(fullTestName, TestPhaseResult());
-         return constructorFail;
       }
    };
 

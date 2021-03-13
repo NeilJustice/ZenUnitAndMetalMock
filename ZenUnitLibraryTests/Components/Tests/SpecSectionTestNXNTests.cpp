@@ -2,6 +2,7 @@
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/TestingNonDefaultTestResult.h"
 
 namespace ZenUnit
 {
@@ -103,7 +104,7 @@ namespace ZenUnit
    TEST(RunTest_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    {
       TestMock* const testMock = new TestMock;
-      const vector<TestResult> testTestResults{ TestResult::TestingNonDefault() };
+      const vector<TestResult> testTestResults = { TestingNonDefaultTestResult() };
       testMock->RunTestMock.Return(testTestResults);
       const unique_ptr<Test> testMockUniquePtr(testMock);
       _specSectionTestNXNSelfMocked->PmfTokenToTestMock.Return(&testMockUniquePtr);

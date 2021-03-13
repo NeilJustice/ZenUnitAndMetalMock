@@ -4,6 +4,7 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/TestingNonDefaultTestResult.h"
 
 namespace ZenUnit
 {
@@ -60,7 +61,7 @@ namespace ZenUnit
 
       const long long microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
 
-      TestResult constructorFailTestResult = TestResult::TestingNonDefault();
+      TestResult constructorFailTestResult = TestingNonDefaultTestResult();
       constructorFailTestResult.microseconds = microseconds;
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
@@ -88,7 +89,7 @@ namespace ZenUnit
 
       const long long microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
 
-      TestResult sixArgCtorTestResult = TestResult::TestingNonDefault();
+      TestResult sixArgCtorTestResult = TestingNonDefaultTestResult();
       sixArgCtorTestResult.microseconds = microseconds;
       _testResultFactoryMock->MakeConstructorDestructorSuccessMock.Return(sixArgCtorTestResult);
       //
