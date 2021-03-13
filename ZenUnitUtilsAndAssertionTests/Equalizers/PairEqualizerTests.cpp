@@ -12,7 +12,8 @@ namespace ZenUnit
    {
       pair<int, int> expectedPair;
       pair<int, int> actualPair;
-      DOES_NOT_THROW(Equalizer<pair<int COMMA int>>::AssertEqual(expectedPair, actualPair));
+      using PairIntInt = pair<int, int>;
+      DOES_NOT_THROW(Equalizer<PairIntInt>::AssertEqual(expectedPair, actualPair));
       expectedPair.first = 1;
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
@@ -23,7 +24,7 @@ namespace ZenUnit
          "  Actual: 0",
          "File.cpp(1)",
          "File.cpp(1)");
-      THROWS_EXCEPTION(Equalizer<pair<int COMMA int>>::AssertEqual(expectedPair, actualPair),
+      THROWS_EXCEPTION(Equalizer<PairIntInt>::AssertEqual(expectedPair, actualPair),
          Anomaly, expectedExceptionMessage);
    }
 
@@ -31,7 +32,8 @@ namespace ZenUnit
    {
       pair<string, unsigned long long> expectedPair;
       pair<string, unsigned long long> actualPair;
-      DOES_NOT_THROW(Equalizer<pair<string COMMA unsigned long long>>::AssertEqual(expectedPair, actualPair));
+      using PairStringUnsignedLongLong = pair<string, unsigned long long>;
+      DOES_NOT_THROW(Equalizer<PairStringUnsignedLongLong>::AssertEqual(expectedPair, actualPair));
       expectedPair.first = "str1";
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
@@ -42,7 +44,7 @@ namespace ZenUnit
          "  Actual: \"\"",
          "File.cpp(1)",
          "File.cpp(1)");
-      THROWS_EXCEPTION(Equalizer<pair<string COMMA unsigned long long>>::AssertEqual(expectedPair, actualPair),
+      THROWS_EXCEPTION(Equalizer<PairStringUnsignedLongLong>::AssertEqual(expectedPair, actualPair),
          Anomaly, expectedExceptionMessage);
    }
 
@@ -50,7 +52,8 @@ namespace ZenUnit
    {
       pair<int, OnlyZenUnitEqualizerUserType> expectedPair;
       pair<int, OnlyZenUnitEqualizerUserType> actualPair;
-      DOES_NOT_THROW(Equalizer<pair<int COMMA OnlyZenUnitEqualizerUserType>>::AssertEqual(expectedPair, actualPair));
+      using PairIntOnlyZenUnitEqualizerUserType = pair<int, OnlyZenUnitEqualizerUserType>;
+      DOES_NOT_THROW(Equalizer<PairIntOnlyZenUnitEqualizerUserType>::AssertEqual(expectedPair, actualPair));
       actualPair.second = OnlyZenUnitEqualizerUserType{1};
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
@@ -61,7 +64,7 @@ namespace ZenUnit
          "  Actual: OnlyZenUnitEqualizerUserType@1",
          "File.cpp(1)",
          "File.cpp(1)");
-      THROWS_EXCEPTION(Equalizer<pair<int COMMA OnlyZenUnitEqualizerUserType>>::AssertEqual(expectedPair, actualPair),
+      THROWS_EXCEPTION(Equalizer<PairIntOnlyZenUnitEqualizerUserType>::AssertEqual(expectedPair, actualPair),
          Anomaly, expectedExceptionMessage);
    }
 

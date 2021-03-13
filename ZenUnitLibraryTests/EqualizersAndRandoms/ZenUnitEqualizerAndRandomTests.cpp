@@ -33,10 +33,11 @@ namespace ZenUnit
    }
    TEST(TemplateTwoTypeZenUnitEqualizer_ValuesNotEqualityOperatorEqual_ThrowsEqualizerException)
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<UserType COMMA UserType>::AssertEqual(
-         UserType(1) COMMA UserType(2)), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA char>::AssertEqual(
-         1 COMMA '1'), EqualizerException, "");
+      using TwoTypeEqualizerUserTypeUserType = TwoTypeEqualizer<UserType, UserType>;
+      THROWS_EXCEPTION(TwoTypeEqualizerUserTypeUserType::AssertEqual(UserType(1), UserType(2)), EqualizerException, "");
+
+      using TwoTypeEqualizerIntChar = TwoTypeEqualizer<int, char>;
+      THROWS_EXCEPTION(TwoTypeEqualizerIntChar::AssertEqual(1, '1'), EqualizerException, "");
    }
 
    TEST(Double_Double_ExactlyEqual_DoesNotThrowException)
@@ -63,28 +64,28 @@ namespace ZenUnit
 
    TEST(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA unsigned>::AssertEqual(
-         -2 COMMA static_cast<unsigned>(0)), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA unsigned>::AssertEqual(
-         -1 COMMA static_cast<unsigned>(0)), EqualizerException, "");
+      using TwoTypeEqualizerIntUnsigned = TwoTypeEqualizer<int, unsigned>;
+      THROWS_EXCEPTION(TwoTypeEqualizerIntUnsigned::AssertEqual(-2, static_cast<unsigned>(0)), EqualizerException, "");
+
+      using TwoTypeEqualizerIntUnsigned = TwoTypeEqualizer<int, unsigned>;
+      THROWS_EXCEPTION(TwoTypeEqualizerIntUnsigned::AssertEqual(-1, static_cast<unsigned>(0)), EqualizerException, "");
 
       TwoTypeEqualizer<int, unsigned>::AssertEqual(0, static_cast<unsigned>(0));
       TwoTypeEqualizer<int, unsigned>::AssertEqual(1, static_cast<unsigned>(1));
-      TwoTypeEqualizer<int, unsigned>::AssertEqual(
-         numeric_limits<int>::max(), static_cast<unsigned>(numeric_limits<int>::max()));
+      TwoTypeEqualizer<int, unsigned>::AssertEqual(numeric_limits<int>::max(), static_cast<unsigned>(numeric_limits<int>::max()));
    }
 
    TEST(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
    {
-      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA size_t>::AssertEqual(
-         -2 COMMA size_t(0)), EqualizerException, "");
-      THROWS_EXCEPTION(TwoTypeEqualizer<int COMMA size_t>::AssertEqual(
-         -1 COMMA size_t(0)), EqualizerException, "");
+      using TwoTypeEqualizerIntSizeT = TwoTypeEqualizer<int, size_t>;
+      THROWS_EXCEPTION(TwoTypeEqualizerIntSizeT::AssertEqual(-2, size_t(0)), EqualizerException, "");
+
+      using TwoTypeEqualizerIntSizeT = TwoTypeEqualizer<int, size_t>;
+      THROWS_EXCEPTION(TwoTypeEqualizerIntSizeT::AssertEqual(-1, size_t(0)), EqualizerException, "");
 
       TwoTypeEqualizer<int, size_t>::AssertEqual(0, static_cast<size_t>(0));
       TwoTypeEqualizer<int, size_t>::AssertEqual(1, static_cast<size_t>(1));
-      TwoTypeEqualizer<int, size_t>::AssertEqual(
-         numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
+      TwoTypeEqualizer<int, size_t>::AssertEqual(numeric_limits<int>::max(), static_cast<size_t>(numeric_limits<int>::max()));
    }
 
    RUN_TESTS(ZenUnitEqualizerTests)

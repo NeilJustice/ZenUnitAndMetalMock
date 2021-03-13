@@ -141,7 +141,7 @@ namespace ZenUnit
       class ComponentMock : public Metal::Mock<Component>
       {
       public:
-         using PairType = const pair<OnlyZenUnitEqualizerUserType COMMA OnlyZenUnitEqualizerUserType>&;
+         using PairType = const pair<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType>&;
          METALMOCK_VOID1_CONST(FunctionThatTakesAPair, PairType)
       };
 

@@ -154,7 +154,7 @@ namespace ZenUnit
       class ComponentMock : public Metal::Mock<Component>
       {
       public:
-         using TupleType = const tuple<OnlyZenUnitEqualizerUserType COMMA OnlyZenUnitEqualizerUserType>&;
+         using TupleType = const tuple<OnlyZenUnitEqualizerUserType, OnlyZenUnitEqualizerUserType>&;
          METALMOCK_VOID1_CONST(FunctionThatTakesATuple, TupleType)
       };
 

@@ -42,8 +42,7 @@ namespace ZenUnit
       DOES_NOT_THROW(Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector));
       expectedStringVector.emplace_back();
       const string expectedStringVectorTypeName = *Type::GetName<vector<string>>();
-      THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(
-         expectedStringVector COMMA actualStringVector), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(Equalizer<vector<string>>::AssertEqual(expectedStringVector, actualStringVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
 "Expected: " + expectedStringVectorTypeName + " (size 1):",
 "{",
@@ -66,8 +65,8 @@ namespace ZenUnit
       DOES_NOT_THROW(Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector));
       expectedUserTypeVector.emplace_back();
       const string expectedUserTypeVectorTypeName = *Type::GetName<vector<UserType>>();
-      THROWS_EXCEPTION(Equalizer<vector<UserType>>::AssertEqual(
-         expectedUserTypeVector COMMA actualUserTypeVector), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(Equalizer<vector<UserType>>::AssertEqual(expectedUserTypeVector, actualUserTypeVector),
+         Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
 "Expected: " + expectedUserTypeVectorTypeName + " (size 1):",
 "{",
