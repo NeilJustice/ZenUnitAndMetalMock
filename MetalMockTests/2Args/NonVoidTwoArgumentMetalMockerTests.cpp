@@ -29,7 +29,8 @@ namespace MetalMock
    TEST(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    {
       IS_FALSE(_nonVoidTwoArgumentMetalMocker->_wasExpected);
-      IS_FALSE(_nonVoidTwoArgumentMetalMocker->_callInsteadFunction);
+      IS_FALSE(_nonVoidTwoArgumentMetalMocker->_baseVoidCallInsteadFunction);
+      IS_FALSE(_nonVoidTwoArgumentMetalMocker->_derivedNonVoidCallInsteadFunction);
       //
       _nonVoidTwoArgumentMetalMocker->CallInstead(
          std::bind(&NonVoidTwoArgumentMetalMockerTests::NonVoidTwoArgFunction, this, placeholders::_1, placeholders::_2));
