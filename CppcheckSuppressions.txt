@@ -6,11 +6,12 @@ accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:2634
 accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:3180
 accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:3593
 accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:4005
-noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1590
-noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1691
-noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1700
+noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1585
+noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1686
+noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1695
 unusedFunction:ZenUnitUtilsAndAssertionTests\ZenUnitUtilsAndAssertionTestsMain.cpp:14
 unusedFunction:ZenUnitTestUtils\EqualizersAndRandoms\TestPhaseResultEqualizerAndRandom.cpp:27
 unusedFunction:ZenUnitTestUtils\EqualizersAndRandoms\ZenUnitArgsEqualizerAndRandom.cpp:41
 syntaxError:MetalMockTests\MetalMock\ArgumentStorageTests.cpp:48
 syntaxError:MetalMockTests\MetalMock\EveryMacroCompilesTest.cpp:248
+useStlAlgorithm:ZenUnitAndMetalMock\MetalMock.h:1261

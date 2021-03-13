@@ -1244,13 +1244,9 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
          if (returnValues.empty())
          {
-            throw std::invalid_argument(
-               "MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty");
+            throw std::invalid_argument("MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty");
          }
-         for (const auto& returnValue : returnValues)
-         {
-            _returnValues.push_back(returnValue);
-         }
+         std::copy(returnValues.cbegin(), returnValues.cend(), std::back_inserter(_returnValues));
       }
 
       template<typename ContainerType>
@@ -1258,8 +1254,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
          if (returnValues.empty())
          {
-            throw std::invalid_argument(
-               "MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty");
+            throw std::invalid_argument("MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty");
          }
          for (auto& returnValue : returnValues)
          {
