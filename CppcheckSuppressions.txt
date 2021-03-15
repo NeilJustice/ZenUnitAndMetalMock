@@ -1,3 +1,4 @@
+unmatchedSuppression:*
 noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1585
 noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1686
 noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1695
