@@ -252,6 +252,14 @@ Example ZenUnit command line arguments:
    ZenUnit::ARE_WITHIN_Defined(expectedFloatingPointValue, #expectedFloatingPointValue, actualFloatingPointValue, #actualFloatingPointValue, expectedAbsoluteMaxDifference, #expectedAbsoluteMaxDifference, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+#define FLOATS_ARE_NEAR(expectedFloat, actualFloat, ...) \
+   ZenUnit::FLOATS_ARE_NEAR_Defined(expectedFloat, #expectedFloat, actualFloat, #actualFloat, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
+#define DOUBLES_ARE_NEAR(expectedDouble, actualDouble, ...) \
+   ZenUnit::DOUBLES_ARE_NEAR_Defined(expectedDouble, #expectedDouble, actualDouble, #actualDouble, \
+      ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
+
 //
 // Pointer Assertions
 //
@@ -1783,7 +1791,7 @@ namespace ZenUnit
          std::string_view actualValueAsString,
          std::string_view thirdLine,
          FilePathLineNumber filePathLineNumber,
-         MessageTypes&& ... messages)
+         MessageTypes&&... messages)
       {
          Anomaly anomaly;
          anomaly.assertExpression = MakeAssertExpression(assertionName, arg1Text, arg2Text, arg3Text, messagesText);;
@@ -2548,7 +2556,7 @@ namespace ZenUnit
    void ARE_NOT_EQUAL_Defined(
       const NotExpectedType& notExpectedValue, const char* notExpectedValueText,
       const ActualType& actualValue, const char* actualValueText,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
@@ -2722,7 +2730,7 @@ namespace ZenUnit
       ExpectedFloatingPointType expectedFloatingPointValue, const char* expectedFloatingPointValueText,
       ActualFloatingPointType actualFloatingPointValue, const char* actualFloatingPointValueText,
       double expectedAbsoluteMaxDifference, const char* expectedAbsoluteMaxDifferenceText,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedFloatingPointValue = ToStringer::ToString(expectedFloatingPointValue);
       const std::string toStringedActualFloatingPointValue = ToStringer::ToString(actualFloatingPointValue);
@@ -2740,7 +2748,7 @@ namespace ZenUnit
       ExpectedFloatingPointType expectedFloatingPointValue, const char* expectedFloatingPointValueText,
       ActualFloatingPointType  actualFloatingPointValue, const char* actualFloatingPointValueText,
       double expectedAbsoluteMaxDifference, const char* expectedAbsoluteMaxDifferenceText,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const double difference = static_cast<double>(expectedFloatingPointValue) - static_cast<double>(actualFloatingPointValue);
       const double absoluteDifference = std::abs(difference);
@@ -2750,6 +2758,76 @@ namespace ZenUnit
             expectedFloatingPointValue, expectedFloatingPointValueText,
             actualFloatingPointValue, actualFloatingPointValueText,
             expectedAbsoluteMaxDifference, expectedAbsoluteMaxDifferenceText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename... MessageTypes>
+   void FLOATS_ARE_NEAR_ThrowAnomaly(
+      float expectedFloat, const char* expectedFloatText,
+      float actualFloat, const char* actualFloatText,
+      float absoluteDifference,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string expectedFloatString = ToStringer::ToString(expectedFloat);
+      const std::string actualFloatString = ToStringer::ToString(actualFloat);
+      const std::string absoluteDifferenceString = ToStringer::ToString(absoluteDifference);
+      const Anomaly anomaly(
+         "FLOATS_ARE_NEAR", expectedFloatText, actualFloatText, "", messagesText, Anomaly::Default(),
+         expectedFloatString, actualFloatString, ExpectedActualFormat::Fields,
+         filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
+   }
+
+   template<typename... MessageTypes>
+   void FLOATS_ARE_NEAR_Defined(
+      float expectedFloat, const char* expectedFloatText,
+      float actualFloat, const char* actualFloatText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const float difference = expectedFloat - actualFloat;
+      const float absoluteDifference = std::abs(difference);
+      if (absoluteDifference >= 1e-7)
+      {
+         FLOATS_ARE_NEAR_ThrowAnomaly(
+            expectedFloat, expectedFloatText,
+            actualFloat, actualFloatText,
+            absoluteDifference,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+   }
+
+   template<typename... MessageTypes>
+   void DOUBLES_ARE_NEAR_ThrowAnomaly(
+      double expectedDouble, const char* expectedDoubleText,
+      double actualDouble, const char* actualDoubleText,
+      double absoluteDifference,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const std::string expectedDoubleString = ToStringer::ToString(expectedDouble);
+      const std::string actualDoubleString = ToStringer::ToString(actualDouble);
+      const std::string absoluteDifferenceString = ToStringer::ToString(absoluteDifference);
+      const Anomaly anomaly(
+         "DOUBLES_ARE_NEAR", expectedDoubleText, actualDoubleText, "", messagesText, Anomaly::Default(),
+         expectedDoubleString, actualDoubleString, ExpectedActualFormat::Fields,
+         filePathLineNumber, std::forward<MessageTypes>(messages)...);
+      throw anomaly;
+   }
+
+   template<typename... MessageTypes>
+   void DOUBLES_ARE_NEAR_Defined(
+      double expectedDouble, const char* expectedDoubleText,
+      double actualDouble, const char* actualDoubleText,
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
+   {
+      const double difference = expectedDouble - actualDouble;
+      const double absoluteDifference = std::abs(difference);
+      if (absoluteDifference >= 1e-16)
+      {
+         DOUBLES_ARE_NEAR_ThrowAnomaly(
+            expectedDouble, expectedDoubleText,
+            actualDouble, actualDoubleText,
+            absoluteDifference,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -3314,7 +3392,7 @@ namespace ZenUnit
 
    template<typename ValueType, typename DefaultValueType, typename... MessageTypes>
    NOINLINE void IS_DEFAULT_VALUE_ThrowAnomaly(const ValueType& value, const char* valueText, const DefaultValueType& defaultValueForType,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedValueString = ToStringer::ToString(defaultValueForType);
       const std::string actualValueString = ToStringer::ToString(value);
@@ -3326,7 +3404,7 @@ namespace ZenUnit
 
    template<typename ValueType, typename... MessageTypes>
    void IS_DEFAULT_VALUE_Defined(const ValueType& value, const char* valueText,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       static const typename std::remove_reference<ValueType>::type defaultValueForType{};
       try
@@ -3687,7 +3765,7 @@ namespace ZenUnit
    template<typename ArrayType, typename... MessageTypes>
    NOINLINE void ARRAYS_ARE_EQUAL_ThrowAnomaly(
       const char* expectedArrayText, const char* actualArrayText, size_t numberOfElementsToCompare, const Anomaly& becauseAnomaly,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string arrayTypeName = *Type::GetName<ArrayType>();
       const std::string numberOfElementsToCompareString = std::to_string(numberOfElementsToCompare);
@@ -3701,7 +3779,7 @@ namespace ZenUnit
       const ArrayType& expectedArray, const char* expectedArrayText,
       const ArrayType& actualArray, const char* actualArrayText,
       size_t numberOfElementsToCompare,
-      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&& ... messages)
+      FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
