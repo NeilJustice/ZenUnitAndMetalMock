@@ -7,10 +7,6 @@ namespace ZenUnit
    AFACT(TemplateZenUnitEqualizer_ValuesNotEqualityOperatorEqual_ThrowsEqualizerException)
    AFACT(TemplateTwoTypeZenUnitEqualizer_ValuesAreEqualityOperatorEqual_DoesNotThrowException)
    AFACT(TemplateTwoTypeZenUnitEqualizer_ValuesNotEqualityOperatorEqual_ThrowsEqualizerException)
-   AFACT(Double_Double_ExactlyEqual_DoesNotThrowException)
-   AFACT(Double_Double_NotExactlyEqual_ThrowsEqualizerException)
-   AFACT(Double_Float_ExactlyEqual_DoesNotThrowException)
-   AFACT(Double_Float_NotExactlyEqual_ThrowsEqualizerException)
    AFACT(Int_SizeT_ThrowsIfIntNegative_OtherwiseCallsAssertEqualSizeTSizeT)
    AFACT(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)
    EVIDENCE
@@ -38,28 +34,6 @@ namespace ZenUnit
 
       using TwoTypeEqualizerIntChar = TwoTypeEqualizer<int, char>;
       THROWS_EXCEPTION(TwoTypeEqualizerIntChar::AssertEqual(1, '1'), EqualizerException, "");
-   }
-
-   TEST(Double_Double_ExactlyEqual_DoesNotThrowException)
-   {
-      Equalizer<double>::AssertEqual(0.0, 0.0);
-      Equalizer<double>::AssertEqual(123.45, 123.45);
-   }
-
-   TEST(Double_Double_NotExactlyEqual_ThrowsEqualizerException)
-   {
-      THROWS_EXCEPTION(Equalizer<double>::AssertEqual(0.0, 1.0), EqualizerException, "");
-   }
-
-   TEST(Double_Float_ExactlyEqual_DoesNotThrowException)
-   {
-      Equalizer<float>::AssertEqual(0.0f, 0.0f);
-      Equalizer<float>::AssertEqual(123.45f, 123.45f);
-   }
-
-   TEST(Double_Float_NotExactlyEqual_ThrowsEqualizerException)
-   {
-      THROWS_EXCEPTION(Equalizer<float>::AssertEqual(0.0f, 1.0f), EqualizerException, "");
    }
 
    TEST(Int_Unsigned_ThrowsIfIntNegative_OtherwiseCallsAssertEqualUnsignedUnsigned)

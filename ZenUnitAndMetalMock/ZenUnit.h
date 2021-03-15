@@ -2396,34 +2396,6 @@ namespace ZenUnit
    };
 
    template<>
-   class Equalizer<double>
-   {
-   public:
-      static void AssertEqual(double expectedDouble, double actualDouble)
-      {
-         // Tentative exactly-equal implementation
-         if (!(expectedDouble == actualDouble))
-         {
-            throw EqualizerException();
-         }
-      }
-   };
-
-   template<>
-   class Equalizer<float>
-   {
-   public:
-      static void AssertEqual(float expectedFloat, float actualFloat)
-      {
-         // Tentative exactly-equal implementation
-         if (!(expectedFloat == actualFloat))
-         {
-            throw EqualizerException();
-         }
-      }
-   };
-
-   template<>
    class TwoTypeEqualizer<int, unsigned>
    {
    public:
@@ -2831,6 +2803,26 @@ namespace ZenUnit
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
+
+   template<>
+   class Equalizer<double>
+   {
+   public:
+      static void AssertEqual(double expectedDouble, double actualDouble)
+      {
+         DOUBLES_ARE_NEAR(expectedDouble, actualDouble);
+      }
+   };
+
+   template<>
+   class Equalizer<float>
+   {
+   public:
+      static void AssertEqual(float expectedFloat, float actualFloat)
+      {
+         FLOATS_ARE_NEAR(expectedFloat, actualFloat);
+      }
+   };
 
    template<typename T>
    struct ArrayDeleter

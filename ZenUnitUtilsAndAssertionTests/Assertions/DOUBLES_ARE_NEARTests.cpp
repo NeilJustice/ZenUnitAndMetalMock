@@ -9,6 +9,8 @@ namespace ZenUnit
 
    TEST(DoublesDifferenceIsLessThan1EMinus16_DoesNotThrowException)
    {
+      DOUBLES_ARE_NEAR(0.0, 0.0);
+
       const double d1 = 1e-16;
       const double d2 = 1.1e-16;
       DOUBLES_ARE_NEAR(d1, d2);

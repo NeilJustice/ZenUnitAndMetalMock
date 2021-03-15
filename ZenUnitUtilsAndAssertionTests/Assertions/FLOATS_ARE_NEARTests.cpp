@@ -9,6 +9,8 @@ namespace ZenUnit
 
    TEST(FloatsDifferenceIsLessThan1EMinus7_DoesNotThrowException)
    {
+      FLOATS_ARE_NEAR(0.0f, 0.0f);
+
       const float f1 = 1e-7f;
       const float f2 = 1.1e-7f;
       FLOATS_ARE_NEAR(f1, f2);
