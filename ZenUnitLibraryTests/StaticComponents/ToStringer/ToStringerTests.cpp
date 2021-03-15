@@ -278,10 +278,13 @@ namespace ZenUnit
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<char*>(nullptr)));
 
       const char chars[] { 0 };
-      ARE_EQUAL("\"\"", ToStringer::ToString(chars));
+      ARE_EQUAL("\"\"", ToStringer::ToString(const_cast<char*>(chars)));
 
       const char charsABC[] { 'A', 'B', 'C', 0 };
-      ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC));
+      ARE_EQUAL("\"ABC\"", ToStringer::ToString(const_cast<char*>(charsABC)));
+
+      char* const charPointer = const_cast<char*>("abc");
+      ARE_EQUAL("\"abc\"", ToStringer::ToString(charPointer));
    }
 
    TEST(ToString_ConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
@@ -297,8 +300,6 @@ namespace ZenUnit
 
    TEST(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    {
-      //ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<wchar_t*>(nullptr)));
-
       const wchar_t chars[]{ 0 };
       ARE_EQUAL("\"\"", ToStringer::ToString(chars));
 

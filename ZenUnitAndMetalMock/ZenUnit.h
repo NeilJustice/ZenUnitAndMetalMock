@@ -1531,6 +1531,11 @@ namespace ZenUnit
          return quotedString;
       }
 
+      static std::string ToString(char* charPointerString)
+      {
+         return ToString(static_cast<const char*>(charPointerString));
+      }
+
       static std::string ToString(const wchar_t* constWideCharPointerString)
       {
          if (constWideCharPointerString == nullptr)
