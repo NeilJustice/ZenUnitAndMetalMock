@@ -1,11 +1,4 @@
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:1424
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:1434
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:2538
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:2567
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:2634
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:3180
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:3593
-accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:4005
+accessForwarded:*
 noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1585
 noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1686
 noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1695

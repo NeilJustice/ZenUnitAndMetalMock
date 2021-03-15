@@ -59,7 +59,6 @@ ZenUnitCompileSpeedTestsMain.a1::ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTes
 ZenUnitTestClassWithFiftyTests.a1::ZenUnitCompileSpeedTests/ZenUnitTestClassWithFiftyTests.cpp
 ZenUnitTestClassWithOneTestAndFiftyARE_EQUALAssertions.a1::ZenUnitCompileSpeedTests/ZenUnitTestClassWithOneTestAndFiftyARE_EQUALAssertions.cpp
 pch.a3::ZenUnitCompileSpeedTests/pch.cpp
-EveryZenUnitAssertion.a1::ZenUnitExamples/EveryZenUnitAssertion.cpp
 FizzBuzzTests.a1::ZenUnitExamples/FizzBuzzTests.cpp
 STARTUPAndCLEANUPTests.a1::ZenUnitExamples/STARTUPAndCLEANUPTests.cpp
 SetTests.a1::ZenUnitExamples/SetTests.cpp
