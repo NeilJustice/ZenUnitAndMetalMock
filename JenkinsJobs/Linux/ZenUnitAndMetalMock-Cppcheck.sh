@@ -1,8 +1,13 @@
 #!/bin/bash
-set -ev
+set -v
 
 cppcheck \
    --enable=all \
+   --cppcheck-build-dir=Cppcheck \
+   --suppressions-list=CppcheckSuppressions.txt \
+   -D__linux__ \
+   -DTEST \
+   -DTHEN_RUN_TEMPLATE_TESTS \
    -DCOMMA \
    -DTEST \
    -DTESTS \
@@ -18,8 +23,6 @@ cppcheck \
    -DTEST8X8 \
    -DTEST9X9 \
    -DTEST10X10 \
-   -DRUN_TESTS \
-   -DRUN_TEMPLATE_TESTS \
    -DMETALMOCK_VOID0_FREE \
    -DMETALMOCK_VOID1_FREE \
    -DMETALMOCK_VOID2_FREE \
@@ -27,8 +30,15 @@ cppcheck \
    -DMETALMOCK_NONVOID1_FREE \
    -DMETALMOCK_NONVOID1_STATIC \
    -DMETALMOCK_NONVOID3_CONST \
-   -I . \
+   -I /usr/include/c++/v1 \
    -I ZenUnitTestUtils \
+   -I . \
    -j 64 \
+   --output-file=cppcheck_results.txt \
+   --error-exitcode=1 \
    .
+if [ $? = 1 ]; then
+   echo "Cppcheck failed with exit code 1"
+   exit 1
+fi
 

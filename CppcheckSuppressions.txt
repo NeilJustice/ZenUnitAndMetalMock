@@ -1,10 +1,11 @@
-accessForwarded:*
-noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1585
-noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1686
-noExplicitConstructor:ZenUnitAndMetalMock\MetalMock.h:1695
-unusedFunction:ZenUnitUtilsAndAssertionTests\ZenUnitUtilsAndAssertionTestsMain.cpp:14
-unusedFunction:ZenUnitTestUtils\EqualizersAndRandoms\TestPhaseResultEqualizerAndRandom.cpp:27
-unusedFunction:ZenUnitTestUtils\EqualizersAndRandoms\ZenUnitArgsEqualizerAndRandom.cpp:41
-syntaxError:MetalMockTests\MetalMock\ArgumentStorageTests.cpp:48
-syntaxError:MetalMockTests\MetalMock\EveryMacroCompilesTest.cpp:248
-useStlAlgorithm:ZenUnitAndMetalMock\MetalMock.h:1261
+noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1585
+noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1686
+noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1695
+unusedFunction:ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTestsMain.cpp:14
+unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/TestPhaseResultEqualizerAndRandom.cpp:27
+unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.cpp:41
+useStlAlgorithm:ZenUnitAndMetalMock/MetalMock.h:1261
+
+# Linux
+preprocessorErrorDirective:/usr/include/c++/v1/__config:104
+
