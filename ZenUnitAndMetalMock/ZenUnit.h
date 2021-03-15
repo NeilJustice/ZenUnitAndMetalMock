@@ -2738,12 +2738,10 @@ namespace ZenUnit
    void FLOATS_ARE_NEAR_ThrowAnomaly(
       float expectedFloat, const char* expectedFloatText,
       float actualFloat, const char* actualFloatText,
-      float absoluteDifference,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedFloatString = ToStringer::ToString(expectedFloat);
       const std::string actualFloatString = ToStringer::ToString(actualFloat);
-      const std::string absoluteDifferenceString = ToStringer::ToString(absoluteDifference);
       const Anomaly anomaly(
          "FLOATS_ARE_NEAR", expectedFloatText, actualFloatText, "", messagesText, Anomaly::Default(),
          expectedFloatString, actualFloatString, ExpectedActualFormat::Fields,
@@ -2764,7 +2762,6 @@ namespace ZenUnit
          FLOATS_ARE_NEAR_ThrowAnomaly(
             expectedFloat, expectedFloatText,
             actualFloat, actualFloatText,
-            absoluteDifference,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
@@ -2773,12 +2770,10 @@ namespace ZenUnit
    void DOUBLES_ARE_NEAR_ThrowAnomaly(
       double expectedDouble, const char* expectedDoubleText,
       double actualDouble, const char* actualDoubleText,
-      double absoluteDifference,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string expectedDoubleString = ToStringer::ToString(expectedDouble);
       const std::string actualDoubleString = ToStringer::ToString(actualDouble);
-      const std::string absoluteDifferenceString = ToStringer::ToString(absoluteDifference);
       const Anomaly anomaly(
          "DOUBLES_ARE_NEAR", expectedDoubleText, actualDoubleText, "", messagesText, Anomaly::Default(),
          expectedDoubleString, actualDoubleString, ExpectedActualFormat::Fields,
@@ -2799,7 +2794,6 @@ namespace ZenUnit
          DOUBLES_ARE_NEAR_ThrowAnomaly(
             expectedDouble, expectedDoubleText,
             actualDouble, actualDoubleText,
-            absoluteDifference,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
