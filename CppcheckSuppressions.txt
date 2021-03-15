@@ -9,3 +9,14 @@ useStlAlgorithm:ZenUnitAndMetalMock/MetalMock.h:1261
 # Linux
 preprocessorErrorDirective:/usr/include/c++/v1/__config:104
 
+# Windows
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:1432
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:1442
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:2523
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:2552
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:2619
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:3249
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:3662
+accessForwarded:ZenUnitAndMetalMock\ZenUnit.h:4074
+syntaxError:MetalMockTests\MetalMock\ArgumentStorageTests.cpp:48
+syntaxError:MetalMockTests\MetalMock\EveryMacroCompilesTest.cpp:248
