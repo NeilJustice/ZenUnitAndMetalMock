@@ -30,9 +30,10 @@ namespace ZenUnit
    TEST(NumberOfElementsToCompareIs1_FirstElementsAreNotEqual_ThrowsAnomaly)
    {
       const string typeName = *Type::GetName<T>();
-      const T randomElement = ZenUnit::Random<T>();
-      const T expectedArray[1] { randomElement };
-      const T actualArray[1] { randomElement + T{1} };
+      const T randomElement1 = ZenUnit::Random<T>();
+      const T randomElement2 = ZenUnit::RandomNotEqualToValue<T>(randomElement1);
+      const T expectedArray[1] { randomElement1 };
+      const T actualArray[1] { randomElement2 };
       //
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1)",
@@ -59,10 +60,10 @@ namespace ZenUnit
    TEST(NumberOfElementsToCompareIs2_FirstElementsAreEqual_SecondElementsAreNotEqual_ThrowsAnomaly)
    {
       const string typeName = *Type::GetName<T>();
-      const T randomElement0 = ZenUnit::Random<T>();
       const T randomElement1 = ZenUnit::Random<T>();
-      const T expectedArray[2] { randomElement0, randomElement1 };
-      const T actualArray[2] { expectedArray[0], expectedArray[1] + 1 };
+      const T randomElement2 = ZenUnit::RandomNotEqualToValue<T>(randomElement1);
+      const T expectedArray[2] { randomElement1, randomElement1 };
+      const T actualArray[2] { randomElement1, randomElement2 };
       //
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2)",

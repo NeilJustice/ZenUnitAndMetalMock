@@ -43,9 +43,10 @@ namespace ZenUnit
    TEST(ElementAreNonDefaultValuesAndAreNotEqual_ThrowsAnomaly)
    {
       const string TypeName = *Type::GetName<T>();
-      const T randomElement = ZenUnit::Random<T>();
-      const array<T, 1> expectedArray{ { randomElement } };
-      const array<T, 1> actualArray{ { randomElement + T{1} } };
+      const T randomElement1 = ZenUnit::Random<T>();
+      const T randomElement2 = ZenUnit::RandomNotEqualToValue<T>(randomElement1);
+      const array<T, 1> expectedArray = { randomElement1 };
+      const array<T, 1> actualArray = { randomElement2 };
       //
 #if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
@@ -115,9 +116,9 @@ namespace ZenUnit
    TEST(ElementsAreNotDefaultValuesAndAreNotEqualAtIndex0_ThrowsAnomaly)
    {
       const T randomElement1 = ZenUnit::Random<T>();
-      const T randomElement2 = ZenUnit::Random<T>();
-      const array<T, 2> expectedArray{ { randomElement1, randomElement2 } };
-      const array<T, 2> actualArray{ { randomElement1 + T{1}, randomElement2 } };
+      const T randomElement2 = ZenUnit::RandomNotEqualToValue<T>(randomElement1);
+      const array<T, 2> expectedArray{ { randomElement1, randomElement1 } };
+      const array<T, 2> actualArray{ { randomElement2, randomElement1 } };
       //
 #if defined __linux__ || defined __APPLE____linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
@@ -159,8 +160,9 @@ namespace ZenUnit
    {
       const T randomElement1 = ZenUnit::Random<T>();
       const T randomElement2 = ZenUnit::Random<T>();
-      const array<T, 2> expectedArray{ { randomElement1, randomElement2 } };
-      const array<T, 2> actualArray{ { randomElement1, randomElement2 + T{1} } };
+      const T randomElement3 = ZenUnit::RandomNotEqualToValue<T>(randomElement2);
+      const array<T, 2> expectedArray = { randomElement1, randomElement2 };
+      const array<T, 2> actualArray = { randomElement1, randomElement3 };
       //
 #if defined __linux__ || defined __APPLE____linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",

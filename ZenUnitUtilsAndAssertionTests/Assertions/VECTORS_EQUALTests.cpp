@@ -84,9 +84,10 @@ namespace ZenUnit
 
    TEST(VectorSizesAreEqual_ElementsAreNotEqualAtIndex0_ThrowsAnomaly__MessagesTestCase)
    {
-      const T randomElement0 = Random<T>();
-      const vector<T> vector1 { randomElement0 };
-      const vector<T> vector2 { randomElement0 + T{1} };
+      const T randomElement1 = Random<T>();
+      const T randomElement2 = RandomNotEqualToValue<T>(randomElement1);
+      const vector<T> vector1 { randomElement1 };
+      const vector<T> vector2 { randomElement2 };
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(vector1, vector2, _messageA, _messageB),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: VECTORS_ARE_EQUAL(vector1, vector2, _messageA, _messageB)",
@@ -110,8 +111,8 @@ namespace ZenUnit
    TEST(VectorSizesAreEqual_ElementsAreNotEqualAtIndex1_ThrowsAnomaly)
    {
       const T randomElement0 = Random<T>();
-      const T randomElement1 = RandomBetween<T>(1, 3);
-      const T randomElement2 = randomElement1 + RandomBetween<T>(1, 3);
+      const T randomElement1 = Random<T>();
+      const T randomElement2 = RandomNotEqualToValue<T>(randomElement1);
       const vector<T> vector1 { randomElement0, randomElement1 };
       const vector<T> vector2 { randomElement0, randomElement2 };
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(vector1, vector2),
