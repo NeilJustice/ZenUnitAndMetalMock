@@ -4,7 +4,7 @@
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, error message clarity, long-term test code readability, and supports testing with randomized values to maximize [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual functions, static functions, and free functions. MetalMock is a "double strict" mocking framework so as to be suitable for rigorously confirming the correctness of safety-critical and financially-critical C++ software - meaning that all MetalMocked function calls must be first explicitly expected and then explicitly asserted as having been called with exact expected arguments.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments from and to virtual functions, non-virtual functions, static functions, and free functions. MetalMock is a "double strict" mocking framework so as to be suitable for rigorously confirming the correctness of safety-critical and financially-critical C++ software - meaning that MetalMocked function calls must be both explicitly expected and explicitly asserted as having been called with exact expected arguments.
 
 |Build Type|Build Status|
 |----------|------------|
@@ -34,7 +34,7 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](Documentation/HowToWriteACustomZenUnitEqualizer.md)
    * [Guide To MetalMock](Documentation/GuideToMetalMock.md)
    * [Mutation Coverage Can Be Maximized By Testing With Random Values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
-   * [Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
+   * [Linux Jenkins Jobs Which Build, clang-tidy, Cppcheck, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-unit-test-clang-tidy-addresssanitize-undefinedbehaviorsanitize-and-threadsanitize-zenunit-and-metalmock)
    * [Windows Jenkins Jobs Which Build And Unit Test ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-unit-test-zenunit-and-metalmock)
    * [ZenUnit And MetalMock Code Structure As It Appears In Visual Studio Code](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code)
    * [ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019)
@@ -525,7 +525,7 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomNonEmptyUnorderedSet<T>()`|Returns a a `std::unordered_set<T>` with size between 1 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSetWithSize<T>()`|Returns a a `std::unordered_set<T>` with size `size` with each element a `ZenUnit::Random<T>()` value.|
 
-### Linux Jenkins Jobs Which Build, Unit Test, clang-tidy, AddressSanitize, UndefinedBehaviorSanitize, And ThreadSanitize ZenUnit And MetalMock
+### Linux Jenkins Jobs Which Build, clang-tidy, Cppcheck, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit And MetalMock
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
@@ -570,20 +570,18 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit Roadmap
 
-|Future ZenUnit Feature|Implementation Status As Of 3/8/2021|
+|Future ZenUnit Feature|Implementation Status As Of 3/15/2021|
 |----------------------|-------------------------------------|
-|`ARE_NEAR` floating point assertion|In progress|
+|`FLOATS_ARE_NEAR` and `DOUBLES_ARE_NEAR` assertions|In progress|
 |GitHub Actions build|Awaiting implementation|
-|SonarCloud badge for ZenUnitPyUtils Python|Awaiting implementation|
-|ctest support|Awaiting implementation|
-|SonarCloud badge for ZenUnit and MetalMock C++|Awaiting implementation|
-|SonarQube Jenkins pipelines on Linux And Windows with pipeline screenshots added to this readme file|Awaiting implementation|
-|Coverity badge|Awaiting implementation|
+|SonarCloud Python static analysis badge for ZenUnitPyUtils|Awaiting implementation|
+|SonarCloud C++ static analysis badge|Awaiting implementation|
+|Coverity C++ static analysis badge|Awaiting implementation|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 
 ### MetalMock Roadmap
 
-|Future MetalMock Feature|Implementation Status As Of 3/8/2021|
+|Future MetalMock Feature|Implementation Status As Of 3/15/2021|
 |------------------------|-------------------------------------|
 |Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness.|Awaiting implementation|
 
