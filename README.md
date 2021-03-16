@@ -535,7 +535,7 @@ Testing using random values instead of constant values renders test code immune 
 
 ### Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit And MetalMock
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33 with Clang 11.0.0 and GCC 10.2.1:
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
