@@ -117,9 +117,8 @@ namespace VirtualFunctionMockingTestingNamespace
       const int returnValue1 = 1;
       _widgetMock->NonVoidZeroArgVirtualFunctionMock.Return(1);
 
-      // MetalMockObject.ReturnRandom() makes the MetalMocked function
-      // return a ZenUnit::Random<MetalMockedFunctionReturnType>() on each call.
-      const int returnValue2 = _widgetMock->NonVoidZeroArgConstVirtualFunctionMock.ReturnRandom();
+      const int returnValue2 = 10;
+      _widgetMock->NonVoidZeroArgConstVirtualFunctionMock.Return(returnValue2);
 
       // MetalMockObject.ReturnValues(valuesContainer) makes the MetalMocked function
       // return each value in valuesContainer then the last value of valuesContainer thereafter.
@@ -134,7 +133,7 @@ namespace VirtualFunctionMockingTestingNamespace
       //
       const int sumOfWidgetReturnValues = _classUnderTest.FunctionUnderTest();
       //
-      // ZEN augments potential assertion-failed error messages with __FILE__ and __LINE__ information.
+      // METALMOCK augments potential assertion-failed error messages with __FILE__ and __LINE__ information.
       METALMOCK(_widgetMock->VoidZeroArgVirtualFunctionMock.CalledOnce());
       METALMOCK(_widgetMock->VoidZeroArgConstVirtualFunctionMock.CalledOnce());
       METALMOCK(_widgetMock->VoidOneArgVirtualFunctionMock.CalledOnceWith(1));
