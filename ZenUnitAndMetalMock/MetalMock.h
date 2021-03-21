@@ -2287,9 +2287,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename FreeMockType,
          typename StaticMockType>
       friend class MetalMock1Tester;
-   public:
+   private:
       std::vector<OneArgumentFunctionCall<ArgType>> metalMockedFunctionCallHistory;
-
+   public:
       OneArgumentMetalMocker()
       {
       }
