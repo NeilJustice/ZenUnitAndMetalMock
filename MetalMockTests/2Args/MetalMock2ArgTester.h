@@ -4,22 +4,21 @@ namespace MetalMock
 {
    template<
       typename MetalMockObjectType,
-      typename FreeFunctionMockType,
-      typename StaticFunctionMockType>
+      typename FreeFunctionMockObjectType,
+      typename StaticFunctionMockObjectType>
    class MetalMock2ArgTester
    {
    private:
       MetalMockObjectType metalMockObject;
-
       const string virtualFunctionSignature;
       const string virtualFunctionConstSignature;
       const string nonVirtualFunctionSignature;
       const string nonVirtualFunctionConstSignature;
 
-      FreeFunctionMockType freeFunctionMockObject;
+      FreeFunctionMockObjectType freeFunctionMockObject;
       const string freeFunctionSignature;
 
-      StaticFunctionMockType staticFunctionMockObject;
+      StaticFunctionMockObjectType staticFunctionMockObject;
       const string staticFunctionSignature;
    public:
       MetalMock2ArgTester(
@@ -29,10 +28,10 @@ namespace MetalMock
          string nonVirtualFunctionSignature,
          string nonVirtualFunctionConstSignature,
 
-         FreeFunctionMockType freeFunctionMockObject,
+         FreeFunctionMockObjectType freeFunctionMockObject,
          string freeFunctionSignature,
 
-         StaticFunctionMockType staticFunctionMockObject,
+         StaticFunctionMockObjectType staticFunctionMockObject,
          string staticFunctionSignature)
          : metalMockObject(std::move(metalMockObject))
          , virtualFunctionSignature(std::move(virtualFunctionSignature))

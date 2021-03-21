@@ -83,11 +83,11 @@ namespace MetalMock
 
    TEST5X5(CalledOnceWith_SetsAssertedTrue_FunctionWasCalledOnceWithExpectedArg_DoesNotThrowException,
       size_t numberOfCalls, int expectedArgument, int actualArg, bool expectCallCountThrow, bool expectArgEqualityThrow,
-      size_t(0), ZenUnit::Random<int>(), ZenUnit::Random<int>(), true, false,
-      size_t(2), ZenUnit::Random<int>(), ZenUnit::Random<int>(), true, false,
-      size_t(1), 1, 0, false, true,
-      size_t(1), 0, 0, false, false,
-      size_t(1), 1, 1, false, false)
+      0ULL, ZenUnit::Random<int>(), ZenUnit::Random<int>(), true, false,
+      2ULL, ZenUnit::Random<int>(), ZenUnit::Random<int>(), true, false,
+      1ULL, 1, 0, false, true,
+      1ULL, 0, 0, false, false,
+      1ULL, 1, 1, false, false)
    {
       IS_FALSE(_metalMocker->_wasAsserted);
       _metalMocker->metalMockedFunctionCallHistory.resize(numberOfCalls);
@@ -133,13 +133,13 @@ namespace MetalMock
 
    TEST3X3(CalledAsFollowsWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws,
       size_t expectedNumberOfCallsToMetalMockedFunction, size_t numberOfCalls, bool expectThrow,
-      size_t(1), size_t(0), true,
-      size_t(1), size_t(1), false,
-      size_t(1), size_t(2), true,
-      size_t(2), size_t(0), true,
-      size_t(2), size_t(1), true,
-      size_t(2), size_t(2), false,
-      size_t(2), size_t(3), true)
+      1ULL, 0ULL, true,
+      1ULL, 1ULL, false,
+      1ULL, 2ULL, true,
+      2ULL, 0ULL, true,
+      2ULL, 1ULL, true,
+      2ULL, 2ULL, false,
+      2ULL, 3ULL, true)
    {
       IS_FALSE(_metalMocker->_wasAsserted);
       _metalMocker->metalMockedFunctionCallHistory.resize(numberOfCalls);
@@ -165,12 +165,12 @@ File.cpp(1))");
    TEST5X5(CalledAsFollowsWith_SetsAssertedTrue_NEqualToNumberOfCalls_ThrowsIfArgsDoNotMatch,
       size_t expectedNumberOfCallsToMetalMockedFunction, int expectedArgument, const vector<OneArgumentFunctionCall<int>>& actualArgs,
       bool expectThrow, size_t expectedResponsibleCallIndex,
-      size_t(1), 0, vector<OneArgumentFunctionCall<int>>{0}, false, ZenUnit::Random<size_t>(),
-      size_t(1), 0, vector<OneArgumentFunctionCall<int>>{1}, true, size_t(0),
-      size_t(1), 1, vector<OneArgumentFunctionCall<int>>{2}, true, size_t(0),
-      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1, 1}, false, ZenUnit::Random<size_t>(),
-      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{2, 1}, true, size_t(0),
-      size_t(2), 1, vector<OneArgumentFunctionCall<int>>{1, 2}, true, size_t(1))
+      1ULL, 0, vector<OneArgumentFunctionCall<int>>{0}, false, ZenUnit::Random<size_t>(),
+      1ULL, 0, vector<OneArgumentFunctionCall<int>>{1}, true, 0ULL,
+      1ULL, 1, vector<OneArgumentFunctionCall<int>>{2}, true, 0ULL,
+      2ULL, 1, vector<OneArgumentFunctionCall<int>>{1, 1}, false, ZenUnit::Random<size_t>(),
+      2ULL, 1, vector<OneArgumentFunctionCall<int>>{2, 1}, true, 0ULL,
+      2ULL, 1, vector<OneArgumentFunctionCall<int>>{1, 2}, true, 1ULL)
    {
       IS_FALSE(_metalMocker->_wasAsserted);
       //
