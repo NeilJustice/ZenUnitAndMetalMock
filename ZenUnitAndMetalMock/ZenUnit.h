@@ -3717,32 +3717,54 @@ namespace ZenUnit
       const ContainerType& actualElements, const char* actualElementsText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const size_t expectedSize = expectedElements.size();
-      const size_t actualSize = actualElements.size();
       try
       {
-         ARE_EQUAL(expectedSize, actualSize);
+         ARE_EQUAL(expectedElements.size(), actualElements.size());
       }
       catch (const Anomaly& becauseAnomaly)
       {
-         const std::string expectedSizeString = std::to_string(expectedSize);
-         const std::string actualSizeString = std::to_string(actualSize);
          const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsText, actualElementsText, "", messagesText, becauseAnomaly,
-            expectedSizeString, actualSizeString, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+            "expectedElements.size() == actualElements.size()",
+            "expectedElements.size() != actualElements.size()",
+            ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
          throw anomaly;
       }
-      for (const auto& expectedElement : expectedElements)
+      const size_t numberOfExpectedElements = expectedElements.size();
+      for (size_t i = 0; i < numberOfExpectedElements; ++i)
       {
-         const auto findIteratorForExpectedElementInActualElements =
-            std::find(std::begin(actualElements), std::end(actualElements), expectedElement);
-         try
+         const auto& ithExpectedElement = expectedElements[i];
+         const auto findIterator = std::find(actualElements.cbegin(), actualElements.cend(), ithExpectedElement);
+         if (findIterator == actualElements.end())
          {
-            ARE_NOT_EQUAL(actualElements.end(), findIteratorForExpectedElementInActualElements);
+            const std::string ithExpectedElementAsString = ToStringer::ToString(ithExpectedElement);
+            const std::string expectedLine = String::Concat(
+               "     To find ith expected element [", ithExpectedElementAsString, "] in actualElements (i=", i, ')');
+            const std::string actualLine = String::Concat(
+               "Did not find ith expected element [", ithExpectedElementAsString, "] in actualElements (i=", i, ')');
+            const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsText, actualElementsText, "", messagesText, Anomaly::Default(),
+               expectedLine,
+               actualLine,
+               ExpectedActualFormat::Fields,
+               filePathLineNumber, std::forward<MessageTypes>(messages)...);
+            throw anomaly;
          }
-         catch (const Anomaly& becauseAnomaly)
+      }
+      for (size_t i = 0; i < numberOfExpectedElements; ++i)
+      {
+         const auto& ithActualElement = actualElements[i];
+         const auto findIterator = std::find(expectedElements.cbegin(), expectedElements.cend(), ithActualElement);
+         if (findIterator == expectedElements.end())
          {
-            const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsText, actualElementsText, "", messagesText, becauseAnomaly,
-               "expectedElements", "actualElements", ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
+            const std::string ithActualElementAsString = ToStringer::ToString(ithActualElement);
+            const std::string expectedLine = String::Concat(
+               "     To find ith actual element [", ithActualElementAsString, "] in expectedElements (i=", i, ')');
+            const std::string actualLine = String::Concat(
+               "Did not find ith actual element [", ithActualElementAsString, "] in expectedElements (i=", i, ')');
+            const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsText, actualElementsText, "", messagesText, Anomaly::Default(),
+               expectedLine,
+               actualLine,
+               ExpectedActualFormat::Fields,
+               filePathLineNumber, std::forward<MessageTypes>(messages)...);
             throw anomaly;
          }
       }
