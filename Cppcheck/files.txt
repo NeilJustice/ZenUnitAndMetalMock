@@ -13,6 +13,7 @@ MetalMockVoid0Tests.a1::MetalMockTests/0Args/MetalMockVoid0Tests.cpp
 ZeroArgumentMetalMockerTests.a1::MetalMockTests/0Args/ZeroArgumentMetalMockerTests.cpp
 TenArgumentFunctionCallTests.a1::MetalMockTests/10Args/TenArgumentFunctionCallTests.cpp
 TenArgumentMetalMockerTests.a1::MetalMockTests/10Args/TenArgumentMetalMockerTests.cpp
+MetalMock1Tester.a1::MetalMockTests/1Arg/MetalMock1Tester.cpp
 MetalMockVoid1Tests.a1::MetalMockTests/1Arg/MetalMockVoid1Tests.cpp
 NonVoidOneArgumentMetalMockerTests.a1::MetalMockTests/1Arg/NonVoidOneArgumentMetalMockerTests.cpp
 OneArgumentFunctionCallTests.a1::MetalMockTests/1Arg/OneArgumentFunctionCallTests.cpp
