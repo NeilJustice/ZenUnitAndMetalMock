@@ -79,12 +79,12 @@ namespace ZenUnit
       "Function_", "Function_Scenario_ExpectedBehavior", false,
       "Test", "TestName", false,
       "test", "TestName", false,
-      "*", "", true,
-      "Function_*", "Function_Scenario_ExpectedBehavior", true,
-      "function_*", "Function_Scenario_ExpectedBehavior", true,
-      "function_*Scenario_ExpectedBehavior", "Function_Scenario_ExpectedBehavior", false,
-      "*_Scenario_ExpectedBehavior", "Function_Scenario_ExpectedBehavior", false,
-      "*", "Function_Scenario_ExpectedBehavior", true)
+      ":", "", true,
+      "Function_:", "Function_Scenario_ExpectedBehavior", true,
+      "function_:", "Function_Scenario_ExpectedBehavior", true,
+      "function_:Scenario_ExpectedBehavior", "Function_Scenario_ExpectedBehavior", false,
+      ":_Scenario_ExpectedBehavior", "Function_Scenario_ExpectedBehavior", false,
+      ":", "Function_Scenario_ExpectedBehavior", true)
    {
       TestNameFilter testNameFilter;
       //

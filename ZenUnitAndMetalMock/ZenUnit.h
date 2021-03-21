@@ -125,10 +125,10 @@ Testing Filtration Options:
 
 --run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a '*' character to the end of a test class name or test name to indicate name-starts-with.
+   Add a ':' character to the end of a test class name or test name to indicate name-starts-with.
  Example 1: --run=APITests
    Run only test class APITests.
- Example 2: --run=APITests::FunctionUnderTest*
+ Example 2: --run=APITests::FunctionUnderTest:
    Run only tests in APITests that start with "FunctionUnderTest".
  Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
    Run only the third test case of the value-parameterized test named
@@ -948,7 +948,7 @@ namespace ZenUnit
          {
             return true;
          }
-         if (filterPattern.back() == '*')
+         if (filterPattern.back() == ':')
          {
             const std::string filterPatternWithoutStarAtTheEnd(filterPattern.data(), filterPattern.length() - 1);
             if (String::CaseInsensitiveStartsWith(str, filterPatternWithoutStarAtTheEnd))
