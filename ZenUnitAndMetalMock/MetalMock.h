@@ -2577,6 +2577,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
+
+      FunctionSequencingToken CalledAsFollowsInAnyOrder(
+         const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>& expectedTwoArgumentFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentFunctionCalls.size());
+         this->MetalMockSetAsserted();
+         const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>> actualTwoArgumentFunctionCalls =
+            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>,
+               TwoArgumentFunctionCall<Arg1Type, Arg2Type>>(this->metalMockedFunctionCallHistory);
+         INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature);
+         return FunctionSequencingToken();
+      }
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type>
@@ -4969,6 +4982,23 @@ namespace ZenUnit
                "Argument10: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.tenthArgumentReference.value);
       }
    };
+}
+
+template<typename Arg1Type, typename Arg2Type>
+bool operator==(
+   const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
+   const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
+{
+   try
+   {
+      ZenUnit::Equalizer<MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>::AssertEqual(
+         expectedTwoArgumentFunctionCall, actualTwoArgumentFunctionCall);
+   }
+   catch (const ZenUnit::Anomaly&)
+   {
+      return false;
+   }
+   return true;
 }
 
 namespace ZenUnit
