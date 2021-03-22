@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestPhaseTranslatorMock.h"
+#include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestRunStopwatchStopperMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestPhaseTranslatorMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
@@ -36,6 +37,7 @@ namespace ZenUnit
    WatchMock* _watchMock = nullptr;
    // Mutable Components
    StopwatchMock* _testPhaseStopwatchMock = nullptr;
+   TestRunStopwatchStopperMock* _testRunStopwatchStopperMock = nullptr;
    // Test-Only Component
    unique_ptr<TestMock> _testMock;
 
@@ -57,6 +59,7 @@ namespace ZenUnit
       // Constant Components
       _testPhaseRunner._console.reset(_consoleMock = new ConsoleMock);
       _testPhaseRunner._testPhaseTranslator.reset(_testPhaseTranslatorMock = new TestPhaseTranslatorMock);
+      _testPhaseRunner._testRunStopwatchStopper.reset(_testRunStopwatchStopperMock = new TestRunStopwatchStopperMock);
       _testPhaseRunner._watch.reset(_watchMock = new WatchMock);
       // Mutable Component
       _testPhaseRunner._testPhaseStopwatch.reset(_testPhaseStopwatchMock = new StopwatchMock);
@@ -81,6 +84,7 @@ namespace ZenUnit
       // Constant Components
       DELETE_TO_ASSERT_NEWED(testPhaseRunner._console);
       DELETE_TO_ASSERT_NEWED(testPhaseRunner._testPhaseTranslator);
+      DELETE_TO_ASSERT_NEWED(testPhaseRunner._testRunStopwatchStopper);
       DELETE_TO_ASSERT_NEWED(testPhaseRunner._watch);
       // Mutable Components
       DELETE_TO_ASSERT_NEWED(testPhaseRunner._testPhaseStopwatch);
@@ -390,13 +394,13 @@ namespace ZenUnit
       false, 1,
       true, 0)
    {
+      const std::string testRunDurationInSeconds = _testRunStopwatchStopperMock->StopTestRunStopwatchAndGetElapsedSecondsMock.ReturnRandom();
+
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.alwaysExit0 = alwaysExit0;
       GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _testPhaseStopwatchMock->StartMock.Expect();
-
-      const string testRunDurationInSeconds = _testPhaseStopwatchMock->StopAndGetElapsedSecondsMock.ReturnRandom();
 
       _consoleMock->WriteLineColorMock.Expect();
 
@@ -420,10 +424,12 @@ namespace ZenUnit
       //
       METALMOCK(_testPhaseStopwatchMock->StartMock.CalledOnce());
       METALMOCK(GetZenUnitArgsMock.CalledOnce());
-      METALMOCK(_testPhaseStopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());
-      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red));
+      METALMOCK(_testRunStopwatchStopperMock->StopTestRunStopwatchAndGetElapsedSecondsMock.CalledOnce());
+      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(
+         "\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red));
       METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
       {
+         { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
          { ">>------> ", Color::Red },
@@ -435,10 +441,11 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
          { " Completed: " + zenUnitArgs.commandLine },
+         { "RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed) },
          { " StartTime: " + zenUnitArgs.startDateTime },
          { "   EndTime: " + endTime },
          { "  Duration: " + testRunDurationInSeconds + " seconds" },
-         { "RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed) },
+         { "   TestRun: " + to_string(globalZenUnitMode.currentTestRunNumber) + " of " + to_string(zenUnitArgs.testRuns) },
          { "    Result: Fatal ... exception thrown during test phase: " + testPhaseName }
       }));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());

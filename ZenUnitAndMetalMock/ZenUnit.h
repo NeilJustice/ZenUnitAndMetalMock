@@ -5622,6 +5622,18 @@ Fatal Windows C++ Runtime Assertion
 
    class Test;
 
+   class TestRunStopwatchStopper
+   {
+   public:
+      virtual std::string StopTestRunStopwatchAndGetElapsedSeconds() const
+      {
+         const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
+         return testRunDurationInSeconds;
+      }
+
+      virtual ~TestRunStopwatchStopper() = default;
+   };
+
    class TestPhaseRunner
    {
       friend class TestPhaseRunnerTests;
@@ -5634,6 +5646,7 @@ Fatal Windows C++ Runtime Assertion
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
+      std::unique_ptr<const TestRunStopwatchStopper> _testRunStopwatchStopper;
       std::unique_ptr<const Watch> _watch;
       // Mutable Components
       std::unique_ptr<Stopwatch> _testPhaseStopwatch;
@@ -5647,6 +5660,7 @@ Fatal Windows C++ Runtime Assertion
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
+         , _testRunStopwatchStopper(std::make_unique<TestRunStopwatchStopper>())
          , _watch(std::make_unique<Watch>())
          // Mutable Components
          , _testPhaseStopwatch(std::make_unique<Stopwatch>())
@@ -5672,13 +5686,16 @@ Fatal Windows C++ Runtime Assertion
          }
       }
 
-      void FailFastDueToDotDotDotException(const ZenUnitArgs& zenUnitArgs, TestPhase testPhase) const
+      [[noreturn]] void FailFastDueToDotDotDotException(const ZenUnitArgs& zenUnitArgs, TestPhase testPhase) const
       {
-         const std::string testRunDurationInSeconds = _testPhaseStopwatch->StopAndGetElapsedSeconds();
+         const std::string testRunDurationInSeconds = _testRunStopwatchStopper->StopTestRunStopwatchAndGetElapsedSeconds();
          _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
 
          _console->WriteColor(">>------> ", Color::Red);
          _console->WriteLine(" Completed: " + zenUnitArgs.commandLine);
+
+         _console->WriteColor(">>------> ", Color::Red);
+         _console->WriteLine("RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));
 
          _console->WriteColor(">>------> ", Color::Red);
          _console->WriteLine(" StartTime: " + zenUnitArgs.startDateTime);
@@ -5691,7 +5708,9 @@ Fatal Windows C++ Runtime Assertion
          _console->WriteLine("  Duration: " + testRunDurationInSeconds + " seconds");
 
          _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));
+         const std::string testRunNumberLine = String::Concat(
+            "   TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns);
+         _console->WriteLine(testRunNumberLine);
 
          _console->WriteColor(">>------> ", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
