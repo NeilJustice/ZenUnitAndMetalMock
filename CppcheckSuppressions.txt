@@ -1,16 +1,15 @@
 unmatchedSuppression:*
-noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1585
-noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1686
-noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1695
+noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1321
+noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1422
+noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1431
 unusedFunction:ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTestsMain.cpp:14
 unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/TestPhaseResultEqualizerAndRandom.cpp:27
 unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.cpp:41
-useStlAlgorithm:ZenUnitAndMetalMock/MetalMock.h:1261
+useStlAlgorithm:ZenUnitAndMetalMock/MetalMock.h:997
 
 # Linux
 preprocessorErrorDirective:/usr/include/c++/v1/__config:104
 
 # Windows
 accessForwarded:*
-syntaxError:MetalMockTests\MetalMock\ArgumentStorageTests.cpp:48
-syntaxError:MetalMockTests\MetalMock\EveryMacroCompilesTest.cpp:248
+syntaxError:*

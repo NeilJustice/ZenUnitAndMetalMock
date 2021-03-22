@@ -49,15 +49,16 @@ namespace ZenUnit
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
       const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
 
-      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+      const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
+      const size_t testRunIndex = ZenUnit::RandomBetween<size_t>(0, 3);
       //
-      const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(args, &testClassRunnerRunnerMock);
+      const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, testRunIndex, &testClassRunnerRunnerMock);
       //
       const std::string expectedZenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit " + std::string(Version) + "]";
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
-      METALMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(7, "[ZenUnit]", Color::Green));
+      METALMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(8, "[ZenUnit]", Color::Green));
       METALMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
       METALMOCK(_environmentServiceMock->CurrentDirectoryPathMock.CalledOnce());
       METALMOCK(_environmentServiceMock->MachineNameMock.CalledOnce());
@@ -65,13 +66,14 @@ namespace ZenUnit
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {
-         { "     Running: " + args.commandLine },
+         { "     Running: " + zenUnitArgs.commandLine },
          { "   Directory: " + currentDirectoryPath },
          { " MachineName: " + machineName },
          { "    UserName: " + userName },
          { "  RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed) },
-         { " TestClasses: " + std::to_string(numberOfTestClassesToBeRun) },
-         { "   StartTime: " + startDateTime + "\n" }
+         { " TestClasses: " + to_string(numberOfTestClassesToBeRun) },
+         { "   StartTime: " + startDateTime },
+         { "     TestRun: " + to_string(testRunIndex + 1) + " of " + to_string(zenUnitArgs.testRuns) + "\n" },
       }));
       ARE_EQUAL(startDateTime, returnedStartTime);
    }

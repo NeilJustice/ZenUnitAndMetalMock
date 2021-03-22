@@ -218,7 +218,7 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.Expect();
       //
       _testRunResult.PrintConclusionLines(
-         ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>());
+         ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>(), ZenUnit::Random<size_t>());
       //
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Red));
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(" Zero test classes run. Exiting with code 1.", 1));
@@ -249,12 +249,13 @@ namespace ZenUnit
 
       const string startDateTime = ZenUnit::Random<string>();
       const string testRunElapsedSeconds = ZenUnit::Random<string>();
-      const ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
+      const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
 
       const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
+      const size_t testRunIndex = ZenUnit::RandomBetween<size_t>(0, 3);
       //
-      _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, args);
+      _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
       //
       const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
       METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
@@ -264,13 +265,15 @@ namespace ZenUnit
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
          { expectedTripletLinesPrefix, expectedColor },
+         { expectedTripletLinesPrefix, expectedColor },
          { expectedSuccessOrFailLinePrefix, expectedColor }
       }));
-      const string expectedCompletedLine = "  Completed: " + args.commandLine;
+      const string expectedCompletedLine = "  Completed: " + zenUnitArgs.commandLine;
       const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed);
       const string expectedStartTimeLine = "  StartTime: " + startDateTime;
       const string expectedEndTimeLine = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine = "   Duration: " + testRunElapsedSeconds + " seconds";
+      const string expectedTestRunMessage = String::Concat("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
       const string expectedRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
@@ -280,6 +283,7 @@ namespace ZenUnit
          { expectedStartTimeLine },
          { expectedEndTimeLine },
          { expectedDurationLine },
+         { expectedTestRunMessage },
          { expectedRunResultLine }
       }));
    }

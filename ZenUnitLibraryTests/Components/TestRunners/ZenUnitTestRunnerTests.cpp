@@ -42,16 +42,18 @@ namespace ZenUnit
 
    ZenUnitTestRunner _zenUnitTestRunner;
    // Function Callers
-   using NonVoidOneArgMemberFunctionCallerMockType = NonVoidOneArgMemberFunctionCallerMock<int, ZenUnitTestRunner, const ZenUnitArgs&>;
-   NonVoidOneArgMemberFunctionCallerMockType* _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = nullptr;
+   using _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMockType =
+      NonVoidTwoArgMemberFunctionCallerMock<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>;
+   _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMockType* _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = nullptr;
 
-   VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>* _caller_RunTestClassesMock = nullptr;
+   using _caller_RunTestClassesMockType = VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>;
+   _caller_RunTestClassesMockType* _caller_RunTestClassesMock = nullptr;
 
-   using VoidOneArgMemberFunctionCallerMockType = VoidOneArgMemberFunctionCallerMock<ZenUnitTestRunner, bool>;
-   VoidOneArgMemberFunctionCallerMockType* _caller_SetNextGlobalZenUnitModeRandomSeedMock = nullptr;
+   using _caller_SetNextGlobalZenUnitModeRandomSeedMockType = VoidOneArgMemberFunctionCallerMock<ZenUnitTestRunner, bool>;
+   _caller_SetNextGlobalZenUnitModeRandomSeedMockType* _caller_SetNextGlobalZenUnitModeRandomSeedMock = nullptr;
 
-   using NonVoidTwoArgMemberFunctionCallerMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool>;
-   NonVoidTwoArgMemberFunctionCallerMockType* _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
+   using _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMockType = NonVoidTwoArgMemberFunctionCallerMock<bool, ZenUnitTestRunner, bool, bool>;
+   _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMockType* _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = nullptr;
 
    NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>* _nTimesMemberFunctionAccumulator_RunTestsMock = nullptr;
    // Function Pointers
@@ -82,13 +84,13 @@ namespace ZenUnit
    {
       // Function Callers
       _zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines.reset(
-         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new NonVoidOneArgMemberFunctionCallerMockType);
+         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMockType);
       _zenUnitTestRunner._caller_RunTestClasses.reset(
-         _caller_RunTestClassesMock = new VoidZeroArgMemberFunctionCallerMock<ZenUnitTestRunner>);
+         _caller_RunTestClassesMock = new _caller_RunTestClassesMockType);
       _zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed.reset(
-         _caller_SetNextGlobalZenUnitModeRandomSeedMock = new VoidOneArgMemberFunctionCallerMockType);
+         _caller_SetNextGlobalZenUnitModeRandomSeedMock = new _caller_SetNextGlobalZenUnitModeRandomSeedMockType);
       _zenUnitTestRunner._caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(
-         _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new NonVoidTwoArgMemberFunctionCallerMockType);
+         _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMockType);
       _zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests.reset(
          _nTimesMemberFunctionAccumulator_RunTestsMock = new NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>);
       // Function Pointers
@@ -240,8 +242,9 @@ namespace ZenUnit
       const string testRunElapsedSeconds = _testRunStopwatchMock->StopAndGetElapsedSecondsMock.ReturnRandom();
 
       const int determineZenUnitExitCodeReturnValue = _testRunResultMock->DetermineZenUnitExitCodeMock.ReturnRandom();
+      const size_t testRunIndex = ZenUnit::Random<size_t>();
       //
-      const int exitCode = _zenUnitTestRunner.PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(zenUnitArgs);
+      const int exitCode = _zenUnitTestRunner.PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(zenUnitArgs, testRunIndex);
       //
       METALMOCK(_caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock->CallConstMemberFunctionMock.CalledOnceWith(
          &_zenUnitTestRunner, &ZenUnitTestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused,
@@ -249,14 +252,14 @@ namespace ZenUnit
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _zenUnitTestRunner._havePaused);
       METALMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
       METALMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.CalledOnceWith(
-         zenUnitArgs, _zenUnitTestRunner._testClassRunnerRunner.get()));
+         zenUnitArgs, testRunIndex, _zenUnitTestRunner._testClassRunnerRunner.get()));
       METALMOCK(_caller_RunTestClassesMock->CallNonConstMemberFunctionMock.CalledOnceWith(
          &_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
       METALMOCK(_testRunResultMock->PrintTestFailuresAndSkipsMock.CalledOnce());
       METALMOCK(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       METALMOCK(_testRunStopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());
       METALMOCK(_testRunResultMock->PrintConclusionLinesMock.CalledOnceWith(
-         startDateTime, totalNumberOfTestCases, testRunElapsedSeconds, zenUnitArgs));
+         startDateTime, totalNumberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex));
       METALMOCK(_testRunResultMock->DetermineZenUnitExitCodeMock.CalledOnceWith(zenUnitArgs));
       ARE_EQUAL(determineZenUnitExitCodeReturnValue, exitCode);
    }

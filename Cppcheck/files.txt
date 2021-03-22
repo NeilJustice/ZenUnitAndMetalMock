@@ -11,9 +11,7 @@ MetalMock0ArgsTester.a1::MetalMockTests/0Args/MetalMock0ArgsTester.cpp
 MetalMockNonVoid0Tests.a1::MetalMockTests/0Args/MetalMockNonVoid0Tests.cpp
 MetalMockVoid0Tests.a1::MetalMockTests/0Args/MetalMockVoid0Tests.cpp
 ZeroArgumentMetalMockerTests.a1::MetalMockTests/0Args/ZeroArgumentMetalMockerTests.cpp
-TenArgumentFunctionCallTests.a1::MetalMockTests/10Args/TenArgumentFunctionCallTests.cpp
-TenArgumentMetalMockerTests.a1::MetalMockTests/10Args/TenArgumentMetalMockerTests.cpp
-MetalMock1Tester.a1::MetalMockTests/1Arg/MetalMock1Tester.cpp
+MetalMock1ArgTester.a1::MetalMockTests/1Arg/MetalMock1ArgTester.cpp
 MetalMockVoid1Tests.a1::MetalMockTests/1Arg/MetalMockVoid1Tests.cpp
 NonVoidOneArgumentMetalMockerTests.a1::MetalMockTests/1Arg/NonVoidOneArgumentMetalMockerTests.cpp
 OneArgumentFunctionCallTests.a1::MetalMockTests/1Arg/OneArgumentFunctionCallTests.cpp
@@ -36,10 +34,6 @@ SixArgumentFunctionCallTests.a1::MetalMockTests/6Args/SixArgumentFunctionCallTes
 SixArgumentMetalMockerTests.a1::MetalMockTests/6Args/SixArgumentMetalMockerTests.cpp
 SevenArgumentFunctionCallTests.a1::MetalMockTests/7Args/SevenArgumentFunctionCallTests.cpp
 SevenArgumentMetalMockerTests.a1::MetalMockTests/7Args/SevenArgumentMetalMockerTests.cpp
-EightArgumentFunctionCallTests.a1::MetalMockTests/8Args/EightArgumentFunctionCallTests.cpp
-EightArgumentMetalMockerTests.a1::MetalMockTests/8Args/EightArgumentMetalMockerTests.cpp
-NineArgumentFunctionCallTests.a1::MetalMockTests/9Args/NineArgumentFunctionCallTests.cpp
-NineArgumentMetalMockerTests.a1::MetalMockTests/9Args/NineArgumentMetalMockerTests.cpp
 MetalMockExceptionThrowerTests.a1::MetalMockTests/Exceptions/MetalMockExceptionThrowerTests.cpp
 ReturnValueMustBeSpecifiedExceptionTests.a1::MetalMockTests/Exceptions/ReturnValueMustBeSpecifiedExceptionTests.cpp
 TemplatedExceptionThrowerTests.a1::MetalMockTests/Exceptions/TemplatedExceptionThrowerTests.cpp
