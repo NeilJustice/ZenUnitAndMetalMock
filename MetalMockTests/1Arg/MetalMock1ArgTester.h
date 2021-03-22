@@ -183,7 +183,7 @@ namespace MetalMock
             THROWS_EXCEPTION(metalMockObject.CalledOnceWith(0),
                Anomaly, MetalMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 1, 2));
             metalMockObject.CalledNTimesWith(2, 0);
-            THROWS_EXCEPTION(_metalMockObject.CalledNTimesWith(3, 0),
+            THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(3, 0),
                Anomaly, MetalMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 3, 2));
          };
 
@@ -266,7 +266,7 @@ Expected: 20
   Actual: 10
  Message: ")", expectedFunctionSignature, R"("
 File.cpp(1))");
-            THROWS_EXCEPTION(_metalMockObject.CalledOnceWith(20), Anomaly, expectedExceptionMessage);
+            THROWS_EXCEPTION(metalMockObject.CalledOnceWith(20), Anomaly, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualConstMock, _virtualConstFunctionSignature);
@@ -394,7 +394,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedSignature)
          {
-            THROWS_EXCEPTION(_metalMockObject.CalledAsFollows({}), UnsupportedCalledZeroTimesException,
+            THROWS_EXCEPTION(metalMockObject.CalledAsFollows({}), UnsupportedCalledZeroTimesException,
                UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedSignature));
          };
          test(_metalMockObject.VirtualMock, _virtualFunctionSignature);

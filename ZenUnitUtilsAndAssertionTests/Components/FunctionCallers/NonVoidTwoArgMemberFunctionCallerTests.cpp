@@ -8,6 +8,10 @@ namespace ZenUnit
    AFACT(CallNonConstMemberFunction_CallsNonConstNonVoidMemberFunctionOnce_ReturnsReturnValue)
    EVIDENCE
 
+   NonVoidTwoArgMemberFunctionCallerTests()
+   {
+   }
+
    class Class
    {
    public:
