@@ -26,7 +26,7 @@ TEST(Contains_ReturnsTrueIfSetContainsElement)
 {
    SetType<T> s;
    // Random value testing to maximize robustness against code mutations
-   const T elementA = ZenUnit::Random<T>();
+   const T elementA = ZenUnit::RandomBetween<T>(1, 3);
    const T elementB = elementA + 1;
 
    IS_FALSE(Set::Contains(s, elementA));
