@@ -2276,6 +2276,23 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , tenthArgumentReference(tenArgumentFunctionCall.tenthArgument.value) {}
    };
 
+   template<typename ArgType>
+   bool operator==(
+      const MetalMock::OneArgumentFunctionCallReference<ArgType>& expectedOneArgumentFunctionCallReference,
+      const MetalMock::OneArgumentFunctionCallReference<ArgType>& actualOneArgumentFunctionCallReference)
+   {
+      try
+      {
+         ZenUnit::Equalizer<MetalMock::OneArgumentFunctionCallReference<ArgType>>::AssertEqual(
+            expectedOneArgumentFunctionCallReference, actualOneArgumentFunctionCallReference);
+      }
+      catch (const ZenUnit::Anomaly&)
+      {
+         return false;
+      }
+      return true;
+   }
+
    template<
       typename ArgType,
       typename MockableExceptionThrowerType = MetalMockExceptionThrower>
@@ -2347,6 +2364,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
                OneArgumentFunctionCallReference<ArgType>,
                OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature);
+         return FunctionSequencingToken();
+      }
+
+      FunctionSequencingToken CalledAsFollowsInAnyOrder(
+         const std::vector<OneArgumentFunctionCallReference<ArgType>>& expectedOneArgumentFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentFunctionCalls.size());
+         this->MetalMockSetAsserted();
+         const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls =
+            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               OneArgumentFunctionCallReference<ArgType>,
+               OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
+         INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature);
          return FunctionSequencingToken();
       }
    };
@@ -2497,6 +2527,23 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          functionMocker->MetalMockIt(argument);
       }
    };
+
+   template<typename Arg1Type, typename Arg2Type>
+   bool operator==(
+      const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCallReference,
+      const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCallReference)
+   {
+      try
+      {
+         ZenUnit::Equalizer<MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>::AssertEqual(
+            expectedTwoArgumentFunctionCallReference, actualTwoArgumentFunctionCallReference);
+      }
+      catch (const ZenUnit::Anomaly&)
+      {
+         return false;
+      }
+      return true;
+   }
 
    template<
       typename Arg1Type,
@@ -4981,23 +5028,6 @@ namespace ZenUnit
                "Argument10: " << ZenUnit::ToStringer::ToString(tenArgumentFunctionCallRef.tenthArgumentReference.value);
       }
    };
-}
-
-template<typename Arg1Type, typename Arg2Type>
-bool operator==(
-   const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
-   const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
-{
-   try
-   {
-      ZenUnit::Equalizer<MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>::AssertEqual(
-         expectedTwoArgumentFunctionCall, actualTwoArgumentFunctionCall);
-   }
-   catch (const ZenUnit::Anomaly&)
-   {
-      return false;
-   }
-   return true;
 }
 
 namespace ZenUnit
