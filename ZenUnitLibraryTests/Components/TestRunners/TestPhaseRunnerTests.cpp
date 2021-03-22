@@ -486,7 +486,7 @@ namespace ZenUnit
       //
       const string expectedFailFastMessage = String::Concat('\n',
          "[ZenUnit] A test failed in --fail-fast mode.\n",
-         "[ZenUnit] CommandLine: ", args.commandLine, '\n',
+         "[ZenUnit]   Completed: ", args.commandLine, '\n',
          "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitModeRandomSeed, '\n',
          "[ZenUnit]    ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, expectedExitCode));

@@ -5657,7 +5657,7 @@ Fatal Windows C++ Runtime Assertion
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             const std::string failFastMessage = String::Concat('\n',
                "[ZenUnit] A test failed in --fail-fast mode.\n",
-               "[ZenUnit] CommandLine: ", zenUnitArgs.commandLine, '\n',
+               "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n',
                "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n',
                "[ZenUnit]    ExitCode: ", exitCode);
             _console->WriteLineAndExit(failFastMessage, exitCode);
