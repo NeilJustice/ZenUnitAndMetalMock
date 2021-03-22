@@ -1133,24 +1133,37 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 ==============================================================================)", ZenUnit::Color::Red);
             console.WriteLine("MetalMocked Function:\n" + MetalMockedFunctionSignature);
             const ZenUnit::ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
+
             console.WriteColor("\n>>------>", ZenUnit::Color::Red);
             console.WriteLine("  Completed: " + zenUnitArgs.commandLine);
+
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             console.WriteLine(" RandomSeed: --random-seed=" + std::to_string(ZenUnit::globalZenUnitMode.randomSeed));
+
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             console.WriteLine("  StartTime: " + zenUnitArgs.startDateTime);
+
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             ZenUnit::Watch watch;
             const std::string endDateTime = watch.DateTimeNow();
             console.WriteLine("    EndTime: " + endDateTime);
+
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
             console.WriteLine("   Duration: " + testRunDurationInSeconds + " seconds");
+
+            console.WriteColor(">>------>", ZenUnit::Color::Red);
+            const std::string testRunNumberLine = ZenUnit::String::Concat(
+               "    TestRun: ", ZenUnit::globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns);
+            console.WriteLine(testRunNumberLine);
+
             console.WriteColor(">>------>", ZenUnit::Color::Red);
             console.WriteLine("     Result: MetalMocked Function Was Expected But Not Later Asserted As Having Been Called");
+
             console.WriteColor(">>-FAIL->", ZenUnit::Color::Red);
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             console.WriteLine("   ExitCode: " + std::to_string(exitCode));
+
             _call_exit(exitCode);
          }
       }

@@ -1,7 +1,5 @@
+noExplicitConstructor:*
 unmatchedSuppression:*
-noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1321
-noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1422
-noExplicitConstructor:ZenUnitAndMetalMock/MetalMock.h:1431
 unusedFunction:ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTestsMain.cpp:14
 unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/TestPhaseResultEqualizerAndRandom.cpp:27
 unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.cpp:41
