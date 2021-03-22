@@ -678,12 +678,18 @@ namespace ZenUnit
       bool selfTest = false;
       unsigned randomSeed = 0;
       std::unique_ptr<std::default_random_engine> randomEngineForCurrentTestRun;
+      size_t currentTestRunNumber = 0;
    };
    inline ZenUnitMode globalZenUnitMode;
 
    inline void SetNewRandomEngineForNewTestRun()
    {
       globalZenUnitMode.randomEngineForCurrentTestRun = std::make_unique<std::default_random_engine>(globalZenUnitMode.randomSeed);
+   }
+
+   inline void SetCurrentTestRunNumber(size_t testRunIndex)
+   {
+      globalZenUnitMode.currentTestRunNumber = testRunIndex + 1;
    }
 
    inline std::default_random_engine& RandomEngineForCurrentTestRun()
@@ -5557,6 +5563,7 @@ Fatal Windows C++ Runtime Assertion
       int RunTests(size_t testRunIndex, size_t numberOfTestRuns)
       {
          SetNewRandomEngineForNewTestRun();
+         SetCurrentTestRunNumber(testRunIndex);
          const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
             this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs, testRunIndex);
          ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
@@ -5659,6 +5666,7 @@ Fatal Windows C++ Runtime Assertion
                "[ZenUnit] A test failed in --fail-fast mode.\n",
                "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n',
                "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n',
+               "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, '\n',
                "[ZenUnit]    ExitCode: ", exitCode);
             _console->WriteLineAndExit(failFastMessage, exitCode);
          }

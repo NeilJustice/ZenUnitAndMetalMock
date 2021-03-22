@@ -449,20 +449,20 @@ namespace ZenUnit
 
    TEST(FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess_FailFastIsFalse_DoesNothing)
    {
-      ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
-      args.failFast = false;
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.failFast = false;
       const TestOutcome testOutcome = ZenUnit::RandomEnum<TestOutcome>(TestOutcome::MaxValue);
       //
-      _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, args);
+      _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, zenUnitArgs);
    }
 
    TEST(FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess_FailFastIsTrue_TestOutcomeIsSuccess_DoesNothing)
    {
-      ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
-      args.failFast = false;
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.failFast = false;
       const TestOutcome testOutcome = TestOutcome::Success;
       //
-      _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, args);
+      _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, zenUnitArgs);
    }
 
    TEST3X3(FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess_FailFastIsTrue_TestPhaseResultIsNotSuccess_WritesFailFastMessage_ExitsWithCode1UnlessAlwaysExit0IsTrue,
@@ -475,19 +475,20 @@ namespace ZenUnit
       TestOutcome::Exception, true, 0)
    {
       _consoleMock->WriteLineAndExitMock.Expect();
-      ZenUnitArgs args = ZenUnit::Random<ZenUnitArgs>();
-      args.failFast = true;
-      args.alwaysExit0 = alwaysExit0;
+      ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      zenUnitArgs.failFast = true;
+      zenUnitArgs.alwaysExit0 = alwaysExit0;
 
       const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
-      _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, args);
+      _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, zenUnitArgs);
       //
       const string expectedFailFastMessage = String::Concat('\n',
          "[ZenUnit] A test failed in --fail-fast mode.\n",
-         "[ZenUnit]   Completed: ", args.commandLine, '\n',
+         "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n',
          "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitModeRandomSeed, '\n',
+         "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, '\n',
          "[ZenUnit]    ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, expectedExitCode));
    }
