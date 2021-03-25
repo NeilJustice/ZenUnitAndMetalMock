@@ -66,6 +66,7 @@ debug.log
 install_manifest.txt
 
 # Cppcheck
+Cppcheck/files.txt
 *.a1
 *.a2
 *.a3
