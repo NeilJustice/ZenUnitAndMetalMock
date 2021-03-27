@@ -4549,7 +4549,8 @@ namespace ZenUnit
       {
          if (testCaseNumberArgument != std::numeric_limits<size_t>::max())
          {
-            console->Write(" test case " + std::to_string(testCaseNumberArgument) + "/" + std::to_string(totalTestCases));
+            const std::string testCaseNumberMessage = String::Concat(" test case ", testCaseNumberArgument, '/', totalTestCases);
+            console->Write(testCaseNumberMessage);
          }
       }
    };
