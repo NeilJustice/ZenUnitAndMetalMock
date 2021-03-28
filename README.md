@@ -4,7 +4,11 @@
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, error message clarity, long-term test code readability, and supports testing with randomized values to maximize [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments for virtual functions, non-virtual / template functions, static functions, and free functions. MetalMock is a "double strict" mocking framework so as to be suitable for rigorously confirming the correctness of safety-critical and financially-critical C++ software. A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called. A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explictedly asserted as having been called with exact expected arguments, thereby helping to ensure that there are zero extraneous function calls in the program under test.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments for virtual functions, non-virtual / template functions, static functions, and free functions.
+
+MetalMock is a "double strict" mocking framework so as to be suitable for rigorously confirming the correctness of safety-critical and financially-critical C++ software.
+
+A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called. A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explictedly asserted as having been called with exact expected arguments, thereby helping to ensure that there are zero extraneous function calls in the program under test.
 
 |Build Type|Build Status|
 |----------|------------|
@@ -576,7 +580,7 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ![Installed ZenUnit.h and MetalMock.h on Windows](Screenshots/Windows/ZenUnitDotHAndMetalMockDotHOnWindows.png)
 
-### ZenUnit Roadmap
+### ZenUnit Features Roadmap
 
 |Future ZenUnit Feature|Implementation Status As Of 3/15/2021|
 |----------------------|-------------------------------------|
@@ -587,7 +591,7 @@ ZenUnit.h and MetalMock.h installed on Windows:
 |Coverity C++ static analysis badge|Awaiting implementation|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 
-### MetalMock Roadmap
+### MetalMock Features Roadmap
 
 |Future MetalMock Feature|Implementation Status As Of 3/15/2021|
 |------------------------|-------------------------------------|
