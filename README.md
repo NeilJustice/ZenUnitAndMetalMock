@@ -34,12 +34,12 @@ MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions
    * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](Documentation/HowToWriteACustomZenUnitEqualizer.md)
    * [Guide To MetalMock](Documentation/GuideToMetalMock.md)
    * [Mutation Coverage Can Be Maximized By Testing With Random Values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
-   * [ZenUnit And MetalMock Code Structure As It Appears In Visual Studio Code On Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
-   * [ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
-   * [Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit And MetalMock](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmock)
-   * [Windows Jenkins Jobs Which Build And Cppcheck ZenUnit And MetalMock](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmock)
-   * [How To Build And Run ZenUnit And MetalMock Unit Tests On Linux And Then Install ZenUnit.h And MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
-   * [How To Build And Run ZenUnit And MetalMock Unit Tests On Windows And Then Install ZenUnit.h And MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
+   * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
+   * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
+   * [Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and SonarQube Scan ZenUnit and MetalMock's Python Code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c++-code-and-sonarqube-scan-zenunit-and-metalmocks-python-code)
+   * [Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and SonarQube Scan ZenUnit and MetalMock's Python Code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c++-code-and-sonarqube-scan-zenunit-and-metalmocks-python-code)
+   * [How To Build and Run ZenUnit and MetalMock Unit Tests On Linux and Then Install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
+   * [How To Build and Run ZenUnit and MetalMock Unit Tests On Windows and Then Install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
    * [ZenUnit Features Roadmap](#zenunit-features-roadmap)
    * [MetalMock Features Roadmap](#metalmock-features-roadmap)
    * [Acknowledgments](#acknowledgments)
@@ -525,31 +525,31 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomNonEmptyUnorderedSet<T>()`|Returns a a `std::unordered_set<T>` with size between 1 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSetWithSize<T>()`|Returns a a `std::unordered_set<T>` with size `size` with each element a `ZenUnit::Random<T>()` value.|
 
-### ZenUnit And MetalMock Code Structure As It Appears In Visual Studio Code On Linux
+### ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux
 
 Seen in this screenshot is function `ZenUnit::ArgsParser::Parse` for parsing ZenUnit's command line arguments:
 
-![ZenUnit And MetalMock Code Structure As It Appears In Visual Studio Code On Linux](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
+![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
 
-### ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows
+### ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows
 
 Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting that an expected value is equal to actual value:
 
-![ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
+![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
 
-### Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit And MetalMock
+### Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and SonarQube Scan ZenUnit and MetalMock's Python Code
 
 A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33 with Clang 11.0.0 and GCC 10.2.1:
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
-### Windows Jenkins Jobs Which Build And Cppcheck ZenUnit And MetalMock
+### Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and SonarQube Scan ZenUnit and MetalMock's Python Code
 
 A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Windows 10 with Visual Studio 2019:
 
 ![Windows Jenkins Jobs](Screenshots/Windows/WindowsJenkinsJobs.png)
 
-### How To Build And Run ZenUnit And MetalMock Unit Tests On Linux And Then Install ZenUnit.h And MetalMock.h
+### How To Build and Run ZenUnit and MetalMock Unit Tests On Linux and Then Install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -563,7 +563,7 @@ ZenUnit.h and MetalMock.h installed on Linux:
 
 ![ZenUnit.h and MetalMock.h installed on Linux](Screenshots/Linux/ZenUnitDotHAndMetalMockDotHInstalledOnLinux.png)
 
-### How To Build And Run ZenUnit And MetalMock Unit Tests On Windows And Then Install ZenUnit.h And MetalMock.h
+### How To Build and Run ZenUnit and MetalMock Unit Tests On Windows and Then Install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
