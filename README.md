@@ -233,7 +233,7 @@ int main(int argc, char* argv[])
 
 How could the correctness of this templated class `PredicateCounter` with its `CountWhere` function be confirmed across various types of `ContainerType` and `T`?
 
-(`std::count_if` is of course the standard way of counting elements matching a given predicate. class `PredicateCounter` provides mockability by way of its `CountWhere` function being virtual.)
+(`std::count_if` is of course the standard way of counting elements matching a given predicate. `class PredicateCounter` provides mockability by way of its `CountWhere` function being virtual.)
 
 ```cpp
 template<
@@ -460,7 +460,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 
 ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage.
 
-Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the mid-2020s during CI/CD time by running the exceptionally promising LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
+Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the mid-2020s during CI/CD time by running the exceptionally-promising LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
 |Random Number-Generating Functions|Behavior|
 |----------------------------------|--------|
@@ -527,9 +527,13 @@ Testing using random values instead of constant values renders test code immune 
 
 ### ZenUnit And MetalMock Code Structure As It Appears In Visual Studio Code On Linux
 
+Seen in this screenshot is function `ZenUnit::ArgsParser::Parse` for parsing ZenUnit's command line arguments:
+
 ![ZenUnit And MetalMock Code Structure As It Appears In Visual Studio Code On Linux](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
 
 ### ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows
+
+Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting that an expected value is equal to actual value:
 
 ![ZenUnit And MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
 
