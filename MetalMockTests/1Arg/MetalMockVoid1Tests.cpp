@@ -12,6 +12,7 @@ namespace MetalMock
       virtual void VirtualConstFunction(int) const {}
       void NonVirtualFunction(int) {}
       void NonVirtualConstFunction(int) const {}
+      static void StaticVoid1ArgFunction(int) {}
       virtual ~Void1ArgFunctions() = default;
    };
 
@@ -22,12 +23,6 @@ namespace MetalMock
       METALMOCK_VOID1_CONST(VirtualConstFunction, int)
       METALMOCK_VOID1_NONVIRTUAL(NonVirtualFunction, int)
       METALMOCK_VOID1_NONVIRTUAL_CONST(NonVirtualConstFunction, int)
-   };
-
-   class Void1ArgStaticFunctions
-   {
-   public:
-      static void StaticVoid1ArgFunction(int) {}
    };
 
    TESTS(MetalMockVoid1Tests)
@@ -41,13 +36,13 @@ namespace MetalMock
    EVIDENCE
 
    Void1ArgFunctionsMock _void1ArgFunctionsMock;
-   METALMOCK_VOID1_FREE(FreeVoid1ArgFunction, int)
-   METALMOCK_VOID1_STATIC(MetalMock::Void1ArgStaticFunctions, StaticVoid1ArgFunction, int)
+   METALMOCK_VOID1_FREE(_call_FreeVoid1ArgFunction, int)
+   METALMOCK_VOID1_STATIC(MetalMock::Void1ArgFunctions, _call_StaticVoid1ArgFunction, int)
 
    unique_ptr<MetalMock1Tester<
       Void1ArgFunctionsMock,
-      decltype(FreeVoid1ArgFunctionMock),
-      decltype(StaticVoid1ArgFunctionMock)>> _metalMock1Tester;
+      decltype(_call_FreeVoid1ArgFunctionMock),
+      decltype(_call_StaticVoid1ArgFunctionMock)>> _metalMock1Tester;
 
    const string VirtualFunctionSignature =
       "virtual void MetalMock::Void1ArgFunctions::VirtualFunction(int)";
@@ -58,22 +53,22 @@ namespace MetalMock
    const string NonVirtualConstFunctionSignature =
       "void MetalMock::Void1ArgFunctions::NonVirtualConstFunction(int) const";
    const string FreeFunctionSignature =
-      "void FreeVoid1ArgFunction(int)";
+      "void _call_FreeVoid1ArgFunction(int)";
    const string StaticFunctionSignature =
-      "void MetalMock::Void1ArgStaticFunctions::StaticVoid1ArgFunction(int)";
+      "void MetalMock::Void1ArgFunctions::_call_StaticVoid1ArgFunction(int)";
 
    STARTUP
    {
       _metalMock1Tester = make_unique<MetalMock1Tester<
-         Void1ArgFunctionsMock, decltype(FreeVoid1ArgFunctionMock), decltype(StaticVoid1ArgFunctionMock)>>(
+         Void1ArgFunctionsMock, decltype(_call_FreeVoid1ArgFunctionMock), decltype(_call_StaticVoid1ArgFunctionMock)>>(
          _void1ArgFunctionsMock,
          VirtualFunctionSignature,
          VirtualConstFunctionSignature,
          NonVirtualFunctionSignature,
          NonVirtualConstFunctionSignature,
-         FreeVoid1ArgFunctionMock,
+         _call_FreeVoid1ArgFunctionMock,
          FreeFunctionSignature,
-         StaticVoid1ArgFunctionMock,
+         _call_StaticVoid1ArgFunctionMock,
          StaticFunctionSignature);
    }
 
@@ -109,8 +104,8 @@ namespace MetalMock
       test(_void1ArgFunctionsMock.VirtualConstFunctionMock);
       test(_void1ArgFunctionsMock.NonVirtualFunctionMock);
       test(_void1ArgFunctionsMock.NonVirtualConstFunctionMock);
-      test(FreeVoid1ArgFunctionMock);
-      test(StaticVoid1ArgFunctionMock);
+      test(_call_FreeVoid1ArgFunctionMock);
+      test(_call_StaticVoid1ArgFunctionMock);
    }
 
    TEST(MockedFunctionsCodeCoverage)
@@ -121,7 +116,7 @@ namespace MetalMock
       void1Functions.NonVirtualFunction(0);
       void1Functions.NonVirtualConstFunction(0);
       FreeVoid1ArgFunction(0);
-      MetalMock::Void1ArgStaticFunctions::StaticVoid1ArgFunction(0);
+      MetalMock::Void1ArgFunctions::StaticVoid1ArgFunction(0);
    }
 
    RUN_TESTS(MetalMockVoid1Tests)
