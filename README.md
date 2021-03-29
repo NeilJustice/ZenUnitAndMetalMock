@@ -35,8 +35,20 @@ A "single strict" mocking framework requires that all mocked-out functions be ex
       * [The FAIL_TEST Assertion](#the-fail_test-assertion)
       * [ZenUnit Equalizer Assertions](#zenunit-equalizer-assertions)
    * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
-   * [How To Write A Custom ZenUnit::Equalizer\<T\> struct To Achieve Field-By-Field Assertion Granularity](Documentation/HowToWriteACustomZenUnitEqualizer.md)
-   * [Guide To MetalMock](Documentation/GuideToMetalMock.md)
+   * [MetalMock Function-Mocking Macros](#metalmock-function-mocking-macros)
+     * [Void Virtual Functions](#void-virtual-functions)
+     * [Non-Void Virtual Functions](#non-void-virtual-functions)
+     * [Void Non-Virtual Functions](#void-non-virtual-functions)
+     * [Non-Void Non-Virtual Functions](#non-void-non-virtual-functions)
+     * [Void Static Functions](#void-static-functions)
+     * [Non-Void Static Functions](#non-void-static-functions)
+     * [Void Free Functions](#void-functions)
+     * [Non-Void Free Functions](#non-void-free-functions)
+   * [MetalMock Use Cases](#metalmock-use-cases)
+     * [How to MetalMock Virtual Functions](#how-to-metalmock-virtual-functions)
+     * [How to MetalMock Non-Virtual Functions](#how-to-metalmock-non-virtual-functions)
+     * [How to MetalMock Static Functions](#how-to-metalmock-static-functions)
+     * [How to MetalMock Free Functions](#how-to-metalmock-free-functions)
    * [Mutation Coverage Can Be Maximized By Testing With Random Values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
    * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
    * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
@@ -459,6 +471,420 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |`THEN_RUN_TEMPLATE_TESTS(testClassName, TemplateArguments...)`|Registers a `TEMPLATE_TEST_CLASS` templatized with `TemplateArguments...` to be run when `ZenUnit::RunTests(argc, argv)` is called. For use after `RUN_TEMPLATE_TESTS`.|
 |`SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
+
+### MetalMock Function-Mocking Macros
+
+#### Void Virtual Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_VOID0(VirtualFunctionName)`|
+|`METALMOCK_VOID0_CONST(VirtualFunctionName)`|
+|`METALMOCK_VOID1(VirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID1_CONST(VirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID2_CONST(VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID3_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID4_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID5_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID6_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID7_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+#### Non-Void Virtual Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_NONVOID0(ReturnType, VirtualFunctionName)`|
+|`METALMOCK_NONVOID0_CONST(ReturnType, VirtualFunctionName)`|
+|`METALMOCK_NONVOID1(ReturnType, VirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID1_CONST(ReturnType, VirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID2(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID2_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID3(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID3_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID4(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID4_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID5(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID5_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID6(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID6_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID7(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID7_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+#### Void Non-Virtual Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_VOID0_NONVIRTUAL(NonVirtualFunctionName)`|
+|`METALMOCK_VOID0_NONVIRTUAL_CONST(NonVirtualFunctionName)`|
+|`METALMOCK_VOID1_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID1_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID2_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID3_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID4_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID5_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID6_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID7_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+#### Non-Void Non-Virtual Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, NonVirtualFunctionName)`|
+|`METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName)`|
+|`METALMOCK_NONVOID1_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID1_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID2_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID2_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID3_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID3_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID4_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID4_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID5_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID5_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID6_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID6_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID7_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID7_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+#### Void Static Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_VOID0_STATIC(NamespaceQualifiedClassName, StaticFunctionName, ...)`|
+|`METALMOCK_VOID1_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+#### Non-Void Static Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_NONVOID0_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, ...)`|
+|`METALMOCK_NONVOID1_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID2_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID3_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID4_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID5_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID6_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID7_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+#### Void Free Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_VOID0_FREE(GlobalFreeFunctionName)`|
+|`METALMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID2_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_VOID3_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_VOID4_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_VOID5_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_VOID6_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_VOID7_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+#### Non-Void Free Functions
+
+|MetalMock Macro|
+|---------------|
+|`METALMOCK_NONVOID0_FREE(ReturnType, GlobalFreeFunctionName)`|
+|`METALMOCK_NONVOID1_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID2_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, ...)`|
+|`METALMOCK_NONVOID3_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, ...)`|
+|`METALMOCK_NONVOID4_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, ...)`|
+|`METALMOCK_NONVOID5_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, ...)`|
+|`METALMOCK_NONVOID6_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
+|`METALMOCK_NONVOID7_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+
+### MetalMock Use Cases
+
+#### Syntax For MetalMocking Virtual Functions
+
+```cpp
+// Component To Be MetalMocked
+class ComponentB
+{
+public:
+   virtual void ConstVirtualFunction() const {}
+   virtual void NonConstVirtualFunction() {}
+   virtual ~ComponentB() = default;
+};
+
+// Class Under Test
+class ComponentA
+{
+   friend class ComponentATests;
+private:
+   // ComponentB will be dependency injected with ComponentBMock in the below ZenUnit SETUP function
+   std::unique_ptr<ComponentB> _componentB;
+public:
+   ComponentA()
+      : _componentB(std::make_unique<ComponentB>())
+   {
+   }
+
+   // Function Under Test
+   void Act()
+   {
+      _componentB->ConstVirtualFunction();
+      _componentB->NonConstVirtualFunction();
+   }
+};
+
+// MetalMock Class Definition
+class ComponentBMock : public Metal::Mock<ComponentB>
+{
+public:
+   METALMOCK_VOID0_CONST(ConstVirtualFunction)
+   METALMOCK_VOID0(NonConstVirtualFunction)
+};
+
+// ZenUnit Test Class
+TESTS(ComponentATests)
+AFACT(DefaultConstructor_NewsComponentB)
+AFACT(Act_CallsComponentBVirtualFunctions)
+EVIDENCE
+
+ComponentA _componentA;
+ComponentBMock* _componentBMock = nullptr;
+
+STARTUP
+{
+   // Post-construction dependency injection of MetalMock mock object ComponentBMock
+   _componentA._componentB.reset(_componentBMock = new ComponentBMock);
+}
+
+TEST(DefaultConstructor_NewsComponentB)
+{
+   DELETE_TO_ASSERT_NEWED(_componentA._componentB);
+}
+
+TEST(Act_CallsComponentBVirtualFunctions)
+{
+   _componentBMock->ConstVirtualFunctionMock.Expect();
+   _componentBMock->NonConstVirtualFunctionMock.Expect();
+   //
+   _componentA.Act();
+   //
+   METALMOCK(_componentBMock->ConstVirtualFunctionMock.CalledOnce());
+   METALMOCK(_componentBMock->NonConstVirtualFunctionMock.CalledOnce());
+}
+
+RUN_TESTS(ComponentATests)
+```
+
+#### Syntax For MetalMocking Non-Virtual Functions
+
+```cpp
+class KernelBypassNetwork
+{
+public:
+   // Non-virtual function for increased performance in a high-frequency trading environment
+   void SendBytes(size_t /*numberOfBytes*/)
+   {
+   }
+};
+
+class KernelBypassNetworkMock : Metal::Mock<KernelBypassNetwork>
+{
+public:
+   METALMOCK_VOID1_NONVIRTUAL(SendBytes, size_t)
+};
+
+// Mockable template parameter NetworkType
+template<typename NetworkType = KernelBypassNetwork>
+class OrderSender
+{
+   friend class OrderSenderTests;
+private:
+   NetworkType _network;
+public:
+   void SendOrder()
+   {
+      _network.SendBytes(123);
+   }
+};
+
+TESTS(OrderSenderTests)
+AFACT(SendOrder_CallsNetworkSendWhichReturns123_Returns)
+EVIDENCE
+
+// Template parameter dependency injection of MetalMock class KernelBypassNetworkMock
+OrderSender<KernelBypassNetworkMock> _orderSender;
+
+TEST(SendOrder_CallsNetworkSendWhichReturns123_Returns)
+{
+   _orderSender._network.SendBytesMock.Expect();
+   //
+   _orderSender.SendOrder();
+   //
+   METALMOCK(_orderSender._network.SendBytesMock.CalledOnceWith(123));
+}
+
+RUN_TESTS(OrderSenderTests)\
+```
+
+#### Syntax For MetalMocking Static Functions
+
+```cpp
+class StaticFunctions
+{
+public:
+   static void VoidStaticFunction()
+   {
+   }
+
+   static int NonVoidStaticFunction(int input)
+   {
+      const int inputPlus100 = input + 100;
+      return inputPlus100;
+   }
+
+   StaticFunctions() = delete;
+};
+
+class StaticFunctionMockingExample
+{
+   friend class StaticFunctionMockingExampleTests;
+private:
+   // MetalMockable std::functions
+   std::function<void()> _call_VoidStaticFunction = StaticFunctions::VoidStaticFunction;
+   std::function<int(int)> _call_NonVoidStaticFunction = StaticFunctions::NonVoidStaticFunction;
+public:
+   int FunctionUnderTest(int input)
+   {
+      _call_VoidStaticFunction();
+      const int returnValue = _call_NonVoidStaticFunction(input);
+      return returnValue;
+   }
+};
+
+TESTS(StaticFunctionMockingExampleTests)
+AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
+AFACT(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
+EVIDENCE
+
+StaticFunctionMockingExample _staticFunctionMockingExample;
+
+// Creates a MetalMock object named _call_VoidStaticFunctionMock
+METALMOCK_VOID0_STATIC(Utilities, _call_VoidStaticFunction)
+
+// Creates a MetalMock object named _call_NonVoidStaticFunctionMock
+METALMOCK_NONVOID1_STATIC(int, Utilities, _call_NonVoidStaticFunction, int)
+
+STARTUP
+{
+   // Dependency injection of MetalMock objects
+   // by overwriting std::functions with std::bind'ed MetalMock objects
+   _staticFunctionMockingExample._call_VoidStaticFunction =
+      BIND_0ARG_METALMOCK_OBJECT(_call_VoidStaticFunctionMock);
+
+   _staticFunctionMockingExample._call_NonVoidStaticFunction =
+      BIND_1ARG_METALMOCK_OBJECT(_call_NonVoidStaticFunctionMock);
+}
+
+TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
+{
+   const StaticFunctionMockingExample staticFunctionMockingExample;
+
+   STD_FUNCTION_TARGETS(StaticFunctions::VoidStaticFunction,
+      staticFunctionMockingExample._call_VoidStaticFunction);
+
+   STD_FUNCTION_TARGETS(StaticFunctions::NonVoidStaticFunction,
+      staticFunctionMockingExample._call_NonVoidStaticFunction);
+}
+
+TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
+{
+   _call_VoidStaticFunctionMock.Expect();
+   const int nonVoidStaticFunctionReturnValue = _call_NonVoidStaticFunctionMock.ReturnRandom();
+   const int input = ZenUnit::Random<int>();
+   //
+   const int returnValue = _staticFunctionMockingExample.FunctionUnderTest(input);
+   //
+   METALMOCK(_call_VoidStaticFunctionMock.CalledOnce());
+   METALMOCK(_call_NonVoidStaticFunctionMock.CalledOnceWith(input));
+   ARE_EQUAL(nonVoidStaticFunctionReturnValue, returnValue);
+}
+
+RUN_TESTS(StaticFunctionMockingExampleTests)
+```
+
+#### Syntax For MetalMocking Free Functions
+
+```cpp
+// Global free function to be MetalMocked
+int GlobalFreeFunction(int value)
+{
+   const int valuePlus1 = value + 1;
+   return valuePlus1;
+}
+
+class MetalMockFreeFunctionMockingExample
+{
+   friend class FreeFunctionMockingTests;
+private:
+   // MetalMockable std::functions
+   std::function<int(int)> _call_GlobalFreeFunction = GlobalFreeFunction;
+public:
+   int FunctionUnderTest(int input)
+   {
+      const int globalFreeFunctionReturnValue = _call_GlobalFreeFunction(input);
+      return globalFreeFunctionReturnValue;
+   }
+};
+
+TESTS(FreeFunctionMockingTests)
+AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
+AFACT(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
+EVIDENCE
+
+MetalMockFreeFunctionMockingExample _metalMockFreeFunctionMockingExample;
+
+// Creates a MetalMock object named GlobalFreeFunctionMock for mocking a free function
+METALMOCK_NONVOID1_FREE(int, GlobalFreeFunction, int)
+
+STARTUP
+{
+   // Post-construction dependency injection of MetalMock objects
+   // to overwrite std::functions with MetalMock objects
+   _metalMockFreeFunctionMockingExample._call_GlobalFreeFunction =
+      BIND_1ARG_METALMOCK_OBJECT(GlobalFreeFunctionMock);
+}
+
+TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
+{
+   const MetalMockFreeFunctionMockingExample metalMockFreeFunctionMockingExample;
+   STD_FUNCTION_TARGETS(GlobalFreeFunction, metalMockFreeFunctionMockingExample._call_GlobalFreeFunction);
+}
+
+TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
+{
+   const int globalFreeFunctionReturnValue = GlobalFreeFunctionMock.ReturnRandom();
+   const int input = ZenUnit::RandomBetween<int>(-3, 3);
+   //
+   const int returnValue = _metalMockFreeFunctionMockingExample.FunctionUnderTest(input);
+   //
+   METALMOCK(GlobalFreeFunctionMock.CalledOnceWith(input));
+   ARE_EQUAL(globalFreeFunctionReturnValue, returnValue);
+}
+
+RUN_TESTS(FreeFunctionMockingTests)
+```
 
 ### Mutation Coverage Can Be Maximized By Testing With Random Values
 

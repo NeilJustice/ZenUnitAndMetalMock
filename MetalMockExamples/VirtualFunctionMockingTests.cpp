@@ -14,7 +14,7 @@ class ComponentA
 {
    friend class ComponentATests;
 private:
-   // ComponentB will be replaced with a MetalMock mock object in the below ZenUnit SETUP function
+   // ComponentB will be dependency injected with ComponentBMock in the below ZenUnit SETUP function
    std::unique_ptr<ComponentB> _componentB;
 public:
    ComponentA()
