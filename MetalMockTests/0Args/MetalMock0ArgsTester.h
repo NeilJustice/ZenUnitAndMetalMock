@@ -123,7 +123,7 @@ namespace MetalMock
          metalMockObject.CalledOnce();
          metalMockObject.CalledNTimes(1);
          THROWS_EXCEPTION(metalMockObject.CalledNTimes(2), Anomaly,
-            MetalMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 2, 1));
+            MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 2, 1));
       }
 
       template<typename InnerMetalMockObjectType>
@@ -131,10 +131,10 @@ namespace MetalMock
          InnerMetalMockObjectType& metalMockObject, const string& expectedFunctionSignature)
       {
          THROWS_EXCEPTION(metalMockObject.CalledOnce(), Anomaly,
-            MetalMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 1, 2));
+            MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 1, 2));
          metalMockObject.CalledNTimes(2);
          THROWS_EXCEPTION(metalMockObject.CalledNTimes(3), Anomaly,
-            MetalMockTestUtils::ExpectedCallCountMismatchWhat(expectedFunctionSignature, 3, 2));
+            MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 3, 2));
       }
 
       void Expect_MakesMetalMockedFunctionNotThrow_MakesCalledOnceNotThrow_MakesCalledNTimesNotThrow()

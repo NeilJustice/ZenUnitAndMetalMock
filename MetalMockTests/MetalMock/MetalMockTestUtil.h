@@ -11,14 +11,26 @@ struct MetalMockTestUtils
       }
    }
 
-   static string ExpectedCallCountMismatchWhat(
-      const string& expectedSignature, size_t expectedCallCount, size_t actualCallCount)
+   static string MakeExpectedExceptionMessageForCallCountMismatch0Args(
+      const string& expectedFunctionSignature, size_t expectedCallCount, size_t actualCallCount)
    {
       const string expectedWhat = String::Concat(R"(
   Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->numberOfCallsToMetalMockedFunction, this->MetalMockedFunctionSignature)
 Expected: )", expectedCallCount, R"(
   Actual: )", actualCallCount, R"(
- Message: ")", expectedSignature, R"("
+ Message: ")", expectedFunctionSignature, R"("
+File.cpp(1))");
+      return expectedWhat;
+   }
+
+   static string MakeExpectedExceptionMessageForCallCountMismatch(
+      const string& expectedFunctionSignature, size_t expectedCallCount, size_t actualCallCount)
+   {
+      const string expectedWhat = String::Concat(R"(
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+Expected: )", expectedCallCount, R"(
+  Actual: )", actualCallCount, R"(
+ Message: ")", expectedFunctionSignature, R"("
 File.cpp(1))");
       return expectedWhat;
    }
