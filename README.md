@@ -612,7 +612,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 
 ### MetalMock Use Cases
 
-#### Syntax For MetalMocking Virtual Functions
+#### How To MetalMock Virtual Functions
 
 ```cpp
 // Component To Be MetalMocked
@@ -687,7 +687,7 @@ TEST(Act_CallsComponentBVirtualFunctions)
 RUN_TESTS(ComponentATests)
 ```
 
-#### Syntax For MetalMocking Non-Virtual Functions
+#### How To MetalMock Non-Virtual Functions
 
 ```cpp
 class KernelBypassNetwork
@@ -738,7 +738,7 @@ TEST(SendOrder_CallsNetworkSendWhichReturns123_Returns)
 RUN_TESTS(OrderSenderTests)\
 ```
 
-#### Syntax For MetalMocking Static Functions
+#### How To MetalMock Static Functions
 
 ```cpp
 class StaticFunctions
@@ -824,7 +824,7 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
 RUN_TESTS(StaticFunctionMockingExampleTests)
 ```
 
-#### Syntax For MetalMocking Free Functions
+#### How To MetalMock Free Functions
 
 ```cpp
 // Global free function to be MetalMocked
