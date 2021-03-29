@@ -99,7 +99,7 @@ namespace MetalMock
          assertCalledOnce(_staticMockObject);
       }
 
-      void MetalMockFunctionNotExpectedAndCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrows()
+      void MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -169,7 +169,7 @@ namespace MetalMock
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void MetalMockedFunctionExpectedThenCalledTwice_CalledAsFollowsOnceWithDoesNotThrow_CalledAsFollowsWithDoesNotThrow()
+      void MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow()
       {
          const auto assertAfterFirstCall = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -226,7 +226,7 @@ namespace MetalMock
          assertAfterSecondCall(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledOnceWith_ExpectedFunctionCalled0Or2OrMoreTimes_Throws(size_t numberOfFunctionCalls)
+      void CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2OrMoreTimes_ThrowsAnomaly(size_t numberOfFunctionCalls)
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -252,7 +252,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_Throws()
+      void CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -266,7 +266,8 @@ Expected: 20
   Actual: 10
  Message: ")", expectedFunctionSignature, R"("
 File.cpp(1))");
-            THROWS_EXCEPTION(metalMockObject.CalledOnceWith(20), Anomaly, expectedExceptionMessage);
+            THROWS_EXCEPTION(metalMockObject.CalledOnceWith(20),
+               Anomaly, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualConstMock, _virtualConstFunctionSignature);
@@ -309,7 +310,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledAsFollowsWith_NIs1OrGreater_FunctionWasNotCalledNTimes_Throws(size_t n, size_t numberOfFunctionCalls)
+      void CalledNTimesWith_NIs1OrGreater_FunctionWasNotCalledNTimes_ThrowsAnomaly(size_t n, size_t numberOfFunctionCalls)
       {
          const auto test = [&](auto& metalMockObject, const string& expectedSignature)
          {
@@ -324,7 +325,8 @@ Expected: )", n, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", expectedSignature, R"("
 File.cpp(1))");
-            THROWS_EXCEPTION(_metalMockObject.CalledNTimesWith(n, 123), Anomaly, expectedExceptionMessage);
+            THROWS_EXCEPTION(_metalMockObject.CalledNTimesWith(n, 123),
+               Anomaly, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualConstMock, _virtualConstFunctionSignature);
@@ -390,7 +392,7 @@ File.cpp(1))");
          test(_staticMockObject);
       }
 
-      void CalledAsFollows_EmptyCalls_Throws()
+      void CalledAsFollows_EmptyExpectedCalls_ThrowsUnsupportedCalledZeroTimesException()
       {
          const auto test = [](auto& metalMockObject, const string& expectedSignature)
          {
@@ -405,7 +407,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledAsFollows_NonEmptyCalls_FunctionCalledNotCallsSizeTimes_Throws(
+      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_Throws(
          size_t expectedCallsSize, size_t numberOfFunctionCalls, const string& expectedExceptionWhatPrefix)
       {
          const auto test = [&](auto& metalMockObject, const string& expectedSignature)
@@ -432,7 +434,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
+      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_Throws(
          size_t expectedCallsSize, size_t mismatchingCallIndex, const string& expectedExceptionWhatPrefix)
       {
          const auto test = [&](auto& metalMockObject, const string& expectedSignature)
@@ -470,7 +472,7 @@ File.cpp(1))";
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledAsFollows_NonEmptyCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException(size_t expectedCallsSize)
+      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException(size_t expectedCallsSize)
       {
          const auto test = [&](auto& metalMockObject)
          {
