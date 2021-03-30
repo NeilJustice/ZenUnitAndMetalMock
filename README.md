@@ -396,7 +396,8 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |Assertion|Behavior|
 |---------|--------|
 |`VECTORS_ARE_EQUAL(expectedVector, actualVector, messages...)`|Calls `INDEXABLES_ARE_EQUAL(expectedVector, actualVector, messages...)`|
-|`INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, messages...)`|Asserts that `expectedIndexableDataStructure.size() == actualIndexableDataStructure.size()` then calls `ARE_EQUAL(ithExpectedElement, ithActualElement)` on each pair of expected and actual elements.|
+|`INDEXABLES_ARE_EQUAL(expectedElements, actualElements, messages...)`|Asserts that `expectedElements.size() == actualElements.size()` then calls `ARE_EQUAL(ithExpectedElement, ithActualElement)` on each pair of expected and actual elements.|
+|`INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements, messages...)`|Asserts that `expectedElements.size() == actualElements.size()` then asserts that every expected element is present in `actualElements` and every actual element is present in `expectedElements`, in any order.|
 |`SETS_ARE_EQUAL(expectedSet, actualSet, messages...)`|Asserts that `expectedSet.size() == actualSet.size()` then calls `ARE_EQUAL(expectedElement, actualElement)` on each pair of expected and actual elements.|
 |`MAPS_ARE_EQUAL(expectedMap, actualMap, messages...)`|Asserts that `expectedMap.size() == actualMap.size()` then calls `ARE_EQUAL(expectedKeyValuePair, actualKeyValuePair)` on each pair of expected and actual key-value pairs.
 |`PAIRS_ARE_EQUAL(expectedPair, actualPair, messages...)`|Asserts `ARE_EQUAL(expectedPair.first, actualPair.first)` then asserts `ARE_EQUAL(expectedPair.second, actualPair.second)`.|
