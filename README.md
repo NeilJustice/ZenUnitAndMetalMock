@@ -411,6 +411,8 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long
 |Assertion|Behavior|
 |---------|--------|
 |`ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedAbsoluteMaxDifference`.|
+|`FLOATS_ARE_NEAR(expectedFloat, actualFloat, messages...)`|Asserts that `std::abs(expectedFloat - actualFloat) <= 1e-7`. Todo list: Replace 1e-7 with 4 Units in the Last Place|
+|`DOUBLES_ARE_NEAR(expectedDouble, actualDouble, messages...)`|Asserts that `std::abs(expectedDouble - actualDouble) <= 1e-13`. Todo list: Replace 1e-13 with 4 Units in the Last Place|
 
 #### Exception Assertions
 |Assertion|Behavior|
@@ -1008,10 +1010,10 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit Features Roadmap
 
-|Future ZenUnit Feature|Implementation Status As Of 3/15/2021|
+|Future ZenUnit Feature|Implementation Status As Of 3/30/2021|
 |----------------------|-------------------------------------|
-|`FLOATS_ARE_NEAR` and `DOUBLES_ARE_NEAR` assertions|In progress|
 |GitHub Actions build|Awaiting implementation|
+|Update implementations of `FLOATS_ARE_NEAR` and `DOUBLES_ARE_NEAR` to compare based on Units in the Last Place (ULPs)|Awaiting implementation|
 |SonarCloud Python static analysis badge for ZenUnitPyUtils|Awaiting implementation|
 |SonarCloud C++ static analysis badge|Awaiting implementation|
 |Coverity C++ static analysis badge|Awaiting implementation|
