@@ -2,13 +2,45 @@
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B20) ![MIT](https://img.shields.io/badge/license-MIT-green) ![GitHub last commit](https://img.shields.io/github/last-commit/NeilJustice/ZenUnitAndMetalMock)
 
-ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, error message clarity, long-term test code readability, and supports testing with randomized values to maximize [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage. ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests.
+ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for specifying function return values and expected function call arguments for virtual functions, non-virtual / template functions, static functions, and free functions.
+ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests:
+
+```cpp
+#include "ZenUnitAndMetalMock/ZenUnit.h"
+
+TEST3X3(Add_ReturnsSumOfArguments,
+   int x, int y, int expectedSum,
+   0, 0, 0,
+   1, 2, 3,
+   4, 5, 9)   
+{
+   const int sum = _calculator.Add(x, y);
+   ARE_EQUAL(expectedSum, sum);
+}
+```
+
+```cpp
+#include "ZenUnitAndMetalMock/ZenUnit.h"
+
+template<
+   template<typename...>
+   typename ContainerType, typename T>
+TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
+// ...
+// ...
+// ...
+RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, unsigned long long)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
+```
+
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for setting function return values and asserting expected arguments for virtual functions, non-virtual / template functions, static functions, and free functions.
 
 MetalMock is a "double strict" mocking framework so as to be suitable for rigorously confirming the correctness of safety-critical and financially-critical C++ software.
 
-A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called. A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explictedly asserted as having been called with exact expected arguments, thereby helping to ensure that there are zero extraneous function calls in the program under test.
+A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called. A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explictedly asserted as having been called, thereby helping to ensure that there are zero extraneous function calls present in a program under test.
 
 |Build Type|Build Status|
 |----------|------------|
@@ -350,10 +382,10 @@ TEST(CountWhere_ElementsAreSize4_TwoElementsMatchOutOf4_Returns2)
    ARE_EQUAL(2, numberOfEvenElements);
 }
 
-RUN_TEMPLATE_TESTS(PredicateCounterTests, vector, int)
-THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, vector, unsigned long long)
-THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, int)
-THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, unordered_set, unsigned long long)
+RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, unsigned long long)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
 ```
 
 ### Console Output When Running ZenUnit Type-Parameterized Tests
