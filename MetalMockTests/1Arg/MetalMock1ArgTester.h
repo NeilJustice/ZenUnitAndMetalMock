@@ -225,48 +225,29 @@ namespace MetalMock
          assertAfterSecondCall(_staticMockObject, _staticFunctionSignature);
       }
 
-      void Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(
-         auto& metalMockObject, const string& expectedFunctionSignature, size_t numberOfFunctionCalls)
+      void CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(size_t numberOfFunctionCalls)
       {
-         metalMockObject._wasExpected = true;
-         for (size_t i = 0; i < numberOfFunctionCalls; ++i)
+         const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.MetalMockIt(0);
-         }
-         const string expectedExceptionMessage = String::Concat(R"(
+            metalMockObject._wasExpected = true;
+            for (size_t i = 0; i < numberOfFunctionCalls; ++i)
+            {
+               metalMockObject.MetalMockIt(0);
+            }
+            const string expectedExceptionMessage = String::Concat(R"(
   Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", expectedFunctionSignature, R"("
 File.cpp(1))");
-         THROWS_EXCEPTION(metalMockObject.CalledOnceWith(0), Anomaly, expectedExceptionMessage);
-      }
-      void CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Times_ThrowsAnomaly()
-      {
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature, 0);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature, 0);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature, 0);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature, 0);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_freeFunctionMockObject, _freeFunctionSignature, 0);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_staticMockObject, _staticFunctionSignature, 0);
-      }
-      void CalledOnceWith_MetalMockedFunctionExpectedThenCalled2Times_ThrowsAnomaly()
-      {
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature, 2);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature, 2);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature, 2);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature, 2);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_freeFunctionMockObject, _freeFunctionSignature, 2);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_staticMockObject, _staticFunctionSignature, 2);
-      }
-      void CalledOnceWith_MetalMockedFunctionExpectedThenCalled3Times_ThrowsAnomaly()
-      {
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature, 3);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature, 3);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature, 3);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature, 3);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_freeFunctionMockObject, _freeFunctionSignature, 3);
-         Test_CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(_staticMockObject, _staticFunctionSignature, 3);
+            THROWS_EXCEPTION(metalMockObject.CalledOnceWith(0), Anomaly, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
       }
 
       void CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly()
@@ -418,14 +399,13 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly(
-         size_t expectedCallsSize, size_t numberOfFunctionCalls)
+      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly()
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
             metalMockObject._wasExpected = true;
             //
-            MetalMockTestUtils::CallNTimes(numberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(0); });
+            MetalMockTestUtils::CallNTimes(2, [&] { metalMockObject.MetalMockIt(0); });
             //
             const string expectedExceptionMessage = String::Concat(R"(
   Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature)
@@ -449,7 +429,7 @@ File.cpp(1)
 File.cpp(1))");
             const int lvalue = 0;
             vector<OneArgumentFunctionCallReference<int>> expectedCalls;
-            MetalMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(lvalue); });
+            MetalMockTestUtils::CallNTimes(1, [&] { expectedCalls.emplace_back(lvalue); });
             THROWS_EXCEPTION(metalMockObject.CalledAsFollows(expectedCalls),
                Anomaly, expectedExceptionMessage);
          };

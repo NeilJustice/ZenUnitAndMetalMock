@@ -31,9 +31,7 @@ namespace MetalMock
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    AFACT(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
-   AFACT(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Times_ThrowsAnomaly)
-   AFACT(CalledOnceWith_MetalMockedFunctionExpectedThenCalled2Times_ThrowsAnomaly)
-   AFACT(CalledOnceWith_MetalMockedFunctionExpectedThenCalled3Times_ThrowsAnomaly)
+   FACTS(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    AFACT(CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
@@ -41,8 +39,8 @@ namespace MetalMock
    AFACT(CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesButNotWithExpectedArg_ThrowsAnomaly)
    FACTS(CalledNTimesWith_NIs1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrowException)
    AFACT(CalledAsFollows_EmptyExpectedCalls_ThrowsUnsupportedCalledZeroTimesException)
-   //FACTS(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly)
-   //AFACT(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_ThrowsAnomaly)
+   AFACT(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly)
+   AFACT(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_ThrowsAnomaly)
    FACTS(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException)
    // MetalMockVoid1Tests
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
@@ -108,17 +106,13 @@ namespace MetalMock
       _metalMock1Tester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
    }
 
-   TEST(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Times_ThrowsAnomaly)
+   TEST1X1(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly,
+      size_t n,
+      0ULL,
+      2ULL,
+      3ULL)
    {
-      _metalMock1Tester->CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Times_ThrowsAnomaly();
-   }
-   TEST(CalledOnceWith_MetalMockedFunctionExpectedThenCalled2Times_ThrowsAnomaly)
-   {
-      _metalMock1Tester->CalledOnceWith_MetalMockedFunctionExpectedThenCalled2Times_ThrowsAnomaly();
-   }
-   TEST(CalledOnceWith_MetalMockedFunctionExpectedThenCalled3Times_ThrowsAnomaly)
-   {
-      _metalMock1Tester->CalledOnceWith_MetalMockedFunctionExpectedThenCalled3Times_ThrowsAnomaly();
+      _metalMock1Tester->CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(n);
    }
 
    TEST(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
@@ -163,11 +157,9 @@ namespace MetalMock
       _metalMock1Tester->CalledAsFollows_EmptyExpectedCalls_ThrowsUnsupportedCalledZeroTimesException();
    }
 
-   TEST2X2(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly,
-      size_t expectedCallsSize, size_t numberOfFunctionCalls,
-      1ULL, 2ULL)
+   TEST(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly)
    {
-      _metalMock1Tester->CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly(expectedCallsSize, numberOfFunctionCalls);
+      _metalMock1Tester->CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly();
    }
 
    TEST(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_ThrowsAnomaly)
