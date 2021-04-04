@@ -1179,7 +1179,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename MetalMockObjectType,
          typename FreeMockType,
          typename StaticMockType>
-      friend class MetalMock0Tester;
+      friend class MetalMock0ArgsTester;
    private:
       size_t numberOfCallsToMetalMockedFunction;
    protected:
@@ -2057,7 +2057,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename MetalMockObjectType,
          typename FreeMockType,
          typename StaticMockType>
-      friend class MetalMock1Tester;
+      friend class MetalMock1ArgTester;
    private:
       std::vector<OneArgumentFunctionCall<ArgType>> metalMockedFunctionCallHistory;
    public:
@@ -2306,6 +2306,11 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class TwoArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class TwoArgumentMetalMockerTests;
+      template<
+         typename MetalMockObjectType,
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
+      friend class MetalMock2ArgsTester;
    protected:
       std::function<void(Arg1Type, Arg2Type)> _baseVoidCallInsteadFunction;
    public:
@@ -2358,7 +2363,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex =
-               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, ", at i=", i);
+               ZenUnit::String::Concat(this->MetalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
          }

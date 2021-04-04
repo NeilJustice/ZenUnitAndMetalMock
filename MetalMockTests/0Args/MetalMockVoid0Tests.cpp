@@ -26,7 +26,7 @@ namespace MetalMock
    };
 
    TESTS(MetalMockVoid0Tests)
-   // MetalMock0Tester Tests
+   // MetalMock0ArgsTester Tests
    AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
@@ -42,10 +42,10 @@ namespace MetalMock
    METALMOCK_VOID0_FREE(_call_FreeVoid0ArgFunction)
    METALMOCK_VOID0_STATIC(MetalMock::Void0ArgFunctions, _call_StaticVoid0ArgFunction)
 
-   unique_ptr<MetalMock0Tester<
+   unique_ptr<MetalMock0ArgsTester<
       Void0ArgFunctionsMock,
       decltype(_call_FreeVoid0ArgFunctionMock),
-      decltype(_call_StaticVoid0ArgFunctionMock)>> _metalMock0Tester;
+      decltype(_call_StaticVoid0ArgFunctionMock)>> _metalMock0ArgsTester;
 
    const string VirtualFunctionSignature =
       "virtual void MetalMock::Void0ArgFunctions::VirtualFunction()";
@@ -62,7 +62,7 @@ namespace MetalMock
 
    STARTUP
    {
-      _metalMock0Tester = make_unique<MetalMock0Tester<
+      _metalMock0ArgsTester = make_unique<MetalMock0ArgsTester<
          Void0ArgFunctionsMock, decltype(_call_FreeVoid0ArgFunctionMock), decltype(_call_StaticVoid0ArgFunctionMock)>>(
          _void0ArgFunctionsMock,
          VirtualFunctionSignature,
@@ -75,31 +75,31 @@ namespace MetalMock
          StaticFunctionSignature);
    }
 
-   // MetalMock0Tester Tests
+   // MetalMock0ArgsTester Tests
 
    TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    {
-      _metalMock0Tester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
+      _metalMock0ArgsTester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
    }
 
    TEST(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    {
-      _metalMock0Tester->ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled();
+      _metalMock0ArgsTester->ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled();
    }
 
    TEST(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
    {
-      _metalMock0Tester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
+      _metalMock0ArgsTester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
    }
 
    TEST(CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException)
    {
-      _metalMock0Tester->CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException();
+      _metalMock0ArgsTester->CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException();
    }
 
    TEST(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      _metalMock0Tester->CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException();
+      _metalMock0ArgsTester->CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException();
    }
 
    TEST1X1(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException,
@@ -107,7 +107,7 @@ namespace MetalMock
       1ULL,
       2ULL)
    {
-      _metalMock0Tester->CalledNTimes_FunctionCalledNTimes_DoesNotThrowException(numberOfCalls);
+      _metalMock0ArgsTester->CalledNTimes_FunctionCalledNTimes_DoesNotThrowException(numberOfCalls);
    }
 
    // MetalMockVoid0Tests

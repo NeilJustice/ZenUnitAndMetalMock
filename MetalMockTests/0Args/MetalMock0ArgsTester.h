@@ -6,7 +6,7 @@ namespace MetalMock
       typename MetalMockObjectType,
       typename FreeFunctionMockObjectType,
       typename StaticFunctionMockObjectType>
-   class MetalMock0Tester
+   class MetalMock0ArgsTester
    {
    private:
       MetalMockObjectType _metalMockObject;
@@ -21,7 +21,7 @@ namespace MetalMock
       StaticFunctionMockObjectType _staticMockObject;
       const string _staticFunctionSignature;
    public:
-      MetalMock0Tester(
+      MetalMock0ArgsTester(
          MetalMockObjectType metalMockObject,
          string_view virtualSignature,
          string_view virtualConstSignature,
