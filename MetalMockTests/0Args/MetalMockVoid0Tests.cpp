@@ -1,22 +1,22 @@
 #include "pch.h"
 #include "MetalMockTests/0Args/MetalMock0ArgsTester.h"
 
-void GlobalVoid0FreeFunction() {}
+void FreeVoid0ArgFunction() {}
 
 namespace MetalMock
 {
-   class Void0Functions
+   class Void0ArgFunctions
    {
    public:
-      static void StaticVoid0Function() {}
       virtual void VirtualFunction() {}
       virtual void VirtualFunctionConst() const {}
       void NonVirtualFunction() {}
       void NonVirtualFunctionConst() const {}
-      virtual ~Void0Functions() = default;
+      static void StaticVoid0ArgFunction() {}
+      virtual ~Void0ArgFunctions() = default;
    };
 
-   class Void0FunctionsMock : public Metal::Mock<Void0Functions>
+   class Void0ArgFunctionsMock : public Metal::Mock<Void0ArgFunctions>
    {
    public:
       METALMOCK_VOID0(VirtualFunction)
@@ -26,112 +26,118 @@ namespace MetalMock
    };
 
    TESTS(MetalMockVoid0Tests)
-   AFACT(OneHundredPercentCodeCoverage)
-   // MetalMock::ZeroArgumentMetalMocker Tests
+   // MetalMock0Tester Tests
+   AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
+   AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
+   AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
+   AFACT(CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException)
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
-   AFACT(CalledOnce_CalledNTimes_MockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
-   AFACT(MetalMockedFunction_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallExceptionWhenCalled)
-   AFACT(Expect_MakesMetalMockedFunctionNotThrow_MakesCalledOnceNotThrow_MakesCalledNTimesNotThrow)
-   AFACT(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
-   // MetalMock::VoidZeroArgumentMetalMocker Tests
-   AFACT(Expect_MakesMetalMockedFunctionCallNotThrowWhenCalled_ExpectCanBeCalledTwice)
+   FACTS(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
+   // MetalMockVoid0Tests
+   AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
+   AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
 
-   const string GlobalFreeFunctionSignature =
-      "void GlobalVoid0FreeFunction()";
-   const string StaticFunctionSignature =
-      "void MetalMock::Void0Functions::StaticVoid0Function()";
+   Void0ArgFunctionsMock _void0ArgFunctionsMock;
+   METALMOCK_VOID0_FREE(_call_FreeVoid0ArgFunction)
+   METALMOCK_VOID0_STATIC(MetalMock::Void0ArgFunctions, _call_StaticVoid0ArgFunction)
+
+   unique_ptr<MetalMock0Tester<
+      Void0ArgFunctionsMock,
+      decltype(_call_FreeVoid0ArgFunctionMock),
+      decltype(_call_StaticVoid0ArgFunctionMock)>> _metalMock0Tester;
 
    const string VirtualFunctionSignature =
-      "virtual void MetalMock::Void0Functions::VirtualFunction()";
-   const string VirtualConstFunctionSignature =
-      "virtual void MetalMock::Void0Functions::VirtualFunctionConst() const";
+      "virtual void MetalMock::Void0ArgFunctions::VirtualFunction()";
+   const string VirtualFunctionConstSignature =
+      "virtual void MetalMock::Void0ArgFunctions::VirtualFunctionConst() const";
    const string NonVirtualFunctionSignature =
-      "void MetalMock::Void0Functions::NonVirtualFunction()";
-   const string NonVirtualConstFunctionSignature =
-      "void MetalMock::Void0Functions::NonVirtualFunctionConst() const";
-
-   METALMOCK_VOID0_FREE(GlobalVoid0FreeFunction)
-   METALMOCK_VOID0_STATIC(MetalMock::Void0Functions, StaticVoid0Function)
-   Void0FunctionsMock _metalMockObject;
-
-   using MetalMock0ArgsTesterType = MetalMock0ArgsTester<
-      decltype(GlobalVoid0FreeFunctionMock),
-      decltype(StaticVoid0FunctionMock),
-      Void0FunctionsMock>;
-   unique_ptr<MetalMock0ArgsTesterType> _metalMock0ArgsTester;
+      "void MetalMock::Void0ArgFunctions::NonVirtualFunction()";
+   const string NonVirtualFunctionConstSignature =
+      "void MetalMock::Void0ArgFunctions::NonVirtualFunctionConst() const";
+   const string FreeFunctionSignature =
+      "void _call_FreeVoid0ArgFunction()";
+   const string StaticFunctionSignature =
+      "void MetalMock::Void0ArgFunctions::_call_StaticVoid0ArgFunction()";
 
    STARTUP
    {
-      _metalMock0ArgsTester = make_unique<MetalMock0ArgsTesterType>(
-         GlobalVoid0FreeFunctionMock,
-         GlobalFreeFunctionSignature,
-         StaticVoid0FunctionMock,
-         StaticFunctionSignature,
-         _metalMockObject,
+      _metalMock0Tester = make_unique<MetalMock0Tester<
+         Void0ArgFunctionsMock, decltype(_call_FreeVoid0ArgFunctionMock), decltype(_call_StaticVoid0ArgFunctionMock)>>(
+         _void0ArgFunctionsMock,
          VirtualFunctionSignature,
-         VirtualConstFunctionSignature,
+         VirtualFunctionConstSignature,
          NonVirtualFunctionSignature,
-         NonVirtualConstFunctionSignature);
+         NonVirtualFunctionConstSignature,
+         _call_FreeVoid0ArgFunctionMock,
+         FreeFunctionSignature,
+         _call_StaticVoid0ArgFunctionMock,
+         StaticFunctionSignature);
    }
 
-   TEST(OneHundredPercentCodeCoverage)
-   {
-      GlobalVoid0FreeFunction();
-      MetalMock::Void0Functions::StaticVoid0Function();
+   // MetalMock0Tester Tests
 
-      MetalMock::Void0Functions void0Functions;
-      void0Functions.VirtualFunction();
-      void0Functions.VirtualFunctionConst();
-      void0Functions.NonVirtualFunction();
-      void0Functions.NonVirtualFunctionConst();
+   TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
+   {
+      _metalMock0Tester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
+   }
+
+   TEST(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
+   {
+      _metalMock0Tester->ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled();
+   }
+
+   TEST(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
+   {
+      _metalMock0Tester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
+   }
+
+   TEST(CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException)
+   {
+      _metalMock0Tester->CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException();
    }
 
    TEST(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      _metalMock0ArgsTester->CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException();
+      _metalMock0Tester->CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException();
    }
 
-   TEST(CalledOnce_CalledNTimes_MockedFunctionNotPreviouslyCalled_ThrowsAnomaly)
+   TEST1X1(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException,
+      size_t numberOfCalls,
+      1ULL,
+      2ULL)
    {
-      _metalMock0ArgsTester->CalledOnce_CalledNTimes_MockedFunctionNotPreviouslyCalled_ThrowsAnomaly();
+      _metalMock0Tester->CalledNTimes_FunctionCalledNTimes_DoesNotThrowException(numberOfCalls);
    }
 
-   TEST(MetalMockedFunction_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallExceptionWhenCalled)
-   {
-      _metalMock0ArgsTester->MetalMockedFunction_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallExceptionWhenCalled();
-   }
+   // MetalMockVoid0Tests
 
-   TEST(Expect_MakesMetalMockedFunctionNotThrow_MakesCalledOnceNotThrow_MakesCalledNTimesNotThrow)
+   TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    {
-      _metalMock0ArgsTester->Expect_MakesMetalMockedFunctionNotThrow_MakesCalledOnceNotThrow_MakesCalledNTimesNotThrow();
-   }
-
-   TEST(ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage)
-   {
-      _metalMock0ArgsTester->ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage();
-   }
-
-   // MetalMock::VoidZeroArgumentMetalMocker Tests
-
-   TEST(Expect_MakesMetalMockedFunctionCallNotThrowWhenCalled_ExpectCanBeCalledTwice)
-   {
-      const auto metalmocktest = [](auto& metalMockObject)
+      const auto test = [](auto& metalMockObject)
       {
          metalMockObject.Expect();
-         metalMockObject.Expect();
-         //
          metalMockObject.MetalMockIt();
-         //
+         metalMockObject.Expect();
          metalMockObject.CalledOnce();
       };
-      metalmocktest(GlobalVoid0FreeFunctionMock);
-      metalmocktest(StaticVoid0FunctionMock);
+      test(_void0ArgFunctionsMock.VirtualFunctionMock);
+      test(_void0ArgFunctionsMock.VirtualFunctionConstMock);
+      test(_void0ArgFunctionsMock.NonVirtualFunctionMock);
+      test(_void0ArgFunctionsMock.NonVirtualFunctionConstMock);
+      test(_call_FreeVoid0ArgFunctionMock);
+      test(_call_StaticVoid0ArgFunctionMock);
+   }
 
-      metalmocktest(_metalMockObject.VirtualFunctionMock);
-      metalmocktest(_metalMockObject.VirtualFunctionConstMock);
-      metalmocktest(_metalMockObject.NonVirtualFunctionMock);
-      metalmocktest(_metalMockObject.NonVirtualFunctionConstMock);
+   TEST(MockedFunctions_CodeCoverage)
+   {
+      MetalMock::Void0ArgFunctions void0Functions;
+      void0Functions.VirtualFunction();
+      void0Functions.VirtualFunctionConst();
+      void0Functions.NonVirtualFunction();
+      void0Functions.NonVirtualFunctionConst();
+      FreeVoid0ArgFunction();
+      MetalMock::Void0ArgFunctions::StaticVoid0ArgFunction();
    }
 
    RUN_TESTS(MetalMockVoid0Tests)

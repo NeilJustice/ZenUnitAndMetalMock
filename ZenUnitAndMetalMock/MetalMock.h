@@ -1175,6 +1175,11 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class ZeroArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
       friend class ZeroArgumentMetalMockerTests;
+      template<
+         typename MetalMockObjectType,
+         typename FreeMockType,
+         typename StaticMockType>
+      friend class MetalMock0Tester;
    private:
       size_t numberOfCallsToMetalMockedFunction;
    protected:

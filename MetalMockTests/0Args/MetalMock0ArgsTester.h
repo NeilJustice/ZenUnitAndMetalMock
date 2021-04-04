@@ -3,184 +3,67 @@
 namespace MetalMock
 {
    template<
-      typename GlobalFreeFunctionMockType,
-      typename StaticFunctionMockType,
-      typename MetalMockObjectType>
-   class MetalMock0ArgsTester
+      typename MetalMockObjectType,
+      typename FreeFunctionMockObjectType,
+      typename StaticFunctionMockObjectType>
+   class MetalMock0Tester
    {
    private:
-      GlobalFreeFunctionMockType _globalFreeFunctionMock;
-      const string _globalFreeFunctionSignature;
-
-      StaticFunctionMockType _staticFunctionMock;
-      const string _staticFunctionSignature;
-
       MetalMockObjectType _metalMockObject;
       const string _virtualFunctionSignature;
-      const string _virtualConstFunctionSignature;
+      const string _VirtualFunctionConstSignature;
       const string _nonVirtualFunctionSignature;
-      const string _nonVirtualConstFunctionSignature;
+      const string _nonVirtualFunctionConstSignature;
+
+      FreeFunctionMockObjectType _freeFunctionMockObject;
+      const string _freeFunctionSignature;
+
+      StaticFunctionMockObjectType _staticMockObject;
+      const string _staticFunctionSignature;
    public:
-      MetalMock0ArgsTester(
-         GlobalFreeFunctionMockType globalFreeFunctionMock,
-         string_view globalFreeFunctionSignature,
-         StaticFunctionMockType staticFunctionMock,
-         string_view staticFunctionSignature,
+      MetalMock0Tester(
          MetalMockObjectType metalMockObject,
-         string_view virtualFunctionSignature,
-         string_view virtualConstFunctionSignature,
-         string_view nonVirtualFunctionSignature,
-         string_view nonVirtualConstFunctionSignature)
-         : _globalFreeFunctionMock(globalFreeFunctionMock)
-         , _globalFreeFunctionSignature(globalFreeFunctionSignature)
-         , _staticFunctionMock(staticFunctionMock)
-         , _staticFunctionSignature(staticFunctionSignature)
-         , _metalMockObject(metalMockObject)
-         , _virtualFunctionSignature(virtualFunctionSignature)
-         , _virtualConstFunctionSignature(virtualConstFunctionSignature)
-         , _nonVirtualFunctionSignature(nonVirtualFunctionSignature)
-         , _nonVirtualConstFunctionSignature(nonVirtualConstFunctionSignature)
+         string_view virtualSignature,
+         string_view virtualConstSignature,
+         string_view nonVirtualSignature,
+         string_view nonVirtualConstSignature,
+         FreeFunctionMockObjectType freeFunctionMockObject,
+         string_view freeFunctionSignature,
+         StaticFunctionMockObjectType staticMockObject,
+         string_view staticSignature)
+         : _metalMockObject(std::move(metalMockObject))
+         , _virtualFunctionSignature(virtualSignature)
+         , _VirtualFunctionConstSignature(virtualConstSignature)
+         , _nonVirtualFunctionSignature(nonVirtualSignature)
+         , _nonVirtualFunctionConstSignature(nonVirtualConstSignature)
+         , _freeFunctionMockObject(freeFunctionMockObject)
+         , _freeFunctionSignature(freeFunctionSignature)
+         , _staticMockObject(staticMockObject)
+         , _staticFunctionSignature(staticSignature)
       {
       }
 
-      void CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException()
+      void MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException()
       {
-         auto metalmocktest = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         const auto test = [](auto metalMockFunctionCallLambda, const string& expectedFunctionSignature)
          {
-            THROWS_EXCEPTION(metalMockObject.CalledNTimes(0), MetalMock::UnsupportedCalledZeroTimesException,
-               MetalMock::UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature));
+            const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(expectedFunctionSignature);
+            THROWS_EXCEPTION(metalMockFunctionCallLambda(),
+               UnexpectedCallException, expectedExceptionMessage);
          };
-         metalmocktest(_globalFreeFunctionMock, _globalFreeFunctionSignature);
-         metalmocktest(_staticFunctionMock, _staticFunctionSignature);
-
-         metalmocktest(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         metalmocktest(_metalMockObject.VirtualFunctionConstMock, _virtualConstFunctionSignature);
-         metalmocktest(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         metalmocktest(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualConstFunctionSignature);
+         test([&] { _metalMockObject.VirtualFunction(); }, _virtualFunctionSignature);
+         test([&] { _metalMockObject.VirtualFunctionConst(); }, _VirtualFunctionConstSignature);
+         test([&] { _metalMockObject.NonVirtualFunction(); }, _nonVirtualFunctionSignature);
+         test([&] { _metalMockObject.NonVirtualFunctionConst(); }, _nonVirtualFunctionConstSignature);
+         function<void()> metalMockBoundFreeMock = BIND_0ARG_METALMOCK_OBJECT(_freeFunctionMockObject);
+         test([&] { metalMockBoundFreeMock(); }, _freeFunctionSignature);
+         function<void()> metalMockBoundStaticMock = BIND_0ARG_METALMOCK_OBJECT(_staticMockObject);
+         test([&] { metalMockBoundStaticMock(); }, _staticFunctionSignature);
       }
 
-      void CalledOnce_CalledNTimes_MockedFunctionNotPreviouslyCalled_ThrowsAnomaly()
+      void ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled()
       {
-         auto metalmocktest = [](auto& metalMockObject, const string& expectedFunctionSignature)
-         {
-            THROWS_EXCEPTION(metalMockObject.CalledOnce(), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->numberOfCallsToMetalMockedFunction, this->MetalMockedFunctionSignature)\n"
-"Expected: 1\n"
-"  Actual: 0\n"
-" Message: \"" + expectedFunctionSignature + "\"\n"
-"File.cpp(1)");
-
-            THROWS_EXCEPTION(metalMockObject.CalledNTimes(1), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->numberOfCallsToMetalMockedFunction, this->MetalMockedFunctionSignature)\n"
-"Expected: 1\n"
-"  Actual: 0\n"
-" Message: \"" + expectedFunctionSignature + "\"\n"
-"File.cpp(1)");
-
-            THROWS_EXCEPTION(metalMockObject.CalledNTimes(2), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->numberOfCallsToMetalMockedFunction, this->MetalMockedFunctionSignature)\n"
-"Expected: 2\n"
-"  Actual: 0\n"
-" Message: \"" + expectedFunctionSignature + "\"\n"
-"File.cpp(1)");
-         };
-         metalmocktest(_globalFreeFunctionMock, _globalFreeFunctionSignature);
-         metalmocktest(_staticFunctionMock, _staticFunctionSignature);
-
-         metalmocktest(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         metalmocktest(_metalMockObject.VirtualFunctionConstMock, _virtualConstFunctionSignature);
-         metalmocktest(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         metalmocktest(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualConstFunctionSignature);
-      }
-
-      void MetalMockedFunction_ExpectNotPreviouslyCalled_ThrowsUnexpectedCallExceptionWhenCalled()
-      {
-         const function<void()> metalMockBoundFreeFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_globalFreeFunctionMock);
-         THROWS_EXCEPTION(metalMockBoundFreeFunctionMock(),
-            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_globalFreeFunctionSignature));
-
-         const function<void()> metalMockBoundStaticFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_staticFunctionMock);
-         THROWS_EXCEPTION(metalMockBoundStaticFunctionMock(),
-            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_staticFunctionSignature));
-
-         THROWS_EXCEPTION(_metalMockObject.VirtualFunction(),
-            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_virtualFunctionSignature));
-
-         THROWS_EXCEPTION(_metalMockObject.VirtualFunctionConst(),
-            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_virtualConstFunctionSignature));
-
-         THROWS_EXCEPTION(_metalMockObject.NonVirtualFunction(),
-            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_nonVirtualFunctionSignature));
-
-         THROWS_EXCEPTION(_metalMockObject.NonVirtualFunctionConst(),
-            UnexpectedCallException, UnexpectedCallException::MakeExceptionMessage(_nonVirtualConstFunctionSignature));
-      }
-
-      template<typename InnerMetalMockObjectType>
-      static void AssertBehaviorAfterFirstCall(
-         InnerMetalMockObjectType& metalMockObject, const string& expectedFunctionSignature)
-      {
-         metalMockObject.CalledOnce();
-         metalMockObject.CalledNTimes(1);
-         THROWS_EXCEPTION(metalMockObject.CalledNTimes(2), Anomaly,
-            MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 2, 1));
-      }
-
-      template<typename InnerMetalMockObjectType>
-      static void AssertBehaviorAfterSecondCall(
-         InnerMetalMockObjectType& metalMockObject, const string& expectedFunctionSignature)
-      {
-         THROWS_EXCEPTION(metalMockObject.CalledOnce(), Anomaly,
-            MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 1, 2));
-         metalMockObject.CalledNTimes(2);
-         THROWS_EXCEPTION(metalMockObject.CalledNTimes(3), Anomaly,
-            MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 3, 2));
-      }
-
-      void Expect_MakesMetalMockedFunctionNotThrow_MakesCalledOnceNotThrow_MakesCalledNTimesNotThrow()
-      {
-         const function<void()> metalMockBoundFreeFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_globalFreeFunctionMock);
-         _globalFreeFunctionMock.Expect();
-         metalMockBoundFreeFunctionMock();
-         AssertBehaviorAfterFirstCall(_globalFreeFunctionMock, _globalFreeFunctionSignature);
-         metalMockBoundFreeFunctionMock();
-         AssertBehaviorAfterSecondCall(_globalFreeFunctionMock, _globalFreeFunctionSignature);
-
-         const function<void()> metalMockBoundStaticFunctionMock = BIND_0ARG_METALMOCK_OBJECT(_staticFunctionMock);
-         _staticFunctionMock.Expect();
-         metalMockBoundStaticFunctionMock();
-         AssertBehaviorAfterFirstCall(_staticFunctionMock, _staticFunctionSignature);
-         metalMockBoundStaticFunctionMock();
-         AssertBehaviorAfterSecondCall(_staticFunctionMock, _staticFunctionSignature);
-
-         _metalMockObject.VirtualFunctionMock.Expect();
-         _metalMockObject.VirtualFunction();
-         AssertBehaviorAfterFirstCall(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         _metalMockObject.VirtualFunction();
-         AssertBehaviorAfterSecondCall(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-
-         _metalMockObject.VirtualFunctionConstMock.Expect();
-         _metalMockObject.VirtualFunctionConst();
-         AssertBehaviorAfterFirstCall(_metalMockObject.VirtualFunctionConstMock, _virtualConstFunctionSignature);
-         _metalMockObject.VirtualFunctionConst();
-         AssertBehaviorAfterSecondCall(_metalMockObject.VirtualFunctionConstMock, _virtualConstFunctionSignature);
-
-         _metalMockObject.NonVirtualFunctionMock.Expect();
-         _metalMockObject.NonVirtualFunction();
-         AssertBehaviorAfterFirstCall(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         _metalMockObject.NonVirtualFunction();
-         AssertBehaviorAfterSecondCall(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-
-         _metalMockObject.NonVirtualFunctionConstMock.Expect();
-         _metalMockObject.NonVirtualFunctionConst();
-         AssertBehaviorAfterFirstCall(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualConstFunctionSignature);
-         _metalMockObject.NonVirtualFunctionConst();
-         AssertBehaviorAfterSecondCall(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualConstFunctionSignature);
-      }
-
-      void ThrowExceptionWhenCalled_MetalMockedFunctionIsThenCalled_ThrowsTheSpecifiedExceptionTypeWithExceptionMessage()
-      {
-         auto metalmocktest = [](auto& metalMockObject)
+         const auto assertCalledOnce = [](auto& metalMockObject)
          {
             metalMockObject.CalledOnce();
             metalMockObject.CalledNTimes(1);
@@ -188,31 +71,142 @@ namespace MetalMock
 
          const string exceptionMessage = ZenUnit::Random<string>();
 
-         const function<void()> metalMockBoundGlobalFreeFunction = BIND_0ARG_METALMOCK_OBJECT(_globalFreeFunctionMock);
-         _globalFreeFunctionMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
-         THROWS_EXCEPTION(metalMockBoundGlobalFreeFunction(), runtime_error, exceptionMessage);
-         metalmocktest(_globalFreeFunctionMock);
-
-         const function<void()> metalMockBoundStaticFunction = BIND_0ARG_METALMOCK_OBJECT(_staticFunctionMock);
-         _staticFunctionMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
-         THROWS_EXCEPTION(metalMockBoundStaticFunction(), runtime_error, exceptionMessage);
-         metalmocktest(_staticFunctionMock);
-
          _metalMockObject.VirtualFunctionMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
          THROWS_EXCEPTION(_metalMockObject.VirtualFunction(), runtime_error, exceptionMessage);
-         metalmocktest(_metalMockObject.VirtualFunctionMock);
+         assertCalledOnce(_metalMockObject.VirtualFunctionMock);
 
          _metalMockObject.VirtualFunctionConstMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
          THROWS_EXCEPTION(_metalMockObject.VirtualFunctionConst(), runtime_error, exceptionMessage);
-         metalmocktest(_metalMockObject.VirtualFunctionConstMock);
+         assertCalledOnce(_metalMockObject.VirtualFunctionConstMock);
 
          _metalMockObject.NonVirtualFunctionMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
          THROWS_EXCEPTION(_metalMockObject.NonVirtualFunction(), runtime_error, exceptionMessage);
-         metalmocktest(_metalMockObject.NonVirtualFunctionMock);
+         assertCalledOnce(_metalMockObject.NonVirtualFunctionMock);
 
          _metalMockObject.NonVirtualFunctionConstMock.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
          THROWS_EXCEPTION(_metalMockObject.NonVirtualFunctionConst(), runtime_error, exceptionMessage);
-         metalmocktest(_metalMockObject.NonVirtualFunctionConstMock);
+         assertCalledOnce(_metalMockObject.NonVirtualFunctionConstMock);
+
+         function<void()> metalMockBoundFreeFunction = BIND_0ARG_METALMOCK_OBJECT(_freeFunctionMockObject);
+         _freeFunctionMockObject.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
+         THROWS_EXCEPTION(metalMockBoundFreeFunction(), runtime_error, exceptionMessage);
+         assertCalledOnce(_freeFunctionMockObject);
+
+         function<void()> metalMockBoundStaticFunction = BIND_0ARG_METALMOCK_OBJECT(_staticMockObject);
+         _staticMockObject.template ThrowExceptionWhenCalled<runtime_error>(exceptionMessage);
+         THROWS_EXCEPTION(metalMockBoundStaticFunction(), runtime_error, exceptionMessage);
+         assertCalledOnce(_staticMockObject);
+      }
+
+      void MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow()
+      {
+         const auto assertAfterFirstCall = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.CalledOnce();
+            metalMockObject.CalledNTimes(1);
+            const string expectedExceptionMessage =
+               MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 2, 1);
+            THROWS_EXCEPTION(metalMockObject.CalledNTimes(2), Anomaly, expectedExceptionMessage);
+         };
+         const auto assertAfterSecondCall = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            const string expectedExceptionMessage1 =
+               MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 1, 2);
+            THROWS_EXCEPTION(metalMockObject.CalledOnce(), Anomaly, expectedExceptionMessage1);
+            metalMockObject.CalledNTimes(2);
+            const string expectedExceptionMessage2 =
+               MetalMockTestUtils::MakeExpectedExceptionMessageForCallCountMismatch0Args(expectedFunctionSignature, 3, 2);
+            THROWS_EXCEPTION(metalMockObject.CalledNTimes(3), Anomaly, expectedExceptionMessage2);
+         };
+
+         _metalMockObject.VirtualFunctionMock.Expect();
+         _metalMockObject.VirtualFunction();
+         assertAfterFirstCall(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         _metalMockObject.VirtualFunction();
+         assertAfterSecondCall(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+
+         _metalMockObject.VirtualFunctionConstMock.Expect();
+         _metalMockObject.VirtualFunctionConst();
+         assertAfterFirstCall(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
+         _metalMockObject.VirtualFunctionConst();
+         assertAfterSecondCall(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
+
+         _metalMockObject.NonVirtualFunctionMock.Expect();
+         _metalMockObject.NonVirtualFunction();
+         assertAfterFirstCall(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         _metalMockObject.NonVirtualFunction();
+         assertAfterSecondCall(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+
+         _metalMockObject.NonVirtualFunctionConstMock.Expect();
+         _metalMockObject.NonVirtualFunctionConst();
+         assertAfterFirstCall(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         _metalMockObject.NonVirtualFunctionConst();
+         assertAfterSecondCall(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+
+         const function<void()> metalMockBoundFreeFunction = BIND_0ARG_METALMOCK_OBJECT(_freeFunctionMockObject);
+         _freeFunctionMockObject.Expect();
+         metalMockBoundFreeFunction();
+         assertAfterFirstCall(_freeFunctionMockObject, _freeFunctionSignature);
+         metalMockBoundFreeFunction();
+         assertAfterSecondCall(_freeFunctionMockObject, _freeFunctionSignature);
+
+         const function<void()> metalMockBoundStaticFunction = BIND_0ARG_METALMOCK_OBJECT(_staticMockObject);
+         _staticMockObject.Expect();
+         metalMockBoundStaticFunction();
+         assertAfterFirstCall(_staticMockObject, _staticFunctionSignature);
+         metalMockBoundStaticFunction();
+         assertAfterSecondCall(_staticMockObject, _staticFunctionSignature);
+      }
+
+      void CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException()
+      {
+         const auto test = [](auto& metalMockObject)
+         {
+            metalMockObject._wasExpected = true;
+            //
+            metalMockObject.MetalMockIt();
+            //
+            metalMockObject.CalledOnce();
+         };
+         test(_metalMockObject.VirtualFunctionMock);
+         test(_metalMockObject.VirtualFunctionConstMock);
+         test(_metalMockObject.NonVirtualFunctionMock);
+         test(_metalMockObject.NonVirtualFunctionConstMock);
+         test(_freeFunctionMockObject);
+         test(_staticMockObject);
+      }
+
+      void CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException()
+      {
+         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            THROWS_EXCEPTION(metalMockObject.CalledNTimes(0), UnsupportedCalledZeroTimesException,
+               UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature));
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
+      }
+
+      void CalledNTimes_FunctionCalledNTimes_DoesNotThrowException(size_t numberOfCalls)
+      {
+         const auto test = [&](auto& metalMockObject)
+         {
+            metalMockObject._wasExpected = true;
+            //
+            MetalMockTestUtils::CallNTimes(numberOfCalls, [&] { metalMockObject.MetalMockIt(); });
+            //
+            metalMockObject.CalledNTimes(numberOfCalls);
+         };
+         test(_metalMockObject.VirtualFunctionMock);
+         test(_metalMockObject.VirtualFunctionConstMock);
+         test(_metalMockObject.NonVirtualFunctionMock);
+         test(_metalMockObject.NonVirtualFunctionConstMock);
+         test(_freeFunctionMockObject);
+         test(_staticMockObject);
       }
    };
 }

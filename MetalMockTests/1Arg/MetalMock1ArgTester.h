@@ -47,17 +47,16 @@ namespace MetalMock
       {
          const auto test = [](auto metalMockFunctionCallLambda, const string& expectedFunctionSignature)
          {
-            THROWS_EXCEPTION(metalMockFunctionCallLambda(), UnexpectedCallException,
-               UnexpectedCallException::MakeExceptionMessage(expectedFunctionSignature, 0));
+            const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(expectedFunctionSignature, 0);
+            THROWS_EXCEPTION(metalMockFunctionCallLambda(),
+               UnexpectedCallException, expectedExceptionMessage);
          };
          test([&] { _metalMockObject.VirtualFunction(0); }, _virtualFunctionSignature);
          test([&] { _metalMockObject.VirtualFunctionConst(0); }, _VirtualFunctionConstSignature);
          test([&] { _metalMockObject.NonVirtualFunction(0); }, _nonVirtualFunctionSignature);
          test([&] { _metalMockObject.NonVirtualFunctionConst(0); }, _nonVirtualFunctionConstSignature);
-
          function<void(int)> metalMockBoundFreeMock = BIND_1ARG_METALMOCK_OBJECT(_freeFunctionMockObject);
          test([&] { metalMockBoundFreeMock(0); }, _freeFunctionSignature);
-
          function<void(int)> metalMockBoundStaticMock = BIND_1ARG_METALMOCK_OBJECT(_staticMockObject);
          test([&] { metalMockBoundStaticMock(0); }, _staticFunctionSignature);
       }
@@ -410,7 +409,7 @@ File.cpp(1))");
             //
             MetalMockTestUtils::CallNTimes(numberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(0); });
             //
-            const string expectedExceptionWhat = String::Concat(R"(
+            const string expectedExceptionMessage = String::Concat(R"(
   Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature)
 Expected: std::vector<MetalMock::OneArgumentFunctionCallReference<int>,std::allocator<MetalMock::OneArgumentFunctionCallReference<int> > > (size 1):
 {
@@ -434,7 +433,7 @@ File.cpp(1))");
             vector<OneArgumentFunctionCallReference<int>> expectedCalls;
             MetalMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(lvalue); });
             THROWS_EXCEPTION(metalMockObject.CalledAsFollows(expectedCalls),
-               Anomaly, expectedExceptionWhat);
+               Anomaly, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
@@ -459,7 +458,7 @@ File.cpp(1))");
             const int expectedArgument = 10;
             vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls;
             MetalMockTestUtils::CallNTimes(3, [&] { expectedOneArgumentFunctionCalls.emplace_back(expectedArgument); });
-            const string expectedExceptionWhat = String::Concat(R"(
+            const string expectedExceptionMessage = String::Concat(R"(
   Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature)
 Expected: std::vector<MetalMock::OneArgumentFunctionCallReference<int>,std::allocator<MetalMock::OneArgumentFunctionCallReference<int> > > (size 3):
 {
@@ -487,7 +486,8 @@ Expected: 3
  Message: ")", expectedFunctionSignature, R"("
 File.cpp(1)
 File.cpp(1))");
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, expectedExceptionWhat);
+            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(expectedOneArgumentFunctionCalls),
+               Anomaly, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);

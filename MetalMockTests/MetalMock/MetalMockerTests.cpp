@@ -104,10 +104,12 @@ namespace MetalMock
    TEST(MetalMockThrowIfNotExpected_ExpectedFalse_ThrowsUnexpectedCallException)
    {
       IS_FALSE(_metalMocker->_wasExpected);
-      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfNotExpected(), UnexpectedCallException,
-         UnexpectedCallException::MakeExceptionMessage(MetalMockedFunctionSignature));
-      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfNotExpected(1, 2, 3), UnexpectedCallException,
-         UnexpectedCallException::MakeExceptionMessage(MetalMockedFunctionSignature, 1, 2, 3));
+      const string expectedExceptionMessage1 = UnexpectedCallException::MakeExceptionMessage(MetalMockedFunctionSignature);
+      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfNotExpected(),
+         UnexpectedCallException, expectedExceptionMessage1);
+      const string expectedExceptionMessage2 = UnexpectedCallException::MakeExceptionMessage(MetalMockedFunctionSignature, 1, 2, 3);
+      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfNotExpected(1, 2, 3),
+         UnexpectedCallException, expectedExceptionMessage2);
    }
 
    TEST(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_ThrowsUnsupportedCalledZeroTimesException)

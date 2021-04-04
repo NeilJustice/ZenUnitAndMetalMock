@@ -50,8 +50,9 @@ namespace MetalMock
    TEST(MetalMockIt_ExpectedFalse_Throws)
    {
       IS_FALSE(_metalMocker->_wasExpected);
-      THROWS_EXCEPTION(_metalMocker->MetalMockIt(1, 2, 3, 4, 5), UnexpectedCallException,
-         UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 1, 2, 3, 4, 5));
+      const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 1, 2, 3, 4, 5);
+      THROWS_EXCEPTION(_metalMocker->MetalMockIt(1, 2, 3, 4, 5),
+         UnexpectedCallException, expectedExceptionMessage);
    }
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)

@@ -44,7 +44,7 @@ namespace MetalMock
    FACTS(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException)
    // MetalMockVoid1Tests
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
-   AFACT(MockedFunctionsCodeCoverage)
+   AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
 
    Void1ArgFunctionsMock _void1ArgFunctionsMock;
@@ -196,7 +196,7 @@ namespace MetalMock
       test(_call_StaticVoid1ArgFunctionMock);
    }
 
-   TEST(MockedFunctionsCodeCoverage)
+   TEST(MockedFunctions_CodeCoverage)
    {
       MetalMock::Void1ArgFunctions void1Functions;
       void1Functions.VirtualFunction(0);
