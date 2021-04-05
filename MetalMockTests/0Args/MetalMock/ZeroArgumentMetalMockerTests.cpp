@@ -69,7 +69,7 @@ namespace MetalMock
       ARE_EQUAL(1, _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.size());
       METALMOCK(_zeroArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
       const FunctionCallSequenceNumber functionCallSequenceNumber = _zeroArgumentMetalMocker->CalledOnce();
-      ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers[0].value, functionCallSequenceNumber.value);
+      ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers[0], functionCallSequenceNumber);
    }
 
    TEST2X2(CalledOnce_SetsAssertedToTrue_FunctionWasCalledOnce_DoesNotThrowException,
@@ -93,7 +93,7 @@ File.cpp(1))");
       else
       {
          const FunctionCallSequenceNumber functionCallSequenceNumber = _zeroArgumentMetalMocker->CalledOnce();
-         ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers[0].value, functionCallSequenceNumber.value);
+         ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers[0], functionCallSequenceNumber);
       }
       //
       IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
@@ -133,7 +133,7 @@ File.cpp(1))");
       else
       {
          const FunctionCallSequenceNumber functionCallSequenceNumber = _zeroArgumentMetalMocker->CalledNTimes(expectedNumberOfCallsToMetalMockedFunction);
-         ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.back().value, functionCallSequenceNumber.value);
+         ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.back(), functionCallSequenceNumber);
       }
       //
       IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);

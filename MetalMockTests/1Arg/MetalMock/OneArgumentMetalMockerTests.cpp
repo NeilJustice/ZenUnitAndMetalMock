@@ -119,7 +119,8 @@ namespace MetalMock
          }
          else
          {
-            _metalMocker->CalledOnceWith(expectedArgument);
+            const FunctionCallSequenceNumber functionCallSequenceNumber = _metalMocker->CalledOnceWith(expectedArgument);
+            ARE_EQUAL(_metalMocker->metalMockedFunctionCallHistory[0].functionCallSequenceNumber, functionCallSequenceNumber);
          }
       }
       //

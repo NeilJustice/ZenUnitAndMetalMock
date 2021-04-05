@@ -785,11 +785,11 @@ namespace MetalMock
    class UnexpectedCallException : public ZenUnit::MetalMockException
    {
    private:
-      const std::string _what;
+      const std::string _exceptionMessage;
    public:
       template<typename... ArgTypes>
       explicit UnexpectedCallException(const std::string& metalMockedFunctionSignature, ArgTypes&&... args)
-         : _what(MakeExceptionMessage(metalMockedFunctionSignature, std::forward<ArgTypes>(args)...))
+         : _exceptionMessage(MakeExceptionMessage(metalMockedFunctionSignature, std::forward<ArgTypes>(args)...))
       {
       }
 
@@ -798,24 +798,25 @@ namespace MetalMock
       template<typename... ArgTypes>
       static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature, ArgTypes&&... args)
       {
-         std::ostringstream whatBuilder;
-         whatBuilder << "Unexpected call to MetalMocked function:\n" << metalMockedFunctionSignature;
-         AppendToStringedArgs(whatBuilder, 0, std::forward<ArgTypes>(args)...);
-         std::string exceptionMessage = whatBuilder.str();
+         std::ostringstream exceptionMessageBuilder;
+         exceptionMessageBuilder << "Unexpected call to MetalMocked function:\n" << metalMockedFunctionSignature;
+         AppendToStringedArgs(exceptionMessageBuilder, 0, std::forward<ArgTypes>(args)...);
+         std::string exceptionMessage = exceptionMessageBuilder.str();
          return exceptionMessage;
       }
 
       const char* what() const noexcept override
       {
-         return _what.c_str();
+         return _exceptionMessage.c_str();
       }
    private:
       template<typename ArgType, typename... SubsequentArgTypes>
-      static void AppendToStringedArgs(std::ostringstream& outWhatBuilder, size_t argIndex, ArgType&& arg, SubsequentArgTypes&&... args)
+      static void AppendToStringedArgs(
+         std::ostringstream& outExceptionMessageBuilder, size_t argIndex, ArgType&& arg, SubsequentArgTypes&&... args)
       {
          const std::string toStringedArg = ZenUnit::ToStringer::ToString(std::forward<ArgType>(arg));
-         outWhatBuilder << "\nArgument" << ++argIndex << ": " << toStringedArg;
-         AppendToStringedArgs(outWhatBuilder, argIndex, std::forward<SubsequentArgTypes>(args)...);
+         outExceptionMessageBuilder << "\nArgument" << ++argIndex << ": " << toStringedArg;
+         AppendToStringedArgs(outExceptionMessageBuilder, argIndex, std::forward<SubsequentArgTypes>(args)...);
       }
 
       static void AppendToStringedArgs(std::ostringstream&, size_t)
@@ -826,10 +827,10 @@ namespace MetalMock
    class ReturnValueMustBeSpecifiedException : public ZenUnit::MetalMockException
    {
    private:
-      const std::string _what;
+      const std::string _exceptionMessage;
    public:
       explicit ReturnValueMustBeSpecifiedException(const std::string& metalMockedFunctionSignature)
-         : _what(MakeExceptionMessage(metalMockedFunctionSignature))
+         : _exceptionMessage(MakeExceptionMessage(metalMockedFunctionSignature))
       {
       }
 
@@ -837,7 +838,7 @@ namespace MetalMock
 
       const char* what() const noexcept override
       {
-         return _what.c_str();
+         return _exceptionMessage.c_str();
       }
 
       static std::string MakeExceptionMessage(std::string_view metalMockedFunctionSignature)
@@ -853,10 +854,10 @@ MetalMocked functions with non-void return types must have their return value or
    class UnsupportedCalledZeroTimesException : public ZenUnit::MetalMockException
    {
    private:
-      const std::string _what;
+      const std::string _exceptionMessage;
    public:
       explicit UnsupportedCalledZeroTimesException(const std::string& metalMockedFunctionSignature)
-         : _what(MakeExceptionMessage(metalMockedFunctionSignature))
+         : _exceptionMessage(MakeExceptionMessage(metalMockedFunctionSignature))
       {
       }
 
@@ -882,7 +883,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
 
       const char* what() const noexcept override
       {
-         return _what.c_str();
+         return _exceptionMessage.c_str();
       }
    };
 
@@ -2108,7 +2109,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
          ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature);
-         return FunctionCallSequenceNumber();
+         return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumber;
       }
 
       FunctionCallSequenceNumber CalledNTimesWith(size_t expectedNumberOfCallsToMetalMockedFunction, const ArgType& expectedArgument)
@@ -4270,6 +4271,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
 namespace ZenUnit
 {
+   template<>
+   class Equalizer<MetalMock::FunctionCallSequenceNumber>
+   {
+   public:
+      static void AssertEqual(
+         const MetalMock::FunctionCallSequenceNumber& expectedFunctionCallSequenceNumber,
+         const MetalMock::FunctionCallSequenceNumber& actualFunctionCallSequenceNumber)
+      {
+         ARE_EQUAL(expectedFunctionCallSequenceNumber.value, actualFunctionCallSequenceNumber.value);
+      }
+   };
+
    template<typename ArgType>
    class Equalizer<MetalMock::OneArgumentFunctionCall<ArgType>>
    {
