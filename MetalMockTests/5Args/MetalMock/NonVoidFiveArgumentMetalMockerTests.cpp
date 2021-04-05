@@ -29,7 +29,7 @@ namespace MetalMock
    TEST(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    {
       IS_FALSE(_nonVoidFiveArgumentMetalMocker->wasExpected);
-      IS_FALSE(_nonVoidFiveArgumentMetalMocker->_callInsteadFunction);
+      IS_FALSE(_nonVoidFiveArgumentMetalMocker->callInsteadFunction);
       //
       _nonVoidFiveArgumentMetalMocker->CallInstead(
          std::bind(&NonVoidFiveArgumentMetalMockerTests::NonVoidFiveArgFunction, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4, placeholders::_5));
