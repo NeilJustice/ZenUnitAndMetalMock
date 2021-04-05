@@ -2122,7 +2122,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::Concat(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex);
          }
-         return FunctionCallSequenceNumber();
+         return this->metalMockedFunctionCallHistory.back().functionCallSequenceNumber;
       }
 
       FunctionCallSequenceNumber CalledAsFollows(
@@ -2135,7 +2135,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
                OneArgumentFunctionCallReference<ArgType>,
                OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return FunctionCallSequenceNumber();
+         return metalMockedFunctionCallHistory.back().functionCallSequenceNumber;
       }
 
       FunctionCallSequenceNumber CalledAsFollowsInAnyOrder(
