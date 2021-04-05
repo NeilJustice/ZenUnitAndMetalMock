@@ -771,13 +771,13 @@ namespace MetalMock
 
    struct FunctionCallSequenceNumber
    {
-      unsigned long long value;
+      unsigned long long functionCallSequenceNumber;
 
-      FunctionCallSequenceNumber() : value(_globalAtomicFunctionCallSequenceNumber++) {}
+      FunctionCallSequenceNumber() : functionCallSequenceNumber(_globalAtomicFunctionCallSequenceNumber++) {}
 
-      FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumber)
+      FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumber) const
       {
-         IS_TRUE(value < expectedNextFunctionCallSequenceNumber.value);
+         IS_LT(functionCallSequenceNumber, expectedNextFunctionCallSequenceNumber.functionCallSequenceNumber);
          return expectedNextFunctionCallSequenceNumber;
       }
    };
@@ -4279,7 +4279,7 @@ namespace ZenUnit
          const MetalMock::FunctionCallSequenceNumber& expectedFunctionCallSequenceNumber,
          const MetalMock::FunctionCallSequenceNumber& actualFunctionCallSequenceNumber)
       {
-         ARE_EQUAL(expectedFunctionCallSequenceNumber.value, actualFunctionCallSequenceNumber.value);
+         ARE_EQUAL(expectedFunctionCallSequenceNumber.functionCallSequenceNumber, actualFunctionCallSequenceNumber.functionCallSequenceNumber);
       }
    };
 
