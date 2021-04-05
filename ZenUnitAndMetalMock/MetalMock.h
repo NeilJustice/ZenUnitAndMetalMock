@@ -2148,7 +2148,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
                OneArgumentFunctionCallReference<ArgType>,
                OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
          INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return FunctionCallSequenceNumber();
+         return metalMockedFunctionCallHistory.back().functionCallSequenceNumber;
       }
    };
 

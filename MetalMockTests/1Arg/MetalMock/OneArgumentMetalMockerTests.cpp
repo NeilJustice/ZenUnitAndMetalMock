@@ -16,6 +16,11 @@ namespace MetalMock
    AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
    AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreNotEqual_ThrowsAnomaly)
    AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreEqual_DoesNotThrowAnomaly)
+   AFACT(CalledAsFollowsInAnyOrder_ExpectedCallsSizeIs0_ThrowsUnsupportedCalledZeroTimesException_DoesNotSetAssertedToTrue)
+   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
+   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreNotEqual_ThrowsAnomaly)
+   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreEqualInSameOrder_DoesNotThrowAnomaly)
+   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreEqualInDifferentOrder_DoesNotThrowAnomaly)
    EVIDENCE
 
    unique_ptr<OneArgumentMetalMocker<int, MetalMockExceptionThrowerMock>> _oneArgumentMetalMocker;
@@ -284,6 +289,91 @@ File.cpp(1))");
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 10 };
       //
       const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledAsFollows(expectedArgumentFunctionCalls);
+      //
+      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
+      ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory.back().functionCallSequenceNumber, functionCallSequenceNumber);
+   }
+
+   TEST(CalledAsFollowsInAnyOrder_ExpectedCallsSizeIs0_ThrowsUnsupportedCalledZeroTimesException_DoesNotSetAssertedToTrue)
+   {
+      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      //
+      const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(_metalMockedFunctionSignature);
+      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollowsInAnyOrder({}),
+         UnsupportedCalledZeroTimesException, expectedExceptionMessage);
+      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+   }
+
+   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
+   {
+      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      const int zero = 0;
+      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ zero };
+      //
+      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
+      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedOneArgumentFunctionCalls), Anomaly, R"(
+  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)
+Expected: expectedElements.size() == actualElements.size()
+  Actual: expectedElements.size() != actualElements.size()
+ Because: ARE_EQUAL(expectedElements.size(), actualElements.size()) failed
+Expected: 1
+  Actual: 0
+ Message: ")" + _metalMockedFunctionSignature + R"("
+File.cpp(1)
+File.cpp(1))");
+      //
+      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
+   }
+
+   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreNotEqual_ThrowsAnomaly)
+   {
+      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      const int x = 10, y = 10;
+      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ x, y };
+      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 20 };
+      //
+      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
+      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedOneArgumentFunctionCalls), Anomaly, R"(
+  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)
+Expected:      To find ith actual element [MetalMock::OneArgumentFunctionCall:
+Argument: 20] in expectedElements (i=1)
+  Actual: Did not find ith actual element [MetalMock::OneArgumentFunctionCall:
+Argument: 20] in expectedElements (i=1)
+ Message: ")" + _metalMockedFunctionSignature + R"("
+File.cpp(1))");
+      //
+      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
+   }
+
+   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreEqualInSameOrder_DoesNotThrowAnomaly)
+   {
+      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      int firstArgument = 10;
+      int secondArgument = 20;
+      const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
+      {
+         firstArgument, secondArgument
+      };
+      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 20 };
+      //
+      const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
+      //
+      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
+      ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory.back().functionCallSequenceNumber, functionCallSequenceNumber);
+   }
+
+   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreEqualInDifferentOrder_DoesNotThrowAnomaly)
+   {
+      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      int firstArgument = 10;
+      int secondArgument = 20;
+      const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
+      {
+         firstArgument, secondArgument
+      };
+      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 20, 10 };
+      //
+      const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
       //
       IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
       ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory.back().functionCallSequenceNumber, functionCallSequenceNumber);
