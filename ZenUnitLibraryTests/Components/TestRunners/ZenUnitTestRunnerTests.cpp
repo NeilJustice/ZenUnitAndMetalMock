@@ -154,7 +154,7 @@ namespace ZenUnit
       //
       const std::nullptr_t returnValue = _zenUnitTestRunner.AddTestClassRunner(&specificTestClassRunner);
       //
-      METALMOCK(_testClassRunnerRunnerMock->AddTestClassRunnerMock.CalledOnceWithAny());
+      METALMOCK(_testClassRunnerRunnerMock->AddTestClassRunnerMock.CalledOnceWith(&specificTestClassRunner));
       IS_NULLPTR(returnValue);
    }
 

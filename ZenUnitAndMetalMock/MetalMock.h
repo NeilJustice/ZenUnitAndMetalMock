@@ -1428,12 +1428,15 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    struct OneArgumentFunctionCall
    {
       ArgumentStorage<Arg1Type> argument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       OneArgumentFunctionCall() noexcept
-         : argument() {}
+         : argument()
+         , functionCallSequenceNumber() {}
 
       OneArgumentFunctionCall(const Arg1Type& argument)
-         : argument(argument) {}
+         : argument(argument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename ArgType>
@@ -1453,14 +1456,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    {
       ArgumentStorage<Arg1Type> firstArgument;
       ArgumentStorage<Arg2Type> secondArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       TwoArgumentFunctionCall() noexcept
          : firstArgument()
-         , secondArgument() {}
+         , secondArgument()
+         , functionCallSequenceNumber() {}
 
       TwoArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
          : firstArgument(firstArgument)
-         , secondArgument(secondArgument) {}
+         , secondArgument(secondArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type>
@@ -1484,16 +1490,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg1Type> firstArgument;
       ArgumentStorage<Arg2Type> secondArgument;
       ArgumentStorage<Arg3Type> thirdArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       ThreeArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
-         , thirdArgument() {}
+         , thirdArgument()
+         , functionCallSequenceNumber() {}
 
       ThreeArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
-         , thirdArgument(thirdArgument) {}
+         , thirdArgument(thirdArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
@@ -1521,18 +1530,21 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg2Type> secondArgument;
       ArgumentStorage<Arg3Type> thirdArgument;
       ArgumentStorage<Arg4Type> fourthArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       FourArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
-         , fourthArgument() {}
+         , fourthArgument()
+         , functionCallSequenceNumber() {}
 
       FourArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
          : firstArgument(firstArgument)
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)
-         , fourthArgument(fourthArgument) {}
+         , fourthArgument(fourthArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
@@ -1564,13 +1576,15 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg3Type> thirdArgument;
       ArgumentStorage<Arg4Type> fourthArgument;
       ArgumentStorage<Arg5Type> fifthArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       FiveArgumentFunctionCall() noexcept
          : firstArgument()
          , secondArgument()
          , thirdArgument()
          , fourthArgument()
-         , fifthArgument() {}
+         , fifthArgument()
+         , functionCallSequenceNumber() {}
 
       FiveArgumentFunctionCall(
          const Arg1Type& firstArgument,
@@ -1582,7 +1596,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , secondArgument(secondArgument)
          , thirdArgument(thirdArgument)
          , fourthArgument(fourthArgument)
-         , fifthArgument(fifthArgument) {}
+         , fifthArgument(fifthArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
@@ -1623,6 +1638,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg4Type> fourthArgument;
       ArgumentStorage<Arg5Type> fifthArgument;
       ArgumentStorage<Arg6Type> sixthArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       SixArgumentFunctionCall() noexcept
          : firstArgument()
@@ -1630,7 +1646,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , thirdArgument()
          , fourthArgument()
          , fifthArgument()
-         , sixthArgument() {}
+         , sixthArgument()
+         , functionCallSequenceNumber() {}
 
       SixArgumentFunctionCall(
          const Arg1Type& firstArgument,
@@ -1644,7 +1661,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , thirdArgument(thirdArgument)
          , fourthArgument(fourthArgument)
          , fifthArgument(fifthArgument)
-         , sixthArgument(sixthArgument) {}
+         , sixthArgument(sixthArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
@@ -1690,6 +1708,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg5Type> fifthArgument;
       ArgumentStorage<Arg6Type> sixthArgument;
       ArgumentStorage<Arg7Type> seventhArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       SevenArgumentFunctionCall() noexcept
          : firstArgument()
@@ -1698,7 +1717,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , fourthArgument()
          , fifthArgument()
          , sixthArgument()
-         , seventhArgument() {}
+         , seventhArgument()
+         , functionCallSequenceNumber() {}
 
       SevenArgumentFunctionCall(
          const Arg1Type& firstArgument,
@@ -1714,7 +1734,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , fourthArgument(fourthArgument)
          , fifthArgument(fifthArgument)
          , sixthArgument(sixthArgument)
-         , seventhArgument(seventhArgument) {}
+         , seventhArgument(seventhArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
@@ -1765,6 +1786,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg6Type> sixthArgument;
       ArgumentStorage<Arg7Type> seventhArgument;
       ArgumentStorage<Arg8Type> eigthArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       EightArgumentFunctionCall() noexcept
          : firstArgument()
@@ -1774,7 +1796,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , fifthArgument()
          , sixthArgument()
          , seventhArgument()
-         , eigthArgument() {}
+         , eigthArgument()
+         , functionCallSequenceNumber() {}
 
       EightArgumentFunctionCall(
          const Arg1Type& firstArgument,
@@ -1792,7 +1815,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , fifthArgument(fifthArgument)
          , sixthArgument(sixthArgument)
          , seventhArgument(seventhArgument)
-         , eigthArgument(eigthArgument) {}
+         , eigthArgument(eigthArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type>
@@ -1849,6 +1873,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg7Type> seventhArgument;
       ArgumentStorage<Arg8Type> eigthArgument;
       ArgumentStorage<Arg9Type> ninthArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       NineArgumentFunctionCall() noexcept
          : firstArgument()
@@ -1859,7 +1884,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , sixthArgument()
          , seventhArgument()
          , eigthArgument()
-         , ninthArgument() {}
+         , ninthArgument()
+         , functionCallSequenceNumber() {}
 
       NineArgumentFunctionCall(
          const Arg1Type& firstArgument,
@@ -1879,7 +1905,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , sixthArgument(sixthArgument)
          , seventhArgument(seventhArgument)
          , eigthArgument(eigthArgument)
-         , ninthArgument(ninthArgument) {}
+         , ninthArgument(ninthArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type>
@@ -1940,6 +1967,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg8Type> eigthArgument;
       ArgumentStorage<Arg9Type> ninthArgument;
       ArgumentStorage<Arg10Type> tenthArgument;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       TenArgumentFunctionCall() noexcept
          : firstArgument()
@@ -1951,7 +1979,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , seventhArgument()
          , eigthArgument()
          , ninthArgument()
-         , tenthArgument() {}
+         , tenthArgument()
+         , functionCallSequenceNumber() {}
 
       TenArgumentFunctionCall(
          const Arg1Type& firstArgument,
@@ -1973,7 +2002,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , seventhArgument(seventhArgument)
          , eigthArgument(eigthArgument)
          , ninthArgument(ninthArgument)
-         , tenthArgument(tenthArgument) {}
+         , tenthArgument(tenthArgument)
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type, typename Arg8Type, typename Arg9Type, typename Arg10Type>
@@ -2078,14 +2108,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
          ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature);
-         return FunctionCallSequenceNumber();
-      }
-
-      FunctionCallSequenceNumber CalledOnceWithAny()
-      {
-         this->MetalMockSetAsserted();
-         const size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          return FunctionCallSequenceNumber();
       }
 
