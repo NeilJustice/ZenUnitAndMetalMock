@@ -28,8 +28,8 @@ namespace MetalMock
       const ZeroArgumentMetalMocker<MetalMockExceptionThrowerMock> zeroArgumentMetalMocker(_metalMockedFunctionSignature);
       //
       ARE_EQUAL(_metalMockedFunctionSignature, zeroArgumentMetalMocker.metalMockedFunctionSignature);
-      IS_FALSE(zeroArgumentMetalMocker._wasExpected);
-      IS_FALSE(zeroArgumentMetalMocker._wasAsserted);
+      IS_FALSE(zeroArgumentMetalMocker.wasExpected);
+      IS_FALSE(zeroArgumentMetalMocker.wasAsserted);
       IS_EMPTY(zeroArgumentMetalMocker.metalMockedFunctionCallSequenceNumbers);
    }
 
@@ -43,13 +43,13 @@ namespace MetalMock
       //
       _zeroArgumentMetalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith(
          "MetalMock::TestingException", 2, argumentStringValue + to_string(argumentIntValue));
-      IS_TRUE(_zeroArgumentMetalMocker->_wasExpected);
-      _zeroArgumentMetalMocker->_wasAsserted = true;
+      IS_TRUE(_zeroArgumentMetalMocker->wasExpected);
+      _zeroArgumentMetalMocker->wasAsserted = true;
    }
 
    TEST(MetalMockIt_ExpectedIsFalse_ThrowsUnexpectedCallException)
    {
-      IS_FALSE(_zeroArgumentMetalMocker->_wasExpected);
+      IS_FALSE(_zeroArgumentMetalMocker->wasExpected);
       //
       const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature);
       THROWS_EXCEPTION(_zeroArgumentMetalMocker->MetalMockIt(),
@@ -59,7 +59,7 @@ namespace MetalMock
    TEST(MetalMockIt_ExpectedIsTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
    {
       const unsigned long long startingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_globalAtomicFunctionCallSequenceNumber;
-      _zeroArgumentMetalMocker->_wasExpected = true;
+      _zeroArgumentMetalMocker->wasExpected = true;
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       //
       _zeroArgumentMetalMocker->MetalMockIt();
@@ -94,13 +94,14 @@ File.cpp(1))");
          _zeroArgumentMetalMocker->CalledOnce();
       }
       //
-      IS_TRUE(_zeroArgumentMetalMocker->_wasAsserted);
+      IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
    }
 
    TEST(CalledNTimes_NIsZero_ThrowsUnsupportedCalledZeroTimesException)
    {
+      const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(_metalMockedFunctionSignature);
       THROWS_EXCEPTION(_zeroArgumentMetalMocker->CalledNTimes(0),
-         UnsupportedCalledZeroTimesException, UnsupportedCalledZeroTimesException::MakeExceptionMessage(_metalMockedFunctionSignature));
+         UnsupportedCalledZeroTimesException, expectedExceptionMessage);
    }
 
    TEST3X3(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrowException,
@@ -132,7 +133,7 @@ File.cpp(1))");
          _zeroArgumentMetalMocker->CalledNTimes(expectedNumberOfCallsToMetalMockedFunction);
       }
       //
-      IS_TRUE(_zeroArgumentMetalMocker->_wasAsserted);
+      IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
    }
 
    TEST(CallInstead_CallsTheInsteadFunctionOnceWhenMetalMockedFunctionIsCalled)

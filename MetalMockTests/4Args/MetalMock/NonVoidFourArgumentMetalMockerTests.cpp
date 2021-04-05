@@ -28,14 +28,14 @@ namespace MetalMock
 
    TEST(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    {
-      IS_FALSE(_nonVoidFourArgumentMetalMocker->_wasExpected);
+      IS_FALSE(_nonVoidFourArgumentMetalMocker->wasExpected);
       IS_FALSE(_nonVoidFourArgumentMetalMocker->_callInsteadFunction);
       //
       _nonVoidFourArgumentMetalMocker->CallInstead(
          std::bind(&NonVoidFourArgumentMetalMockerTests::NonVoidFourArgFunction, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4));
       //
       IS_EMPTY(_callInsteadFunctionArguments);
-      IS_TRUE(_nonVoidFourArgumentMetalMocker->_wasExpected);
+      IS_TRUE(_nonVoidFourArgumentMetalMocker->wasExpected);
    }
 
    TEST(MetalMockItAndReturnValue_CallInsteadPreviouslyCalled_CallsBaseMetalMockIt_ReturnsResultOfCallingCallInsteadFunctionOnce)

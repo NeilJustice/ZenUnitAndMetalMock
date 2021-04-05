@@ -162,7 +162,7 @@ namespace MetalMock
       {
          const auto test = [](auto& metalMockObject)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             metalMockObject.MetalMockIt();
             //
@@ -180,8 +180,9 @@ namespace MetalMock
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            THROWS_EXCEPTION(metalMockObject.CalledNTimes(0), UnsupportedCalledZeroTimesException,
-               UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature));
+            const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature);
+            THROWS_EXCEPTION(metalMockObject.CalledNTimes(0),
+               UnsupportedCalledZeroTimesException, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
@@ -195,7 +196,7 @@ namespace MetalMock
       {
          const auto test = [&](auto& metalMockObject)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(numberOfCalls, [&] { metalMockObject.MetalMockIt(); });
             //

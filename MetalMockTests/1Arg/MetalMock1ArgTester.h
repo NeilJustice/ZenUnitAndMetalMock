@@ -229,7 +229,7 @@ namespace MetalMock
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             for (size_t i = 0; i < numberOfFunctionCalls; ++i)
             {
                metalMockObject.MetalMockIt(0);
@@ -254,7 +254,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             metalMockObject.MetalMockIt(10);
             //
@@ -279,7 +279,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             metalMockObject.MetalMockIt(10);
             //
@@ -297,8 +297,9 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(0, 0), UnsupportedCalledZeroTimesException,
-               UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature));
+            const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature);
+            THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(0, 0),
+               UnsupportedCalledZeroTimesException, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
@@ -312,7 +313,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             for (size_t i = 0; i < numberOfFunctionCalls; ++i)
             {
                metalMockObject.MetalMockIt(0);
@@ -338,7 +339,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             for (size_t i = 0; i < 9; ++i)
             {
@@ -367,7 +368,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             for (size_t i = 0; i < n; ++i)
             {
@@ -388,8 +389,9 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows({}), UnsupportedCalledZeroTimesException,
-               UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature));
+            const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature);
+            THROWS_EXCEPTION(metalMockObject.CalledAsFollows({}),
+               UnsupportedCalledZeroTimesException, expectedExceptionMessage);
          };
          test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualFunctionConstMock, _VirtualFunctionConstSignature);
@@ -403,7 +405,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(2, [&] { metalMockObject.MetalMockIt(0); });
             //
@@ -445,7 +447,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             //
             for (size_t i = 0; i < 3; ++i)
             {
@@ -499,7 +501,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject)
          {
-            metalMockObject._wasExpected = true;
+            metalMockObject.wasExpected = true;
             const int argument = ZenUnit::Random<int>();
             //
             MetalMockTestUtils::CallNTimes(expectedCallsSize, [&] { metalMockObject.MetalMockIt(argument); });

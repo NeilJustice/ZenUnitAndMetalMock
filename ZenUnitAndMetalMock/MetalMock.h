@@ -1042,8 +1042,8 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       // Constant Fields
       const std::string metalMockedFunctionSignature;
       // Mutable Fields
-      bool _wasExpected = false;
-      bool _wasAsserted = false;
+      bool wasExpected = false;
+      bool wasAsserted = false;
    public:
       MetalMocker()
       {
@@ -1069,7 +1069,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       void ThrowExceptionWhenCalled(ExceptionArgTypes&&... exceptionArgs)
       {
          _exceptionThrower.template ThrowExceptionWhenCalled<ExceptionType>(std::forward<ExceptionArgTypes>(exceptionArgs)...);
-         _wasExpected = true;
+         this->wasExpected = true;
       }
    protected:
       void MetalMockThrowExceptionIfExceptionSet()
@@ -1080,7 +1080,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       template<typename... ArgTypes>
       void MetalMockThrowIfNotExpected(ArgTypes&&... args)
       {
-         if (!_wasExpected)
+         if (!this->wasExpected)
          {
             _metalMockExceptionIsInFlight = true;
             throw UnexpectedCallException(metalMockedFunctionSignature, std::forward<ArgTypes>(args)...);
@@ -1089,7 +1089,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
 
       void MetalMockSetAsserted()
       {
-         _wasAsserted = true;
+         this->wasAsserted = true;
       }
 
       void MetalMockThrowIfExpectedNumberOfCalls0(size_t expectedNumberOfCallsToMetalMockedFunction)
@@ -1126,7 +1126,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
    private:
       void MetalMockExitIfExpectedButNotAsserted() const
       {
-         if (_wasExpected && !_wasAsserted && !_metalMockExceptionIsInFlight)
+         if (this->wasExpected && !this->wasAsserted && !_metalMockExceptionIsInFlight)
          {
             const ZenUnit::Console console;
             console.WriteLineColor(R"(
@@ -1185,7 +1185,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    private:
       std::vector<unsigned long long> metalMockedFunctionCallSequenceNumbers;
    protected:
-      std::function<void()> _callInsteadFunction;
+      std::function<void()> callInsteadFunction;
    public:
       explicit ZeroArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
@@ -1194,9 +1194,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       ~ZeroArgumentMetalMocker()
       {
-         if (_callInsteadFunction)
+         if (this->callInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
@@ -1204,33 +1204,33 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfNotExpected();
          this->metalMockedFunctionCallSequenceNumbers.emplace_back(++_globalAtomicFunctionCallSequenceNumber);
-         if (this->_callInsteadFunction)
+         if (this->callInsteadFunction)
          {
-            this->_callInsteadFunction();
+            this->callInsteadFunction();
          }
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      void CallInstead(const std::function<void()>& callInsteadFunction)
+      void CallInstead(const std::function<void()>& voidZeroArgFunction)
       {
-         ZeroArgumentMetalMocker::_wasExpected = true;
-         this->_callInsteadFunction = callInsteadFunction;
+         ZeroArgumentMetalMocker::wasExpected = true;
+         this->callInsteadFunction = voidZeroArgFunction;
       }
 
-      FunctionCallSequenceNumber CalledOnce()
+      ZeroArgumentMetalMocker& CalledOnce()
       {
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
          ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature);
-         return FunctionCallSequenceNumber();
+         return *this;
       }
 
-      FunctionCallSequenceNumber CalledNTimes(size_t expectedNumberOfCallsToMetalMockedFunction)
+      ZeroArgumentMetalMocker& CalledNTimes(size_t expectedNumberOfCallsToMetalMockedFunction)
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
          ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature);
-         return FunctionCallSequenceNumber();
+         return *this;
       }
    };
 
@@ -1249,14 +1249,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -1265,13 +1265,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -1310,7 +1310,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::_wasExpected = true;
+         ZeroArgumentMetalMocker<MetalMockExceptionThrower>::wasExpected = true;
       }
    };
 
@@ -2150,19 +2150,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_callInsteadFunction)
          {
-            OneArgumentMetalMocker<ArgType>::_wasAsserted = true;
+            OneArgumentMetalMocker<ArgType>::wasAsserted = true;
          }
       }
 
       void CallInstead(const std::function<void(ArgType)>& callInsteadFunction)
       {
          _callInsteadFunction = callInsteadFunction;
-         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasExpected = true;
       }
 
       void Expect()
       {
-         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasExpected = true;
       }
 
       void MetalMockIt(const ArgType& arg)
@@ -2197,27 +2197,27 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_callInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
       void CallInstead(const std::function<FunctionReturnType(ArgType)>& callInsteadFunction)
       {
-         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasExpected = true;
          _callInsteadFunction = callInsteadFunction;
       }
 
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2226,13 +2226,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         OneArgumentMetalMocker<ArgType>::_wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -2324,7 +2324,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_baseVoidCallInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
@@ -2413,21 +2413,21 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_derivedNonVoidCallInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2436,20 +2436,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type)>& callInsteadFunction)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          this->_derivedNonVoidCallInsteadFunction = callInsteadFunction;
       }
 
@@ -2495,12 +2495,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
       }
 
       void CallInstead(const std::function<void(Arg1Type, Arg2Type)>& callInsteadFunction)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::_wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          this->_baseVoidCallInsteadFunction = callInsteadFunction;
       }
    };
@@ -2611,21 +2611,21 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_derivedNonVoidCallInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2634,20 +2634,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type)>& callInsteadFunction)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          this->_derivedNonVoidCallInsteadFunction = callInsteadFunction;
       }
 
@@ -2697,18 +2697,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_callInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
       void Expect()
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
       }
 
       void CallInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& callInsteadFunction)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::_wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          this->_callInsteadFunction = callInsteadFunction;
       }
 
@@ -2838,21 +2838,21 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_callInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -2861,20 +2861,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type, Arg4Type)>& callInsteadFunction)
       {
-         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
          this->_callInsteadFunction = callInsteadFunction;
       }
 
@@ -2920,7 +2920,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::_wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
       }
    };
 
@@ -3044,21 +3044,21 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          if (_callInsteadFunction)
          {
-            this->_wasAsserted = true;
+            this->wasAsserted = true;
          }
       }
 
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3067,20 +3067,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)>& callInsteadFunction)
       {
-         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
          this->_callInsteadFunction = callInsteadFunction;
       }
 
@@ -3126,7 +3126,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::_wasExpected = true;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
       }
    };
 
@@ -3253,14 +3253,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
+         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
+         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3269,13 +3269,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
+         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
+         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3325,7 +3325,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::_wasExpected = true;
+         SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>::wasExpected = true;
       }
    };
 
@@ -3458,14 +3458,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3474,13 +3474,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3537,7 +3537,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::_wasExpected = true;
+         SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>::wasExpected = true;
       }
    };
 
@@ -3676,14 +3676,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3692,13 +3692,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3757,7 +3757,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::_wasExpected = true;
+         EightArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, MetalMockExceptionThrower>::wasExpected = true;
       }
    };
 
@@ -3902,14 +3902,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -3918,13 +3918,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -3985,7 +3985,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::_wasExpected = true;
+         NineArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, MetalMockExceptionThrower>::wasExpected = true;
       }
    };
 
@@ -4144,14 +4144,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValue(std::forward<ReturnType>(returnValue));
       }
 
       template<typename FirstReturnValue, typename... SubsequentReturnValues>
       void ReturnValues(FirstReturnValue&& firstReturnValue, SubsequentReturnValues&&... subsequentReturnValues)
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddReturnValues(
             std::forward<FirstReturnValue>(firstReturnValue),
             std::forward<SubsequentReturnValues>(subsequentReturnValues)...);
@@ -4160,13 +4160,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       template<typename ContainerType>
       void ReturnValues(ContainerType&& returnValues)
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::wasExpected = true;
          ValueReturner<FunctionReturnType>::MetalMockAddContainerReturnValues(std::forward<ContainerType>(returnValues));
       }
 
       DecayedFunctionReturnType ReturnRandom()
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::wasExpected = true;
          const DecayedFunctionReturnType randomReturnValue = ValueReturner<FunctionReturnType>::MetalMockAddRandomReturnValue();
          return randomReturnValue;
       }
@@ -4225,7 +4225,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void Expect()
       {
-         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::_wasExpected = true;
+         TenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, MetalMockExceptionThrower>::wasExpected = true;
       }
    };
 

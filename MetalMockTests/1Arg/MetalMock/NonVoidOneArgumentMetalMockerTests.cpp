@@ -26,7 +26,7 @@ namespace MetalMock
    {
       NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker;
       //
-      IS_FALSE(nonVoidOneArgumentMetalMocker._wasExpected);
+      IS_FALSE(nonVoidOneArgumentMetalMocker.wasExpected);
       IS_FALSE(nonVoidOneArgumentMetalMocker._callInsteadFunction);
    }
 
@@ -36,7 +36,7 @@ namespace MetalMock
       //
       const NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker(metalMockedFunctionSignature);
       //
-      IS_FALSE(nonVoidOneArgumentMetalMocker._wasExpected);
+      IS_FALSE(nonVoidOneArgumentMetalMocker.wasExpected);
       IS_FALSE(nonVoidOneArgumentMetalMocker._callInsteadFunction);
    }
 
@@ -49,7 +49,7 @@ namespace MetalMock
    TEST(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
    {
       _nonVoidOneArgumentMetalMocker.CallInstead(CallInsteadFunction);
-      IS_TRUE(_nonVoidOneArgumentMetalMocker._wasExpected);
+      IS_TRUE(_nonVoidOneArgumentMetalMocker.wasExpected);
       STD_FUNCTION_TARGETS(CallInsteadFunction, _nonVoidOneArgumentMetalMocker._callInsteadFunction);
       const int arg1 = ZenUnit::Random<int>();
       //
@@ -65,8 +65,8 @@ namespace MetalMock
       //
       _nonVoidOneArgumentMetalMocker.Return(returnValue);
       //
-      IS_TRUE(_nonVoidOneArgumentMetalMocker._wasExpected);
-      _nonVoidOneArgumentMetalMocker._wasExpected = false;
+      IS_TRUE(_nonVoidOneArgumentMetalMocker.wasExpected);
+      _nonVoidOneArgumentMetalMocker.wasExpected = false;
       const std::deque<int> expectedReturnValues =
       {
          returnValue
@@ -81,8 +81,8 @@ namespace MetalMock
       //
       _nonVoidOneArgumentMetalMocker.ReturnValues(returnValue1, returnValue2);
       //
-      IS_TRUE(_nonVoidOneArgumentMetalMocker._wasExpected);
-      _nonVoidOneArgumentMetalMocker._wasExpected = false;
+      IS_TRUE(_nonVoidOneArgumentMetalMocker.wasExpected);
+      _nonVoidOneArgumentMetalMocker.wasExpected = false;
       const std::deque<int> expectedReturnValues =
       {
          returnValue1, returnValue2
@@ -98,8 +98,8 @@ namespace MetalMock
       //
       _nonVoidOneArgumentMetalMocker.ReturnValues(returnValues);
       //
-      IS_TRUE(_nonVoidOneArgumentMetalMocker._wasExpected);
-      _nonVoidOneArgumentMetalMocker._wasExpected = false;
+      IS_TRUE(_nonVoidOneArgumentMetalMocker.wasExpected);
+      _nonVoidOneArgumentMetalMocker.wasExpected = false;
       const std::deque<int> expectedReturnValues =
       {
          returnValue1, returnValue2
@@ -112,8 +112,8 @@ namespace MetalMock
       const int randomReturnValue1 = _nonVoidOneArgumentMetalMocker.ReturnRandom();
       const int randomReturnValue2 = _nonVoidOneArgumentMetalMocker.ReturnRandom();
       //
-      IS_TRUE(_nonVoidOneArgumentMetalMocker._wasExpected);
-      _nonVoidOneArgumentMetalMocker._wasExpected = false;
+      IS_TRUE(_nonVoidOneArgumentMetalMocker.wasExpected);
+      _nonVoidOneArgumentMetalMocker.wasExpected = false;
       const std::deque<int> expectedReturnValues =
       {
          randomReturnValue1,

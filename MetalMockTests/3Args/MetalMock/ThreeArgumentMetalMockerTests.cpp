@@ -23,7 +23,7 @@ namespace MetalMock
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
-      _threeArgumentMetalMocker->_wasAsserted = true;
+      _threeArgumentMetalMocker->wasAsserted = true;
    }
 
    TEST(Constructor_SetsFields)
@@ -31,26 +31,26 @@ namespace MetalMock
       const ThreeArgumentMetalMockerType threeArgumentMetalMocker(_metalMockedFunctionSignature);
       //
       ARE_EQUAL(_metalMockedFunctionSignature, threeArgumentMetalMocker.metalMockedFunctionSignature);
-      IS_FALSE(threeArgumentMetalMocker._wasExpected);
-      IS_FALSE(threeArgumentMetalMocker._wasAsserted);
+      IS_FALSE(threeArgumentMetalMocker.wasExpected);
+      IS_FALSE(threeArgumentMetalMocker.wasAsserted);
       IS_EMPTY(threeArgumentMetalMocker.metalMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
-      IS_FALSE(_threeArgumentMetalMocker->_wasExpected);
+      IS_FALSE(_threeArgumentMetalMocker->wasExpected);
       _threeArgumentMetalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
       _threeArgumentMetalMocker->ThrowExceptionWhenCalled<TestingException>("argument", 100);
       //
       _threeArgumentMetalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
-      IS_TRUE(_threeArgumentMetalMocker->_wasExpected);
+      IS_TRUE(_threeArgumentMetalMocker->wasExpected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(MetalMockIt_ExpectedFalse_Throws)
    {
-      IS_FALSE(_threeArgumentMetalMocker->_wasExpected);
+      IS_FALSE(_threeArgumentMetalMocker->wasExpected);
       const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 1, 2, 3);
       THROWS_EXCEPTION(_threeArgumentMetalMocker->MetalMockIt(1, 2, 3),
          UnexpectedCallException, expectedExceptionMessage);
@@ -58,7 +58,7 @@ namespace MetalMock
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
    {
-      _threeArgumentMetalMocker->_wasExpected = true;
+      _threeArgumentMetalMocker->wasExpected = true;
       _threeArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       IS_EMPTY(_threeArgumentMetalMocker->metalMockedFunctionCallHistory);
       //
