@@ -14,7 +14,7 @@
     <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <WorkingDirectory>C:\Code\ZenUnitAndMetalMock</WorkingDirectory>
+    <WorkingDirectory>D:\Code\ZenUnitAndMetalMock</WorkingDirectory>
     <InterpreterId>
     </InterpreterId>
   </PropertyGroup>
