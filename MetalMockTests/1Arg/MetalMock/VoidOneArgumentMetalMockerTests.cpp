@@ -6,7 +6,7 @@ namespace MetalMock
    AFACT(OneArgConstructor_SetsMetalMockedFunctionSignature)
    AFACT(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    AFACT(Expect_SetsWasExpectedToTrue)
-   AFACT(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
+   AFACT(CallInstead_SetsCallInsteadFunction_SetsWasExpectedAndWasAssertedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
    EVIDENCE
 
    VoidOneArgumentMetalMocker<int> _voidOneArgumentMetalMocker;
@@ -22,7 +22,7 @@ namespace MetalMock
       //
       VoidOneArgumentMetalMocker<int> voidOneArgumentMetalMocker(metalMockedFunctionSignature);
       //
-      IS_FALSE(voidOneArgumentMetalMocker._callInsteadFunction);
+      IS_FALSE(voidOneArgumentMetalMocker.callInsteadFunction);
       ARE_EQUAL(voidOneArgumentMetalMocker.metalMockedFunctionSignature, metalMockedFunctionSignature);
       IS_FALSE(voidOneArgumentMetalMocker.wasExpected);
       IS_FALSE(voidOneArgumentMetalMocker.wasAsserted);
@@ -69,11 +69,11 @@ namespace MetalMock
       _voidOneArgumentMetalMocker.wasAsserted = true;
    }
 
-   TEST(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
+   TEST(CallInstead_SetsCallInsteadFunction_SetsWasExpectedAndWasAssertedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
    {
-      _voidOneArgumentMetalMocker.CallInstead(std::bind(
-         &VoidOneArgumentMetalMockerTests::CallInsteadFunction, this, placeholders::_1));
+      _voidOneArgumentMetalMocker.CallInstead(std::bind(&VoidOneArgumentMetalMockerTests::CallInsteadFunction, this, placeholders::_1));
       IS_TRUE(_voidOneArgumentMetalMocker.wasExpected);
+      IS_TRUE(_voidOneArgumentMetalMocker.wasAsserted);
       const int arg = ZenUnit::Random<int>();
       //
       _voidOneArgumentMetalMocker.MetalMockIt(arg);

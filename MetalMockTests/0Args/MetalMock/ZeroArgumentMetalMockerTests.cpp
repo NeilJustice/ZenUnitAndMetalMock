@@ -11,7 +11,7 @@ namespace MetalMock
    FACTS(CalledOnce_SetsAssertedToTrue_FunctionWasCalledOnce_DoesNotThrowException)
    AFACT(CalledNTimes_NIsZero_ThrowsUnsupportedCalledZeroTimesException)
    FACTS(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrowException)
-   AFACT(CallInstead_CallsTheInsteadFunctionOnceWhenMetalMockedFunctionIsCalled)
+   AFACT(CallInstead_SetsTheCallInsteadFunction_SetsWasAssertedToTrue_MetalMockItCallsTheInsteadFunctionOnceWhenCalled)
    EVIDENCE
 
    unique_ptr<ZeroArgumentMetalMocker<MetalMockExceptionThrowerMock>> _zeroArgumentMetalMocker;
@@ -136,7 +136,7 @@ File.cpp(1))");
       IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
    }
 
-   TEST(CallInstead_CallsTheInsteadFunctionOnceWhenMetalMockedFunctionIsCalled)
+   TEST(CallInstead_SetsTheCallInsteadFunction_SetsWasAssertedToTrue_MetalMockItCallsTheInsteadFunctionOnceWhenCalled)
    {
       bool voidZeroArgFunctionWasCalled = false;
       const auto callInsteadFunction = [&]()
@@ -146,6 +146,7 @@ File.cpp(1))");
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       //
       _zeroArgumentMetalMocker->CallInstead(callInsteadFunction);
+      IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
       _zeroArgumentMetalMocker->MetalMockIt();
       //
       METALMOCK(_zeroArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());

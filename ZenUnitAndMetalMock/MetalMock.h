@@ -1192,14 +1192,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      ~ZeroArgumentMetalMocker()
-      {
-         if (this->callInsteadFunction)
-         {
-            this->wasAsserted = true;
-         }
-      }
-
       void MetalMockIt()
       {
          this->MetalMockThrowIfNotExpected();
@@ -1213,8 +1205,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void CallInstead(const std::function<void()>& voidZeroArgFunction)
       {
-         ZeroArgumentMetalMocker::wasExpected = true;
          this->callInsteadFunction = voidZeroArgFunction;
+         ZeroArgumentMetalMocker::wasExpected = true;
+         ZeroArgumentMetalMocker::wasAsserted = true;
       }
 
       ZeroArgumentMetalMocker& CalledOnce()
@@ -2139,25 +2132,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    {
       friend class VoidOneArgumentMetalMockerTests;
    private:
-      std::function<void(ArgType)> _callInsteadFunction;
+      std::function<void(ArgType)> callInsteadFunction;
    public:
       explicit VoidOneArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : OneArgumentMetalMocker<ArgType>(metalMockedFunctionSignature)
       {
       }
 
-      virtual ~VoidOneArgumentMetalMocker()
+      void CallInstead(const std::function<void(ArgType)>& voidOneArgFunction)
       {
-         if (_callInsteadFunction)
-         {
-            OneArgumentMetalMocker<ArgType>::wasAsserted = true;
-         }
-      }
-
-      void CallInstead(const std::function<void(ArgType)>& callInsteadFunction)
-      {
-         _callInsteadFunction = callInsteadFunction;
+         this->callInsteadFunction = voidOneArgFunction;
          OneArgumentMetalMocker<ArgType>::wasExpected = true;
+         OneArgumentMetalMocker<ArgType>::wasAsserted = true;
       }
 
       void Expect()
@@ -2167,9 +2153,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void MetalMockIt(const ArgType& arg)
       {
-         if (_callInsteadFunction)
+         if (this->callInsteadFunction)
          {
-            _callInsteadFunction(arg);
+            this->callInsteadFunction(arg);
          }
          OneArgumentMetalMocker<ArgType>::MetalMockIt(arg);
       }
@@ -2180,7 +2166,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    {
       friend class NonVoidOneArgumentMetalMockerTests;
    private:
-      std::function<FunctionReturnType(ArgType)> _callInsteadFunction;
+      std::function<FunctionReturnType(ArgType)> callInsteadFunction;
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
       NonVoidOneArgumentMetalMocker()
@@ -2193,18 +2179,11 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      ~NonVoidOneArgumentMetalMocker()
+      void CallInstead(const std::function<FunctionReturnType(ArgType)>& nonVoidOneArgFunction)
       {
-         if (_callInsteadFunction)
-         {
-            this->wasAsserted = true;
-         }
-      }
-
-      void CallInstead(const std::function<FunctionReturnType(ArgType)>& callInsteadFunction)
-      {
+         this->callInsteadFunction = nonVoidOneArgFunction;
          OneArgumentMetalMocker<ArgType>::wasExpected = true;
-         _callInsteadFunction = callInsteadFunction;
+         OneArgumentMetalMocker<ArgType>::wasAsserted = true;
       }
 
       template<typename ReturnType>
@@ -2240,9 +2219,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       FunctionReturnType MetalMockItAndReturnValue(ArgType argument)
       {
          OneArgumentMetalMocker<ArgType>::MetalMockIt(argument);
-         if (this->_callInsteadFunction)
+         if (this->callInsteadFunction)
          {
-            const FunctionReturnType& returnValue = this->_callInsteadFunction(argument);
+            const FunctionReturnType& returnValue = this->callInsteadFunction(argument);
             return returnValue;
          }
          const FunctionReturnType& returnValue = ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
@@ -2318,14 +2297,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       explicit TwoArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
-      }
-
-      ~TwoArgumentMetalMocker()
-      {
-         if (_baseVoidCallInsteadFunction)
-         {
-            this->wasAsserted = true;
-         }
       }
 
       void MetalMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
@@ -2409,14 +2380,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      ~NonVoidTwoArgumentMetalMocker()
-      {
-         if (_derivedNonVoidCallInsteadFunction)
-         {
-            this->wasAsserted = true;
-         }
-      }
-
       template<typename ReturnType>
       void Return(ReturnType&& returnValue)
       {
@@ -2449,8 +2412,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type)>& callInsteadFunction)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          this->_derivedNonVoidCallInsteadFunction = callInsteadFunction;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasAsserted = true;
       }
 
       FunctionReturnType MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
@@ -2500,8 +2464,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void CallInstead(const std::function<void(Arg1Type, Arg2Type)>& callInsteadFunction)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
          this->_baseVoidCallInsteadFunction = callInsteadFunction;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasExpected = true;
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasAsserted = true;
       }
    };
 
@@ -2647,8 +2612,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type)>& callInsteadFunction)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          this->_derivedNonVoidCallInsteadFunction = callInsteadFunction;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasAsserted = true;
       }
 
       FunctionReturnType MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
@@ -2693,14 +2659,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      ~VoidThreeArgumentMetalMocker()
-      {
-         if (_callInsteadFunction)
-         {
-            this->wasAsserted = true;
-         }
-      }
-
       void Expect()
       {
          ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
@@ -2708,8 +2666,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void CallInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type)>& callInsteadFunction)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
          this->_callInsteadFunction = callInsteadFunction;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasExpected = true;
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasAsserted = true;
       }
 
       void MetalMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument) override
@@ -2874,8 +2833,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type, Arg4Type)>& callInsteadFunction)
       {
-         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
          this->_callInsteadFunction = callInsteadFunction;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasAsserted = true;
       }
 
       virtual FunctionReturnType MetalMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
@@ -3080,8 +3040,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
       void CallInstead(const std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)>& callInsteadFunction)
       {
-         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
          this->_callInsteadFunction = callInsteadFunction;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasExpected = true;
+         FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>::wasAsserted = true;
       }
 
       virtual FunctionReturnType MetalMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)

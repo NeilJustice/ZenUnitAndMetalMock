@@ -5,7 +5,7 @@ namespace MetalMock
    TESTS(NonVoidOneArgumentMetalMockerTests)
    AFACT(DefaultConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
    AFACT(OneArgConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
-   AFACT(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
+   AFACT(CallInstead_SetsCallInsteadFunction_SetsWasExpectedAndWasAssertedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
    AFACT(Return_SetsWasExpectedToTrue_AddsReturnValueToReturnValuesDeque)
    AFACT(VariadicReturnValues_SetsWasExpectedToTrue_AddsReturnValuesToReturnValuesDeque)
    AFACT(ContainerReturnValues_SetsWasExpectedToTrue_AddsReturnValuesToReturnValuesDeque)
@@ -27,7 +27,7 @@ namespace MetalMock
       NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker;
       //
       IS_FALSE(nonVoidOneArgumentMetalMocker.wasExpected);
-      IS_FALSE(nonVoidOneArgumentMetalMocker._callInsteadFunction);
+      IS_FALSE(nonVoidOneArgumentMetalMocker.callInsteadFunction);
    }
 
    TEST(OneArgConstructor_DoesNotThrowException_DoesNotSetCallInsteadFunction)
@@ -37,7 +37,7 @@ namespace MetalMock
       const NonVoidOneArgumentMetalMocker<int, int> nonVoidOneArgumentMetalMocker(metalMockedFunctionSignature);
       //
       IS_FALSE(nonVoidOneArgumentMetalMocker.wasExpected);
-      IS_FALSE(nonVoidOneArgumentMetalMocker._callInsteadFunction);
+      IS_FALSE(nonVoidOneArgumentMetalMocker.callInsteadFunction);
    }
 
    static int CallInsteadFunction(int)
@@ -46,11 +46,12 @@ namespace MetalMock
       return s_callInsteadReturnValue;
    }
 
-   TEST(CallInstead_SetsCallInsteadFunction_SetsWasExpectedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
+   TEST(CallInstead_SetsCallInsteadFunction_SetsWasExpectedAndWasAssertedToTrue_MakesMetalMockItAndReturnValueCallTheCallInsteadFunction)
    {
       _nonVoidOneArgumentMetalMocker.CallInstead(CallInsteadFunction);
       IS_TRUE(_nonVoidOneArgumentMetalMocker.wasExpected);
-      STD_FUNCTION_TARGETS(CallInsteadFunction, _nonVoidOneArgumentMetalMocker._callInsteadFunction);
+      IS_TRUE(_nonVoidOneArgumentMetalMocker.wasAsserted);
+      STD_FUNCTION_TARGETS(CallInsteadFunction, _nonVoidOneArgumentMetalMocker.callInsteadFunction);
       const int arg1 = ZenUnit::Random<int>();
       //
       const int returnValue = _nonVoidOneArgumentMetalMocker.MetalMockItAndReturnValue(arg1);
