@@ -10,9 +10,17 @@
 
 namespace Metal
 {
-   // Inherit from Metal::Mock<T> to define a MetalMock mock object class.
+   // Inherit from Metal::Mock<T> to define a MetalMock class for type T.
    //
    // Example MetalMock class definition:
+   //
+   // class Widget
+   // {
+   // public:
+   //    virtual ~Widget() = default;
+   //    virtual void Foo() {}
+   //    virtual int Add(int, int) { return 0; }
+   // };
    //
    // class WidgetMock : public Metal::Mock<Widget>
    // {
