@@ -15,7 +15,7 @@ struct MetalMockTestUtils
       const string& expectedFunctionSignature, size_t expectedCallCount, size_t actualCallCount)
    {
       const string expectedExceptionMessage = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedCallCount, R"(
   Actual: )", actualCallCount, R"(
  Message: ")", expectedFunctionSignature, R"("
@@ -27,7 +27,7 @@ File.cpp(1))");
       const string& expectedFunctionSignature, size_t expectedCallCount, size_t actualCallCount)
    {
       const string expectedExceptionMessage = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedCallCount, R"(
   Actual: )", actualCallCount, R"(
  Message: ")", expectedFunctionSignature, R"("

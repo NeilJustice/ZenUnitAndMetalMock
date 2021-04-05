@@ -103,14 +103,14 @@ namespace MetalMock
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
             THROWS_EXCEPTION(metalMockObject.CalledOnceWith(0, 0), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
 "File.cpp(1)");
 
             THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(1, 0, 0), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
@@ -123,7 +123,7 @@ namespace MetalMock
                { 2, 2 },
                { 3, 3 }
             }), Anomaly, "\n"
-"  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
 "Expected: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 3):\n"
 "{\n"
 "   MetalMock::TwoArgumentFunctionCall:\n"
@@ -152,7 +152,7 @@ namespace MetalMock
                { 2, 2 },
                { 3, 3 }
             }), Anomaly, "\n"
-"  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
 "Expected: expectedElements.size() == actualElements.size()\n"
 "  Actual: expectedElements.size() != actualElements.size()\n"
 " Because: ARE_EQUAL(expectedElements.size(), actualElements.size()) failed\n"
@@ -238,7 +238,7 @@ namespace MetalMock
                metalMockObject.MetalMockIt(0, 0);
             }
             const string expectedExceptionMessage = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", expectedFunctionSignature, R"("
@@ -262,7 +262,7 @@ File.cpp(1))");
             metalMockObject.MetalMockIt(10, 10);
             //
             const string expectedExceptionMessage = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature)
 Expected: 20
   Actual: 10
  Message: ")", expectedFunctionSignature, R"("
@@ -321,7 +321,7 @@ File.cpp(1))");
                metalMockObject.MetalMockIt(0, 0);
             }
             const string expectedExceptionMessage = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
 Expected: )", n, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", expectedFunctionSignature, R"("
@@ -411,7 +411,7 @@ File.cpp(1))");
             MetalMockTestUtils::CallNTimes(2, [&] { metalMockObject.MetalMockIt(0, 0); });
             //
             const string expectedExceptionMessage = String::Concat(R"(
-  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature)
+  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)
 Expected: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 1):
 {
    MetalMock::TwoArgumentFunctionCall:
@@ -463,7 +463,7 @@ File.cpp(1))");
             vector<TwoArgumentFunctionCallReferences<int,int>> expectedTwoArgumentFunctionCalls;
             MetalMockTestUtils::CallNTimes(3, [&] { expectedTwoArgumentFunctionCalls.emplace_back(expectedArgument, expectedArgument); });
             const string expectedExceptionMessage = String::Concat(R"(
-  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->MetalMockedFunctionSignature)
+  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)
 Expected: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 3):
 {
    MetalMock::TwoArgumentFunctionCall:

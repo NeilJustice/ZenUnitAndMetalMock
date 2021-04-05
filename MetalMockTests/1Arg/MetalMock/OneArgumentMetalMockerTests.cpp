@@ -37,7 +37,7 @@ namespace MetalMock
    {
       const MetalMockerType mocker(_metalMockedFunctionSignature);
       //
-      ARE_EQUAL(_metalMockedFunctionSignature, mocker.MetalMockedFunctionSignature);
+      ARE_EQUAL(_metalMockedFunctionSignature, mocker.metalMockedFunctionSignature);
       IS_FALSE(mocker._wasExpected);
       IS_FALSE(mocker._wasAsserted);
       IS_EMPTY(mocker.metalMockedFunctionCallHistory);
@@ -100,7 +100,7 @@ namespace MetalMock
       if (expectCallCountThrow)
       {
          THROWS_EXCEPTION(_metalMocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: " + to_string(numberOfCalls) + "\n"
 " Message: \"" + _metalMockedFunctionSignature + "\"\n"
@@ -111,7 +111,7 @@ namespace MetalMock
          if (expectArgEqualityThrow)
          {
             THROWS_EXCEPTION(_metalMocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
 " Message: \"" + _metalMockedFunctionSignature + "\"\n"
@@ -148,7 +148,7 @@ namespace MetalMock
       if (expectThrow)
       {
          const string expectedWhat = String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedNumberOfCallsToMetalMockedFunction, R"(
   Actual: )", numberOfCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -212,7 +212,7 @@ File.cpp(1))");
       //
       const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
       THROWS_EXCEPTION(_metalMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
-"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
 "Expected: " + expectedVectorTypeName + " (size 1):\n"
 "{\n"
 "   MetalMock::OneArgumentFunctionCall:\n"
@@ -240,7 +240,7 @@ File.cpp(1))");
       //
       const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
       THROWS_EXCEPTION(_metalMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
-"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->MetalMockedFunctionSignature)\n"
+"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
 "Expected: " + expectedVectorTypeName + " (size 2):\n"
 "{\n"
 "   MetalMock::OneArgumentFunctionCall:\n"

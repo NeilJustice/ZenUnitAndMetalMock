@@ -27,7 +27,7 @@ namespace MetalMock
    {
       const ZeroArgumentMetalMocker<MetalMockExceptionThrowerMock> zeroArgumentMetalMocker(_metalMockedFunctionSignature);
       //
-      ARE_EQUAL(_metalMockedFunctionSignature, zeroArgumentMetalMocker.MetalMockedFunctionSignature);
+      ARE_EQUAL(_metalMockedFunctionSignature, zeroArgumentMetalMocker.metalMockedFunctionSignature);
       IS_FALSE(zeroArgumentMetalMocker._wasExpected);
       IS_FALSE(zeroArgumentMetalMocker._wasAsserted);
       IS_EMPTY(zeroArgumentMetalMocker.metalMockedFunctionCallSequenceNumbers);
@@ -77,7 +77,7 @@ namespace MetalMock
       if (expectThrow)
       {
          const string expectedExceptionMessage = ZenUnit::String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -114,7 +114,7 @@ File.cpp(1))");
       if (expectThrow)
       {
          const string expectedExceptionMessage = ZenUnit::String::Concat(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->MetalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedNumberOfCallsToMetalMockedFunction, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("

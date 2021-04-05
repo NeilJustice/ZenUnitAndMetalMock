@@ -23,7 +23,7 @@ namespace MetalMock
       VoidOneArgumentMetalMocker<int> voidOneArgumentMetalMocker(metalMockedFunctionSignature);
       //
       IS_FALSE(voidOneArgumentMetalMocker._callInsteadFunction);
-      ARE_EQUAL(voidOneArgumentMetalMocker.MetalMockedFunctionSignature, metalMockedFunctionSignature);
+      ARE_EQUAL(voidOneArgumentMetalMocker.metalMockedFunctionSignature, metalMockedFunctionSignature);
       IS_FALSE(voidOneArgumentMetalMocker._wasExpected);
       IS_FALSE(voidOneArgumentMetalMocker._wasAsserted);
    }

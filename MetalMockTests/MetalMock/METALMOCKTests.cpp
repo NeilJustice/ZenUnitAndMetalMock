@@ -29,7 +29,7 @@ namespace MetalMock
       const string expectedWhat = TestUtil::NewlineConcat("",
 "  Failed: METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage))",
 "Because of this ZenUnit::Anomaly:",
-"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->MetalMockedFunctionSignature)",
+"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature)",
 "Expected: \"Message\"",
 "  Actual: \"message\"",
 " Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"",

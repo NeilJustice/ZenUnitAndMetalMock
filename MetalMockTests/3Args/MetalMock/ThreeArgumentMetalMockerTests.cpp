@@ -30,7 +30,7 @@ namespace MetalMock
    {
       const ThreeArgumentMetalMockerType threeArgumentMetalMocker(_metalMockedFunctionSignature);
       //
-      ARE_EQUAL(_metalMockedFunctionSignature, threeArgumentMetalMocker.MetalMockedFunctionSignature);
+      ARE_EQUAL(_metalMockedFunctionSignature, threeArgumentMetalMocker.metalMockedFunctionSignature);
       IS_FALSE(threeArgumentMetalMocker._wasExpected);
       IS_FALSE(threeArgumentMetalMocker._wasAsserted);
       IS_EMPTY(threeArgumentMetalMocker.metalMockedFunctionCallHistory);
