@@ -801,7 +801,7 @@ namespace MetalMock
          std::ostringstream whatBuilder;
          whatBuilder << "Unexpected call to MetalMocked function:\n" << metalMockedFunctionSignature;
          AppendToStringedArgs(whatBuilder, 0, std::forward<ArgTypes>(args)...);
-         const std::string exceptionMessage = whatBuilder.str();
+         std::string exceptionMessage = whatBuilder.str();
          return exceptionMessage;
       }
 
@@ -842,7 +842,7 @@ namespace MetalMock
 
       static std::string MakeExceptionMessage(std::string_view metalMockedFunctionSignature)
       {
-         const std::string exceptionMessage = ZenUnit::String::Concat(
+         std::string exceptionMessage = ZenUnit::String::Concat(
 "For MetalMocked function \"", metalMockedFunctionSignature, R"(":
 MetalMocked functions with non-void return types must have their return value or values set explicitly by calling:
 [FunctionName]Mock.[Return|ReturnValues]())");
@@ -864,7 +864,7 @@ MetalMocked functions with non-void return types must have their return value or
 
       static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature)
       {
-         const std::string exceptionMessage = ZenUnit::String::Concat(
+         std::string exceptionMessage = ZenUnit::String::Concat(
             "For MetalMocked function \"", metalMockedFunctionSignature, R"(":
 
 Because MetalMock is a strict mocking framework,
@@ -4234,13 +4234,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          {
             builder << ' ' << constOrEmptyString;
          }
-         const std::string metalMockedFunctionSignature = builder.str();
+         std::string metalMockedFunctionSignature = builder.str();
          return metalMockedFunctionSignature;
       }
 
       static std::string FunctionPointer(const char* returnType, const char* unadornedFunctionSignature)
       {
-         const std::string metalMockedFunctionPointerSignature = ZenUnit::String::Concat(returnType, ' ', unadornedFunctionSignature);
+         std::string metalMockedFunctionPointerSignature = ZenUnit::String::Concat(returnType, ' ', unadornedFunctionSignature);
          return metalMockedFunctionPointerSignature;
       }
    };
