@@ -1183,7 +1183,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticMockType>
       friend class MetalMock0ArgsTester;
    private:
-      std::vector<unsigned long long> metalMockedFunctionCallSequenceNumbers;
+      std::vector<FunctionCallSequenceNumber> metalMockedFunctionCallSequenceNumbers;
    protected:
       std::function<void()> callInsteadFunction;
    public:
@@ -1195,7 +1195,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       void MetalMockIt()
       {
          this->MetalMockThrowIfNotExpected();
-         this->metalMockedFunctionCallSequenceNumbers.emplace_back(++_globalAtomicFunctionCallSequenceNumber);
+         this->metalMockedFunctionCallSequenceNumbers.emplace_back();
          if (this->callInsteadFunction)
          {
             this->callInsteadFunction();
@@ -1210,20 +1210,22 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ZeroArgumentMetalMocker::wasAsserted = true;
       }
 
-      ZeroArgumentMetalMocker& CalledOnce()
+      FunctionCallSequenceNumber CalledOnce()
       {
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
          ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature);
-         return *this;
+         const FunctionCallSequenceNumber functionCallSequenceNumber = this->metalMockedFunctionCallSequenceNumbers[0];
+         return functionCallSequenceNumber;
       }
 
-      ZeroArgumentMetalMocker& CalledNTimes(size_t expectedNumberOfCallsToMetalMockedFunction)
+      FunctionCallSequenceNumber CalledNTimes(size_t expectedNumberOfCallsToMetalMockedFunction)
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
          ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature);
-         return *this;
+         const FunctionCallSequenceNumber functionCallSequenceNumber = this->metalMockedFunctionCallSequenceNumbers.back();
+         return functionCallSequenceNumber;
       }
    };
 
