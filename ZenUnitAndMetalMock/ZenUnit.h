@@ -6546,8 +6546,7 @@ Fatal Windows C++ Runtime Assertion
          ZENUNIT_ASSERT(_currentTestCaseNumber == 1);
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         std::shared_ptr<ITestCaseNumberGenerator> const testCaseNumberGenerator(
-            _call_ITestCaseNumberGeneratorFactoryNew(zenUnitArgs.randomTestOrdering));
+         const std::shared_ptr<ITestCaseNumberGenerator> testCaseNumberGenerator(_call_ITestCaseNumberGeneratorFactoryNew(zenUnitArgs.randomTestOrdering));
          testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N);
          const std::vector<std::string> splitTestCaseArgs = _call_String_SplitOnNonQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())
