@@ -261,10 +261,10 @@ namespace ZenUnit
 
    TEST2X2(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests,
       size_t numberOfTests, bool expectTestsPlural,
-      0ull, true,
-      1ull, false,
-      2ull, true,
-      3ull, true)
+      0ULL, true,
+      1ULL, false,
+      2ULL, true,
+      3ULL, true)
    {
       _protected_consoleMock->WriteColorMock.Expect();
       _protected_consoleMock->WriteLineMock.Expect();
@@ -366,9 +366,9 @@ namespace ZenUnit
 
    TEST2X2(RunTest_TestNameFiltersAreEmptyOrIfNotEmptyATestNameFilterMatchesTheTestName_RunsTest,
       size_t testNameFiltersSize, bool expectAnyerCall,
-      0ull, false,
-      1ull, true,
-      2ull, true)
+      0ULL, false,
+      1ULL, true,
+      2ULL, true)
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.testNameFilters.resize(testNameFiltersSize);

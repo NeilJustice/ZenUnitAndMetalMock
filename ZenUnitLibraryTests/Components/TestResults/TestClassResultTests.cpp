@@ -192,9 +192,9 @@ namespace ZenUnit
 
    TEST1X1(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed,
       size_t numberOfFailedTestCases,
-      1ull,
-      2ull,
-      3ull)
+      1ULL,
+      2ULL,
+      3ULL)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
       const unsigned microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();

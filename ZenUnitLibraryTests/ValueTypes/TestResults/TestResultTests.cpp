@@ -20,13 +20,15 @@ namespace ZenUnit
    EVIDENCE
 
    TestResult _testResult;
+   // Mocks
+   ConsoleMock _consoleMock;
+   TestFailureNumbererMock _testFailureNumbererMock;
+   METALMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, long long)
+   // Testing Fields
    TestPhaseResult ConstructorTestPhaseResult;
    TestPhaseResult StartupTestPhaseResult;
    TestPhaseResult DestructorTestPhaseResult;
-   ConsoleMock _consoleMock;
-   TestFailureNumbererMock _testFailureNumbererMock;
    const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", ZenUnit::Random<unsigned char>());
-   METALMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, long long)
 
    const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
@@ -38,6 +40,9 @@ namespace ZenUnit
 
    STARTUP
    {
+      // Mocks
+      _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = BIND_1ARG_METALMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
+      // Testing Fields
       ConstructorTestPhaseResult = TestPhaseResult(TestPhase::Constructor);
       ConstructorTestPhaseResult.microseconds = 1000;
       StartupTestPhaseResult = TestPhaseResult(TestPhase::Startup);
@@ -45,15 +50,12 @@ namespace ZenUnit
       DestructorTestPhaseResult = TestPhaseResult(TestPhase::Destructor);
       DestructorTestPhaseResult.microseconds = 3000;
       _testResult.fullTestName = FullTestNameValue;
-      _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
-         BIND_1ARG_METALMOCK_OBJECT(MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
    }
 
    TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
    {
       const TestResult defaultTestResult;
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
-         defaultTestResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString, defaultTestResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedDefaultTestResult;
       expectedDefaultTestResult.fullTestName = FullTestName();
       expectedDefaultTestResult.constructorTestPhaseResult = TestPhaseResult();
@@ -106,8 +108,7 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
-      if (expectedOverallOutcome == TestOutcome::Success ||
-          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
+      if (expectedOverallOutcome == TestOutcome::Success || expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
          GetArgsMock.Return(zenUnitArgs);
       }
@@ -122,13 +123,11 @@ namespace ZenUnit
          DestructorTestPhaseResult,
          getArgsMockFunction);
       //
-      if (expectedOverallOutcome == TestOutcome::Success ||
-          expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
+      if (expectedOverallOutcome == TestOutcome::Success || expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
          GetArgsMock.CalledOnce();
       }
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
-         testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString, testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
       expectedTestResult.constructorTestPhaseResult = ConstructorTestPhaseResult;
@@ -191,8 +190,7 @@ namespace ZenUnit
       TestPhaseResult destructorTestPhaseResult(TestPhase::Destructor);
       destructorTestPhaseResult.microseconds = 20;
       //
-      const TestResult testResult = TestResult::ConstructorDestructorSuccess(
-         FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
+      const TestResult testResult = TestResult::ConstructorDestructorSuccess(FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
@@ -213,7 +211,7 @@ namespace ZenUnit
       TestOutcome::Unset, false)
    {
       _testResult.testOutcome = testOutcome;
-      std::string twoDecimalPlaceMillisecondsString;
+      string twoDecimalPlaceMillisecondsString;
       if (expectWriteLineOK)
       {
          _consoleMock.WriteColorMock.Expect();
@@ -254,10 +252,8 @@ namespace ZenUnit
       const string anomalyWhy = Random<string>();
       Anomaly anomaly;
       anomaly.why = anomalyWhy;
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleTestPhaseResultField).anomalyOrException = make_shared<AnomalyOrException>(anomaly);
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleTestPhaseResultField).testPhase = testPhase;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleTestPhaseResultField).anomalyOrException = make_shared<AnomalyOrException>(anomaly);
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleTestPhaseResultField).testPhase = testPhase;
 
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
 
@@ -301,13 +297,10 @@ namespace ZenUnit
       const string exceptionTypeName = Random<string>();
       const string exceptionWhatString = Random<string>();
       const char* const exceptionWhat = exceptionWhatString.c_str();
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleTestPhaseResultField).anomalyOrException =
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleTestPhaseResultField).anomalyOrException = 
          make_shared<AnomalyOrException>(&exceptionTypeName, exceptionWhat);
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*
-         expectedResponsibleTestPhaseResultField).testPhase = testPhase;
-      _testResult_WriteTestCaseNumberIfAnyMocked.
-         responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleTestPhaseResultField).testPhase = testPhase;
+      _testResult_WriteTestCaseNumberIfAnyMocked.responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
 
       const string numberedTestFailureArrow = _testFailureNumbererMock.NextNumberedTestFailureArrowMock.ReturnRandom();
 
@@ -385,9 +378,9 @@ namespace ZenUnit
    TEST2X2(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue,
       size_t testCaseNumber, bool expectConsoleWriteLine,
       numeric_limits<size_t>::max(), false,
-      1ull, true,
-      2ull, true,
-      3ull, true)
+      1ULL, true,
+      2ULL, true,
+      3ULL, true)
    {
       if (expectConsoleWriteLine)
       {

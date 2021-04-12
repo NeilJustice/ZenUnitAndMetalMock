@@ -162,7 +162,7 @@ namespace ZenUnit
 
       shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();
-      testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1ull, 2ull, std::numeric_limits<size_t>::max());
+      testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1ULL, 2ULL, std::numeric_limits<size_t>::max());
       test1X1SelfMocked.FactoryNewMock.Return(testCaseNumberGeneratorMock);
 
       METALMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, SplitOnNonQuotedCommas)

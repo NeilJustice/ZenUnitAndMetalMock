@@ -4300,15 +4300,12 @@ namespace ZenUnit
 
    struct TestPhaseResult
    {
-      TestPhase testPhase;
-      TestOutcome testOutcome;
-      unsigned microseconds;
+      TestPhase testPhase = TestPhase::Unset;
+      TestOutcome testOutcome = TestOutcome::Success;
+      unsigned microseconds = 0;
       std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
-      TestPhaseResult() noexcept
-         : testPhase(TestPhase::Unset)
-         , testOutcome(TestOutcome::Success)
-         , microseconds(0)
+      TestPhaseResult()
       {
       }
 
@@ -4333,23 +4330,17 @@ namespace ZenUnit
 #pragma warning(push)
 #pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member
 #endif
-      TestPhaseResult TestResult::* responsibleTestPhaseResultField;
+      TestPhaseResult TestResult::* responsibleTestPhaseResultField = nullptr;
 #if defined _WIN32
 #pragma warning(pop)
 #endif
-      TestOutcome testOutcome;
-      unsigned microseconds;
-      size_t testCaseNumber;
-      size_t totalTestCases;
-      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      TestOutcome testOutcome = TestOutcome::Unset;
+      unsigned microseconds = 0;
+      size_t testCaseNumber = std::numeric_limits<size_t>::max();
+      size_t totalTestCases = 0;
+      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
-      TestResult() noexcept
-         : responsibleTestPhaseResultField(nullptr)
-         , testOutcome(TestOutcome::Unset)
-         , microseconds(0)
-         , testCaseNumber(std::numeric_limits<size_t>::max())
-         , totalTestCases(0)
-         , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
+      TestResult()
       {
       }
 
@@ -4429,7 +4420,7 @@ namespace ZenUnit
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult) noexcept
       {
-         TestResult constructorFailTestResult;
+         TestResult constructorFailTestResult{};
          constructorFailTestResult.fullTestName = fullTestName;
          constructorFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorFailTestResult.testOutcome = constructorTestPhaseResult.testOutcome;
@@ -4446,15 +4437,15 @@ namespace ZenUnit
       {
          ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
          ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         TestResult startupFail;
-         startupFail.fullTestName = fullTestName;
-         startupFail.testOutcome = startupTestPhaseResult.testOutcome;
-         startupFail.constructorTestPhaseResult = constructorTestPhaseResult;
-         startupFail.startupTestPhaseResult = startupTestPhaseResult;
-         startupFail.destructorTestPhaseResult = destructorTestPhaseResult;
-         startupFail.microseconds = constructorTestPhaseResult.microseconds + startupTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
-         startupFail.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
-         return startupFail;
+         TestResult startupFailTestResult{};
+         startupFailTestResult.fullTestName = fullTestName;
+         startupFailTestResult.testOutcome = startupTestPhaseResult.testOutcome;
+         startupFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
+         startupFailTestResult.startupTestPhaseResult = startupTestPhaseResult;
+         startupFailTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
+         startupFailTestResult.microseconds = constructorTestPhaseResult.microseconds + startupTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
+         startupFailTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
+         return startupFailTestResult;
       }
 
       static TestResult ConstructorDestructorSuccess(
@@ -4464,14 +4455,14 @@ namespace ZenUnit
       {
          ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
          ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         TestResult ctorDtorSuccess;
-         ctorDtorSuccess.fullTestName = fullTestName;
-         ctorDtorSuccess.testOutcome = TestOutcome::Success;
-         ctorDtorSuccess.constructorTestPhaseResult = constructorTestPhaseResult;
-         ctorDtorSuccess.destructorTestPhaseResult = destructorTestPhaseResult;
-         ctorDtorSuccess.microseconds = constructorTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
-         ctorDtorSuccess.responsibleTestPhaseResultField = nullptr;
-         return ctorDtorSuccess;
+         TestResult constructorAndDestructorSuccessTestResult{};
+         constructorAndDestructorSuccessTestResult.fullTestName = fullTestName;
+         constructorAndDestructorSuccessTestResult.testOutcome = TestOutcome::Success;
+         constructorAndDestructorSuccessTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
+         constructorAndDestructorSuccessTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
+         constructorAndDestructorSuccessTestResult.microseconds = constructorTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
+         constructorAndDestructorSuccessTestResult.responsibleTestPhaseResultField = nullptr;
+         return constructorAndDestructorSuccessTestResult;
       }
 
       virtual void WriteLineOKIfSuccess(const Console* console) const

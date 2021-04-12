@@ -166,8 +166,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test1X1_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 1);
-      const tuple<size_t, int> expectedFirstCall(1ull, 10);
-      const tuple<size_t, int> expectedSecondCall(2ull, 20);
+      const tuple<size_t, int> expectedFirstCall(1ULL, 10);
+      const tuple<size_t, int> expectedSecondCall(2ULL, 20);
       AssertExpectedCalls<TestingTestClass1X1>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -205,8 +205,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test2X2_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 2);
-      const tuple<size_t, int, string> expectedFirstCall(1ull, 10, string());
-      const tuple<size_t, int, string> expectedSecondCall(2ull, 30, string());
+      const tuple<size_t, int, string> expectedFirstCall(1ULL, 10, string());
+      const tuple<size_t, int, string> expectedSecondCall(2ULL, 30, string());
       AssertExpectedCalls<TestingTestClass2X2>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -244,8 +244,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test3X3_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 3);
-      const tuple<size_t, int, int, string> expectedFirstCall(1ull, 1, 2, string());
-      const tuple<size_t, int, int, string> expectedSecondCall(2ull, 4, 5, string());
+      const tuple<size_t, int, int, string> expectedFirstCall(1ULL, 1, 2, string());
+      const tuple<size_t, int, int, string> expectedSecondCall(2ULL, 4, 5, string());
       AssertExpectedCalls<TestingTestClass3X3>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -283,8 +283,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test4X4_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 4);
-      const tuple<size_t, int, int, int, string> expectedFirstCall(1ull, 1, 2, 3, string());
-      const tuple<size_t, int, int, int, string> expectedSecondCall(2ull, 5, 6, 7, string());
+      const tuple<size_t, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, string());
+      const tuple<size_t, int, int, int, string> expectedSecondCall(2ULL, 5, 6, 7, string());
       AssertExpectedCalls<TestingTestClass4X4>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -322,8 +322,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test5X5_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 5);
-      const tuple<size_t, int, int, int, int, string> expectedFirstCall(1ull, 1, 2, 3, 4, string());
-      const tuple<size_t, int, int, int, int, string> expectedSecondCall(2ull, 6, 7, 8, 9, string());
+      const tuple<size_t, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, string());
+      const tuple<size_t, int, int, int, int, string> expectedSecondCall(2ULL, 6, 7, 8, 9, string());
       AssertExpectedCalls<TestingTestClass5X5>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -361,8 +361,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test6X6_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 6);
-      const tuple<size_t, int, int, int, int, int, string> expectedFirstCall(1ull, 1, 2, 3, 4, 5, string());
-      const tuple<size_t, int, int, int, int, int, string> expectedSecondCall(2ull, 7, 8, 9, 10, 11, string());
+      const tuple<size_t, int, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, 5, string());
+      const tuple<size_t, int, int, int, int, int, string> expectedSecondCall(2ULL, 7, 8, 9, 10, 11, string());
       AssertExpectedCalls<TestingTestClass6X6>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -400,8 +400,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test7X7_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 7);
-      const tuple<size_t, int, int, int, int, int, int, string> expectedFirstCall(1ull, 1, 2, 3, 4, 5, 6, string());
-      const tuple<size_t, int, int, int, int, int, int, string> expectedSecondCall(2ull, 8, 9, 10, 11, 12, 13, string());
+      const tuple<size_t, int, int, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, 5, 6, string());
+      const tuple<size_t, int, int, int, int, int, int, string> expectedSecondCall(2ULL, 8, 9, 10, 11, 12, 13, string());
       AssertExpectedCalls<TestingTestClass7X7>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -439,8 +439,8 @@ namespace ZenUnit
 
       const vector<TestResult> testResults = test8X8_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 8);
-      const tuple<size_t, int, int, int, int, int, int, int, string> expectedFirstCall(1ull, 1, 2, 3, 4, 5, 6, 7, string());
-      const tuple<size_t, int, int, int, int, int, int, int, string> expectedSecondCall(2ull, 9, 10, 11, 12, 13, 14, 15, string());
+      const tuple<size_t, int, int, int, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, 5, 6, 7, string());
+      const tuple<size_t, int, int, int, int, int, int, int, string> expectedSecondCall(2ULL, 9, 10, 11, 12, 13, 14, 15, string());
       AssertExpectedCalls<TestingTestClass8X8>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -479,9 +479,9 @@ namespace ZenUnit
       const vector<TestResult> testResults = test9X9_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 9);
       const tuple<size_t, int, int, int, int, int, int, int, int, string> expectedFirstCall(
-         1ull, 1, 2, 3, 4, 5, 6, 7, 8, string());
+         1ULL, 1, 2, 3, 4, 5, 6, 7, 8, string());
       const tuple<size_t, int, int, int, int, int, int, int, int, string> expectedSecondCall(
-         2ull, 10, 11, 12, 13, 14, 15, 16, 17, string());
+         2ULL, 10, 11, 12, 13, 14, 15, 16, 17, string());
       AssertExpectedCalls<TestingTestClass9X9>(expectedFirstCall, expectedSecondCall);
    }
 
@@ -520,9 +520,9 @@ namespace ZenUnit
       const vector<TestResult> testResults = test10X10_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 10);
       const tuple<size_t, int, int, int, int, int, int, int, int, int, string> expectedFirstCall(
-         1ull, 1, 2, 3, 4, 5, 6, 7, 8, 9, string());
+         1ULL, 1, 2, 3, 4, 5, 6, 7, 8, 9, string());
       const tuple<size_t, int, int, int, int, int, int, int, int, int, string> expectedSecondCall(
-         2ull, 11, 12, 13, 14, 15, 16, 17, 18, 19, string());
+         2ULL, 11, 12, 13, 14, 15, 16, 17, 18, 19, string());
       AssertExpectedCalls<TestingTestClass10X10>(expectedFirstCall, expectedSecondCall);
    }
 

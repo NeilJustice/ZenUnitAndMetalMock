@@ -40,9 +40,9 @@ namespace ZenUnit
 
    TEST2X2(NextTestCaseNumber_CurrentTestCaseNumberIsLessThanOrEqualToMaxTestCaseNumber_ReturnsCurrentTestCaseNumberThenIncrementsIt,
       size_t maxTestCaseNumber, const vector<size_t>& expectedSequenceOfReturnValues,
-      1ull, vector<size_t>{1, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
-      2ull, vector<size_t>{1, 2, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
-      3ull, vector<size_t>{1, 2, 3, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()})
+      1ULL, vector<size_t>{1, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
+      2ULL, vector<size_t>{1, 2, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()},
+      3ULL, vector<size_t>{1, 2, 3, std::numeric_limits<size_t>::max(), std::numeric_limits<size_t>::max()})
    {
       _sequentialTestCaseNumberGenerator._maxTestCaseNumber = maxTestCaseNumber;
       //
