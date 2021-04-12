@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/ZenUnitTestingRandomGeneratorMock.h"
 
 namespace ZenUnit
 {
@@ -39,19 +40,30 @@ namespace ZenUnit
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const size_t totalTestCases = ZenUnit::Random<size_t>();
       randomGeneratorMock.SizeTMock.ReturnValues(testCaseNumber, totalTestCases);
+
+      const ZenUnitTestingRandomGeneratorMock zenUnitTestingRandomGeneratorMock{};
+      const FullTestName fullTestName = zenUnitTestingRandomGeneratorMock.RandomFullTestNameMock.ReturnRandom();
+      const TestPhaseResult constructorTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
+      const TestPhaseResult startupTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
+      const TestPhaseResult testBodyTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
+      const TestPhaseResult cleanupTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
+      const TestPhaseResult destructorTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
+      zenUnitTestingRandomGeneratorMock.RandomTestPhaseResultMock.ReturnValues(
+         constructorTestPhaseResult, startupTestPhaseResult, testBodyTestPhaseResult, cleanupTestPhaseResult, destructorTestPhaseResult);
       //
-      const TestResult randomTestResult = TestableRandomTestResult(&randomGeneratorMock);
+      const TestResult randomTestResult = TestableRandomTestResult(&randomGeneratorMock, &zenUnitTestingRandomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.EnumMock.CalledOnceWith(static_cast<int>(TestOutcome::MaxValue)));
       METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
       METALMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
-
-      //IS_NOT_DEFAULT_VALUE(randomTestResult.fullTestName);
-      //IS_NOT_DEFAULT_VALUE(randomTestResult.constructorTestPhaseResult);
-      //IS_NOT_DEFAULT_VALUE(randomTestResult.startupTestPhaseResult);
-      //IS_NOT_DEFAULT_VALUE(randomTestResult.testBodyTestPhaseResult);
-      //IS_NOT_DEFAULT_VALUE(randomTestResult.cleanupTestPhaseResult);
-      //IS_NOT_DEFAULT_VALUE(randomTestResult.destructorTestPhaseResult);
+      METALMOCK(zenUnitTestingRandomGeneratorMock.RandomFullTestNameMock.CalledOnce());
+      METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestPhaseResultMock.CalledNTimes(5));
+      ARE_EQUAL(fullTestName, randomTestResult.fullTestName);
+      ARE_EQUAL(constructorTestPhaseResult, randomTestResult.constructorTestPhaseResult);
+      ARE_EQUAL(startupTestPhaseResult, randomTestResult.startupTestPhaseResult);
+      ARE_EQUAL(testBodyTestPhaseResult, randomTestResult.testBodyTestPhaseResult);
+      ARE_EQUAL(cleanupTestPhaseResult, randomTestResult.cleanupTestPhaseResult);
+      ARE_EQUAL(destructorTestPhaseResult, randomTestResult.destructorTestPhaseResult);
       IS_NULLPTR(randomTestResult.responsibleTestPhaseResultField);
       ARE_EQUAL(testOutcome, randomTestResult.testOutcome);
       ARE_EQUAL(microseconds, randomTestResult.microseconds);
