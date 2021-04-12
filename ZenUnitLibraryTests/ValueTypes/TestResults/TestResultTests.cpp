@@ -378,7 +378,7 @@ namespace ZenUnit
       METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red));
       const unsigned expectedElapsedMilliseconds = _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMicroseconds / 1000U;
       const std::string expectedErrorMessage = String::Concat(
-         "Test succeeded but completed in ", expectedElapsedMilliseconds, " ms which exceeds the --max-test-milliseconds deadline of X ms\n");
+         "Test succeeded but completed in ", expectedElapsedMilliseconds, " ms which exceeds the --max-test-milliseconds deadline\n");
       METALMOCK(_consoleMock.WriteLineMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },

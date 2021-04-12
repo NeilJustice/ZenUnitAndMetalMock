@@ -4553,7 +4553,7 @@ namespace ZenUnit
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             const unsigned elapsedMilliseconds = this->elapsedMicroseconds / 1000U;
             const std::string errorMessage = String::Concat(
-               "Test succeeded but completed in ", elapsedMilliseconds, " ms which exceeds the --max-test-milliseconds deadline of X ms\n");
+               "Test succeeded but completed in ", elapsedMilliseconds, " ms which exceeds the --max-test-milliseconds deadline\n");
             console->WriteLine(errorMessage);
             break;
          }
@@ -4673,8 +4673,7 @@ namespace ZenUnit
          return static_cast<size_t>(numberOfFailedTestCases);
       }
 
-      virtual void PrintTestFailures(
-         const ThreeArgForEacherType* threeArgForEacher, const Console* console, TestFailureNumberer* testFailureNumberer) const
+      virtual void PrintTestFailures(const ThreeArgForEacherType* threeArgForEacher, const Console* console, TestFailureNumberer* testFailureNumberer) const
       {
          threeArgForEacher->ThreeArgForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
       }
@@ -4686,8 +4685,7 @@ namespace ZenUnit
          return testClassResult;
       }
    private:
-      static void PrintTestResultIfFailure(
-         const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)
+      static void PrintTestResultIfFailure(const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)
       {
          testResult.PrintIfFailure(console, testFailureNumberer);
       }
@@ -5172,12 +5170,12 @@ namespace ZenUnit
       friend class TestRunResultTests;
    private:
       // Function Callers
-      using MemberForEacherSkippedTestsType = MemberForEacher<std::vector<std::string>,
-         TestRunResult, void(TestRunResult::*)(const std::string&) const>;
+      using MemberForEacherSkippedTestsType = MemberForEacher<
+         std::vector<std::string>, TestRunResult, void(TestRunResult::*)(const std::string&) const>;
       std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
 
-      using MemberForEacherTestClassResultsType = MemberForEacher<std::vector<TestClassResult>,
-         TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
+      using MemberForEacherTestClassResultsType = MemberForEacher<
+         std::vector<TestClassResult>, TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
       std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
 
       std::unique_ptr<const ThreeArgForEacherType> _threeArgForEacher;
@@ -5237,13 +5235,10 @@ namespace ZenUnit
             const std::string secondLineEqualsSigns(firstLine.size(), '=');
             const std::string numberOfTestFailuresLine = String::Concat(firstLine, '\n', secondLineEqualsSigns, '\n');
             _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
-            _memberForEacherTestClassResults->MemberForEach(
-               &_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
+            _memberForEacherTestClassResults->MemberForEach(&_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
-         _memberForEacherSkippedTests->MemberForEach(
-            &_skippedTestClassNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestClassReminder);
-         _memberForEacherSkippedTests->MemberForEach(
-            &_skippedFullTestNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestReminder);
+         _memberForEacherSkippedTests->MemberForEach(&_skippedTestClassNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestClassReminder);
+         _memberForEacherSkippedTests->MemberForEach(&_skippedFullTestNamesAndSkipReasons, this, &TestRunResult::PrintSkippedTestReminder);
       }
 
       virtual void PrintConclusionLines(
