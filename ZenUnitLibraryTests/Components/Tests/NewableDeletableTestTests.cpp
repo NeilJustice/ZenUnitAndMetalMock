@@ -59,7 +59,7 @@ namespace ZenUnit
       failedConstructorTestPhaseResult.testOutcome = nonSuccessOutcome;
       _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
 
-      const long long microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
+      const unsigned microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
 
       TestResult constructorFailTestResult = TestingNonDefaultTestResult();
       constructorFailTestResult.microseconds = microseconds;
@@ -87,7 +87,7 @@ namespace ZenUnit
       TestPhaseResult destructorTestPhaseResult;
       _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(successConstructorTestPhaseResult, destructorTestPhaseResult);
 
-      const long long microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
+      const unsigned microseconds = _stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.ReturnRandom();
 
       TestResult sixArgCtorTestResult = TestingNonDefaultTestResult();
       sixArgCtorTestResult.microseconds = microseconds;

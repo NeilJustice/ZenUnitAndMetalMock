@@ -23,7 +23,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, ZenUnit::RandomNon0Enum<TestOutcome>(TestOutcome::MaxValue));
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testCaseNumber, ZenUnit::RandomNotEqualToValue<size_t>(numeric_limits<size_t>::max()));
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, totalTestCases, ZenUnit::RandomNon0<size_t>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, microseconds, ZenUnit::RandomNon0<long long>());
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, microseconds, ZenUnit::RandomNon0<unsigned>());
    }
 
    TEST(TestableRandomTestResult_ReturnsTestResultWithAllRandomFields)
@@ -32,7 +32,7 @@ namespace ZenUnit
 
       const TestOutcome testOutcome = static_cast<TestOutcome>(randomGeneratorMock.EnumMock.ReturnRandom());
 
-      const long long microseconds = randomGeneratorMock.LongLongMock.ReturnRandom();
+      const unsigned microseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
 
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const size_t totalTestCases = ZenUnit::Random<size_t>();
@@ -41,7 +41,7 @@ namespace ZenUnit
       const TestResult randomTestResult = TestableRandomTestResult(&randomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.EnumMock.CalledOnceWith(static_cast<int>(TestOutcome::MaxValue)));
-      METALMOCK(randomGeneratorMock.LongLongMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
       METALMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
 
       IS_NOT_DEFAULT_VALUE(randomTestResult.fullTestName);

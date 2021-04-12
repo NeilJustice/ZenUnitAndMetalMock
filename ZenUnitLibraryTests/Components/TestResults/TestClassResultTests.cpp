@@ -31,10 +31,10 @@ namespace ZenUnit
    {
    public:
       METALMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
-      METALMOCK_NONVOID0_CONST(long long, SumOfTestResultMicroseconds)
+      METALMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)
    } _testClassResultSelfMocked;
 
-   METALMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, long long)
+   METALMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
 
    STARTUP
    {
@@ -171,8 +171,7 @@ namespace ZenUnit
    TEST(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0ull);
-      const long long sumOfTestResultMicroseconds =
-         _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
+      const unsigned sumOfTestResultMicroseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
 
       const string oneDecimalPlaceMilliseconds = MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
 
@@ -198,7 +197,7 @@ namespace ZenUnit
       3ull)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
-      const long long microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
+      const unsigned microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
 
       const string oneDecimalPlaceMilliseconds = MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
 
@@ -230,7 +229,7 @@ namespace ZenUnit
    {
       IS_ZERO(_testClassResult._testResults.size());
       //
-      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      const unsigned microseconds = _testClassResult.SumOfTestResultMicroseconds();
       //
       IS_ZERO(microseconds);
    }
@@ -238,14 +237,14 @@ namespace ZenUnit
    TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
    {
       TestResult testResultA;
-      testResultA.microseconds = ZenUnit::RandomBetween<long long>(0, 100);
+      testResultA.microseconds = ZenUnit::RandomBetween<unsigned>(0, 100);
 
       TestResult testResultB;
-      testResultB.microseconds = ZenUnit::RandomBetween<long long>(0, 1000);
+      testResultB.microseconds = ZenUnit::RandomBetween<unsigned>(0, 1000);
 
       _testClassResult._testResults = { testResultA, testResultB };
       //
-      const long long microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      const unsigned microseconds = _testClassResult.SumOfTestResultMicroseconds();
       //
       ARE_EQUAL(testResultA.microseconds + testResultB.microseconds, microseconds);
    }

@@ -13,7 +13,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_TEST_SETUP(TestPhaseResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testPhase, ZenUnit::RandomNon0Enum<TestPhase>(TestPhase::MaxValue));
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testOutcome, TestOutcome::Anomaly);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, microseconds, ZenUnit::RandomNon0<long long>());
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, microseconds, ZenUnit::RandomNon0<unsigned>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, anomalyOrException, make_shared<AnomalyOrException>(ZenUnit::Random<AnomalyOrException>()));
    }
 
@@ -25,7 +25,7 @@ namespace ZenUnit
       const int testOutcomeInt = ZenUnit::Random<int>();
       randomGeneratorMock.EnumMock.ReturnValues(testPhaseInt, testOutcomeInt);
 
-      const long long microseconds = randomGeneratorMock.LongLongMock.ReturnRandom();
+      const unsigned microseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
       //
       const TestPhaseResult randomTestPhaseResult = TestableRandomTestPhaseResult(&randomGeneratorMock);
       //
@@ -34,7 +34,7 @@ namespace ZenUnit
          static_cast<int>(TestPhase::MaxValue),
          static_cast<int>(TestOutcome::MaxValue)
       }));
-      METALMOCK(randomGeneratorMock.LongLongMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
       TestPhaseResult expectedRandomTestPhaseResult;
       expectedRandomTestPhaseResult.testPhase = static_cast<TestPhase>(testPhaseInt);
       expectedRandomTestPhaseResult.testOutcome = static_cast<TestOutcome>(testOutcomeInt);

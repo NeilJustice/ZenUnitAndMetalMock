@@ -2196,7 +2196,7 @@ namespace ZenUnit
          return secondsSince1970AsUnsigned;
       }
 
-      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(long long microseconds)
+      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds)
       {
          const double unroundedMilliseconds = static_cast<double>(microseconds) / 1000.0;
 
@@ -4302,7 +4302,7 @@ namespace ZenUnit
    {
       TestPhase testPhase;
       TestOutcome testOutcome;
-      long long microseconds;
+      unsigned microseconds;
       std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
       TestPhaseResult() noexcept
@@ -4338,10 +4338,10 @@ namespace ZenUnit
 #pragma warning(pop)
 #endif
       TestOutcome testOutcome;
-      long long microseconds;
+      unsigned microseconds;
       size_t testCaseNumber;
       size_t totalTestCases;
-      std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
       TestResult() noexcept
          : responsibleTestPhaseResultField(nullptr)
@@ -4531,7 +4531,7 @@ namespace ZenUnit
             console->WriteLineColor(numberedTestFailureArrow, Color::Red);
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            const long long milliseconds = microseconds / static_cast<long long>(1000);
+            const unsigned milliseconds = microseconds / 1000U;
             console->WriteLine(String::Concat("\nFailed because test took longer than --max-test-ms=", milliseconds, " milliseconds"));
             console->WriteNewLine();
             break;
@@ -4573,7 +4573,7 @@ namespace ZenUnit
       friend class TestClassResultEqualizerAndRandomTests;
       friend TestClassResult TestableRandomTestClassResult(const RandomGenerator* randomGenerator);
    private:
-      std::function<std::string(long long)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
       std::vector<TestResult> _testResults;
    public:
       TestClassResult() noexcept
@@ -4613,26 +4613,24 @@ namespace ZenUnit
          _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
       }
 
-      virtual long long SumOfTestResultMicroseconds() const
+      virtual unsigned SumOfTestResultMicroseconds() const
       {
-         const long long sumOfTestResultMicroseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0LL,
-            [](long long runningSum, const TestResult& testResult) { return runningSum + testResult.microseconds; });
+         const unsigned sumOfTestResultMicroseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0U,
+            [](unsigned runningSum, const TestResult& testResult) { return runningSum + testResult.microseconds; });
          return sumOfTestResultMicroseconds;
       }
 
-      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(long long microseconds) const
+      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
       {
-         std::string twoDecimalPlaceMillisecondsString =
-            _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+         std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
          return twoDecimalPlaceMillisecondsString;
       }
 
       virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
-         const long long sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
-         const std::string twoDecimalPlaceMillisecondsString =
-            MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
+         const unsigned sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
+         const std::string twoDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
@@ -4647,8 +4645,7 @@ namespace ZenUnit
 
       virtual size_t NumberOfFailedTestCases() const
       {
-         const ptrdiff_t numberOfFailedTestCases = std::count_if(
-            _testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
+         const ptrdiff_t numberOfFailedTestCases = std::count_if(_testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
          {
             return testResult.testOutcome != TestOutcome::Success;
          });
@@ -5360,7 +5357,7 @@ namespace ZenUnit
          _startTime = _call_high_resolution_clock_now();
       }
 
-      virtual long long GetElapsedMicrosecondsThenResetStopwatch()
+      virtual unsigned GetElapsedMicrosecondsThenResetStopwatch()
       {
          if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
@@ -5368,7 +5365,7 @@ namespace ZenUnit
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_high_resolution_clock_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         const long long elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
+         const unsigned elapsedMicroseconds = static_cast<unsigned>(std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count());
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
          return elapsedMicroseconds;
       }
@@ -5376,16 +5373,16 @@ namespace ZenUnit
       virtual std::string StopAndGetElapsedSeconds()
       {
          // Example elapsedMicroseconds: 1000
-         const long long elapsedMicroseconds = GetElapsedMicrosecondsThenResetStopwatch();
+         const unsigned elapsedMicroseconds = GetElapsedMicrosecondsThenResetStopwatch();
 
          // Example elapsedMilliseconds: 1
-         const long long elapsedMilliseconds = elapsedMicroseconds / 1000;
+         const unsigned elapsedMilliseconds = elapsedMicroseconds / 1000U;
 
          // Example elapsedMillisecondsMod1000: 1
-         const long long elapsedMillisecondsMod1000 = elapsedMilliseconds % 1000;
+         const unsigned elapsedMillisecondsMod1000 = elapsedMilliseconds % 1000U;
 
          // Example elapsedSeconds: 0
-         const long long elapsedSeconds = elapsedMilliseconds / 1000;
+         const unsigned elapsedSeconds = elapsedMilliseconds / 1000U;
 
          const size_t numberOfLeadingMillisecondZeros =
             elapsedMillisecondsMod1000 < 10 ? 2ULL : // 3 -> 0.003

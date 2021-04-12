@@ -88,23 +88,23 @@ namespace ZenUnit
    }
 
    TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
-      long long microseconds, const string& expectedReturnValue,
-      0, "[0.00ms]",
-      1, "[0.00ms]",
-      2, "[0.00ms]",
-      10, "[0.01ms]",
-      12, "[0.01ms]",
-      100, "[0.10ms]",
-      120, "[0.12ms]",
-      123, "[0.12ms]",
-      1000, "[1.00ms]",
-      1234, "[1.23ms]",
-      12345, "[12.35ms]",
-      123456, "[123.46ms]",
-      1234567, "[1234.57ms]",
-      12345678, "[12345.68ms]",
-      123456789, "[123456.79ms]",
-      1234567890, "[1234567.89ms]")
+      unsigned microseconds, const string& expectedReturnValue,
+      0U, "[0.00ms]",
+      1U, "[0.00ms]",
+      2U, "[0.00ms]",
+      10U, "[0.01ms]",
+      12U, "[0.01ms]",
+      100U, "[0.10ms]",
+      120U, "[0.12ms]",
+      123U, "[0.12ms]",
+      1000U, "[1.00ms]",
+      1234U, "[1.23ms]",
+      12345U, "[12.35ms]",
+      123456U, "[123.46ms]",
+      1234567U, "[1234.57ms]",
+      12345678U, "[12345.68ms]",
+      123456789U, "[123456.79ms]",
+      1234567890U, "[1234567.89ms]")
    {
       const string twoDecimalPlaceMillisecondsString = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
       ARE_EQUAL(expectedReturnValue, twoDecimalPlaceMillisecondsString);

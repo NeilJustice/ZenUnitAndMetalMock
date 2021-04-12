@@ -100,7 +100,7 @@ namespace ZenUnit
       testBodyTestPhaseResult.microseconds = 4000;
       TestPhaseResult cleanupTestPhaseResult(TestPhase::Cleanup);
       cleanupTestPhaseResult.testOutcome = cleanupOutcome;
-      cleanupTestPhaseResult.microseconds = static_cast<long long>(5000) + static_cast<long long>(relativeMicroseconds);
+      cleanupTestPhaseResult.microseconds = static_cast<unsigned>(5000 + relativeMicroseconds);
 
       METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs)
 
@@ -140,7 +140,7 @@ namespace ZenUnit
       expectedTestResult.testOutcome = expectedOverallOutcome;
       expectedTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedTestResult.totalTestCases = 0;
-      expectedTestResult.microseconds = static_cast<long long>(MaxTestMilliseconds) * static_cast<long long>(1000) + static_cast<long long>(relativeMicroseconds);
+      expectedTestResult.microseconds = static_cast<unsigned>(MaxTestMilliseconds * 1000 + relativeMicroseconds);
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
