@@ -38,7 +38,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for setting function return values and asserting expected arguments for virtual functions, non-virtual / template functions, static functions, and free functions.
 
-MetalMock is a "double strict" mocking framework so as to be helpful in rigorously confirming the correctness of safety-critical and financially-critical C++ software.
+MetalMock is a "double strict" mocking framework so as to helpful software for rigorously confirming the correctness of safety-critical and financially-critical C++ programs.
 
 A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called.
 
