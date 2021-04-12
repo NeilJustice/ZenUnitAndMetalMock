@@ -74,6 +74,16 @@ Cppcheck/files.txt
 *.a5
 *.a6
 *.a7
+*.a9
+*.a11
+*.a13
+*.s2
+*.s4
+*.s6
+*.s8
+*.s10
+*.s12
+*.s14
 cppcheck_results.txt
 
 # SonarQube
