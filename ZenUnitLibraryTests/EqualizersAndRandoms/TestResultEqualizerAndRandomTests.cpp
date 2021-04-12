@@ -57,18 +57,20 @@ namespace ZenUnit
       METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
       METALMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
       METALMOCK(zenUnitTestingRandomGeneratorMock.RandomFullTestNameMock.CalledOnce());
-      METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestPhaseResultMock.CalledNTimes(5));
-      ARE_EQUAL(fullTestName, randomTestResult.fullTestName);
-      ARE_EQUAL(constructorTestPhaseResult, randomTestResult.constructorTestPhaseResult);
-      ARE_EQUAL(startupTestPhaseResult, randomTestResult.startupTestPhaseResult);
-      ARE_EQUAL(testBodyTestPhaseResult, randomTestResult.testBodyTestPhaseResult);
-      ARE_EQUAL(cleanupTestPhaseResult, randomTestResult.cleanupTestPhaseResult);
-      ARE_EQUAL(destructorTestPhaseResult, randomTestResult.destructorTestPhaseResult);
-      IS_NULLPTR(randomTestResult.responsibleTestPhaseResultField);
-      ARE_EQUAL(testOutcome, randomTestResult.testOutcome);
-      ARE_EQUAL(microseconds, randomTestResult.microseconds);
-      ARE_EQUAL(testCaseNumber, randomTestResult.testCaseNumber);
-      ARE_EQUAL(totalTestCases, randomTestResult.totalTestCases);
+      METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestPhaseResultMock.CalledNTimes(5));      
+      TestResult expectedRandomTestResult;
+      expectedRandomTestResult.fullTestName = fullTestName;
+      expectedRandomTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
+      expectedRandomTestResult.startupTestPhaseResult = startupTestPhaseResult;
+      expectedRandomTestResult.testBodyTestPhaseResult = testBodyTestPhaseResult;
+      expectedRandomTestResult.cleanupTestPhaseResult = cleanupTestPhaseResult;
+      expectedRandomTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
+      expectedRandomTestResult.responsibleTestPhaseResultField = nullptr;
+      expectedRandomTestResult.testOutcome = testOutcome;
+      expectedRandomTestResult.microseconds = microseconds;
+      expectedRandomTestResult.testCaseNumber = testCaseNumber;
+      expectedRandomTestResult.totalTestCases = totalTestCases;
+      ARE_EQUAL(expectedRandomTestResult, randomTestResult);
    }
 
    TEST(RandomTestResult_DoesNotThrowException)
