@@ -12,6 +12,7 @@ namespace ZenUnit
 
 #include <array>
 #include <charconv>
+#include <execution>
 #include <filesystem>
 #include <functional>
 #include <iostream>
@@ -1893,35 +1894,52 @@ namespace ZenUnit
       const char* what() const noexcept override { return ""; }
    };
 
-   template<typename T, typename TransformedT>
+   template<typename ElementType, typename TransformedElementType>
    class Transformer
    {
    public:
       virtual ~Transformer() = default;
 
-      virtual std::vector<TransformedT> Transform(
-         const std::vector<T>* elements, TransformedT(*transformFunction)(const T&)) const
+      virtual std::vector<TransformedElementType> Transform(
+         const std::vector<ElementType>* elements, 
+         TransformedElementType(*transformFunction)(const ElementType&)) const
       {
          const size_t elementsSize = elements->size();
-         std::vector<TransformedT> transformedElements(elementsSize);
+         std::vector<TransformedElementType> transformedElements(elementsSize);
          for (size_t i = 0; i < elementsSize; ++i)
          {
-            const T& element = (*elements)[i];
-            transformedElements[i] = transformFunction(element);
+            const ElementType& element = (*elements)[i];
+            TransformedElementType transformedElement = transformFunction(element);
+            transformedElements[i] = std::move(transformedElement);
          }
          return transformedElements;
       }
 
-      virtual std::vector<TransformedT> RandomTransform(
-         std::vector<T>* elements, TransformedT(*transformFunction)(const T&), unsigned randomSeed) const
+      virtual std::vector<TransformedElementType> ParallelTransform(
+         const std::vector<ElementType>* elements,
+         TransformedElementType(*transformFunction)(const ElementType&)) const
       {
-         std::shuffle(elements->begin(), elements->end(), std::default_random_engine(randomSeed));
-         const size_t elementsSize = elements->size();
-         std::vector<TransformedT> transformedElements(elementsSize);
+         std::vector<TransformedElementType> transformedElements(elements->size());
+         std::transform(
+            std::execution::par_unseq,
+            elements->cbegin(),
+            elements->cend(),
+            transformedElements.begin(),
+            transformFunction);
+         return transformedElements;
+      }
+
+      virtual std::vector<TransformedElementType> RandomTransform(
+         std::vector<ElementType>* shuffableElements, TransformedElementType(*transformFunction)(const ElementType&), unsigned randomSeed) const
+      {
+         std::shuffle(shuffableElements->begin(), shuffableElements->end(), std::default_random_engine(randomSeed));
+         const size_t elementsSize = shuffableElements->size();
+         std::vector<TransformedElementType> transformedElements(elementsSize);
          for (size_t i = 0; i < elementsSize; ++i)
          {
-            const T& randomElement = (*elements)[i];
-            transformedElements[i] = transformFunction(randomElement);
+            const ElementType& randomElement = (*shuffableElements)[i];
+            TransformedElementType transformedElement = transformFunction(randomElement);
+            transformedElements[i] = std::move(transformedElement);
          }
          return transformedElements;
       }

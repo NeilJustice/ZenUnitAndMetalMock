@@ -2,84 +2,104 @@
 
 namespace ZenUnit
 {
-   template<typename T, typename TransformedType>
-   TEMPLATE_TESTS(TransformerTests, T, TransformedType)
-   AFACT(Transform_EmptyRange_DoesNothing)
-   AFACT(Transform_OneItemRange_CallsTransformerOnce)
-   AFACT(Transform_TwoItemRange_CallsTransformerTwice)
-   AFACT(RandomTransform_EmptyRange_DoesNothing)
-   AFACT(RandomTransform_OneItemRange_CallsTransformerOnce)
-   AFACT(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
+   template<typename ElementType, typename TransformedElementType>
+   TEMPLATE_TESTS(TransformerTests, ElementType, TransformedElementType)
+   AFACT(Transform_EmptyElements_DoesNothing)
+   AFACT(Transform_Size1Elements_CallsTransformerFunctionOnce_ReturnsTransformedElements)
+   AFACT(Transform_Size2Elements_CallsTransformerFunctionTwice_ReturnsTransformedElements)
+   AFACT(RandomTransform_EmptyElements_DoesNothing)
+   AFACT(RandomTransform_Size1Elements_CallsTransformerOnce_ReturnsTransformedElements)
+   AFACT(RandomTransform_Size3Elements_CallsTransformerThreeTimesInRandomOrder_ReturnsTransformedElements)
+   AFACT(ParallelTransform_ElementsEmpty_DoesNotCallTransformFunction_ReturnsEmptyVector)
+   AFACT(ParallelTransform_TwoElements_CallsTransformFunctionOnEachElementInParallel_ReturnsTransformedElements)
    EVIDENCE
 
-   using TransformerType = Transformer<T, TransformedType>;
+   using TransformerType = Transformer<ElementType, TransformedElementType>;
    TransformerType _transformer;
 
-   static TransformedType PlusOne(const T& element)
+   static TransformedElementType PlusOne(const ElementType& element)
    {
-      return static_cast<TransformedType>(element) + 1;
+      TransformedElementType transformedElement = static_cast<TransformedElementType>(element) + TransformedElementType{1};
+      return transformedElement;
    }
 
-   TEST(Transform_EmptyRange_DoesNothing)
+   TEST(Transform_EmptyElements_DoesNothing)
    {
-      const vector<T> source;
+      const vector<ElementType> emptyElements;
       //
-      const vector<TransformedType> dest = _transformer.Transform(&source, PlusOne);
+      const vector<TransformedElementType> transformedElements = _transformer.Transform(&emptyElements, PlusOne);
       //
-      IS_EMPTY(dest);
+      IS_EMPTY(transformedElements);
    }
 
-   TEST(Transform_OneItemRange_CallsTransformerOnce)
+   TEST(Transform_Size1Elements_CallsTransformerFunctionOnce_ReturnsTransformedElements)
    {
-      const vector<T> source{ 1 };
+      const vector<ElementType> elements = { 1 };
       //
-      const vector<TransformedType> dest = _transformer.Transform(&source, PlusOne);
+      const vector<TransformedElementType> transformedElements = _transformer.Transform(&elements, PlusOne);
       //
-      VECTORS_ARE_EQUAL(vector<TransformedType>{ 2 }, dest);
+      VECTORS_ARE_EQUAL(vector<TransformedElementType>{ 2 }, transformedElements);
    }
 
-   TEST(Transform_TwoItemRange_CallsTransformerTwice)
+   TEST(Transform_Size2Elements_CallsTransformerFunctionTwice_ReturnsTransformedElements)
    {
-      const vector<T> source{ 1, 2 };
+      const vector<ElementType> elements = { 1, 2 };
       //
-      const vector<TransformedType> dest = _transformer.Transform(&source, PlusOne);
+      const vector<TransformedElementType> transformedElements = _transformer.Transform(&elements, PlusOne);
       //
-      VECTORS_ARE_EQUAL((vector<TransformedType>{ 2, 3 }), dest);
+      const vector<TransformedElementType> expectedTransformedElements = { 2, 3 };
+      VECTORS_ARE_EQUAL(expectedTransformedElements, transformedElements);
    }
 
-   TEST(RandomTransform_EmptyRange_DoesNothing)
+   TEST(RandomTransform_EmptyElements_DoesNothing)
    {
-      vector<T> source;
+      vector<ElementType> emptyElements;
       //
-      const vector<TransformedType> dest = _transformer.RandomTransform(&source, PlusOne, 0);
+      const vector<TransformedElementType> transformedElements = _transformer.RandomTransform(&emptyElements, PlusOne, 0);
       //
-      IS_EMPTY(dest);
+      IS_EMPTY(transformedElements);
    }
 
-   TEST(RandomTransform_OneItemRange_CallsTransformerOnce)
+   TEST(RandomTransform_Size1Elements_CallsTransformerOnce_ReturnsTransformedElements)
    {
-      vector<T> source{ 1 };
+      vector<ElementType> elements = { 1 };
       //
-      const vector<TransformedType> dest = _transformer.RandomTransform(&source, PlusOne, 0);
+      const vector<TransformedElementType> transformedElements = _transformer.RandomTransform(&elements, PlusOne, 0U);
       //
-      VECTORS_ARE_EQUAL(vector<TransformedType>{ 2 }, dest);
+      const vector<TransformedElementType> expectedTransformedElements = { 2 };
+      VECTORS_ARE_EQUAL(expectedTransformedElements, transformedElements);
    }
 
-   TEST(RandomTransform_ThreeItemRange_CallsTransformerThreeTimesInRandomOrder)
+   TEST(RandomTransform_Size3Elements_CallsTransformerThreeTimesInRandomOrder_ReturnsTransformedElements)
    {
-      vector<T> source{ 1, 2, 3 };
+      vector<ElementType> emptyElements = { 1, 2, 3 };
       //
-      const vector<TransformedType> dest = _transformer.RandomTransform(&source, PlusOne,
+      const vector<TransformedElementType> transformedElements = _transformer.RandomTransform(&emptyElements, PlusOne,
          static_cast<unsigned>(chrono::system_clock::now().time_since_epoch().count()));
       //
-      ARE_EQUAL(3, dest.size());
-      IS_TRUE(
-         (dest == vector<TransformedType>{2, 3, 4}) ||
-         (dest == vector<TransformedType>{2, 4, 3}) ||
-         (dest == vector<TransformedType>{3, 2, 4}) ||
-         (dest == vector<TransformedType>{3, 4, 2}) ||
-         (dest == vector<TransformedType>{4, 2, 3}) ||
-         (dest == vector<TransformedType>{4, 3, 2}));
+      const vector<TransformedElementType> expectedTransformedElements = { 2, 3, 4 };
+      INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedTransformedElements, transformedElements);
+   }
+
+   TEST(ParallelTransform_ElementsEmpty_DoesNotCallTransformFunction_ReturnsEmptyVector)
+   {
+      const vector<ElementType> emptyElements;
+      //
+      const vector<TransformedElementType> transformedElements = _transformer.ParallelTransform(&emptyElements, PlusOne);
+      //
+      IS_EMPTY(transformedElements);
+   }
+
+   TEST(ParallelTransform_TwoElements_CallsTransformFunctionOnEachElementInParallel_ReturnsTransformedElements)
+   {
+      const ElementType element1 = ZenUnit::RandomBetween<ElementType>(1, 3);
+      const ElementType element2 = ZenUnit::RandomBetween<ElementType>(1, 3);
+      const vector<ElementType> elements = { element1, element2 };
+      //
+      const vector<TransformedElementType> transformedElements =  _transformer.ParallelTransform(&elements, PlusOne);
+      //
+      const vector<TransformedElementType> expectedTransformedElements = { element1 + 1, element2 + 1 };
+      VECTORS_ARE_EQUAL(expectedTransformedElements, transformedElements);
    }
 
    RUN_TEMPLATE_TESTS(TransformerTests, int, long long)
