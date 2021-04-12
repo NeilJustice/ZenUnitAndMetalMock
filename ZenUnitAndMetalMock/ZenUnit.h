@@ -6604,7 +6604,7 @@ Fatal Windows C++ Runtime Assertion
 
       virtual TestResult MockableCallBaseRunTest()
       {
-         const TestResult testResult = BaseRunTest();
+         TestResult testResult = BaseRunTest();
          return testResult;
       }
 
