@@ -61,22 +61,22 @@ class BuildZenUnitTests(unittest.TestCase):
                BuildZenUnitAndMetalMock.linux_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
                self.assertEqual(6, len(Process.fail_fast_run.call_args_list))
                Process.fail_fast_run.assert_has_calls([
-                  call('MetalMockExamples/MetalMockExamples --test-runs=2 --random'),
-                  call('MetalMockTests/MetalMockTests --test-runs=2 --random'),
-                  call('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests --test-runs=2 --random'),
-                  call('ZenUnitExamples/ZenUnitExamples --test-runs=2 --random'),
-                  call('ZenUnitLibraryTests/ZenUnitLibraryTests --test-runs=2 --random'),
-                  call('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=2 --random')])
+                  call('MetalMockExamples/MetalMockExamples --test-runs=2 --random --max-test-milliseconds=200'),
+                  call('MetalMockTests/MetalMockTests --test-runs=2 --random --max-test-milliseconds=200'),
+                  call('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests --test-runs=2 --random --max-test-milliseconds=200'),
+                  call('ZenUnitExamples/ZenUnitExamples --test-runs=2 --random --max-test-milliseconds=200'),
+                  call('ZenUnitLibraryTests/ZenUnitLibraryTests --test-runs=2 --random --max-test-milliseconds=200'),
+                  call('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=2 --random --max-test-milliseconds=200')])
                os.chdir.assert_called_once_with('..')
             else:
                BuildZenUnitAndMetalMock.windows_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
                Process.fail_fast_run.assert_has_calls([
-                  call(f'MetalMockExamples/{self.cmakeBuildType}/MetalMockExamples.exe --random'),
-                  call(f'MetalMockTests/{self.cmakeBuildType}/MetalMockTests.exe --random'),
-                  call(f'ZenUnitCompileSpeedTests/{self.cmakeBuildType}/ZenUnitCompileSpeedTests.exe --random'),
-                  call(f'ZenUnitExamples/{self.cmakeBuildType}/ZenUnitExamples.exe --random'),
-                  call(f'ZenUnitLibraryTests/{self.cmakeBuildType}/ZenUnitLibraryTests.exe --random'),
-                  call(f'ZenUnitUtilsAndAssertionTests/{self.cmakeBuildType}/ZenUnitUtilsAndAssertionTests.exe --random')])
+                  call(f'MetalMockExamples/{self.cmakeBuildType}/MetalMockExamples.exe --random --max-test-milliseconds=200'),
+                  call(f'MetalMockTests/{self.cmakeBuildType}/MetalMockTests.exe --random --max-test-milliseconds=200'),
+                  call(f'ZenUnitCompileSpeedTests/{self.cmakeBuildType}/ZenUnitCompileSpeedTests.exe --random --max-test-milliseconds=200'),
+                  call(f'ZenUnitExamples/{self.cmakeBuildType}/ZenUnitExamples.exe --random --max-test-milliseconds=200'),
+                  call(f'ZenUnitLibraryTests/{self.cmakeBuildType}/ZenUnitLibraryTests.exe --random --max-test-milliseconds=200'),
+                  call(f'ZenUnitUtilsAndAssertionTests/{self.cmakeBuildType}/ZenUnitUtilsAndAssertionTests.exe --random --max-test-milliseconds=200')])
                os.chdir.assert_not_called()
             self.assertEqual(0, exitCode)
       testcase('Linux', True)
