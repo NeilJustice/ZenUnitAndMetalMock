@@ -5,9 +5,9 @@ namespace ZenUnit
 {
    void Equalizer<FullTestName>::AssertEqual(const FullTestName& expectedFullTestName, const FullTestName& actualFullTestName)
    {
-      ARE_EQUAL(expectedFullTestName.testClassName, actualFullTestName.testClassName);
-      ARE_EQUAL(expectedFullTestName.testName, actualFullTestName.testName);
-      ARE_EQUAL(expectedFullTestName.arity, actualFullTestName.arity);
+      FIELDS_ARE_EQUAL(expectedFullTestName, actualFullTestName, testClassName);
+      FIELDS_ARE_EQUAL(expectedFullTestName, actualFullTestName, testName);
+      FIELDS_ARE_EQUAL(expectedFullTestName, actualFullTestName, arity);
    }
 
    FullTestName TestableRandomFullTestName(const ZenUnit::RandomGenerator* randomGenerator)

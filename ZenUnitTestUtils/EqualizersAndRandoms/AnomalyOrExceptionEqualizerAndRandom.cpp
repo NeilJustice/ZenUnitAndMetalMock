@@ -8,7 +8,7 @@ namespace ZenUnit
       const AnomalyOrException& expectedAnomalyOrException, const AnomalyOrException& actualAnomalyOrException)
    {
       POINTEES_ARE_EQUAL(expectedAnomalyOrException.anomaly, actualAnomalyOrException.anomaly);
-      ARE_EQUAL(expectedAnomalyOrException.exceptionTypeName, actualAnomalyOrException.exceptionTypeName);
+      FIELDS_ARE_EQUAL(expectedAnomalyOrException, actualAnomalyOrException, exceptionTypeName);
       POINTEES_ARE_EQUAL(expectedAnomalyOrException.exceptionMessage, actualAnomalyOrException.exceptionMessage);
    }
 

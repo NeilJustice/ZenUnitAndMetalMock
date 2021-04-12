@@ -6,9 +6,9 @@ namespace ZenUnit
 {
    void Equalizer<TestRunResult>::AssertEqual(const TestRunResult& expectedTestRunResult, const TestRunResult& actualTestRunResult)
    {
-      ARE_EQUAL(expectedTestRunResult._numberOfFailedTestCases, actualTestRunResult._numberOfFailedTestCases);
-      VECTORS_ARE_EQUAL(expectedTestRunResult._skippedTestClassNamesAndSkipReasons, actualTestRunResult._skippedTestClassNamesAndSkipReasons);
-      VECTORS_ARE_EQUAL(expectedTestRunResult._skippedFullTestNamesAndSkipReasons, actualTestRunResult._skippedFullTestNamesAndSkipReasons);
-      VECTORS_ARE_EQUAL(expectedTestRunResult._testClassResults, actualTestRunResult._testClassResults);
+      FIELDS_ARE_EQUAL(expectedTestRunResult, actualTestRunResult, _numberOfFailedTestCases);
+      FIELDS_ARE_EQUAL(expectedTestRunResult, actualTestRunResult, _skippedTestClassNamesAndSkipReasons);
+      FIELDS_ARE_EQUAL(expectedTestRunResult, actualTestRunResult, _skippedFullTestNamesAndSkipReasons);
+      FIELDS_ARE_EQUAL(expectedTestRunResult, actualTestRunResult, _testClassResults);
    }
 }

@@ -8,17 +8,17 @@ namespace ZenUnit
 {
    void Equalizer<TestResult>::AssertEqual(const TestResult& expectedTestResult, const TestResult& actualTestResult)
    {
-      ARE_EQUAL(expectedTestResult.fullTestName, actualTestResult.fullTestName);
-      ARE_EQUAL(expectedTestResult.constructorTestPhaseResult, actualTestResult.constructorTestPhaseResult);
-      ARE_EQUAL(expectedTestResult.startupTestPhaseResult, actualTestResult.startupTestPhaseResult);
-      ARE_EQUAL(expectedTestResult.testBodyTestPhaseResult, actualTestResult.testBodyTestPhaseResult);
-      ARE_EQUAL(expectedTestResult.cleanupTestPhaseResult, actualTestResult.cleanupTestPhaseResult);
-      ARE_EQUAL(expectedTestResult.destructorTestPhaseResult, actualTestResult.destructorTestPhaseResult);
-      ARE_EQUAL(expectedTestResult.responsibleTestPhaseResultField, actualTestResult.responsibleTestPhaseResultField);
-      ARE_EQUAL(expectedTestResult.testOutcome, actualTestResult.testOutcome);
-      ARE_EQUAL(expectedTestResult.testCaseNumber, actualTestResult.testCaseNumber);
-      ARE_EQUAL(expectedTestResult.totalTestCases, actualTestResult.totalTestCases);
-      ARE_EQUAL(expectedTestResult.elapsedMicroseconds, actualTestResult.elapsedMicroseconds);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, fullTestName);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, constructorTestPhaseResult);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, startupTestPhaseResult);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, testBodyTestPhaseResult);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, cleanupTestPhaseResult);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, destructorTestPhaseResult);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, responsibleTestPhaseResultField);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, testOutcome);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, testCaseNumber);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, totalTestCases);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, elapsedMicroseconds);
    }
 
    TestResult TestableRandomTestResult(const RandomGenerator* randomGenerator, const ZenUnitTestingRandomGenerator* zenUnitTestingRandomGenerator)

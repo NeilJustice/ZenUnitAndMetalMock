@@ -11,9 +11,7 @@ namespace ZenUnit
    class Equalizer<OnlyZenUnitEqualizerUserType>
    {
    public:
-      static void AssertEqual(
-         const OnlyZenUnitEqualizerUserType& expected,
-         const OnlyZenUnitEqualizerUserType& actual);
+      static void AssertEqual(const OnlyZenUnitEqualizerUserType& expected, const OnlyZenUnitEqualizerUserType& actual);
    };
 
    template<>

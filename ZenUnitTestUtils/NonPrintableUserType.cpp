@@ -6,17 +6,13 @@ NonPrintableUserType::NonPrintableUserType(int x)
 {
 }
 
-bool operator==(
-   const NonPrintableUserType& left,
-   const NonPrintableUserType& right)
+bool operator==(const NonPrintableUserType& left, const NonPrintableUserType& right)
 {
    const bool isEqual = left.x == right.x;
    return isEqual;
 }
 
-bool operator<(
-   const NonPrintableUserType& left,
-   const NonPrintableUserType& right)
+bool operator<(const NonPrintableUserType& left, const NonPrintableUserType& right)
 {
    const bool isLessThan = left.x < right.x;
    return isLessThan;

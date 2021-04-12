@@ -6,13 +6,13 @@ namespace ZenUnit
 {
    void Equalizer<Anomaly>::AssertEqual(const Anomaly& expectedAnomaly, const Anomaly& actualAnomaly)
    {
-      ARE_EQUAL(expectedAnomaly.assertExpression, actualAnomaly.assertExpression);
-      ARE_EQUAL(expectedAnomaly.expectedValueAsStringOrExpectedLine, actualAnomaly.expectedValueAsStringOrExpectedLine);
-      ARE_EQUAL(expectedAnomaly.actualValueAsStringOrActualLine, actualAnomaly.actualValueAsStringOrActualLine);
-      ARE_EQUAL(expectedAnomaly.optionalThirdLine, actualAnomaly.optionalThirdLine);
-      ARE_EQUAL(expectedAnomaly.message, actualAnomaly.message);
-      ARE_EQUAL(expectedAnomaly.why, actualAnomaly.why);
-      ARE_EQUAL(expectedAnomaly.filePathLineNumber, actualAnomaly.filePathLineNumber);
+      FIELDS_ARE_EQUAL(expectedAnomaly, actualAnomaly, assertExpression);
+      FIELDS_ARE_EQUAL(expectedAnomaly, actualAnomaly, expectedValueAsStringOrExpectedLine);
+      FIELDS_ARE_EQUAL(expectedAnomaly, actualAnomaly, actualValueAsStringOrActualLine);
+      FIELDS_ARE_EQUAL(expectedAnomaly, actualAnomaly, optionalThirdLine);
+      FIELDS_ARE_EQUAL(expectedAnomaly, actualAnomaly, message);
+      FIELDS_ARE_EQUAL(expectedAnomaly, actualAnomaly, why);
+      FIELDS_ARE_EQUAL(expectedAnomaly, actualAnomaly, filePathLineNumber);
    }
 
    Anomaly TestableRandomAnomaly(const RandomGenerator* randomGenerator)

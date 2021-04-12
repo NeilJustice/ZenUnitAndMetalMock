@@ -3,9 +3,7 @@
 
 namespace ZenUnit
 {
-   void Equalizer<OnlyZenUnitEqualizerUserType>::AssertEqual(
-      const OnlyZenUnitEqualizerUserType& expected,
-      const OnlyZenUnitEqualizerUserType& actual)
+   void Equalizer<OnlyZenUnitEqualizerUserType>::AssertEqual(const OnlyZenUnitEqualizerUserType& expected, const OnlyZenUnitEqualizerUserType& actual)
    {
       ARE_EQUAL(expected.x, actual.x);
    }

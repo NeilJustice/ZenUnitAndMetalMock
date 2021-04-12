@@ -6,8 +6,8 @@ namespace ZenUnit
    void Equalizer<FilePathLineNumber>::AssertEqual(
       const FilePathLineNumber& expectedFilePathLineNumber, const FilePathLineNumber& actualFilePathLineNumber)
    {
-      ARE_EQUAL(expectedFilePathLineNumber.filePath, actualFilePathLineNumber.filePath);
-      ARE_EQUAL(expectedFilePathLineNumber.lineNumber, actualFilePathLineNumber.lineNumber);
+      FIELDS_ARE_EQUAL(expectedFilePathLineNumber, actualFilePathLineNumber, filePath);
+      FIELDS_ARE_EQUAL(expectedFilePathLineNumber, actualFilePathLineNumber, lineNumber);
    }
 
    FilePathLineNumber TestableRandomFilePathLineNumber(const RandomGenerator* randomGenerator)

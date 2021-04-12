@@ -7,9 +7,9 @@ namespace ZenUnit
    void Equalizer<TestPhaseResult>::AssertEqual(
       const TestPhaseResult& expectedTestPhaseResult, const TestPhaseResult& actualTestPhaseResult)
    {
-      ARE_EQUAL(expectedTestPhaseResult.testPhase, actualTestPhaseResult.testPhase);
-      ARE_EQUAL(expectedTestPhaseResult.testOutcome, actualTestPhaseResult.testOutcome);
-      ARE_EQUAL(expectedTestPhaseResult.elapsedMicroseconds, actualTestPhaseResult.elapsedMicroseconds);
+      FIELDS_ARE_EQUAL(expectedTestPhaseResult, actualTestPhaseResult, testPhase);
+      FIELDS_ARE_EQUAL(expectedTestPhaseResult, actualTestPhaseResult, testOutcome);
+      FIELDS_ARE_EQUAL(expectedTestPhaseResult, actualTestPhaseResult, elapsedMicroseconds);
       POINTEES_ARE_EQUAL(expectedTestPhaseResult.anomalyOrException, actualTestPhaseResult.anomalyOrException);
    }
 
