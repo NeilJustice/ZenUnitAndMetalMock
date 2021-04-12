@@ -4541,7 +4541,7 @@ namespace ZenUnit
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             const unsigned milliseconds = microseconds / 1000U;
-            console->WriteLine(String::Concat("\nFailed because test took longer than --max-test-ms=", milliseconds, " milliseconds"));
+            console->WriteLine(String::Concat("\nFailed because test took longer than --max-test-milliseconds=", milliseconds, " milliseconds"));
             console->WriteNewLine();
             break;
          }

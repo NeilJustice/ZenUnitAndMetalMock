@@ -11,11 +11,11 @@ namespace ZenUnit
    FACTS(StartupFail_ReturnsExpectedTestResult)
    AFACT(ConstructorDestructorSuccess_ReturnsExpectedTestResult);
    FACTS(WriteLineOKIfSuccess_PrintsOKIfTestOutcomeSuccess)
-   AFACT(PrintIfFailure_Success_PrintsNothing)
-   FACTS(PrintIfFailure_Anomaly_PrintsExpected)
-   FACTS(PrintIfFailure_Exception_PrintsExpected)
-   AFACT(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
-   FACTS(PrintIfFailure_InvalidOutcome_Throws)
+   AFACT(PrintIfFailure_TestOutcomeIsSuccess_PrintsNothing)
+   FACTS(PrintIfFailure_TestOutcomeIsAnomaly_PrintsExpected)
+   FACTS(PrintIfFailure_TestOutcomeIsException_PrintsExpected)
+   FACTS(PrintIfFailure_TestOutcomeIsSuccessButPastDeadline_PrintsExpectedErrorMessage)
+   FACTS(PrintIfFailure_TestOutcomeIsInvalid_ThrowsInvalidArgument)
    FACTS(WriteTestCaseNumberIfAny_WritesToConsoleTestCaseNumberIfTestCaseNumberNotMaxValue)
    EVIDENCE
 
@@ -231,13 +231,13 @@ namespace ZenUnit
       }
    }
 
-   TEST(PrintIfFailure_Success_PrintsNothing)
+   TEST(PrintIfFailure_TestOutcomeIsSuccess_PrintsNothing)
    {
       _testResult.testOutcome = TestOutcome::Success;
       _testResult.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
    }
 
-   TEST3X3(PrintIfFailure_Anomaly_PrintsExpected,
+   TEST3X3(PrintIfFailure_TestOutcomeIsAnomaly_PrintsExpected,
       TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
       TestPhase testPhase,
       const string& expectedTestPhaseSuffix,
@@ -282,7 +282,7 @@ namespace ZenUnit
       METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
-   TEST3X3(PrintIfFailure_Exception_PrintsExpected,
+   TEST3X3(PrintIfFailure_TestOutcomeIsException_PrintsExpected,
       TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
       TestPhase testPhase,
       const string& expectedTestPhaseSuffix,
@@ -333,11 +333,14 @@ namespace ZenUnit
       METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
-   TEST(PrintIfFailure_SuccessButPastDeadline_PrintsExpected)
+   TEST2X2(PrintIfFailure_TestOutcomeIsSuccessButPastDeadline_PrintsExpectedErrorMessage,
+      unsigned elapsedTestMicroseconds, unsigned expectedElapsedTestMilliseconds,
+      10000U, 10U,
+      100000U, 100U)
    {
-      _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = FullTestName("TestClass", "Test", 0);
+      _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = ZenUnit::Random<FullTestName>();
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
-      _testResult_WriteTestCaseNumberIfAnyMocked.microseconds = 10000;
+      _testResult_WriteTestCaseNumberIfAnyMocked.microseconds = elapsedTestMicroseconds;
 
       const string numberedTestFailureArrow = _testFailureNumbererMock.NextNumberedTestFailureArrowMock.ReturnRandom();
 
@@ -351,18 +354,18 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
       METALMOCK(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce());
-      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
-         CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
+      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.CalledOnceWith(
+         &_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
       METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red));
       METALMOCK(_consoleMock.WriteLineMock.CalledAsFollows(
       {
          { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
-         { "\nFailed because test took longer than --max-test-ms=10 milliseconds"s }
+         { "\nFailed because test took longer than --max-test-milliseconds=" + to_string(expectedElapsedTestMilliseconds) + " milliseconds" }
       }));
       METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
    }
 
-   TEST1X1(PrintIfFailure_InvalidOutcome_Throws,
+   TEST1X1(PrintIfFailure_TestOutcomeIsInvalid_ThrowsInvalidArgument,
       TestOutcome invalidTestOutcome,
       TestOutcome::Unset,
       TestOutcome::MaxValue)
@@ -392,8 +395,8 @@ namespace ZenUnit
       //
       if (expectConsoleWriteLine)
       {
-         METALMOCK(_consoleMock.WriteMock.CalledOnceWith(
-            " test case " + to_string(testCaseNumber) + "/" + to_string(_testResult.totalTestCases)));
+         const string expectedErrorMessage = String::Concat(" test case ", testCaseNumber, '/', _testResult.totalTestCases);
+         METALMOCK(_consoleMock.WriteMock.CalledOnceWith(expectedErrorMessage));
       }
    }
 
