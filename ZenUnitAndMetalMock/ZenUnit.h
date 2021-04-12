@@ -1,4 +1,4 @@
-// C++ Unit Testing Framework ZenUnit v0.10.0
+// C++ Unit Testing Framework ZenUnit v0.11.0
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
@@ -7,7 +7,7 @@
 
 namespace ZenUnit
 {
-   inline const char* const Version = "v0.10.0";
+   inline const char* const Version = "v0.11.0";
 }
 
 #include <array>
@@ -122,11 +122,16 @@ Testing Utility Options:
 --version
    Print the ZenUnit version number.
 
+Testing Performance Options:
+
+--max-test-milliseconds=<N>
+   Fail the test run after running all tests if any test took longer than N milliseconds to complete.
+
 Testing Filtration Options:
 
 --run=<TestClassName>[::TestName][/TestCaseNumber][,...]
    Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a ':' character to the end of a test class name or test name to indicate name-starts-with.
+   Add a ':' character to the end of a test class name or test name to indicate test-name-starts-with.
  Example 1: --run=APITests
    Run only test class APITests.
  Example 2: --run=APITests::FunctionUnderTest:
@@ -144,8 +149,8 @@ Testing Rigorousness Options:
    Specify -1 to repeat forever the running of all tests.
 --random
    Run test classes, tests, and value-parameterized test cases in a random order.
---random-seed=<32BitUnsignedInteger>
-   Sets the random seed which sets the test ordering for --random and
+--random-seed=<S>
+   Sets the random seed to unsigned integer S which sets the test ordering for --random and
    sets the sequence of values returned by the ZenUnit::Random<T>
    family of random-value-generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
@@ -320,7 +325,7 @@ Example ZenUnit command line arguments:
    ZenUnit::DELETE_TO_ASSERT_NEWED_Defined(smartOrRawPointer, #smartOrRawPointer, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Effectively asserts that smartOrRawArrayPointer was array operator newed by calling .rest() or delete[] on smartOrRawArrayPointer.
+// Effectively asserts that smartOrRawArrayPointer was array operator newed by calling .reset() or delete[] on smartOrRawArrayPointer.
 #define ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(smartOrRawArrayPointer, ...) \
    ZenUnit::ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_Defined(smartOrRawArrayPointer, #smartOrRawArrayPointer, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -1994,7 +1999,7 @@ namespace ZenUnit
    private:
       TestNameFilter ParseTestNameFilterString(const std::string& testNameFilterString) const
       {
-         TestNameFilter testNameFilter;
+         TestNameFilter testNameFilter{};
          const std::vector<std::string> testClassNameAndTestNameSlashTestCaseNumber =
             String::SplitOnFirstStringDelimiter(testNameFilterString, "::");
          testNameFilter.testClassNamePattern = testClassNameAndTestNameSlashTestCaseNumber[0];
@@ -2295,11 +2300,6 @@ namespace ZenUnit
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const
       {
-         if (stringArgs.size() >= 13)
-         {
-            _console->WriteLine("ZenUnit command line usage error: Too many arguments.\n");
-            _console->WriteLineAndExit(ZenUnitArgs::CommandLineUsage, 1);
-         }
          ZenUnitArgs zenUnitArgs;
          zenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
          unsigned randomSeedArgument = std::numeric_limits<unsigned>::max();
@@ -2368,6 +2368,10 @@ namespace ZenUnit
                   {
                      randomSeedArgument = _call_String_ToUnsigned(argValueString);
                      zenUnitArgs.globalRandomSeedSetByUser = true;
+                  }
+                  else if (argName == "--max-test-milliseconds")
+                  {
+                     zenUnitArgs.maxTestMilliseconds = _call_String_ToUnsigned(argValueString);;
                   }
                   else
                   {
@@ -4320,7 +4324,7 @@ namespace ZenUnit
    {
       TestPhase testPhase = TestPhase::Unset;
       TestOutcome testOutcome = TestOutcome::Success;
-      unsigned microseconds = 0;
+      unsigned elapsedMicroseconds = 0;
       std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
       TestPhaseResult()
@@ -4330,7 +4334,7 @@ namespace ZenUnit
       explicit TestPhaseResult(TestPhase testPhase) noexcept
          : testPhase(testPhase)
          , testOutcome(TestOutcome::Success)
-         , microseconds(0)
+         , elapsedMicroseconds(0)
       {
       }
    };
@@ -4353,7 +4357,7 @@ namespace ZenUnit
 #pragma warning(pop)
 #endif
       TestOutcome testOutcome = TestOutcome::Unset;
-      unsigned microseconds = 0;
+      unsigned elapsedMicroseconds = 0;
       size_t testCaseNumber = std::numeric_limits<size_t>::max();
       size_t totalTestCases = 0;
       std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString;
@@ -4378,7 +4382,12 @@ namespace ZenUnit
          , destructorTestPhaseResult(destructorTestPhaseResult)
          , responsibleTestPhaseResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
-         , microseconds(0)
+         , elapsedMicroseconds(
+            constructorTestPhaseResult.elapsedMicroseconds +
+            startupTestPhaseResult.elapsedMicroseconds +
+            testBodyTestPhaseResult.elapsedMicroseconds +
+            cleanupTestPhaseResult.elapsedMicroseconds +
+            destructorTestPhaseResult.elapsedMicroseconds)
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , totalTestCases(0)
          , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
@@ -4386,30 +4395,24 @@ namespace ZenUnit
          ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
          ZENUNIT_ASSERT(startupTestPhaseResult.testOutcome == TestOutcome::Success);
          ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         microseconds =
-            constructorTestPhaseResult.microseconds +
-            startupTestPhaseResult.microseconds +
-            testBodyTestPhaseResult.microseconds +
-            cleanupTestPhaseResult.microseconds +
-            destructorTestPhaseResult.microseconds;
          if (testBodyTestPhaseResult.testOutcome == TestOutcome::Exception)
          {
-            testOutcome = TestOutcome::Exception;
+            this->testOutcome = TestOutcome::Exception;
             responsibleTestPhaseResultField = &TestResult::testBodyTestPhaseResult;
          }
          else if (cleanupTestPhaseResult.testOutcome == TestOutcome::Exception)
          {
-            testOutcome = TestOutcome::Exception;
+            this->testOutcome = TestOutcome::Exception;
             responsibleTestPhaseResultField = &TestResult::cleanupTestPhaseResult;
          }
          else if (testBodyTestPhaseResult.testOutcome == TestOutcome::Anomaly)
          {
-            testOutcome = TestOutcome::Anomaly;
+            this->testOutcome = TestOutcome::Anomaly;
             responsibleTestPhaseResultField = &TestResult::testBodyTestPhaseResult;
          }
          else if (cleanupTestPhaseResult.testOutcome == TestOutcome::Anomaly)
          {
-            testOutcome = TestOutcome::Anomaly;
+            this->testOutcome = TestOutcome::Anomaly;
             responsibleTestPhaseResultField = &TestResult::cleanupTestPhaseResult;
          }
          else
@@ -4421,13 +4424,13 @@ namespace ZenUnit
             ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
             const ZenUnitArgs& zenUnitArgs = getZenUnitArgs();
             const unsigned maxtestmicroseconds = zenUnitArgs.maxTestMilliseconds * 1000;
-            if (zenUnitArgs.maxTestMilliseconds == 0 || microseconds <= maxtestmicroseconds)
+            if (zenUnitArgs.maxTestMilliseconds == 0 || this->elapsedMicroseconds <= maxtestmicroseconds)
             {
-               testOutcome = TestOutcome::Success;
+               this->testOutcome = TestOutcome::Success;
             }
             else
             {
-               testOutcome = TestOutcome::SuccessButPastDeadline;
+               this->testOutcome = TestOutcome::SuccessButPastDeadline;
             }
          }
       }
@@ -4442,7 +4445,7 @@ namespace ZenUnit
          constructorFailTestResult.fullTestName = fullTestName;
          constructorFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorFailTestResult.testOutcome = constructorTestPhaseResult.testOutcome;
-         constructorFailTestResult.microseconds = constructorTestPhaseResult.microseconds;
+         constructorFailTestResult.elapsedMicroseconds = constructorTestPhaseResult.elapsedMicroseconds;
          constructorFailTestResult.responsibleTestPhaseResultField = &TestResult::constructorTestPhaseResult;
          return constructorFailTestResult;
       }
@@ -4461,7 +4464,10 @@ namespace ZenUnit
          startupFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          startupFailTestResult.startupTestPhaseResult = startupTestPhaseResult;
          startupFailTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         startupFailTestResult.microseconds = constructorTestPhaseResult.microseconds + startupTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
+         startupFailTestResult.elapsedMicroseconds = 
+            constructorTestPhaseResult.elapsedMicroseconds + 
+            startupTestPhaseResult.elapsedMicroseconds + 
+            destructorTestPhaseResult.elapsedMicroseconds;
          startupFailTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
          return startupFailTestResult;
       }
@@ -4478,7 +4484,8 @@ namespace ZenUnit
          constructorAndDestructorSuccessTestResult.testOutcome = TestOutcome::Success;
          constructorAndDestructorSuccessTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorAndDestructorSuccessTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         constructorAndDestructorSuccessTestResult.microseconds = constructorTestPhaseResult.microseconds + destructorTestPhaseResult.microseconds;
+         constructorAndDestructorSuccessTestResult.elapsedMicroseconds = 
+            constructorTestPhaseResult.elapsedMicroseconds + destructorTestPhaseResult.elapsedMicroseconds;
          constructorAndDestructorSuccessTestResult.responsibleTestPhaseResultField = nullptr;
          return constructorAndDestructorSuccessTestResult;
       }
@@ -4488,8 +4495,14 @@ namespace ZenUnit
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString =
-               _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(this->microseconds);
+            const std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
+            console->WriteLine(twoDecimalPlaceMillisecondsString);
+         }
+         else if (testOutcome == TestOutcome::SuccessButPastDeadline)
+         {
+            console->WriteColor("OK ", Color::Green);
+            console->WriteColor("but took longer than --max-test-milliseconds ", Color::Red);
+            const std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
             console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
       }
@@ -4508,8 +4521,7 @@ namespace ZenUnit
             console->WriteLineColor(numberedTestFailureArrow, Color::Red);
             console->Write(fullTestName.Value());
             const TestPhaseResult& responsibleTestPhaseResult = (this->*responsibleTestPhaseResultField);
-            const char* const responsibleTestPhaseSuffix =
-               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
+            const char* const responsibleTestPhaseSuffix = TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             responsibleTestPhaseResult.anomalyOrException->anomaly->WriteLineWhy(console);
@@ -4522,8 +4534,7 @@ namespace ZenUnit
             console->WriteLineColor(numberedTestFailureArrow, Color::Red);
             console->Write(fullTestName.Value());
             const TestPhaseResult& responsibleTestPhaseResult = this->*responsibleTestPhaseResultField;
-            const char* const responsibleTestPhaseSuffix =
-               TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
+            const char* const responsibleTestPhaseSuffix = TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             console->WriteLineColor("\n==================\nUncaught Exception\n==================", Color::Red);
@@ -4540,9 +4551,10 @@ namespace ZenUnit
             console->WriteLineColor(numberedTestFailureArrow, Color::Red);
             console->WriteLine(fullTestName.Value());
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            const unsigned milliseconds = microseconds / 1000U;
-            console->WriteLine(String::Concat("\nFailed because test took longer than --max-test-milliseconds=", milliseconds, " milliseconds"));
-            console->WriteNewLine();
+            const unsigned elapsedMilliseconds = this->elapsedMicroseconds / 1000U;
+            const std::string errorMessage = String::Concat(
+               "Test succeeded but completed in ", elapsedMilliseconds, " ms which exceeds the --max-test-milliseconds deadline of X ms\n");
+            console->WriteLine(errorMessage);
             break;
          }
          case TestOutcome::Unset:
@@ -4625,7 +4637,7 @@ namespace ZenUnit
       virtual unsigned SumOfTestResultMicroseconds() const
       {
          const unsigned sumOfTestResultMicroseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0U,
-            [](unsigned runningSum, const TestResult& testResult) { return runningSum + testResult.microseconds; });
+            [](unsigned runningSum, const TestResult& testResult) { return runningSum + testResult.elapsedMicroseconds; });
          return sumOfTestResultMicroseconds;
       }
 
@@ -5370,7 +5382,7 @@ namespace ZenUnit
       {
          if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
-            return 0LL;
+            return 0U;
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_high_resolution_clock_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
@@ -5743,7 +5755,7 @@ Fatal Windows C++ Runtime Assertion
       template<typename ExceptionType>
       void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& ex, TestPhaseResult* outTestPhaseResult) const
       {
-         outTestPhaseResult->microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         outTestPhaseResult->elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          const std::string* const exceptionTypeName = Type::GetName(ex);
          const char* const exceptionMessage = ex.what();
          outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, exceptionMessage);
@@ -5943,11 +5955,11 @@ Fatal Windows C++ Runtime Assertion
       try
       {
          testPhaseFunction(test);
-         testPhaseResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         testPhaseResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
       }
       catch (const Anomaly& anomaly)
       {
-         testPhaseResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         testPhaseResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          testPhaseResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          testPhaseResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n================\nFailed Assertion\n================", Color::Red);
@@ -6037,7 +6049,7 @@ Fatal Windows C++ Runtime Assertion
          {
             TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
                _protected_fullTestName, constructorTestPhaseResult);
-            constructorFailTestResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+            constructorFailTestResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
             std::vector<TestResult> testResults = { std::move(constructorFailTestResult) };
             return testResults;
          }
@@ -6045,7 +6057,7 @@ Fatal Windows C++ Runtime Assertion
             _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(
             _protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
-         testResult.microseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         testResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          std::vector<TestResult> testResults = { std::move(testResult) };
          return testResults;
       }
@@ -6207,7 +6219,7 @@ Fatal Windows C++ Runtime Assertion
          {
             _protected_console->WriteColor("OK ", Color::Green);
             const std::string twoDecimalPlaceMillisecondsString =
-               outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.microseconds);
+               outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.elapsedMicroseconds);
             _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;

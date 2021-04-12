@@ -12,7 +12,6 @@ namespace ZenUnit
    TESTS(ArgsParserTests)
    AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACTS(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndCommandLineUsageAndExits1)
    FACTS(Parse_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1)
    AFACT(Parse_DashDashHelp_PrintsCommandLineUsageAndExits0)
    AFACT(Parse_DashDashVersion_PrintsVersionAndExits0)
@@ -51,7 +50,7 @@ namespace ZenUnit
       // Function Callers
       _argsParser._caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser.reset(
          _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock =
-         new NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>);
+            new NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>);
       // Constant Components
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
@@ -102,21 +101,6 @@ namespace ZenUnit
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_ArgsSizeGreaterThanOrEqualTo13_PrintsTooManyArgumentsErrorMessageAndCommandLineUsageAndExits1,
-      size_t numberOfStringArgs,
-      size_t(13),
-      size_t(14))
-   {
-      _consoleMock->WriteLineMock.Expect();
-      _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
-      const vector<string> stringArgs(numberOfStringArgs);
-      //
-      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
-      //
-      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("ZenUnit command line usage error: Too many arguments.\n"));
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
-   }
-
    TEST1X1(Parse_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1,
       const string& invalidArgument,
       "--abc",
@@ -151,13 +135,15 @@ namespace ZenUnit
       //
       THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("v0.10.0", 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("v0.11.0", 0));
    }
 
    TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
    {
       const int testruns = ToIntMock.ReturnRandom();
-      const unsigned randomSeedToUnsignedReturnValue = ToUnsignedMock.ReturnRandom();
+      const unsigned randomSeedToUnsignedReturnValue = ZenUnit::Random<unsigned>();
+      const unsigned maxTestMilliseconds = ZenUnit::Random<unsigned>();
+      ToUnsignedMock.ReturnValues(randomSeedToUnsignedReturnValue, maxTestMilliseconds);
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const vector<string> stringArgs
@@ -170,14 +156,19 @@ namespace ZenUnit
          "--exit-1-if-tests-skipped",
          "--random",
          "--test-runs=" + to_string(testruns),
-         "--random-seed=" + to_string(randomSeed)
+         "--random-seed=" + to_string(randomSeed),
+         "--max-test-milliseconds=" + to_string(maxTestMilliseconds)
       };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(ToIntMock.CalledOnceWith(to_string(testruns)));
-      METALMOCK(ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
+      METALMOCK(ToUnsignedMock.CalledAsFollows(
+      {
+         { to_string(randomSeed) },
+         { to_string(maxTestMilliseconds) }
+      }));
       AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(randomSeedToUnsignedReturnValue);
       ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
@@ -190,6 +181,7 @@ namespace ZenUnit
       expectedZenUnitArgs.globalRandomSeedSetByUser = true;
       expectedZenUnitArgs.testRuns = testruns;
       expectedZenUnitArgs.startDateTime = startDateTime;
+      expectedZenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }

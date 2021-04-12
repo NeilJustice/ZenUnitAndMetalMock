@@ -15,7 +15,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_TEST_SETUP(TestResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, fullTestName, ZenUnit::Random<FullTestName>());
       TestPhaseResult nonDefaultTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
-      nonDefaultTestPhaseResult.microseconds = ZenUnit::RandomNon0<unsigned>();
+      nonDefaultTestPhaseResult.elapsedMicroseconds = ZenUnit::RandomNon0<unsigned>();
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, constructorTestPhaseResult, nonDefaultTestPhaseResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, startupTestPhaseResult, nonDefaultTestPhaseResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testBodyTestPhaseResult, nonDefaultTestPhaseResult);
@@ -26,7 +26,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, ZenUnit::RandomNon0Enum<TestOutcome>(TestOutcome::MaxValue));
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testCaseNumber, ZenUnit::RandomNotEqualToValue<size_t>(numeric_limits<size_t>::max()));
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, totalTestCases, ZenUnit::RandomNon0<size_t>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, microseconds, ZenUnit::RandomNon0<unsigned>());
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, elapsedMicroseconds, ZenUnit::RandomNon0<unsigned>());
    }
 
    TEST(TestableRandomTestResult_ReturnsTestResultWithAllRandomFields)
@@ -35,7 +35,7 @@ namespace ZenUnit
 
       const TestOutcome testOutcome = static_cast<TestOutcome>(randomGeneratorMock.EnumMock.ReturnRandom());
 
-      const unsigned microseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
+      const unsigned elapsedMicroseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
 
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const size_t totalTestCases = ZenUnit::Random<size_t>();
@@ -67,7 +67,7 @@ namespace ZenUnit
       expectedRandomTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
       expectedRandomTestResult.responsibleTestPhaseResultField = nullptr;
       expectedRandomTestResult.testOutcome = testOutcome;
-      expectedRandomTestResult.microseconds = microseconds;
+      expectedRandomTestResult.elapsedMicroseconds = elapsedMicroseconds;
       expectedRandomTestResult.testCaseNumber = testCaseNumber;
       expectedRandomTestResult.totalTestCases = totalTestCases;
       ARE_EQUAL(expectedRandomTestResult, randomTestResult);

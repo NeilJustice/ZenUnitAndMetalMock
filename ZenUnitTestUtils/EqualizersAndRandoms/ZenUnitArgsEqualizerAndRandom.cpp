@@ -1,30 +1,31 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/ZenUnitTestingRandomGenerator.h"
 
 namespace ZenUnit
 {
    void Equalizer<ZenUnitArgs>::AssertEqual(const ZenUnitArgs& expectedZenUnitArgs, const ZenUnitArgs& actualZenUnitArgs)
    {
-      ARE_EQUAL(expectedZenUnitArgs.commandLine, actualZenUnitArgs.commandLine);
-      VECTORS_ARE_EQUAL(expectedZenUnitArgs.testNameFilters, actualZenUnitArgs.testNameFilters);
-      ARE_EQUAL(expectedZenUnitArgs.pauseBefore, actualZenUnitArgs.pauseBefore);
-      ARE_EQUAL(expectedZenUnitArgs.pauseAfter, actualZenUnitArgs.pauseAfter);
-      ARE_EQUAL(expectedZenUnitArgs.alwaysExit0, actualZenUnitArgs.alwaysExit0);
-      ARE_EQUAL(expectedZenUnitArgs.failFast, actualZenUnitArgs.failFast);
-      ARE_EQUAL(expectedZenUnitArgs.exit1IfTestsSkipped, actualZenUnitArgs.exit1IfTestsSkipped);
-      ARE_EQUAL(expectedZenUnitArgs.testRuns, actualZenUnitArgs.testRuns);
-      ARE_EQUAL(expectedZenUnitArgs.randomTestOrdering, actualZenUnitArgs.randomTestOrdering);
-      ARE_EQUAL(expectedZenUnitArgs.globalRandomSeedSetByUser, actualZenUnitArgs.globalRandomSeedSetByUser);
-      ARE_EQUAL(expectedZenUnitArgs.maxTestMilliseconds, actualZenUnitArgs.maxTestMilliseconds);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, commandLine);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, testNameFilters);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, pauseBefore);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, pauseAfter);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, alwaysExit0);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, failFast);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, exit1IfTestsSkipped);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, testRuns);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, randomTestOrdering);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, globalRandomSeedSetByUser);
+      FIELDS_ARE_EQUAL(expectedZenUnitArgs, actualZenUnitArgs, maxTestMilliseconds);
    }
 
-   ZenUnitArgs TestableRandomZenUnitArgs(const RandomGenerator* randomGenerator)
+   ZenUnitArgs TestableRandomZenUnitArgs(const RandomGenerator* randomGenerator, const ZenUnitTestingRandomGenerator* zenUnitTestingRandomGenerator)
    {
       ZenUnitArgs randomZenUnitArgs;
       randomZenUnitArgs.startDateTime = randomGenerator->String();
       randomZenUnitArgs.commandLine = randomGenerator->String();
-      randomZenUnitArgs.testNameFilters = ZenUnit::RandomNonEmptyVector<TestNameFilter>();
+      randomZenUnitArgs.testNameFilters = zenUnitTestingRandomGenerator->RandomTestNameFiltersVector();
       randomZenUnitArgs.pauseBefore = randomGenerator->Bool();
       randomZenUnitArgs.pauseAfter = randomGenerator->Bool();
       randomZenUnitArgs.alwaysExit0 = randomGenerator->Bool();
@@ -40,6 +41,6 @@ namespace ZenUnit
    template<>
    ZenUnitArgs Random<ZenUnitArgs>()
    {
-      return TestableRandomZenUnitArgs(RandomGenerator::Instance());
+      return TestableRandomZenUnitArgs(RandomGenerator::Instance(), ZenUnitTestingRandomGenerator::Instance());
    }
 }

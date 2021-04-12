@@ -41,7 +41,7 @@ namespace ZenUnit
    // Test-Only Component
    unique_ptr<TestMock> _testMock;
 
-   const unsigned _microseconds = ZenUnit::Random<unsigned>();
+   const unsigned _elapsedMicroseconds = ZenUnit::Random<unsigned>();
    const string _testPhaseSuffix = ZenUnit::Random<string>();
 
    static int s_numberOfCallsToFunctionThatDoesNotThrowAnException;
@@ -93,7 +93,7 @@ namespace ZenUnit
    void ExpectStopwatchStartAndStopCalls()
    {
       _testPhaseStopwatchMock->StartMock.Expect();
-      _testPhaseStopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.Return(_microseconds);
+      _testPhaseStopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.Return(_elapsedMicroseconds);
    }
 
    void AssertStopwatchStartAndStopCalled()
@@ -130,7 +130,7 @@ namespace ZenUnit
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::Startup;
       expectedTestPhaseResult.testOutcome = TestOutcome::Success;
-      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -163,7 +163,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
-      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(s_anomaly);
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
@@ -223,7 +223,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = testPhase;
-      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(s_anomaly);
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
@@ -261,7 +261,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
-      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
       expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<runtime_error>(), s_stdExceptionMessage.c_str());
@@ -318,7 +318,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = testPhase;
-      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
       expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<runtime_error>(), s_stdExceptionMessage.c_str());
@@ -380,7 +380,7 @@ namespace ZenUnit
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<MetalMock::UnexpectedCallException>(),
          MetalMock::UnexpectedCallException::MakeExceptionMessage("MetalMockedFunctionSignature").c_str());
-      expectedTestPhaseResult.microseconds = _microseconds;
+      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 

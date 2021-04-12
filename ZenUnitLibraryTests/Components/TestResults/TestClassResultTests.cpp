@@ -237,16 +237,16 @@ namespace ZenUnit
    TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
    {
       TestResult testResultA;
-      testResultA.microseconds = ZenUnit::RandomBetween<unsigned>(0, 100);
+      testResultA.elapsedMicroseconds = ZenUnit::RandomBetween<unsigned>(0, 100);
 
       TestResult testResultB;
-      testResultB.microseconds = ZenUnit::RandomBetween<unsigned>(0, 1000);
+      testResultB.elapsedMicroseconds = ZenUnit::RandomBetween<unsigned>(0, 1000);
 
       _testClassResult._testResults = { testResultA, testResultB };
       //
-      const unsigned microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      const unsigned elapsedMicroseconds = _testClassResult.SumOfTestResultMicroseconds();
       //
-      ARE_EQUAL(testResultA.microseconds + testResultB.microseconds, microseconds);
+      ARE_EQUAL(testResultA.elapsedMicroseconds + testResultB.elapsedMicroseconds, elapsedMicroseconds);
    }
 
    RUN_TESTS(TestClassResultTests)

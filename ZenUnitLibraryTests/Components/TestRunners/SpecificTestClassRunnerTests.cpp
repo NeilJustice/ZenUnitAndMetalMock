@@ -313,7 +313,7 @@ namespace ZenUnit
 
       TestResult testResult;
       testResult.testOutcome = newableDeletableTestOutcome;
-      testResult.microseconds = ZenUnit::Random<unsigned>();
+      testResult.elapsedMicroseconds = ZenUnit::Random<unsigned>();
       const vector<TestResult> testResults{ testResult };
       testMock.RunTestMock.Return(testResults);
       //
@@ -327,8 +327,7 @@ namespace ZenUnit
             { "|", Color::Green },
             { "OK ", Color::Green }
          }));
-         METALMOCK(testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.
-            CalledOnceWith(testResult.microseconds));
+         METALMOCK(testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(testResult.elapsedMicroseconds));
          METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }
       else

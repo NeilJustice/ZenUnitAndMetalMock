@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
+#include "ZenUnitTestUtils/ZenUnitTestingRandomGeneratorMock.h"
 
 namespace ZenUnit
 {
@@ -33,6 +34,9 @@ namespace ZenUnit
       const string commandLine = ZenUnit::Random<string>();
       randomGeneratorMock.StringMock.ReturnValues(startDateTime, commandLine);
 
+      ZenUnitTestingRandomGeneratorMock zenUnitTestingRandomGeneratorMock;
+      const vector<TestNameFilter> testNameFilters = zenUnitTestingRandomGeneratorMock.RandomTestNameFiltersVectorMock.ReturnRandom();
+
       const bool pauseBefore = ZenUnit::Random<bool>();
       const bool pauseAfter = ZenUnit::Random<bool>();
       const bool alwaysExit0 = ZenUnit::Random<bool>();
@@ -47,31 +51,27 @@ namespace ZenUnit
 
       const unsigned maxTestMilliseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
       //
-      const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(&randomGeneratorMock);
+      const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(&randomGeneratorMock, &zenUnitTestingRandomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
       METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
       METALMOCK(randomGeneratorMock.IntMock.CalledOnce());
       METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
-
-      ARE_EQUAL(startDateTime, randomZenUnitArgs.startDateTime);
-      ARE_EQUAL(commandLine, randomZenUnitArgs.commandLine);
-
-      IS_NOT_EMPTY(randomZenUnitArgs.testNameFilters);
-      for (size_t i = 0; i < randomZenUnitArgs.testNameFilters.size(); ++i)
-      {
-         IS_NOT_DEFAULT_VALUE(randomZenUnitArgs.testNameFilters[i]);
-      }
-
-      ARE_EQUAL(pauseBefore, randomZenUnitArgs.pauseBefore);
-      ARE_EQUAL(pauseAfter, randomZenUnitArgs.pauseAfter);
-      ARE_EQUAL(alwaysExit0, randomZenUnitArgs.alwaysExit0);
-      ARE_EQUAL(failFast, randomZenUnitArgs.failFast);
-      ARE_EQUAL(exit1IfTestsSkipped, randomZenUnitArgs.exit1IfTestsSkipped);
-      ARE_EQUAL(testRuns, randomZenUnitArgs.testRuns);
-      ARE_EQUAL(randomTestOrdering, randomZenUnitArgs.randomTestOrdering);
-      ARE_EQUAL(globalRandomSeedSetByUser, randomZenUnitArgs.globalRandomSeedSetByUser);
-      ARE_EQUAL(maxTestMilliseconds, randomZenUnitArgs.maxTestMilliseconds);
+      METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestNameFiltersVectorMock.CalledOnce());
+      ZenUnitArgs expectedRandomZenUnitArgs;
+      expectedRandomZenUnitArgs.startDateTime = startDateTime;
+      expectedRandomZenUnitArgs.commandLine = commandLine;
+      expectedRandomZenUnitArgs.testNameFilters = testNameFilters;
+      expectedRandomZenUnitArgs.pauseBefore = pauseBefore;
+      expectedRandomZenUnitArgs.pauseAfter = pauseAfter;
+      expectedRandomZenUnitArgs.alwaysExit0 = alwaysExit0;
+      expectedRandomZenUnitArgs.failFast = failFast;
+      expectedRandomZenUnitArgs.exit1IfTestsSkipped = exit1IfTestsSkipped;
+      expectedRandomZenUnitArgs.testRuns = testRuns;
+      expectedRandomZenUnitArgs.randomTestOrdering = randomTestOrdering;
+      expectedRandomZenUnitArgs.globalRandomSeedSetByUser = globalRandomSeedSetByUser;
+      expectedRandomZenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
+      ARE_EQUAL(expectedRandomZenUnitArgs, randomZenUnitArgs);
    }
 
    TEST(RandomZenUnitArgs_CodeCoverage)

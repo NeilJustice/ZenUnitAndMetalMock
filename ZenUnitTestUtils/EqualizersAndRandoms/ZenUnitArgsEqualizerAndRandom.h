@@ -1,4 +1,5 @@
 #pragma once
+class ZenUnitTestingRandomGenerator;
 
 namespace ZenUnit
 {
@@ -9,7 +10,7 @@ namespace ZenUnit
       static void AssertEqual(const ZenUnitArgs& expectedZenUnitArgs, const ZenUnitArgs& actualZenUnitArgs);
    };
 
-   ZenUnitArgs TestableRandomZenUnitArgs(const RandomGenerator* randomGenerator);
+   ZenUnitArgs TestableRandomZenUnitArgs(const RandomGenerator* randomGenerator, const ZenUnitTestingRandomGenerator* zenUnitTestingRandomGenerator);
    template<>
    ZenUnitArgs Random();
 }

@@ -95,7 +95,7 @@ A "single strict" mocking framework requires that all mocked-out functions be ex
 ### ZenUnit Command Line Usage
 
 ```
-C++ Unit Testing Framework ZenUnit v0.10.0
+C++ Unit Testing Framework ZenUnit v0.11.0
 https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
@@ -111,6 +111,11 @@ Testing Utility Options:
    Print this command line usage message.
 --version
    Print the ZenUnit version number.
+
+Testing Performance Options:
+
+--max-test-milliseconds=<N>
+   Fail the test run after running all tests if any test took longer than N milliseconds to complete.
 
 Testing Filtration Options:
 
@@ -134,8 +139,8 @@ Testing Rigorousness Options:
    Specify -1 to repeat forever the running of all tests.
 --random
    Run test classes, tests, and value-parameterized test cases in a random order.
---random-seed=<32BitUnsignedInteger>
-   Sets the random seed which sets the test ordering for --random and
+--random-seed=<S>
+   Sets the random seed to unsigned integer S which sets the test ordering for --random and
    sets the sequence of values returned by the ZenUnit::Random<T>
    family of random-value-generating functions.
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.

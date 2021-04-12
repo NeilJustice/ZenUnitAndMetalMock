@@ -6,4 +6,5 @@ class ZenUnitTestingRandomGeneratorMock : public Metal::Mock<ZenUnitTestingRando
 public:
    METALMOCK_NONVOID0_CONST(ZenUnit::FullTestName, RandomFullTestName)
    METALMOCK_NONVOID0_CONST(ZenUnit::TestPhaseResult, RandomTestPhaseResult)
+   METALMOCK_NONVOID0_CONST(vector<ZenUnit::TestNameFilter>, RandomTestNameFiltersVector)
 };
