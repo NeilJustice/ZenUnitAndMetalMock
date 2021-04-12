@@ -3,59 +3,59 @@
 namespace ZenUnit
 {
    template<typename T>
-   TEMPLATE_TESTS(IS_GTTests, T)
-   AFACT(IS_GT_ValueIsGreaterThanComparisonValue_DoesNothing)
-   AFACT(IS_GT_ValueIsEqualToComparisonValue_ThrowsAnomaly)
-   AFACT(IS_GT_ValueIsLessThanComparisonValue_ThrowsAnomaly)
-   AFACT(IS_GT_ValueIsLessThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
+   TEMPLATE_TESTS(IS_GREATER_THANTests, T)
+   AFACT(IS_GREATER_THAN_ValueIsGreaterThanComparisonValue_DoesNothing)
+   AFACT(IS_GREATER_THAN_ValueIsEqualToComparisonValue_ThrowsAnomaly)
+   AFACT(IS_GREATER_THAN_ValueIsLessThanComparisonValue_ThrowsAnomaly)
+   AFACT(IS_GREATER_THAN_ValueIsLessThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
-   TEST(IS_GT_ValueIsGreaterThanComparisonValue_DoesNothing)
+   TEST(IS_GREATER_THAN_ValueIsGreaterThanComparisonValue_DoesNothing)
    {
       const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
       const T value = ZenUnit::RandomGreaterThan<T>(comparisonValue);
-      IS_GT(value, comparisonValue);
+      IS_GREATER_THAN(value, comparisonValue);
    }
 
-   TEST(IS_GT_ValueIsEqualToComparisonValue_ThrowsAnomaly)
+   TEST(IS_GREATER_THAN_ValueIsEqualToComparisonValue_ThrowsAnomaly)
    {
       const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
       const T value = comparisonValue;
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
-         "  Failed: IS_GT(value, comparisonValue)",
+         "  Failed: IS_GREATER_THAN(value, comparisonValue)",
          "Expected: " + to_string(value),
          "  Actual: " + to_string(comparisonValue),
          "File.cpp(1)");
-      THROWS_EXCEPTION(IS_GT(value, comparisonValue), Anomaly, expectedExceptionMessage);
+      THROWS_EXCEPTION(IS_GREATER_THAN(value, comparisonValue), Anomaly, expectedExceptionMessage);
    }
 
-   TEST(IS_GT_ValueIsLessThanComparisonValue_ThrowsAnomaly)
+   TEST(IS_GREATER_THAN_ValueIsLessThanComparisonValue_ThrowsAnomaly)
    {
       const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
-         "  Failed: IS_GT(value, comparisonValue)",
+         "  Failed: IS_GREATER_THAN(value, comparisonValue)",
          "Expected: " + to_string(value),
          "  Actual: " + to_string(comparisonValue),
          "File.cpp(1)");
-      THROWS_EXCEPTION(IS_GT(value, comparisonValue), Anomaly, expectedExceptionMessage);
+      THROWS_EXCEPTION(IS_GREATER_THAN(value, comparisonValue), Anomaly, expectedExceptionMessage);
    }
 
-   TEST(IS_GT_ValueIsLessThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
+   TEST(IS_GREATER_THAN_ValueIsLessThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    {
       const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
-         "  Failed: IS_GT(value, comparisonValue, messageA, messageB)",
+         "  Failed: IS_GREATER_THAN(value, comparisonValue, messageA, messageB)",
          "Expected: " + to_string(value),
          "  Actual: " + to_string(comparisonValue),
          " Message: \"" + messageA + "\", \"" + messageB + "\"",
          "File.cpp(1)");
-      THROWS_EXCEPTION(IS_GT(value, comparisonValue, messageA, messageB), Anomaly, expectedExceptionMessage);
+      THROWS_EXCEPTION(IS_GREATER_THAN(value, comparisonValue, messageA, messageB), Anomaly, expectedExceptionMessage);
    }
 
-   RUN_TEMPLATE_TESTS(IS_GTTests, int)
-   THEN_RUN_TEMPLATE_TESTS(IS_GTTests, unsigned long long)
+   RUN_TEMPLATE_TESTS(IS_GREATER_THANTests, int)
+   THEN_RUN_TEMPLATE_TESTS(IS_GREATER_THANTests, unsigned long long)
 }

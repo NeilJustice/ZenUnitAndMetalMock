@@ -199,23 +199,23 @@ Example ZenUnit command line arguments:
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts actualValue < comparisonValue.
-#define IS_LT(actualValue, comparisonValue, ...) \
-   ZenUnit::IS_LT_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+#define IS_LESS_THAN(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_LESS_THAN_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts actualValue <= comparisonValue.
-#define IS_LTE(actualValue, comparisonValue, ...) \
-   ZenUnit::IS_LTE_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+#define IS_LESS_THAN_OR_EQUAL(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_LESS_THAN_OR_EQUAL_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts actualValue > comparisonValue.
-#define IS_GT(actualValue, comparisonValue, ...) \
-   ZenUnit::IS_GT_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+#define IS_GREATER_THAN(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_GREATER_THAN_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts actualValue >= comparisonValue.
-#define IS_GTE(actualValue, comparisonValue, ...) \
-   ZenUnit::IS_GTE_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
+#define IS_GREATER_THAN_OR_EQUAL(actualValue, comparisonValue, ...) \
+   ZenUnit::IS_GREATER_THAN_OR_EQUAL_Defined(actualValue, #actualValue, comparisonValue, #comparisonValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that str.empty() is true.
@@ -3051,21 +3051,21 @@ namespace ZenUnit
    }
 
    template<typename T, typename... MessageTypes>
-   NOINLINE void IS_LT_ThrowAnomaly(
+   NOINLINE void IS_LESS_THAN_ThrowAnomaly(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueAsString = ToStringer::ToString(actualValue);
       const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
-      const Anomaly anomaly("IS_LT", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_LESS_THAN", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
          actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
-   void IS_LT_Defined(
+   void IS_LESS_THAN_Defined(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
@@ -3073,28 +3073,28 @@ namespace ZenUnit
       const bool actualValueIsLessThanComparisonValue = actualValue < comparisonValue;
       if (!actualValueIsLessThanComparisonValue)
       {
-         IS_LT_ThrowAnomaly(
+         IS_LESS_THAN_ThrowAnomaly(
             actualValue, actualValueText, comparisonValue, comparisonValueText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename T, typename... MessageTypes>
-   NOINLINE void IS_LTE_ThrowAnomaly(
+   NOINLINE void IS_LESS_THAN_OR_EQUAL_ThrowAnomaly(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueAsString = ToStringer::ToString(actualValue);
       const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
-      const Anomaly anomaly("IS_LTE", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_LESS_THAN_OR_EQUAL", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
          actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
-   void IS_LTE_Defined(
+   void IS_LESS_THAN_OR_EQUAL_Defined(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
@@ -3102,28 +3102,28 @@ namespace ZenUnit
       const bool actualValueIsLessThanOrEqualToComparisonValue = actualValue <= comparisonValue;
       if (!actualValueIsLessThanOrEqualToComparisonValue)
       {
-         IS_LTE_ThrowAnomaly(
+         IS_LESS_THAN_OR_EQUAL_ThrowAnomaly(
             actualValue, actualValueText, comparisonValue, comparisonValueText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename T, typename... MessageTypes>
-   NOINLINE void IS_GTE_ThrowAnomaly(
+   NOINLINE void IS_GREATER_THAN_OR_EQUAL_ThrowAnomaly(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueAsString = ToStringer::ToString(actualValue);
       const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
-      const Anomaly anomaly("IS_GTE", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_GREATER_THAN_OR_EQUAL", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
          actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
-   void IS_GTE_Defined(
+   void IS_GREATER_THAN_OR_EQUAL_Defined(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
@@ -3131,28 +3131,28 @@ namespace ZenUnit
       const bool actualValueIsGreaterThanOrEqualToComparisonValue = actualValue >= comparisonValue;
       if (!actualValueIsGreaterThanOrEqualToComparisonValue)
       {
-         IS_GTE_ThrowAnomaly(
+         IS_GREATER_THAN_OR_EQUAL_ThrowAnomaly(
             actualValue, actualValueText, comparisonValue, comparisonValueText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
    }
 
    template<typename T, typename... MessageTypes>
-   NOINLINE void IS_GT_ThrowAnomaly(
+   NOINLINE void IS_GREATER_THAN_ThrowAnomaly(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string actualValueAsString = ToStringer::ToString(actualValue);
       const std::string comparisonValueAsString = ToStringer::ToString(comparisonValue);
-      const Anomaly anomaly("IS_GT", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
+      const Anomaly anomaly("IS_GREATER_THAN", actualValueText, comparisonValueText, "", messagesText, Anomaly::Default(),
          actualValueAsString, comparisonValueAsString, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
 
    template<typename T, typename... MessageTypes>
-   void IS_GT_Defined(
+   void IS_GREATER_THAN_Defined(
       const T& actualValue, const char* actualValueText,
       const T& comparisonValue, const char* comparisonValueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
@@ -3160,7 +3160,7 @@ namespace ZenUnit
       const bool actualValueIsGreaterThanComparisonValue = actualValue > comparisonValue;
       if (!actualValueIsGreaterThanComparisonValue)
       {
-         IS_GT_ThrowAnomaly(
+         IS_GREATER_THAN_ThrowAnomaly(
             actualValue, actualValueText, comparisonValue, comparisonValueText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }

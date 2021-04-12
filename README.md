@@ -402,10 +402,10 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`FIELDS_ARE_EQUAL(expectedObject, actualObject, fieldName, messages...)`|Asserts `ARE_EQUAL(expectedObject.fieldName, actualObject.fieldName, messages...)`.|
 |`ENUM_EQUALS_INT(expectedInteger, actualEnumClass)`|Asserts `static_cast<typename std::underlying_type<T>::type>(actualEnumClass) == expectedInteger`.|
 |`ARE_COPIES(expectedObject, actualObject, messages...)`|Asserts `&expectedObject != &actualObject` then asserts `ARE_EQUAL(expectedObject, actualObject)`.|
-|`IS_LT(actualValue, comparisonValue, messages...)`|Asserts `actualValue < comparisonValue`.|
-|`IS_LTE(actualValue, comparisonValue, messages...)`|Asserts `actualValue <= comparisonValue`.|
-|`IS_GTE(actualValue, comparisonValue, messages...)`|Asserts `actualValue >= comparisonValue`.|
-|`IS_GT(actualValue, comparisonValue, messages...)`|Asserts `actualValue > comparisonValue`.|
+|`IS_LESS_THAN(actualValue, comparisonValue, messages...)`|Asserts `actualValue < comparisonValue`.|
+|`IS_LESS_THAN_OR_EQUAL(actualValue, comparisonValue, messages...)`|Asserts `actualValue <= comparisonValue`.|
+|`IS_GREATER_THAN(actualValue, comparisonValue, messages...)`|Asserts `actualValue > comparisonValue`.|
+|`IS_GREATER_THAN_OR_EQUAL(actualValue, comparisonValue, messages...)`|Asserts `actualValue >= comparisonValue`.|
 |`IS_TRUE(value, messages...)`|Asserts that `value` is true.|
 |`IS_FALSE(value, messages...)`|Asserts that `value` is false.|
 |`IS_ZERO(value, messages...)`|Asserts that `value == 0` is true.|
@@ -444,8 +444,8 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |Assertion|Behavior|
 |---------|--------|
 |`ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedAbsoluteMaxDifference`.|
-|`FLOATS_ARE_NEAR(expectedFloat, actualFloat, messages...)`|Asserts that `std::abs(expectedFloat - actualFloat) <= 1e-7`. Todo list: Replace 1e-7 with 4 Units in the Last Place|
-|`DOUBLES_ARE_NEAR(expectedDouble, actualDouble, messages...)`|Asserts that `std::abs(expectedDouble - actualDouble) <= 1e-13`. Todo list: Replace 1e-13 with 4 Units in the Last Place|
+|`FLOATS_ARE_NEAR(expectedFloat, actualFloat, messages...)`|Asserts that `std::abs(expectedFloat - actualFloat) <= 1e-7`. Roadmap: Replace 1e-7 with 4 Units in the Last Place comparison.|
+|`DOUBLES_ARE_NEAR(expectedDouble, actualDouble, messages...)`|Asserts that `std::abs(expectedDouble - actualDouble) <= 1e-13`. Roadmap: Replace 1e-13 with 4 Units in the Last Place comparison.|
 
 #### Exception Assertions
 |Assertion|Behavior|

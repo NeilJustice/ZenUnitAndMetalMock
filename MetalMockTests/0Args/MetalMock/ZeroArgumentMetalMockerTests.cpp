@@ -65,7 +65,7 @@ namespace MetalMock
       _zeroArgumentMetalMocker->MetalMockIt();
       //
       const unsigned long long endingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_globalAtomicFunctionCallSequenceNumber;
-      IS_GT(endingGlobalAtomicFunctionCallSequenceNumber, startingGlobalAtomicFunctionCallSequenceNumber);
+      IS_GREATER_THAN(endingGlobalAtomicFunctionCallSequenceNumber, startingGlobalAtomicFunctionCallSequenceNumber);
       ARE_EQUAL(1, _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.size());
       METALMOCK(_zeroArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
       const FunctionCallSequenceNumber functionCallSequenceNumber = _zeroArgumentMetalMocker->CalledOnce();

@@ -451,8 +451,8 @@ namespace ZenUnit
       for (size_t i = 0; i < length; ++i)
       {
          const char ithCharacter = randomStringWithLength[i];
-         IS_GTE(ithCharacter, 'A');
-         IS_LTE(ithCharacter, 'z');
+         IS_GREATER_THAN_OR_EQUAL(ithCharacter, 'A');
+         IS_LESS_THAN_OR_EQUAL(ithCharacter, 'z');
       }
    }
 
@@ -466,8 +466,8 @@ namespace ZenUnit
       for (size_t i = 0; i < length; ++i)
       {
          const wchar_t ithWideCharacter = randomWideStringWithLength[i];
-         IS_GTE(ithWideCharacter, L'A');
-         IS_LTE(ithWideCharacter, L'z');
+         IS_GREATER_THAN_OR_EQUAL(ithWideCharacter, L'A');
+         IS_LESS_THAN_OR_EQUAL(ithWideCharacter, L'z');
       }
    }
 
@@ -662,7 +662,7 @@ namespace ZenUnit
    TEST(RandomLessThan_ReturnsARandomValueBetweenTMinValueAndExclusiveUpperBoundMinus1)
    {
       const T randomTValue = ZenUnit::RandomLessThan<T>(3);
-      IS_LT(randomTValue, T{3});
+      IS_LESS_THAN(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomLessThanTests, short)
@@ -679,7 +679,7 @@ namespace ZenUnit
    TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenTMinValueAndInclusiveUpperBound)
    {
       const T randomTValue = ZenUnit::RandomLessThanOrEqualTo<T>(3);
-      IS_LTE(randomTValue, T{3});
+      IS_LESS_THAN_OR_EQUAL(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomLessThanOrEqualToTests, short)
@@ -696,7 +696,7 @@ namespace ZenUnit
    TEST(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
    {
       const T randomTValue = ZenUnit::RandomGreaterThanOrEqualTo<T>(3);
-      IS_GTE(randomTValue, T{3});
+      IS_GREATER_THAN_OR_EQUAL(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, short)
@@ -713,7 +713,7 @@ namespace ZenUnit
    TEST(RandomGreaterThan_ReturnsARandomValueBetweenExclusiveLowerBoundPlus1AndTMaxValue)
    {
       const T randomTValue = ZenUnit::RandomGreaterThan<T>(3);
-      IS_GT(randomTValue, T{3});
+      IS_GREATER_THAN(randomTValue, T{3});
    }
 
    RUN_TEMPLATE_TESTS(RandomGreaterThanTests, short)

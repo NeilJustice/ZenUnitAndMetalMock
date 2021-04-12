@@ -777,7 +777,7 @@ namespace MetalMock
 
       FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumber) const
       {
-         IS_LT(functionCallSequenceNumber, expectedNextFunctionCallSequenceNumber.functionCallSequenceNumber);
+         IS_LESS_THAN(functionCallSequenceNumber, expectedNextFunctionCallSequenceNumber.functionCallSequenceNumber);
          return expectedNextFunctionCallSequenceNumber;
       }
    };
