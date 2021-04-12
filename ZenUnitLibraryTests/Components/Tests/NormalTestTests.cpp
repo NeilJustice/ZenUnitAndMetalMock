@@ -22,8 +22,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _normalTest = make_unique<NormalTest<TestingTestClass>>(
-         TestClassName.c_str(), TestName.c_str(), &TestingTestClass::TestFunction);
+      _normalTest = make_unique<NormalTest<TestingTestClass>>(TestClassName.c_str(), TestName.c_str(), &TestingTestClass::TestFunction);
    }
 
    TEST(NumberOfTestCases_Returns1)
@@ -45,18 +44,19 @@ namespace ZenUnit
    {
       ConsoleMock consoleMock;
       TestResultMock testResultMock;
-      testResultMock.WriteLineOKIfSuccessMock.Expect();
+      testResultMock.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.Expect();
       //
       _normalTest->WritePostTestCompletionMessage(&consoleMock, testResultMock);
       //
-      METALMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(&consoleMock));
+      METALMOCK(testResultMock.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.CalledOnceWith(&consoleMock));
    }
 
    TEST(Constructor_SetsTestClassNameAndTestName_SetsTestBodyPointer)
    {
       const NormalTest<TestingTestClass> normalTest(TestClassName.c_str(), TestName.c_str(), &TestingTestClass::TestFunction);
       ARE_EQUAL(TestName, normalTest.Name());
-      ARE_EQUAL("TESTS(" + TestClassName + ")\nTEST(" + TestName + ")", normalTest.FullName());
+      const string expectedFullName = "TESTS(" + TestClassName + ")\nTEST(" + TestName + ")";
+      ARE_EQUAL(expectedFullName, normalTest.FullName());
       ARE_EQUAL("(0)", normalTest.FilePathLineNumberString());
       ARE_EQUAL(&TestingTestClass::TestFunction, normalTest._testMemberFunction);
       IS_NULLPTR(normalTest._testClass);

@@ -4490,7 +4490,7 @@ namespace ZenUnit
          return constructorAndDestructorSuccessTestResult;
       }
 
-      virtual void WriteLineOKIfSuccess(const Console* console) const
+      virtual void WriteLineOKIfSuccessOrSuccessButPastDeadline(const Console* console) const
       {
          if (testOutcome == TestOutcome::Success)
          {
@@ -6277,7 +6277,7 @@ Fatal Windows C++ Runtime Assertion
 
       void WritePostTestCompletionMessage(const Console* console, const TestResult& testResult) const override
       {
-         testResult.WriteLineOKIfSuccess(console);
+         testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(console);
       }
 
       std::vector<TestResult> RunTest() override
@@ -6582,8 +6582,7 @@ Fatal Windows C++ Runtime Assertion
          _testClass.reset();
       }
    private:
-      virtual void RunTestCaseIfNotFilteredOut(
-         size_t testCaseNumber, const ZenUnitArgs& zenUnitArgs, const std::vector<std::string>& splitTestCaseArgs)
+      virtual void RunTestCaseIfNotFilteredOut(size_t testCaseNumber, const ZenUnitArgs& zenUnitArgs, const std::vector<std::string>& splitTestCaseArgs)
       {
          const bool shouldRunTestCase = ShouldRunTestCase(zenUnitArgs, _protected_fullTestName, testCaseNumber);
          if (shouldRunTestCase)
@@ -6599,7 +6598,7 @@ Fatal Windows C++ Runtime Assertion
          testResult.testCaseNumber = testCaseNumber;
          testResult.totalTestCases = NumberOfTestCases();
          _testResults.push_back(testResult);
-         WriteLineOKIfSuccess(testResult);
+         WriteLineOKIfSuccessOrSuccessButPastDeadline(testResult);
       }
 
       virtual TestResult MockableCallBaseRunTest()
@@ -6629,8 +6628,7 @@ Fatal Windows C++ Runtime Assertion
          return anyTestNameFilterMatchesThisTestCase;
       }
 
-      static bool TestNameFilterMatchesTestCase(
-         const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
+      static bool TestNameFilterMatchesTestCase(const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
       {
          ZENUNIT_ASSERT(testCaseNumber >= 1);
          const bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(
@@ -6638,8 +6636,7 @@ Fatal Windows C++ Runtime Assertion
          return testNameFilterMatchesTestCase;
       }
 
-      virtual void PrintTestCaseNumberThenArgsThenArrow(
-         size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
+      virtual void PrintTestCaseNumberThenArgsThenArrow(size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
          _console->WriteColor(" [", Color::Green);
          const std::string testCaseNumberString = std::to_string(testCaseNumber);
@@ -6651,9 +6648,9 @@ Fatal Windows C++ Runtime Assertion
          _console->Write(") -> ");
       }
 
-      virtual void WriteLineOKIfSuccess(const TestResult& testResult) const
+      virtual void WriteLineOKIfSuccessOrSuccessButPastDeadline(const TestResult& testResult) const
       {
-         testResult.WriteLineOKIfSuccess(_console.get());
+         testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(_console.get());
       }
    };
 

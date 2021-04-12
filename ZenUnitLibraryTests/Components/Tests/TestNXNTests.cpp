@@ -34,7 +34,7 @@ namespace ZenUnit
    AFACT(Cleanup_CallsCleanup)
    AFACT(DeleteTestClass_DeletesTestClass)
    FACTS(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow)
-   AFACT(WriteLineOKIfSuccess_CallsTestResultWriteLineOKIfSuccess)
+   AFACT(WriteLineOKIfSuccessOrSuccessButPastDeadline_CallsTestResultWriteLineOKIfSuccessOrSuccessButPastDeadline)
    EVIDENCE
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
@@ -263,7 +263,7 @@ namespace ZenUnit
       public:
          METALMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
          METALMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
-         METALMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
+         METALMOCK_VOID1_CONST(WriteLineOKIfSuccessOrSuccessButPastDeadline, const TestResult&)
          Test1X1SelfMocked() noexcept
             : Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>(
                "", // testClassName
@@ -283,7 +283,7 @@ namespace ZenUnit
       testResult.fullTestName.testName = testName.c_str();
       test1X1SelfMocked.MockableCallBaseRunTestMock.Return(testResult);
 
-      test1X1SelfMocked.WriteLineOKIfSuccessMock.Expect();
+      test1X1SelfMocked.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.Expect();
 
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
@@ -296,7 +296,7 @@ namespace ZenUnit
       expectedTestResult.testCaseNumber = testCaseNumber;
       expectedTestResult.totalTestCases = 2;
       expectedTestResult.fullTestName.testName = testName.c_str();
-      METALMOCK(test1X1SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+      METALMOCK(test1X1SelfMocked.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
    }
@@ -308,7 +308,7 @@ namespace ZenUnit
       public:
          METALMOCK_VOID2_CONST(PrintTestCaseNumberThenArgsThenArrow, size_t, const vector<string>&)
          METALMOCK_NONVOID0(TestResult, MockableCallBaseRunTest)
-         METALMOCK_VOID1_CONST(WriteLineOKIfSuccess, const TestResult&)
+         METALMOCK_VOID1_CONST(WriteLineOKIfSuccessOrSuccessButPastDeadline, const TestResult&)
          Test2X2SelfMocked() noexcept
             : Metal::Mock<TestNXN<TestingTestClass, 2, int, int, int, int, int, int>>(
                "", // testClassName
@@ -328,7 +328,7 @@ namespace ZenUnit
       testResult.fullTestName.testName = testName.c_str();
       test2X2SelfMocked.MockableCallBaseRunTestMock.Return(testResult);
 
-      test2X2SelfMocked.WriteLineOKIfSuccessMock.Expect();
+      test2X2SelfMocked.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.Expect();
 
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const vector<string> splitTestCaseArgs = ZenUnit::RandomVector<string>();
@@ -341,7 +341,7 @@ namespace ZenUnit
       expectedTestResult.testCaseNumber = testCaseNumber;
       expectedTestResult.totalTestCases = 3;
       expectedTestResult.fullTestName.testName = testName.c_str();
-      METALMOCK(test2X2SelfMocked.WriteLineOKIfSuccessMock.CalledOnceWith(expectedTestResult));
+      METALMOCK(test2X2SelfMocked.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.CalledOnceWith(expectedTestResult));
       vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
@@ -515,14 +515,14 @@ namespace ZenUnit
       }));
    }
 
-   TEST(WriteLineOKIfSuccess_CallsTestResultWriteLineOKIfSuccess)
+   TEST(WriteLineOKIfSuccessOrSuccessButPastDeadline_CallsTestResultWriteLineOKIfSuccessOrSuccessButPastDeadline)
    {
       TestResultMock testResultMock;
-      testResultMock.WriteLineOKIfSuccessMock.Expect();
+      testResultMock.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.Expect();
       //
-      _testNXN->WriteLineOKIfSuccess(testResultMock);
+      _testNXN->WriteLineOKIfSuccessOrSuccessButPastDeadline(testResultMock);
       //
-      METALMOCK(testResultMock.WriteLineOKIfSuccessMock.CalledOnceWith(_testNXN->_console.get()));
+      METALMOCK(testResultMock.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.CalledOnceWith(_testNXN->_console.get()));
    }
 
    RUN_TESTS(TestNXNTests)

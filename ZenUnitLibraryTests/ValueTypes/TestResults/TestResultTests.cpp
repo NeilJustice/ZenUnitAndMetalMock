@@ -10,9 +10,9 @@ namespace ZenUnit
    FACTS(ConstructorFail_ReturnsExpectedTestResult)
    FACTS(StartupFail_ReturnsExpectedTestResult)
    AFACT(ConstructorDestructorSuccess_ReturnsExpectedTestResult);
-   AFACT(WriteLineOKIfSuccess_TestOutcomeIsSuccess_PrintsOK)
-   AFACT(WriteLineOKIfSuccess_TestOutcomeIsSuccessButPastDeadline_PrintsOKButPastDeadline)
-   FACTS(WriteLineOKIfSuccess_TestOutcomeIsNotSuccessOrSuccessButPastDeadline_PrintsOKButPastDeadline)
+   AFACT(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsSuccess_PrintsOK)
+   AFACT(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsSuccessButPastDeadline_PrintsOKButPastDeadline)
+   FACTS(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsNotSuccessOrSuccessButPastDeadline_PrintsOKButPastDeadline)
    AFACT(PrintIfFailure_TestOutcomeIsSuccess_PrintsNothing)
    FACTS(PrintIfFailure_TestOutcomeIsAnomaly_PrintsExpected)
    FACTS(PrintIfFailure_TestOutcomeIsException_PrintsExpected)
@@ -207,7 +207,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
-   TEST(WriteLineOKIfSuccess_TestOutcomeIsSuccess_PrintsOK)
+   TEST(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsSuccess_PrintsOK)
    {
       _testResult.testOutcome = TestOutcome::Success;
       _consoleMock.WriteColorMock.Expect();
@@ -216,14 +216,14 @@ namespace ZenUnit
       const unsigned elapsedMicroseconds = ZenUnit::Random<unsigned>();
       _testResult.elapsedMicroseconds = elapsedMicroseconds;
       //
-      _testResult.WriteLineOKIfSuccess(&_consoleMock);
+      _testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(&_consoleMock);
       //
       METALMOCK(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
       METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(elapsedMicroseconds));
       METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
    }
 
-   TEST(WriteLineOKIfSuccess_TestOutcomeIsSuccessButPastDeadline_PrintsOKButPastDeadline)
+   TEST(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsSuccessButPastDeadline_PrintsOKButPastDeadline)
    {
       _testResult.testOutcome = TestOutcome::SuccessButPastDeadline;
       _consoleMock.WriteColorMock.Expect();
@@ -232,7 +232,7 @@ namespace ZenUnit
       const unsigned elapsedMicroseconds = ZenUnit::Random<unsigned>();
       _testResult.elapsedMicroseconds = elapsedMicroseconds;
       //
-      _testResult.WriteLineOKIfSuccess(&_consoleMock);
+      _testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(&_consoleMock);
       //
       METALMOCK(_consoleMock.WriteColorMock.CalledAsFollows(
       {
@@ -243,7 +243,7 @@ namespace ZenUnit
       METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
    }
 
-   TEST1X1(WriteLineOKIfSuccess_TestOutcomeIsNotSuccessOrSuccessButPastDeadline_PrintsOKButPastDeadline,
+   TEST1X1(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsNotSuccessOrSuccessButPastDeadline_PrintsOKButPastDeadline,
       TestOutcome nonSuccessTestOutcome,
       TestOutcome::Anomaly,
       TestOutcome::Exception,
@@ -251,7 +251,7 @@ namespace ZenUnit
    {
       _testResult.testOutcome = nonSuccessTestOutcome;
       //
-      _testResult.WriteLineOKIfSuccess(&_consoleMock);
+      _testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(&_consoleMock);
    }
 
    TEST(PrintIfFailure_TestOutcomeIsSuccess_PrintsNothing)
