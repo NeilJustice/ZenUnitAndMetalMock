@@ -366,6 +366,7 @@ namespace ZenUnit
 
       _consoleMock.WriteLineColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
+      _consoleMock.WriteMock.Expect();
 
       _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber = ZenUnit::Random<size_t>();
       _testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.Expect();
@@ -376,14 +377,12 @@ namespace ZenUnit
       METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.CalledOnceWith(
          &_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
       METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red));
+      const string expectedFullTestNameString = _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value();
+      METALMOCK(_consoleMock.WriteMock.CalledOnceWith(expectedFullTestNameString));
       const unsigned expectedElapsedMilliseconds = _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMicroseconds / 1000U;
       const std::string expectedErrorMessage = String::Concat(
-         "Test succeeded but completed in ", expectedElapsedMilliseconds, " ms which exceeds the --max-test-milliseconds deadline\n");
-      METALMOCK(_consoleMock.WriteLineMock.CalledAsFollows(
-      {
-         { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
-         { expectedErrorMessage }
-      }));
+         "\nTest succeeded but took ", expectedElapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
+      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
    }
 
    TEST1X1(PrintIfFailure_TestOutcomeIsInvalid_ThrowsInvalidArgument,

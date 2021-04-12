@@ -4519,7 +4519,8 @@ namespace ZenUnit
          {
             const std::string numberedTestFailureArrow = testFailureNumberer->NextNumberedTestFailureArrow();
             console->WriteLineColor(numberedTestFailureArrow, Color::Red);
-            console->Write(fullTestName.Value());
+            const std::string fullTestNameString = fullTestName.Value();
+            console->Write(fullTestNameString);
             const TestPhaseResult& responsibleTestPhaseResult = (this->*responsibleTestPhaseResultField);
             const char* const responsibleTestPhaseSuffix = TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
@@ -4532,7 +4533,8 @@ namespace ZenUnit
          {
             const std::string numberedTestFailureArrow = testFailureNumberer->NextNumberedTestFailureArrow();
             console->WriteLineColor(numberedTestFailureArrow, Color::Red);
-            console->Write(fullTestName.Value());
+            const std::string fullTestNameString = fullTestName.Value();
+            console->Write(fullTestNameString);
             const TestPhaseResult& responsibleTestPhaseResult = this->*responsibleTestPhaseResultField;
             const char* const responsibleTestPhaseSuffix = TestPhaseTranslator::DoTestPhaseToTestPhaseSuffix(responsibleTestPhaseResult.testPhase);
             console->Write(responsibleTestPhaseSuffix);
@@ -4549,11 +4551,12 @@ namespace ZenUnit
          {
             const std::string numberedTestFailureArrow = testFailureNumberer->NextNumberedTestFailureArrow();
             console->WriteLineColor(numberedTestFailureArrow, Color::Red);
-            console->WriteLine(fullTestName.Value());
+            const std::string fullTestNameString = fullTestName.Value();
+            console->Write(fullTestNameString);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             const unsigned elapsedMilliseconds = this->elapsedMicroseconds / 1000U;
             const std::string errorMessage = String::Concat(
-               "Test succeeded but completed in ", elapsedMilliseconds, " ms which exceeds the --max-test-milliseconds deadline\n");
+               "\nTest succeeded but took ", elapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
             console->WriteLine(errorMessage);
             break;
          }
