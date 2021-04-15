@@ -1,9 +1,10 @@
 import os
 import platform
 import sys
+from typing import List
 from ZenUnitPy import ArgParser, CMake, Process, Util
 
-def main(args):
+def main(args: List[str]) -> int:
    if len(args) != 4:
       Util.print_and_exit(
 'Invalid args: ' + ' '.join(args) + '\n'
@@ -33,11 +34,11 @@ def main(args):
          Process.fail_fast_run(f'ZenUnitUtilsAndAssertionTests/{cmakeBuildType}/ZenUnitUtilsAndAssertionTests.exe --random --max-test-milliseconds=200')
    return 0
 
-def linux_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
+def linux_cmake_build(cmakeGenerator: str, cmakeBuildType: str, cmakeDefinitions: str) -> None:
    CMake.generate(cmakeBuildType, cmakeGenerator, cmakeBuildType, cmakeDefinitions, '..')
    Process.fail_fast_run('ninja -v')
 
-def windows_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions):
+def windows_cmake_build(cmakeGenerator: str, cmakeBuildType: str, cmakeDefinitions: str) -> None:
    CMake.generate('.', cmakeGenerator, cmakeBuildType, cmakeDefinitions, '.')
    cmakeBuildCommand = f'cmake.exe --build . --config {cmakeBuildType}'
    Process.fail_fast_run(cmakeBuildCommand)

@@ -6,12 +6,12 @@ from ZenUnitPy import Process
 
 PylintCommand = 'pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append(\'.\')\" '
 
-def pylint_file(pythonFilePath):
+def pylint_file(pythonFilePath: str) -> int:
    pylintCommand = PylintCommand + pythonFilePath
    pylintExitCode = Process.run_and_get_exit_code(pylintCommand)
    return pylintExitCode
 
-def pylint_all():
+def pylint_all() -> None:
    pyFilePaths = glob.glob('**/*.py', recursive=True)
    allPylintsSucceeded = False
    if platform.system() == 'Windows':
@@ -21,11 +21,11 @@ def pylint_all():
    if not allPylintsSucceeded:
       sys.exit(1)
 
-def flake8_all():
+def flake8_all() -> None:
    flake8Command = 'flake8 --config=.flake8 --show-source --benchmark'
    Process.fail_fast_run(flake8Command)
 
-def run_all_with_coverage(testsProjectName, omitPattern):
+def run_all_with_coverage(testsProjectName: str, omitPattern: str) -> None:
    print(f'Running {testsProjectName}/RunAll.py with coverage from', os.getcwd())
    Process.fail_fast_run(f'coverage run --branch {testsProjectName}/RunAll.py')
    reportExitCode = Process.run_and_get_exit_code(f'coverage report --omit="{omitPattern}" --fail-under=100 --show-missing')

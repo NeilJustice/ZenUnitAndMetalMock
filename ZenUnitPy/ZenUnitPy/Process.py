@@ -5,21 +5,22 @@ import platform
 import shlex
 import subprocess
 import sys
-import threading
 import time
+from typing import Any, List
+from ZenUnitPy import ProcessThread
 
-def bytes_to_utf8(byteString):
+def bytes_to_utf8(byteString: bytes) -> str:
    utf8 = byteString.decode('utf-8')
    return utf8
 
-def fail_fast_run(command):
+def fail_fast_run(command: str) -> None:
    exitCode = run_and_get_exit_code(command)
    if exitCode != 0:
       singleQuotedCommand = f'\'{command}\''
       print('Command', singleQuotedCommand, 'failed with exit code', exitCode)
       sys.exit(exitCode)
 
-def cross_platform_subprocess_call(command):
+def cross_platform_subprocess_call(command: str) -> int:
    systemName = platform.system()
    if systemName.casefold() == 'windows':
       exitCode = subprocess.call(command)
@@ -28,7 +29,7 @@ def cross_platform_subprocess_call(command):
       exitCode = subprocess.call(shlexedCommand)
    return exitCode
 
-def run_and_get_exit_code(command):
+def run_and_get_exit_code(command: str) -> int:
    singleQuotedCommand = f'\'{command}\''
    currentWorkingDirectory = os.getcwd()
    print('Running', singleQuotedCommand, 'from', currentWorkingDirectory)
@@ -41,16 +42,16 @@ def run_and_get_exit_code(command):
    else:
       return exitCode
 
-def run_exe(projectName, configuration, args=''):
+def run_exe(projectName: str, configuration: str, args: str) -> None:
    exePath = f'{projectName}\\{configuration}\\{projectName}.exe'
    exePathWithArgs = append_args(exePath, args)
    fail_fast_run(exePathWithArgs)
 
-def append_args(exePath, args):
+def append_args(exePath: str, args: str) -> str:
    exePathWithArgs = exePath + (' ' + args if args != '' else '')
    return exePathWithArgs
 
-def run_parallel_multiprocessing(func, iterable):
+def run_parallel_multiprocessing(func: Any, iterable: Any) -> bool:
    cpuCount = multiprocessing.cpu_count()
    pool = multiprocessing.Pool(cpuCount)
    exitCodes = pool.map(func, iterable)
@@ -58,7 +59,7 @@ def run_parallel_multiprocessing(func, iterable):
    allCommandsSucceeded = not any(exitCodes)
    return allCommandsSucceeded
 
-def run_parallel_processpoolexecutor(func, iterable):
+def run_parallel_processpoolexecutor(func: Any, iterable: Any) -> bool:
    cpuCount = multiprocessing.cpu_count()
    processPoolExecutor = concurrent.futures.ProcessPoolExecutor(cpuCount)
    exitCodes = processPoolExecutor.map(func, iterable)
@@ -66,13 +67,13 @@ def run_parallel_processpoolexecutor(func, iterable):
    allCommandsSucceeded = not any(exitCodes)
    return allCommandsSucceeded
 
-def run_and_get_stdout(command):
+def run_and_get_stdout(command: str) -> str:
    shlexedCommand = shlex.split(command)
    standardOutputBytes = subprocess.check_output(shlexedCommand)
    standardOutputUtf8 = bytes_to_utf8(standardOutputBytes)
    return standardOutputUtf8
 
-def run_and_check_stdout_for_substring(command, substring):
+def run_and_check_stdout_for_substring(command: str, substring: str) -> None:
    print(f'Running \'{command}\' and checking for substring \'{substring}\'')
    stdOut = run_and_get_stdout(command)
    stdOutContainsSubstring = substring in stdOut
@@ -80,29 +81,15 @@ def run_and_check_stdout_for_substring(command, substring):
    if not stdOutContainsSubstring:
       sys.exit(1)
 
-class ProcessThread(threading.Thread): # pragma nocover
-
-   def __init__(self, commandIndex, command, commandSuffixArg, outExitCodes):
-      threading.Thread.__init__(self)
-      self.commandIndex = commandIndex
-      self.command = command
-      self.commandSuffixArg = commandSuffixArg
-      self.outExitCodes = outExitCodes
-
-   def run(self):
-      fullCommand = self.command + self.commandSuffixArg
-      exitCode = run_and_get_exit_code(fullCommand)
-      self.outExitCodes[self.commandIndex] = exitCode
-
-def run_parallel_processthread(command, commandSuffixArgs): # pragma nocover
+def run_parallel_processthread(command: str, commandSuffixArgs: List[str]) -> bool: # pragma nocover
    numberOfCommands = len(commandSuffixArgs)
-   processThreads = [None] * numberOfCommands
-   processExitCodes = [None] * numberOfCommands
+   processThreads: List[ProcessThread.ProcessThread] = []
+   processExitCodes: List[int] = [0] * numberOfCommands
    beginTime = time.process_time()
    for commandIndex, commandSuffixArg in enumerate(commandSuffixArgs):
-      processThread = ProcessThread(commandIndex, command, commandSuffixArg, processExitCodes)
+      processThread = ProcessThread.ProcessThread(commandIndex, command, commandSuffixArg, processExitCodes)
       processThread.start()
-      processThreads[commandIndex] = processThread
+      processThreads.append(processThread)
    for processThread in processThreads:
       processThread.join()
    endTime = time.process_time()

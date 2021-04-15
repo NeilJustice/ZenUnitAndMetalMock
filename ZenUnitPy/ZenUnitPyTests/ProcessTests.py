@@ -14,8 +14,7 @@ testNames = [
 'run_and_get_exit_code_RunsProcess_ReturnsExitCode_test',
 'run_and_get_exit_code_RunsProcess_ProcessRaisesAnException_PrintsException_Exits1_test',
 'cross_platform_subprocess_call_CallsSubprocessCallOnWindows_CallsShlexSubprocessCallOnNotWindows_test',
-'run_exe_ArgsNotSpecified_CallsRunWithExpected_test',
-'run_exe_ArgSpecified_CallsRunWithExpected_test',
+'run_exe_CallsRunWithExpected_test',
 'append_args_AppendsSpaceThenArgsIfArgsNotEmpty_testCases',
 'run_parallel_multiprocessing_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0_test',
 'run_parallel_processpoolexecutor_CallsProcessPoolExecutorMap_Returns1IfAnyExitCodesNon0_test',
@@ -28,7 +27,6 @@ class ProcessTests(unittest.TestCase):
    def setUp(self):
       self.configuration = Random.string()
       self.projectName = Random.string()
-      self.appendArgsReturnValue = Random.string()
       self.command = Random.string()
       self.shlexedCommand = Random.string()
       self.currentWorkingDirectory = Random.string()
@@ -116,26 +114,15 @@ class ProcessTests(unittest.TestCase):
 
    @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
    @patch('ZenUnitPy.Process.append_args', spec_set=True)
-   def run_exe_ArgsNotSpecified_CallsRunWithExpected_test(self, _1, _2):
-      Process.append_args.return_value = self.appendArgsReturnValue
+   def run_exe_CallsRunWithExpected_test(self, _1, _2):
+      appendArgsReturnValue = Random.string()
+      Process.append_args.return_value = appendArgsReturnValue
+      args = Random.string()
       #
-      Process.run_exe(self.projectName, self.configuration)
+      Process.run_exe(self.projectName, self.configuration, args)
       #
-      self.assert_run_exe_behavior('')
-
-   @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
-   @patch('ZenUnitPy.Process.append_args', spec_set=True)
-   def run_exe_ArgSpecified_CallsRunWithExpected_test(self, _1, _2):
-      Process.append_args.return_value = self.appendArgsReturnValue
-      #
-      Process.run_exe(self.projectName, self.configuration, 'args')
-      #
-      self.assert_run_exe_behavior('args')
-
-   def assert_run_exe_behavior(self, expectedArgs):
-      expectedExePath = f'{self.projectName}\\{self.configuration}\\{self.projectName}.exe'
-      Process.append_args.assert_called_once_with(expectedExePath, expectedArgs)
-      Process.fail_fast_run.assert_called_once_with(self.appendArgsReturnValue)
+      Process.append_args.assert_called_once_with(f'{self.projectName}\\{self.configuration}\\{self.projectName}.exe', args)
+      Process.fail_fast_run.assert_called_once_with(appendArgsReturnValue)
 
    def append_args_AppendsSpaceThenArgsIfArgsNotEmpty_testCases(self):
       def testcase(expectedReturnValue, args):

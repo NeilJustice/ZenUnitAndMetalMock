@@ -1,4 +1,4 @@
-def parse_arg(argName, argValue):
+def parse_arg(argName: str, argValue: str) -> str:
    if not argValue.startswith(f'{argName}='):
       raise ValueError(f"Argument '{argValue}' does not start with '{argName}='")
    indexOfFirstEqualsSign = argValue.index('=')

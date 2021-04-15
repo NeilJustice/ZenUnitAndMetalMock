@@ -5,16 +5,17 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>BuildZenUnitAndMetalMock.py</StartupFile>
+    <StartupFile>RunZenUnitPyTestsWithCoverageAndLinting.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
+    <CommandLineArguments>
+    </CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <WorkingDirectory>D:\Code\ZenUnitAndMetalMock</WorkingDirectory>
+    <WorkingDirectory>D:\Code\ZenUnitAndMetalMock\ZenUnitPy</WorkingDirectory>
     <InterpreterId>
     </InterpreterId>
   </PropertyGroup>
@@ -34,6 +35,9 @@
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />
+    <Compile Include="ProcessThread.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Python.py" />
     <Compile Include="Random.py">
       <SubType>Code</SubType>

@@ -1,18 +1,14 @@
 import random
 
-def boolean():
+def boolean() -> bool:
    randomInteger = integer()
    randomBoolean = randomInteger % 2 == 0
    return randomBoolean
 
-def integer():
+def integer() -> int:
    randomInteger = random.randint(-10000, 10000)
    return randomInteger
 
-def float_value():
-   randomFloat = random.uniform(-10000, 10000)
-   return randomFloat
-
-def string():
+def string() -> str:
    randomString = 'RandomString' + str(random.randint(0, 10000))
    return randomString
