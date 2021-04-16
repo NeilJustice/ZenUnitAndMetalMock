@@ -13,7 +13,7 @@ TEST3X3(Add_ReturnsSumOfArguments,
    int x, int y, int expectedSum,
    0, 0, 0,
    1, 2, 3,
-   4, 5, 9)   
+   4, 5, 9)
 {
    const int sum = _calculator.Add(x, y);
    ARE_EQUAL(expectedSum, sum);
@@ -86,8 +86,8 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
    * [Mutation Coverage Can Be Maximized By Testing With Random Values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
    * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
    * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
-   * [Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and SonarQube Scan ZenUnit and MetalMock's Python Code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c-code-and-sonarqube-scan-zenunit-and-metalmocks-python-code)
-   * [Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's Python Code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-zenunit-and-metalmocks-python-code)
+   * [Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-zenunit-and-metalmocks-cicd-python-code)
+   * [Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-zenunit-and-metalmocks-cicd-python-code)
    * [How To Build and Run ZenUnit and MetalMock Unit Tests On Linux and Then Install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
    * [How To Build and Run ZenUnit and MetalMock Unit Tests On Windows and Then Install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
    * [ZenUnit Features Roadmap](#zenunit-features-roadmap)
@@ -1009,13 +1009,13 @@ Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting t
 
 ![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
 
-### Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and SonarQube Scan ZenUnit and MetalMock's Python Code
+### Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code
 
 A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33 with Clang 11.0.0 and GCC 10.2.1:
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
-### Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's Python Code
+### Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code
 
 A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Windows 10 with Visual Studio 2019:
 
