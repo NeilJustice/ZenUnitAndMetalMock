@@ -1,8 +1,8 @@
 import sys
 import unittest
 from unittest.mock import patch
-import Random
 from ZenUnitPy import UnitTester, Util
+from ZenUnitPyTests import Random
 
 testNames = ['print_and_exit_PrintsMessageThenCallsExitWithExitCode_test']
 

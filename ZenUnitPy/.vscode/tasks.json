@@ -63,5 +63,19 @@
          },
          "problemMatcher": []
       },
+      {
+         "label": "flake8",
+         "type": "shell",
+         "command": "flake8 --config=.flake8 --show-source --benchmark",
+         "options": {
+            "cwd": "${workspaceRoot}"
+         },
+         "presentation": {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         },
+         "problemMatcher": []
+      }
    ]
 }

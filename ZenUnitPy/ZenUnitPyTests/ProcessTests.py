@@ -3,8 +3,8 @@ import multiprocessing
 import os
 import platform
 import shlex
-import sys
 import subprocess
+import sys
 import unittest
 from unittest.mock import patch, call
 from ZenUnitPy import Process, UnitTester, Random
