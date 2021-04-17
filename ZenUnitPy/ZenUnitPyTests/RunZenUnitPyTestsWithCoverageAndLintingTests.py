@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 from ZenUnitPy import RunZenUnitPyTestsWithCoverageAndLinting, Process, Python, UnitTester
 
-testNames = ['main_ParsesArgs_RunsMypy_RunsFlake8_RunsPylint_RunsAllTestsWithCoverage_test']
+testNames = ['test_main_ParsesArgs_RunsMypy_RunsFlake8_RunsPylint_RunsAllTestsWithCoverage']
 
 class RunZenUnitPyTestsWithCoverageAndLintingTests(unittest.TestCase):
 
@@ -10,7 +10,7 @@ class RunZenUnitPyTestsWithCoverageAndLintingTests(unittest.TestCase):
    @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
    @patch('ZenUnitPy.Python.pylint_all', spec_set=True)
    @patch('ZenUnitPy.Python.flake8_all', spec_set=True)
-   def main_ParsesArgs_RunsMypy_RunsFlake8_RunsPylint_RunsAllTestsWithCoverage_test(self, _1, _2, _3, _4):
+   def test_main_ParsesArgs_RunsMypy_RunsFlake8_RunsPylint_RunsAllTestsWithCoverage(self, _1, _2, _3, _4):
       #
       RunZenUnitPyTestsWithCoverageAndLinting.main()
       #

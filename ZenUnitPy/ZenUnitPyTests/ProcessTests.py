@@ -10,17 +10,17 @@ from unittest.mock import patch, call
 from ZenUnitPy import Process, UnitTester, Random
 
 testNames = [
-'fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero_test',
-'run_and_get_exit_code_RunsProcess_ReturnsExitCode_test',
-'run_and_get_exit_code_RunsProcess_ProcessRaisesAnException_PrintsException_Exits1_test',
-'cross_platform_subprocess_call_CallsSubprocessCallOnWindows_CallsShlexSubprocessCallOnNotWindows_test',
-'run_exe_CallsRunWithExpected_test',
-'append_args_AppendsSpaceThenArgsIfArgsNotEmpty_testCases',
-'run_parallel_multiprocessing_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0_test',
-'run_parallel_processpoolexecutor_CallsProcessPoolExecutorMap_Returns1IfAnyExitCodesNon0_test',
-'run_and_get_stdout_test',
-'bytes_to_utf8_ReturnsBytesDecodedToUtf8_test',
-'run_and_check_stdout_for_substring_test'
+'test_fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero',
+'test_run_and_get_exit_code_RunsProcess_ReturnsExitCode',
+'test_run_and_get_exit_code_RunsProcess_ProcessRaisesAnException_PrintsException_Exits1',
+'test_cross_platform_subprocess_call_CallsSubprocessCallOnWindows_CallsShlexSubprocessCallOnNotWindows',
+'test_run_exe_CallsRunWithExpected',
+'test_append_args_AppendsSpaceThenArgsIfArgsNotEmpty',
+'test_run_parallel_multiprocessing_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0',
+'test_run_parallel_processpoolexecutor_CallsProcessPoolExecutorMap_Returns1IfAnyExitCodesNon0',
+'test_run_and_get_stdout',
+'test_bytes_to_utf8_ReturnsBytesDecodedToUtf8',
+'test_run_and_check_stdout_for_substring'
 ]
 
 class ProcessTests(unittest.TestCase):
@@ -32,7 +32,7 @@ class ProcessTests(unittest.TestCase):
       self.currentWorkingDirectory = Random.string()
       self.ExpectedPylintcommand = 'pylint --rcfile=.pylintrc --init-hook=\"sys.path.append(\'.\')\" '
 
-   def fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero_test(self):
+   def test_fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero(self):
       @patch('ZenUnitPy.Process.run_and_get_exit_code', spec_set=True)
       @patch('builtins.print', spec_set=True)
       @patch('sys.exit', spec_set=True)
@@ -56,7 +56,7 @@ class ProcessTests(unittest.TestCase):
    @patch('os.getcwd', spec_set=True)
    @patch('builtins.print', spec_set=True)
    @patch('ZenUnitPy.Process.cross_platform_subprocess_call', spec_set=True)
-   def run_and_get_exit_code_RunsProcess_ReturnsExitCode_test(self, _1, printMock, _3):
+   def test_run_and_get_exit_code_RunsProcess_ReturnsExitCode(self, _1, printMock, _3):
       os.getcwd.return_value = self.currentWorkingDirectory
       subprocessReturnValue = Random.integer()
       Process.cross_platform_subprocess_call.return_value = subprocessReturnValue
@@ -72,7 +72,7 @@ class ProcessTests(unittest.TestCase):
    @patch('builtins.print', spec_set=True)
    @patch('ZenUnitPy.Process.cross_platform_subprocess_call', spec_set=True)
    @patch('sys.exit', spec_set=True)
-   def run_and_get_exit_code_RunsProcess_ProcessRaisesAnException_PrintsException_Exits1_test(self, _1, _2, printMock, _4):
+   def test_run_and_get_exit_code_RunsProcess_ProcessRaisesAnException_PrintsException_Exits1(self, _1, _2, printMock, _4):
       os.getcwd.return_value = self.currentWorkingDirectory
       exceptionMessage = Random.string()
       Process.cross_platform_subprocess_call.side_effect = FileNotFoundError(exceptionMessage)
@@ -87,7 +87,7 @@ class ProcessTests(unittest.TestCase):
          call(exceptionMessage)])
       sys.exit.assert_called_once_with(1)
 
-   def cross_platform_subprocess_call_CallsSubprocessCallOnWindows_CallsShlexSubprocessCallOnNotWindows_test(self):
+   def test_cross_platform_subprocess_call_CallsSubprocessCallOnWindows_CallsShlexSubprocessCallOnNotWindows(self):
       @patch('platform.system', spec_set=True)
       @patch('shlex.split', spec_set=True)
       @patch('subprocess.call', spec_set=True)
@@ -114,7 +114,7 @@ class ProcessTests(unittest.TestCase):
 
    @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
    @patch('ZenUnitPy.Process.append_args', spec_set=True)
-   def run_exe_CallsRunWithExpected_test(self, _1, _2):
+   def test_run_exe_CallsRunWithExpected(self, _1, _2):
       appendArgsReturnValue = Random.string()
       Process.append_args.return_value = appendArgsReturnValue
       args = Random.string()
@@ -124,7 +124,7 @@ class ProcessTests(unittest.TestCase):
       Process.append_args.assert_called_once_with(f'{self.projectName}\\{self.configuration}\\{self.projectName}.exe', args)
       Process.fail_fast_run.assert_called_once_with(appendArgsReturnValue)
 
-   def append_args_AppendsSpaceThenArgsIfArgsNotEmpty_testCases(self):
+   def test_append_args_AppendsSpaceThenArgsIfArgsNotEmpty(self):
       def testcase(expectedReturnValue, args):
          with self.subTest(f'{expectedReturnValue, args}'):
             returnValue = Process.append_args('ExePath', args)
@@ -134,7 +134,7 @@ class ProcessTests(unittest.TestCase):
       testcase('ExePath arg1', 'arg1')
       testcase('ExePath arg1 arg2', 'arg1 arg2')
 
-   def run_parallel_multiprocessing_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0_test(self):
+   def test_run_parallel_multiprocessing_CallsMultiprocessingPoolMap_Returns1IfAnyExitCodesNon0(self):
       class MultiprocessingPoolMock:
          def __init__(self):
             self.map_return_value = 0
@@ -181,7 +181,7 @@ class ProcessTests(unittest.TestCase):
       testcase(False, [0, 1])
       testcase(False, [0, 1, 0])
 
-   def run_parallel_processpoolexecutor_CallsProcessPoolExecutorMap_Returns1IfAnyExitCodesNon0_test(self):
+   def test_run_parallel_processpoolexecutor_CallsProcessPoolExecutorMap_Returns1IfAnyExitCodesNon0(self):
       class ProcessPoolExecutorMock:
          def __init__(self):
             self.map_numberOfCalls = 0
@@ -240,7 +240,7 @@ class ProcessTests(unittest.TestCase):
    @patch('shlex.split', spec_set=True)
    @patch('subprocess.check_output', spec_set=True)
    @patch('ZenUnitPy.Process.bytes_to_utf8', spec_set=True)
-   def run_and_get_stdout_test(self, _1, _2, _3):
+   def test_run_and_get_stdout(self, _1, _2, _3):
       shlexReturnValue = Random.string()
       shlex.split.return_value = shlexReturnValue
       checkOutputReturnValue = Random.string()
@@ -255,11 +255,11 @@ class ProcessTests(unittest.TestCase):
       Process.bytes_to_utf8.assert_called_once_with(checkOutputReturnValue)
       self.assertEqual(toUtf8ReturnValue, standardOutput)
 
-   def bytes_to_utf8_ReturnsBytesDecodedToUtf8_test(self):
+   def test_bytes_to_utf8_ReturnsBytesDecodedToUtf8(self):
       self.assertEqual('', Process.bytes_to_utf8(b''))
       self.assertEqual('\r\n', Process.bytes_to_utf8(b'\r\n'))
 
-   def run_and_check_stdout_for_substring_test(self):
+   def test_run_and_check_stdout_for_substring(self):
       @patch('builtins.print', spec_set=True)
       @patch('ZenUnitPy.Process.run_and_get_stdout', spec_set=True)
       @patch('sys.exit', spec_set=True)

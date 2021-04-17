@@ -2,13 +2,13 @@ import unittest
 from ZenUnitPy import ArgParser, UnitTester
 
 testNames = [
-'parse_arg_argValueDoesNotStartWithArgNameEqualsSign_raises_test',
-'parse_arg_argValueStartsWithArgNameEqualsSign_ReturnsStringToTheRightOfFirstEqualsSign_test',
+'test_parse_arg_argValueDoesNotStartWithArgNameEqualsSign_raises',
+'test_parse_arg_argValueStartsWithArgNameEqualsSign_ReturnsStringToTheRightOfFirstEqualsSign',
 ]
 
 class ArgParserTests(unittest.TestCase):
 
-   def parse_arg_argValueDoesNotStartWithArgNameEqualsSign_raises_test(self):
+   def test_parse_arg_argValueDoesNotStartWithArgNameEqualsSign_raises(self):
       def testcase(argName, argValue):
          with self.subTest(f'{argName}, {argValue}'):
             self.assertRaisesRegex(ValueError, f"Argument '{argValue}' does not start with '{argName}='", ArgParser.parse_arg, argName, argValue)
@@ -19,7 +19,7 @@ class ArgParserTests(unittest.TestCase):
       testcase('--argName', '--notArgName=1')
       testcase('--argName', '--argname=1')
 
-   def parse_arg_argValueStartsWithArgNameEqualsSign_ReturnsStringToTheRightOfFirstEqualsSign_test(self):
+   def test_parse_arg_argValueStartsWithArgNameEqualsSign_ReturnsStringToTheRightOfFirstEqualsSign(self):
       def testcase(argName, argValue, expectedReturnValue):
          with self.subTest(f'{argName}, {argValue}, {expectedReturnValue}'):
             parsedArgument = ArgParser.parse_arg(argName, argValue)

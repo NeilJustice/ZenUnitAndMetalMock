@@ -6,13 +6,13 @@ from ZenUnitPy import FileSystem, UnitTester
 from ZenUnitPyTests import Random
 
 testNames = [
-'delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists_test',
-'copy_file_to_folder_CreateDestFolderAndCopiesFile_test',
+'test_delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists',
+'test_copy_file_to_folder_CreateDestFolderAndCopiesFile',
 ]
 
 class FolderTests(unittest.TestCase):
 
-   def delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists_test(self):
+   def test_delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists(self):
       @patch('os.path.exists', spec_set=True)
       @patch('shutil.rmtree', spec_set=True)
       @patch('builtins.print', spec_set=True)
@@ -37,7 +37,7 @@ class FolderTests(unittest.TestCase):
    @patch('os.path.dirname', spec_set=True)
    @patch('os.makedirs', spec_set=True)
    @patch('shutil.copy', spec_set=True)
-   def copy_file_to_folder_CreateDestFolderAndCopiesFile_test(self, _1, _2, _3, _4):
+   def test_copy_file_to_folder_CreateDestFolderAndCopiesFile(self, _1, _2, _3, _4):
       destFilePath = Random.string()
       os.path.join.return_value = destFilePath
 

@@ -5,12 +5,12 @@ from unittest.mock import patch
 from ZenUnitPy import CMake, Process, UnitTester
 
 testNames = [
-'generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType_test'
+'test_generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType'
 ]
 
 class CMakeTests(unittest.TestCase):
 
-   def generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType_test(self):
+   def test_generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType(self):
       @patch('os.makedirs', spec_set=True)
       @patch('os.chdir', spec_set=True)
       @patch('platform.system', spec_set=True)

@@ -5,10 +5,10 @@ from unittest.mock import call, patch
 from ZenUnitPy import ArgParser, CMake, BuildZenUnitAndMetalMock, Process, Random, UnitTester, Util
 
 testNames = [
-'main_ArgsLengthIsNot4_PrintsUsageAndExits1_test',
-'main_ArgsLengthIs4_CMakes_Builds_Returns0_test',
-'linux_cmake_and_build_RunsCMakes_RunsNinja_test',
-'windows_cmake_build_RunsCMakes_RunsCMakeBuildToRunMSBuild_test',
+'test_main_ArgsLengthIsNot4_PrintsUsageAndExits1',
+'test_main_ArgsLengthIs4_CMakes_Builds_Returns0',
+'test_linux_cmake_and_build_RunsCMakes_RunsNinja',
+'test_windows_cmake_build_RunsCMakes_RunsCMakeBuildToRunMSBuild',
 ]
 
 class BuildZenUnitTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class BuildZenUnitTests(unittest.TestCase):
       self.cmakeBuildType = Random.string()
       self.cmakeDefinitions = Random.string()
 
-   def main_ArgsLengthIsNot4_PrintsUsageAndExits1_test(self):
+   def test_main_ArgsLengthIsNot4_PrintsUsageAndExits1(self):
       @patch('ZenUnitPy.Util.print_and_exit', spec_set=True)
       def testcase(argsLength, _1):
          with self.subTest(f'{argsLength}'):
@@ -35,7 +35,7 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase(3)
       testcase(5)
 
-   def main_ArgsLengthIs4_CMakes_Builds_Returns0_test(self):
+   def test_main_ArgsLengthIs4_CMakes_Builds_Returns0(self):
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
       @patch('ZenUnitPy.BuildZenUnitAndMetalMock.linux_cmake_build', spec_set=True)
@@ -84,7 +84,7 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase('Windows', False)
       testcase('OSX', False)
 
-   def linux_cmake_and_build_RunsCMakes_RunsNinja_test(self):
+   def test_linux_cmake_and_build_RunsCMakes_RunsNinja(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
       @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):
@@ -98,7 +98,7 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase('-DOptionA=ON', '-DOptionA=ON')
       testcase('-DOptionB=ON', '-DOptionB=ON')
 
-   def windows_cmake_build_RunsCMakes_RunsCMakeBuildToRunMSBuild_test(self):
+   def test_windows_cmake_build_RunsCMakes_RunsCMakeBuildToRunMSBuild(self):
       @patch('ZenUnitPy.CMake.generate', spec_set=True)
       @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):

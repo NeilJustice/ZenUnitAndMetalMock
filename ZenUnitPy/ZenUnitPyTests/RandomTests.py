@@ -3,22 +3,22 @@ import unittest
 from ZenUnitPy import UnitTester, Random
 
 testNames = [
-'boolean_RandomsRandomBoolean_test',
-'integer_RandomsRandomIntegerBetweenNegative10000And10000_test',
-'string_ReturnsTextRandomStringFollowedRandomIntBetween0And10000_test'
+'test_boolean_RandomsRandomBoolean',
+'test_integer_RandomsRandomIntegerBetweenNegative10000And10000',
+'test_string_ReturnsTextRandomStringFollowedRandomIntBetween0And10000'
 ]
 
 class RandomTests(unittest.TestCase):
 
-   def boolean_RandomsRandomBoolean_test(self):
+   def test_boolean_RandomsRandomBoolean(self):
       randomBoolean = Random.boolean()
       self.assertTrue(randomBoolean is True or randomBoolean is False)
 
-   def integer_RandomsRandomIntegerBetweenNegative10000And10000_test(self):
+   def test_integer_RandomsRandomIntegerBetweenNegative10000And10000(self):
       randomInteger = Random.integer()
       self.assertTrue(-10000 <= randomInteger <= 10000)
 
-   def string_ReturnsTextRandomStringFollowedRandomIntBetween0And10000_test(self):
+   def test_string_ReturnsTextRandomStringFollowedRandomIntBetween0And10000(self):
       randomString = Random.string()
       self.assertTrue(re.fullmatch(r'RandomString\d{1,4}', randomString))
 

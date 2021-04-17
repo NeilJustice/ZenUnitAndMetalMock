@@ -7,10 +7,10 @@ from unittest.mock import call, patch
 from ZenUnitPy import Python, Process, UnitTester, Random
 
 testNames = [
-'pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders_test',
-'pylint_all_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential_test',
-'flake8_all_RunsFlake8WithFlake8Config_test',
-'run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode_test'
+'test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders',
+'test_pylint_all_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential',
+'test_flake8_all_RunsFlake8WithFlake8Config',
+'test_run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode'
 ]
 
 class PythonTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class PythonTests(unittest.TestCase):
    ExpectedPylintCommand = 'pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append(\'.\')\" '
 
    @patch('ZenUnitPy.Process.run_and_get_exit_code', spec_set=True)
-   def pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders_test(self, _1):
+   def test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders(self, _1):
       pylintExitCode = Random.integer()
       Process.run_and_get_exit_code.return_value = pylintExitCode
       pythonFilePath = Random.string()
@@ -28,7 +28,7 @@ class PythonTests(unittest.TestCase):
       Process.run_and_get_exit_code.assert_called_once_with(PythonTests.ExpectedPylintCommand + pythonFilePath)
       self.assertEqual(pylintExitCode, pylintExitCode)
 
-   def pylint_all_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential_test(self):
+   def test_pylint_all_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential(self):
       @patch('glob.glob', spec_set=True)
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.Process.run_parallel_processpoolexecutor', spec_set=True)
@@ -64,14 +64,14 @@ class PythonTests(unittest.TestCase):
 
    @staticmethod
    @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
-   def flake8_all_RunsFlake8WithFlake8Config_test(_1):
+   def test_flake8_all_RunsFlake8WithFlake8Config(_1):
       #
       Python.flake8_all()
       #
       expectedFlake8Command = 'flake8 --config=.flake8 --show-source --benchmark'
       Process.fail_fast_run.assert_called_once_with(expectedFlake8Command)
 
-   def run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode_test(self):
+   def test_run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode(self):
       @patch('os.getcwd', spec_set=True)
       @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
       @patch('ZenUnitPy.Process.run_and_get_exit_code', spec_set=True)

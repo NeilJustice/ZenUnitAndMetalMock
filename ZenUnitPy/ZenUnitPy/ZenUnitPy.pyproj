@@ -35,9 +35,6 @@
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />
-    <Compile Include="ProcessThread.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Python.py" />
     <Compile Include="Random.py">
       <SubType>Code</SubType>

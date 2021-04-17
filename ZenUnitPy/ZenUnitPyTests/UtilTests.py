@@ -4,13 +4,13 @@ from unittest.mock import patch
 from ZenUnitPy import UnitTester, Util
 from ZenUnitPyTests import Random
 
-testNames = ['print_and_exit_PrintsMessageThenCallsExitWithExitCode_test']
+testNames = ['test_print_and_exit_PrintsMessageThenCallsExitWithExitCode']
 
 class UtilTests(unittest.TestCase):
 
    @patch('sys.exit', spec_set=True)
    @patch('builtins.print', spec_set=True)
-   def print_and_exit_PrintsMessageThenCallsExitWithExitCode_test(self, printMock, _2):
+   def test_print_and_exit_PrintsMessageThenCallsExitWithExitCode(self, printMock, _2):
       message = Random.string()
       exitCode = Random.integer()
       #
