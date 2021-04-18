@@ -1011,13 +1011,13 @@ Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting t
 
 ### Linux Jenkins jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33 with Clang 11.0.0 and GCC 10.2.1:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33 with Clang 11.0.0 and GCC 10.2.1 to statically analyze and unit test ZenUnit and MetalMock:
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
 ### Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Windows 10 with Visual Studio 2019:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Windows 10 with Visual Studio 2019 to statically analyze and unit test ZenUnit and MetalMock:
 
 ![Windows Jenkins Jobs](Screenshots/Windows/WindowsJenkinsJobs.png)
 
