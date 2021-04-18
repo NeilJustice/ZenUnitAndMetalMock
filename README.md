@@ -53,48 +53,48 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnitAndMetalMock/ZenUnit.h)
 ##### MetalMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnitAndMetalMock/MetalMock.h)
 
-   * [ZenUnit Command Line Usage](#zenunit-command-line-usage)
-   * [How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
-      * [Console Output When Running ZenUnit Value-Parameterized Tests](#console-output-when-running-zenunit-value-parameterized-tests)
-   * [How To Unit Test Templated Class PredicateCounter's CountWhere() Function With ZenUnit's Type-Parameterized Test Syntax](#how-to-unit-test-templated-class-predicatecounters-countwhere-function-with-zenunits-type-parameterized-test-syntax)
-      * [Console Output When Running ZenUnit Type-Parameterized Tests](#console-output-when-running-zenunit-type-parameterized-tests)
-   * [ZenUnit Assertions](#zenunit-assertions)
-      * [Value Assertions](#value-assertions)
-      * [Pointer Assertions](#pointer-assertions)
-      * [Data Structure Assertions](#data-structure-assertions)
-      * [Floating Point Assertions](#floating-point-assertions)
-      * [Exception Assertions](#exception-assertions)
-      * [Function Assertions](#function-assertions)
-      * [Memory Allocation Assertions](#memory-allocation-assertions)
-      * [The FAIL_TEST Assertion](#the-fail_test-assertion)
-      * [ZenUnit Equalizer Assertions](#zenunit-equalizer-assertions)
-   * [ZenUnit Test-Defining Macros](#zenunit-test-defining-macros)
-   * [MetalMock Function-Mocking Macros](#metalmock-function-mocking-macros)
-     * [Void Virtual Functions](#void-virtual-functions)
-     * [Non-Void Virtual Functions](#non-void-virtual-functions)
-     * [Void Non-Virtual Functions](#void-non-virtual-functions)
-     * [Non-Void Non-Virtual Functions](#non-void-non-virtual-functions)
-     * [Void Static Functions](#void-static-functions)
-     * [Non-Void Static Functions](#non-void-static-functions)
-     * [Void Free Functions](#void-functions)
-     * [Non-Void Free Functions](#non-void-free-functions)
-   * [MetalMock Use Cases](#metalmock-use-cases)
-     * [How to MetalMock Virtual Functions](#how-to-metalmock-virtual-functions)
-     * [How to MetalMock Non-Virtual Functions](#how-to-metalmock-non-virtual-functions)
-     * [How to MetalMock Static Functions](#how-to-metalmock-static-functions)
-     * [How to MetalMock Free Functions](#how-to-metalmock-free-functions)
-   * [Mutation Coverage Can Be Maximized By Testing With Random Values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
-   * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
-   * [ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
-   * [Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-zenunit-and-metalmocks-cicd-python-code)
-   * [Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-zenunit-and-metalmocks-cicd-python-code)
-   * [How To Build and Run ZenUnit and MetalMock Unit Tests On Linux and Then Install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
-   * [How To Build and Run ZenUnit and MetalMock Unit Tests On Windows and Then Install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
-   * [ZenUnit Features Roadmap](#zenunit-features-roadmap)
-   * [MetalMock Features Roadmap](#metalmock-features-roadmap)
+   * [ZenUnit command line usage](#zenunit-command-line-usage)
+   * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
+      * [Console output when running ZenUnit value-parameterized tests](#console-output-when-running-zenunit-value-parameterized-tests)
+   * [How to unit test templated class PredicateCounter's CountWhere() function with ZenUnit's type-parameterized test syntax](#how-to-unit-test-templated-class-predicatecounters-countwhere-function-with-zenunits-type-parameterized-test-syntax)
+      * [Console output when running ZenUnit type-parameterized tests](#console-output-when-running-zenunit-type-parameterized-tests)
+   * [ZenUnit assertions](#zenunit-assertions)
+      * [Value assertions](#value-assertions)
+      * [Pointer assertions](#pointer-assertions)
+      * [Data structure assertions](#data-structure-assertions)
+      * [Floating point assertions](#floating-point-assertions)
+      * [Exception assertions](#exception-assertions)
+      * [Function assertions](#function-assertions)
+      * [Memory allocation assertions](#memory-allocation-assertions)
+      * [FAIL_TEST assertion](#fail_test-assertion)
+      * [ZenUnit Equalizer assertions](#zenunit-equalizer-assertions)
+   * [ZenUnit test-defining macros](#zenunit-test-defining-macros)
+   * [MetalMock function-mocking macros](#metalmock-function-mocking-macros)
+     * [void virtual functions](#void-virtual-functions)
+     * [non-void virtual functions](#non-void-virtual-functions)
+     * [void non-virtual functions](#void-non-virtual-functions)
+     * [non-void non-virtual functions](#non-void-non-virtual-functions)
+     * [void static functions](#void-static-functions)
+     * [non-void static functions](#non-void-static-functions)
+     * [void free functions](#void-functions)
+     * [non-void free functions](#non-void-free-functions)
+   * [MetalMock use cases](#metalmock-use-cases)
+     * [How to MetalMock virtual functions](#how-to-metalmock-virtual-functions)
+     * [How to MetalMock non-virtual functions](#how-to-metalmock-non-virtual-functions)
+     * [How to MetalMock static functions](#how-to-metalmock-static-functions)
+     * [How to MetalMock free functions](#how-to-metalmock-free-functions)
+   * [Mutation coverage can be maximized by testing with random values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
+   * [ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
+   * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
+   * [Linux Jenkins Jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-scan-zenunit-and-metalmocks-cicd-python-code)
+   * [Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-scan-zenunit-and-metalmocks-cicd-python-code)
+   * [How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
+   * [How to build and run ZenUnit and MetalMock unit tests on Windows and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
+   * [ZenUnit features roadmap](#zenunit-features-roadmap)
+   * [MetalMock features roadmap](#metalmock-features-roadmap)
    * [Acknowledgments](#acknowledgments)
 
-### ZenUnit Command Line Usage
+### ZenUnit command line usage
 
 ```
 C++ Unit Testing Framework ZenUnit v0.11.0
@@ -155,7 +155,7 @@ Example ZenUnit command line arguments:
 ./FinanciallyCriticalUnitTests --run=MarketDataDispatcherTests --fail-fast
 ```
 
-### How To Unit Test FizzBuzz With ZenUnit's Value-Parameterized Test Syntax
+### How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax
 
 ```cpp
 // Single header
@@ -280,13 +280,13 @@ int main(int argc, char* argv[])
 }
 ```
 
-### Console Output When Running ZenUnit Value-Parameterized Tests
+### Console output when running ZenUnit value-parameterized tests
 
 ![Console Output When Running ZenUnit Value-Parameterized Tests](Screenshots/FizzBuzzConsoleOutput.png)
 
-### How To Unit Test Templated Class PredicateCounter's CountWhere() Function With ZenUnit's Type-Parameterized Test Syntax
+### How to unit test templated class PredicateCounter's CountWhere() function with ZenUnit's type-parameterized test syntax
 
-How could the correctness of this templated class `PredicateCounter` with its `CountWhere` function be confirmed across various types of `ContainerType` and `T`?
+How can the correctness of this templated class `PredicateCounter` with its `CountWhere` function be confirmed across various types of `ContainerType` and `T`?
 
 (`std::count_if` is of course the standard way of counting elements matching a given predicate. `class PredicateCounter` provides mockability by way of its `CountWhere` function being virtual.)
 
@@ -395,13 +395,13 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
 ```
 
-### Console Output When Running ZenUnit Type-Parameterized Tests
+### Console output when running ZenUnit type-parameterized tests
 
 ![Console Output When Running ZenUnit Type-Parameterized Tests](Screenshots/Linux/ConsoleOutputWhenRunningZenUnitTypeParameterizedTests.png)
 
-## ZenUnit Assertions
+## ZenUnit assertions
 
-#### Value Assertions
+#### Value assertions
 |Assertion|Behavior|
 |---------|--------|
 |`ARE_EQUAL(expectedValue, actualValue, messages...)`|By default asserts `expectedValue == actualValue`, otherwise throws a `ZenUnit::Anomaly`, which is caught by ZenUnit to fail the current test.<br><br>`messages...` are variables of any type writable with `operator<<(std::ostream&, const T&)` or `ZenUnit::Printer<T>::Print(std::ostream&, const T&)`.<br><br>If `expectedValue` and `actualValue` are `const char*` or `const wchar_t*`, `ARE_EQUAL` determines equality by calling `strcmp` or `wcscmp`.|
@@ -421,7 +421,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`IS_DEFAULT_VALUE(value, messages...)`|Asserts that `ZenUnit::Equalizer<T>::AssertEqual(T{}, value)` does not throw a ZenUnit::Anomaly exception.|
 |`IS_NOT_DEFAULT_VALUE(value, messages...)`|Asserts that `ZenUnit::Equalizer<T>::AssertEqual(T{}, value)` throws a ZenUnit::Anomaly exception.|
 
-#### Pointer Assertions
+#### Pointer assertions
 |Assertion|Behavior|
 |---------|--------|
 |`IS_NULLPTR(pointer, messages...)`|Asserts `pointer == nullptr`.|
@@ -431,7 +431,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`POINTEES_ARE_EQUAL(expectedPointer, actualPointer, messages...)`|1. Asserts `expectedPointer != nullptr`.<br>2. Asserts `actualPointer != nullptr`.<br>3. Asserts `ARE_EQUAL(*expectedPointer, *actualPointer)`.|
 |`POINTEE_IS_EXACT_TYPE(expectedPolymorphicPointeeType, actualPointer, messages...)`|1. Statically asserts `static_assert(std::is_polymorphic_v<expectedPolymorphicPointeeType>)`.<br>2. Asserts `actualPointer != nullptr`.<br>3. Asserts `typeid(expectedPolymorphicPointeeType) == typeid(*actualPointer)`.<br>This is a useful assertion for confirming the correctness of factory functions that return `make_unique`/`make_shared` instances of subclasses as base class pointers.|
 
-#### Data Structure Assertions
+#### Data structure assertions
 |Assertion|Behavior|
 |---------|--------|
 |`VECTORS_ARE_EQUAL(expectedVector, actualVector, messages...)`|Calls `INDEXABLES_ARE_EQUAL(expectedVector, actualVector, messages...)`|
@@ -447,43 +447,43 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`IS_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` equals true.|
 |`IS_NOT_EMPTY(dataStructure, messages...)`|Asserts that `dataStructure.empty()` equals false.|
 
-#### Floating Point Assertions
+#### Floating point assertions
 |Assertion|Behavior|
 |---------|--------|
 |`ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedAbsoluteMaxDifference`.|
 |`FLOATS_ARE_NEAR(expectedFloat, actualFloat, messages...)`|Asserts that `std::abs(expectedFloat - actualFloat) <= 1e-7`. Roadmap: Replace 1e-7 with 4 Units in the Last Place comparison.|
 |`DOUBLES_ARE_NEAR(expectedDouble, actualDouble, messages...)`|Asserts that `std::abs(expectedDouble - actualDouble) <= 1e-13`. Roadmap: Replace 1e-13 with 4 Units in the Last Place comparison.|
 
-#### Exception Assertions
+#### Exception assertions
 |Assertion|Behavior|
 |---------|--------|
 |`THROWS_EXCEPTION(expression, expectedExactExceptionType, expectedExactExceptionWhatText, messages...)`|Asserts that `expression` throws \*exactly\* (not a derived class of) `expectedExactExceptionType` as determined by RTTI with \*exactly\* a what() message equal to `expectedExactExceptionWhatText`.|
 |`DOES_NOT_THROW(expression, messages...)`|If `expression` throws an exception, throws a `ZenUnit::Anomaly`, otherwise does nothing. Useful assertion for emphasis to the reader of a unit test.|
 
-#### Function Assertions
+#### Function assertions
 |Assertion|Behavior|
 |---------|--------|
 |`STD_FUNCTION_TARGETS(expectedStaticOrFreeFunction, stdFunction, messages...)`|First asserts `IS_TRUE(stdFunction)`, which asserts that stdFunction points to a function, then asserts `ARE_EQUAL(expectedStaticOrFreeFunction, *stdFunction.target<decltype(expectedStaticOrFreeFunction)*>())`. This is a key assertion to call prior to overwriting a `std::function` with a MetalMock mock object.|
 |`STD_FUNCTION_TARGETS_OVERLOAD(expectedFunctionOverloadAsAUsing, expectedStaticOrFreeFunction, stdFunction, messages...)`|Same as above but with `static_cast<expectedFunctionOverloadAsAUsing>(expectedStaticOrFreeFunction)`.|
 
-#### Memory Allocation Assertions
+#### Memory allocation assertions
 |Assertion|Behavior|
 |---------|--------|
 |`DELETE_TO_ASSERT_NEWED(smartOrRawPointer, messages...)`|Asserts `smartOrRawPointer != nullptr` then calls `reset()` or `operator delete` on `smartOrRawPointer` to confirm the pointer was allocated using `make_unique`, `make_shared`, or `operator new`. This is a key assertion for robustness against the `swap-new-with-nullptr` mutation testing operator.|
 |`DELETE_TO_ASSERT_ARRAY_NEWED(smartOrRawArrayPointer, messages...)`|Asserts `smartOrRawArrayPointer != nullptr` then calls `reset()` or `operator delete[]` to confirm the pointer was allocated using `make_unique` or `operator new[]`. This is a key assertion for robustness against the `swap-new-with-nullptr` mutation testing operator.|
 
-#### The FAIL_TEST Assertion
+#### FAIL_TEST assertion
 |Assertion|Behavior|
 |---------|--------|
 |`FAIL_TEST(testFailureReason, messages...)`|Throws a `ZenUnit::Anomaly` which is caught by ZenUnit to end the current test and begin the next test.|
 
-#### ZenUnit Equalizer Assertions
+#### ZenUnit Equalizer assertions
 |Assertion|Behavior|
 |---------|--------|
 |`ZENUNIT_EQUALIZER_TEST_SETUP(typeName)`|Defines local variables `typeName expectedZenUnitEqualizerTestObject{};` and `typeName actualZenUnitEqualizerTestObject{};` and then calls `DOES_NOT_THROW(ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject));`|
 |`ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(typeName, nonQuotedFieldName, randomNonDefaultFieldValue)`|Sets `expectedZenUnitEqualizerTestObject.nonQuotedFieldName = randomNonDefaultFieldValue` and then asserts that `ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject)` throws a `ZenUnit::Anomaly` with `anomaly.what()` text satisfying assertion `IS_TRUE(String::Contains(anomaly.what(), fieldName)).`|
 
-### ZenUnit Test-Defining Macros
+### ZenUnit test-defining macros
 
 |Test Classes|Behavior|
 |------------|--------|
@@ -514,11 +514,11 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called.|
 |`THEN_SKIP_TEMPLATE_TESTS(testClassName, Reason, TemplateArguments...)`|Prevents a `TEMPLATE_TEST_CLASS` from running when `ZenUnit::RunTests(argc, argv)` is called. For use after `SKIP_TEMPLATE_TESTS`.|
 
-### MetalMock Function-Mocking Macros
+### MetalMock function-mocking macros
 
-#### Void Virtual Functions
+#### void virtual functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_VOID0(VirtualFunctionName)`|
 |`METALMOCK_VOID0_CONST(VirtualFunctionName)`|
@@ -537,9 +537,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_VOID7(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 |`METALMOCK_VOID7_CONST(VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-#### Non-Void Virtual Functions
+#### non-void virtual functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_NONVOID0(ReturnType, VirtualFunctionName)`|
 |`METALMOCK_NONVOID0_CONST(ReturnType, VirtualFunctionName)`|
@@ -558,9 +558,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_NONVOID7(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 |`METALMOCK_NONVOID7_CONST(ReturnType, VirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-#### Void Non-Virtual Functions
+#### void non-virtual functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_VOID0_NONVIRTUAL(NonVirtualFunctionName)`|
 |`METALMOCK_VOID0_NONVIRTUAL_CONST(NonVirtualFunctionName)`|
@@ -579,9 +579,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_VOID7_NONVIRTUAL(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 |`METALMOCK_VOID7_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-#### Non-Void Non-Virtual Functions
+#### non-void non-virtual functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_NONVOID0_NONVIRTUAL(ReturnType, NonVirtualFunctionName)`|
 |`METALMOCK_NONVOID0_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName)`|
@@ -600,9 +600,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_NONVOID7_NONVIRTUAL(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 |`METALMOCK_NONVOID7_NONVIRTUAL_CONST(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-#### Void Static Functions
+#### void static functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_VOID0_STATIC(NamespaceQualifiedClassName, StaticFunctionName, ...)`|
 |`METALMOCK_VOID1_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
@@ -613,9 +613,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_VOID6_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_VOID7_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-#### Non-Void Static Functions
+#### non-void static functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_NONVOID0_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, ...)`|
 |`METALMOCK_NONVOID1_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
@@ -626,9 +626,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_NONVOID6_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_NONVOID7_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-#### Void Free Functions
+#### void free functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_VOID0_FREE(GlobalFreeFunctionName)`|
 |`METALMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type, ...)`|
@@ -639,9 +639,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_VOID6_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_VOID7_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-#### Non-Void Free Functions
+#### non-void free functions
 
-|MetalMock Macro|
+|MetalMock macro|
 |---------------|
 |`METALMOCK_NONVOID0_FREE(ReturnType, GlobalFreeFunctionName)`|
 |`METALMOCK_NONVOID1_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, ...)`|
@@ -652,12 +652,12 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |`METALMOCK_NONVOID6_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, ...)`|
 |`METALMOCK_NONVOID7_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
-### MetalMock Use Cases
+### MetalMock use cases
 
-#### How To MetalMock Virtual Functions
+#### How to MetalMock virtual functions
 
 ```cpp
-// Component To Be MetalMocked
+// Component to be MetalMocked
 class ComponentB
 {
 public:
@@ -666,7 +666,7 @@ public:
    virtual ~ComponentB() = default;
 };
 
-// Class Under Test
+// Class under test
 class ComponentA
 {
    friend class ComponentATests;
@@ -679,7 +679,7 @@ public:
    {
    }
 
-   // Function Under Test
+   // Function under test
    void Act()
    {
       _componentB->ConstVirtualFunction();
@@ -687,7 +687,7 @@ public:
    }
 };
 
-// MetalMock Class Definition
+// MetalMock class definition
 class ComponentBMock : public Metal::Mock<ComponentB>
 {
 public:
@@ -695,7 +695,7 @@ public:
    METALMOCK_VOID0(NonConstVirtualFunction)
 };
 
-// ZenUnit Test Class
+// ZenUnit test class
 TESTS(ComponentATests)
 AFACT(DefaultConstructor_NewsComponentB)
 AFACT(Act_CallsComponentBVirtualFunctions)
@@ -729,7 +729,7 @@ TEST(Act_CallsComponentBVirtualFunctions)
 RUN_TESTS(ComponentATests)
 ```
 
-#### How To MetalMock Non-Virtual Functions
+#### How to MetalMock non-virtual functions
 
 ```cpp
 class KernelBypassNetwork
@@ -780,7 +780,7 @@ TEST(SendOrder_CallsNetworkSendWhichReturns123_Returns)
 RUN_TESTS(OrderSenderTests)\
 ```
 
-#### How To MetalMock Static Functions
+#### How to MetalMock static functions
 
 ```cpp
 class StaticFunctions
@@ -866,7 +866,7 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
 RUN_TESTS(StaticFunctionMockingExampleTests)
 ```
 
-#### How To MetalMock Free Functions
+#### How to MetalMock free functions
 
 ```cpp
 // Global free function to be MetalMocked
@@ -928,13 +928,13 @@ TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 RUN_TESTS(FreeFunctionMockingTests)
 ```
 
-### Mutation Coverage Can Be Maximized By Testing With Random Values
+### Mutation coverage can be maximized by testing with random values
 
 ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage.
 
 Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the mid-2020s during CI/CD time by running the exceptionally-promising LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
-|Random Number-Generating Functions|Behavior|
+|Random number-generating functions|Behavior|
 |----------------------------------|--------|
 |`ZenUnit::Random<T>()`|If `T` is an integer type, returns a random integer of type `T` between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a `std::uniform_int_distribution<long long>`.<br><br>If `T` is a `std::vector<T>`, returns the result from calling `ZenUnit::RandomVector<T>()`.<br><br>If `T` is a `std::pair<T1, T2>`, returns the result of calling `ZenUnit::RandomPair<typename T::first_type, typename T::second_type>()`.<br><br>If `T` is a `std::unordered_map<KeyType, ValueType`, returns the result of calling `ZenUnit::RandomUnorderedMap<typename T::key_type, typename T::mapped_type>()`.<br><br>If `T` is `unsigned long long`, returns the result of calling `ZenUnit::RandomUnsignedLongLong()`.<br><br>If function `UserType ZenUnit::Random<UserType>()` is defined, returns a `UserType` from calling that custom random function.|
 |`ZenUnit::RandomNon0<T>()`|Returns a random non-0 integer of type `T` between `std::numeric_limits<T>::min()` and `std::numeric_limits<T>::max()` selected from a `std::uniform_int_distribution<long long>`.|
@@ -954,7 +954,7 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomFloatBetween(float inclusiveMinValue, float inclusiveMaxValue)`|Returns a random `float` between `inclusiveMinValue` and `inclusiveMaxValue` selected from a `std::uniform_real_distribution<float>(inclusiveLowerBound, inclusiveUpperBound)`.|
 |`ZenUnit::RandomDoubleBetween(double inclusiveMinValue, double inclusiveMaxValue)`|Returns a random `double` between `inclusiveMinValue` and `inclusiveMaxValue` selected from a `std::uniform_real_distribution<double>(inclusiveLowerBound, inclusiveUpperBound)`.|
 
-|Random String-Generating Functions|Behavior|
+|Random string-generating functions|Behavior|
 |----------------------------------|--------|
 |`ZenUnit::Random<const char*>()`|Returns `"RandomConstCharPointer1"` with 10% probability, `"RandomConstCharPointer2"` with 10% probability, ..., `"RandomConstCharPointer10"` with 10% probability.|
 |`ZenUnit::Random<const wchar_t*>()`|Returns `L"RandomWideConstCharPointer1"` with 10% probability, `L"RandomWideConstCharPointer2"` with 10% probability, ..., `L"RandomWideConstCharPointer10"` with 10% probability.|
@@ -963,23 +963,23 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomStringWithLength(size_t length)`|Returns a `std::string` with length `length` with each character a `ZenUnit::RandomLetter()`.|
 |`ZenUnit::RandomWideStringWithLength(size_t length)`|Returns a `std::wstring` with length `length` with each character a `ZenUnit::RandomWideLetter()`.|
 
-|Random Character-Generating Functions|Behavior|
+|Random character-generating functions|Behavior|
 |-------------------------------------|--------|
 |`ZenUnit::RandomLetter()`|Returns an `'A-Z'` letter with 50% probabilitiy or an `'a-z'` letter with 50% probability.|
 |`ZenUnit::RandomWideLetter()`|Returns an `L'A-Z'` letter with 50% probabilitiy or an `L'a-z'` letter with 50% probability.|
 
-|Random Tuple-Generating Functions|Behavior|
+|Random tuple-generating functions|Behavior|
 |---------------------------------|--------|
 |`ZenUnit::RandomPair<FirstType, SecondType>`|Returns a random `std::pair<FirstType, SecondType>` with `pair.first` generated with `ZenUnit::Random<FirstType>()` and `pair.second` generated with `ZenUnit::Random<SecondType>()`.
 |`ZenUnit::RandomTuple<ElementTypes...>`|Returns a random `std::tuple<ElementTypes...>` with each tuple element generated with `ZenUnit::Random<TupleElementType>()`.|
 
-|Random Vector-Generating Functions|Behavior|
+|Random vector-generating functions|Behavior|
 |----------------------------------|--------|
 |`ZenUnit::RandomVector<T>()`|Returns a `std::vector<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomNonEmptyVector<T>()`|Returns a `std::vector<T>` with size between 1 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomVectorWithSize<T>(size_t size)`|Returns a `std::vector<T>` with size `size` with each element a `ZenUnit::Random<T>()` value.|
 
-|Random Map-Generating Functions|Behavior|
+|Random map-generating functions|Behavior|
 |-------------------------------|--------|
 |`ZenUnit::RandomOrderedMap<KeyType, ValueType>()`|Returns a `std::map<KeyType, ValueType>` with size between 0 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomNonEmptyOrderedMap<KeyType, ValueType>()`|Returns a `std::map<KeyType, ValueType>` with size between 1 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
@@ -988,7 +988,7 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomNonEmptyUnorderedMap<T>()`|Returns a `std::unordered_map<KeyType, ValueType>` with size between 1 and 3 with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 |`ZenUnit::RandomUnorderedMapWithSize<KeyType, ValueType>(size_t size)`|Returns a `std::unordered_map<KeyType, ValueType>` with size `size` with each key a `ZenUnit::Random<KeyType>()` value and each value a `ZenUnit::Random<ValueType>()` value.|
 
-|Random Set-Generating Functions|Behavior|
+|Random set-generating functions|Behavior|
 |-------------------------------|--------|
 |`ZenUnit::RandomSet<T>()`|Returns a `std::set<T>` with size between 0 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomNonEmptySet<T>()`|Returns a `std::set<T>` with size between 1 and 3 with each element a `ZenUnit::Random<T>()` value.|
@@ -997,31 +997,31 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomNonEmptyUnorderedSet<T>()`|Returns a a `std::unordered_set<T>` with size between 1 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSetWithSize<T>()`|Returns a a `std::unordered_set<T>` with size `size` with each element a `ZenUnit::Random<T>()` value.|
 
-### ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux
+### ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux
 
 Seen in this screenshot is function `ZenUnit::ArgsParser::Parse` for parsing ZenUnit's command line arguments:
 
 ![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
 
-### ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows
+### ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows
 
 Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting that an expected value is equal to actual value:
 
-![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio 2019 On Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
+![ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
 
-### Linux Jenkins Jobs Which Build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code
+### Linux Jenkins jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
 A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33 with Clang 11.0.0 and GCC 10.2.1:
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
-### Windows Jenkins Jobs Which Build and Cppcheck ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube ZenUnit and MetalMock's CI/CD Python Code
+### Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
 A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Windows 10 with Visual Studio 2019:
 
 ![Windows Jenkins Jobs](Screenshots/Windows/WindowsJenkinsJobs.png)
 
-### How To Build and Run ZenUnit and MetalMock Unit Tests On Linux and Then Install ZenUnit.h and MetalMock.h
+### How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -1035,7 +1035,7 @@ ZenUnit.h and MetalMock.h installed on Linux:
 
 ![ZenUnit.h and MetalMock.h installed on Linux](Screenshots/Linux/ZenUnitDotHAndMetalMockDotHInstalledOnLinux.png)
 
-### How To Build and Run ZenUnit and MetalMock Unit Tests On Windows and Then Install ZenUnit.h and MetalMock.h
+### How to build and run ZenUnit and MetalMock unit tests on Windows and then install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -1048,21 +1048,20 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ![Installed ZenUnit.h and MetalMock.h on Windows](Screenshots/Windows/ZenUnitDotHAndMetalMockDotHOnWindows.png)
 
-### ZenUnit Features Roadmap
+### ZenUnit features roadmap
 
-|Future ZenUnit Feature|Implementation Status As Of 4/8/2021|
-|----------------------|------------------------------------|
+|Future ZenUnit feature|Implementation status as of 4/18/2021|
+|----------------------|-------------------------------------|
 |GitHub Actions build|In progress|
 |Update implementations of `FLOATS_ARE_NEAR` and `DOUBLES_ARE_NEAR` to compare based on Units in the Last Place (ULPs)|Awaiting implementation|
 |SonarCloud Python static analysis badge for ZenUnitPyUtils|Awaiting implementation|
 |SonarCloud C++ static analysis badge|Awaiting implementation|
-|Coverity C++ static analysis badge|Awaiting implementation|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 
-### MetalMock Features Roadmap
+### MetalMock features roadmap
 
-|Future MetalMock Feature|Implementation Status As Of 4/8/2021|
-|------------------------|------------------------------------|
+|Future MetalMock Feature|Implementation Status As Of 4/18/2021|
+|------------------------|-------------------------------------|
 |Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness|Awaiting implementation|
 
 ### Acknowledgments
