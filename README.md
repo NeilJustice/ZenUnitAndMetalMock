@@ -76,7 +76,7 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
      * [non-void non-virtual functions](#non-void-non-virtual-functions)
      * [void static functions](#void-static-functions)
      * [non-void static functions](#non-void-static-functions)
-     * [void free functions](#void-functions)
+     * [void free functions](#void-free-functions)
      * [non-void free functions](#non-void-free-functions)
    * [MetalMock use cases](#metalmock-use-cases)
      * [How to MetalMock virtual functions](#how-to-metalmock-virtual-functions)
