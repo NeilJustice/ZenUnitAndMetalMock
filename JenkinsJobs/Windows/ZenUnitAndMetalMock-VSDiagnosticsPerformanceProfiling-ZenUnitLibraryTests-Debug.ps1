@@ -10,7 +10,7 @@ if ($LastExitCode -ne 0) { exit $LastExitCode }
 VSDiagnostics.exe start 1 `
    /launch:ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe `
    /launchArgs:"--test-runs=10" `
-   /loadConfig:JenkinsJobs\Windows\VSDiagnosticsCPUUsage10000.json
+   /loadConfig:JenkinsJobs\Windows\VSDiagnosticsCPUUsage8190.json
 if ($LastExitCode -ne 0) { exit $LastExitCode }
 
 sleep 20
