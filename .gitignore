@@ -66,7 +66,6 @@ debug.log
 install_manifest.txt
 
 # Cppcheck
-Cppcheck/files.txt
 *.a1
 *.a2
 *.a3
@@ -77,6 +76,7 @@ Cppcheck/files.txt
 *.a9
 *.a11
 *.a13
+*.diagsession
 *.s2
 *.s4
 *.s6
@@ -84,6 +84,7 @@ Cppcheck/files.txt
 *.s10
 *.s12
 *.s14
+Cppcheck/files.txt
 cppcheck_results.txt
 
 # SonarQube

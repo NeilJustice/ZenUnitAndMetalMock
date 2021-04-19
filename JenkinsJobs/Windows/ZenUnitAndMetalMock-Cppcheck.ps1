@@ -1,5 +1,5 @@
 cppcheck.exe `
-	--cppcheck-build-dir=Cppcheck `
+   --cppcheck-build-dir=Cppcheck `
    --enable=all `
    --suppressions-list=CppcheckSuppressions.txt `
    -DCOMMA `
@@ -37,6 +37,6 @@ cppcheck.exe `
    .
 if ($LastExitCode -eq 1)
 {
-	Write-Host "Cppcheck failed with exit code 1"
-	exit 1
+   Write-Host "Cppcheck failed with exit code 1"
+   exit 1
 }
