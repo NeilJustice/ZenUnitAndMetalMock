@@ -1906,7 +1906,7 @@ namespace ZenUnit
       virtual ~Transformer() = default;
 
       virtual std::vector<TransformedElementType> Transform(
-         const std::vector<ElementType>* elements, 
+         const std::vector<ElementType>* elements,
          TransformedElementType(*transformFunction)(const ElementType&)) const
       {
          const size_t elementsSize = elements->size();
@@ -2893,7 +2893,7 @@ namespace ZenUnit
          ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED_ThrowAnomaly(
             smartOrRawArrayPointerText, filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      ArrayDeleter<typename std::remove_reference<decltype(smartOrRawArrayPointer)>::type>::Delete(smartOrRawArrayPointer);
+      ArrayDeleter<typename std::remove_cvref_t<decltype(smartOrRawArrayPointer)>>::Delete(smartOrRawArrayPointer);
    }
 
    template<typename ElementType, typename... MessageTypes>
@@ -3925,7 +3925,7 @@ namespace ZenUnit
          DELETE_TO_ASSERT_NEWED_ThrowAnomaly(
             smartOrRawPointerText, filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      ScalarDeleter<typename std::remove_reference<decltype(smartOrRawPointer)>::type>::Delete(smartOrRawPointer);
+      ScalarDeleter<typename std::remove_cvref_t<decltype(smartOrRawPointer)>>::Delete(smartOrRawPointer);
    }
 
    template<typename ExpectedSetType, typename ActualSetType, typename... MessageTypes>
@@ -4464,9 +4464,9 @@ namespace ZenUnit
          startupFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          startupFailTestResult.startupTestPhaseResult = startupTestPhaseResult;
          startupFailTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         startupFailTestResult.elapsedMicroseconds = 
-            constructorTestPhaseResult.elapsedMicroseconds + 
-            startupTestPhaseResult.elapsedMicroseconds + 
+         startupFailTestResult.elapsedMicroseconds =
+            constructorTestPhaseResult.elapsedMicroseconds +
+            startupTestPhaseResult.elapsedMicroseconds +
             destructorTestPhaseResult.elapsedMicroseconds;
          startupFailTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
          return startupFailTestResult;
@@ -4484,7 +4484,7 @@ namespace ZenUnit
          constructorAndDestructorSuccessTestResult.testOutcome = TestOutcome::Success;
          constructorAndDestructorSuccessTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorAndDestructorSuccessTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         constructorAndDestructorSuccessTestResult.elapsedMicroseconds = 
+         constructorAndDestructorSuccessTestResult.elapsedMicroseconds =
             constructorTestPhaseResult.elapsedMicroseconds + destructorTestPhaseResult.elapsedMicroseconds;
          constructorAndDestructorSuccessTestResult.responsibleTestPhaseResultField = nullptr;
          return constructorAndDestructorSuccessTestResult;

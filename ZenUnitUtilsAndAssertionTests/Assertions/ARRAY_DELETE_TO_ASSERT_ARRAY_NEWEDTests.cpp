@@ -23,7 +23,7 @@ namespace ZenUnit
 
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
-      const char* nullRawPointer = nullptr;
+      const char* const nullRawPointer = nullptr;
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer)",
@@ -34,7 +34,7 @@ namespace ZenUnit
 
    TEST(PointerIsNullRawPointer_ThrowsAnomaly__MessagesTestCase)
    {
-      const char* nullRawPointer = nullptr;
+      const char* const nullRawPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer, messageA, messageB),
@@ -59,7 +59,7 @@ namespace ZenUnit
 
    TEST(PointerIsNonNullRawPointer_DestructsEachElement)
    {
-      DestructorCountingElement* destructorCountingElements = new DestructorCountingElement[3];
+      const DestructorCountingElement* const destructorCountingElements = new DestructorCountingElement[3];
       IS_ZERO(DestructorCountingElement::s_destructorCallCount);
       //
       ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(destructorCountingElements);
