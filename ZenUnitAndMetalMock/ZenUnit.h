@@ -4136,11 +4136,11 @@ namespace ZenUnit
 
    template<
       template<typename...>
-      class IndexableDataStructureType, typename T, typename Allocator, typename... MessageTypes>
+      class IndexableDataStructureType, typename T, typename... MessageTypes>
    NOINLINE void INDEXABLES_ARE_EQUAL_ThrowAnomaly(
       const char* indexablesAreEqualOrVectorsAreEqualMacroName, const Anomaly& becauseAnomaly,
-      const IndexableDataStructureType<T, Allocator>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
-      const IndexableDataStructureType<T, Allocator>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
+      const IndexableDataStructureType<T>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
+      const IndexableDataStructureType<T>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedIndexableDataStructure = ToStringer::ToString(expectedIndexableDataStructure);
@@ -4155,11 +4155,11 @@ namespace ZenUnit
 
    template<
       template<typename...>
-      class IndexableDataStructureType, typename T, typename Allocator, typename... MessageTypes>
+      class IndexableDataStructureType, typename T, typename... MessageTypes>
    void INDEXABLES_ARE_EQUAL_Defined(
       const char* indexablesAreEqualOrVectorsAreEqualMacroName,
-      const IndexableDataStructureType<T, Allocator>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
-      const IndexableDataStructureType<T, Allocator>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
+      const IndexableDataStructureType<T>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
+      const IndexableDataStructureType<T>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       try
@@ -4174,11 +4174,13 @@ namespace ZenUnit
             actualIndexableDataStructure, actualIndexableDataStructureText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
-      const size_t expectedIndexableDataStructureSize = expectedIndexableDataStructure.size();
+      // auto here instead of size_t because QVector<T>.size() is of type int
+      const auto expectedIndexableDataStructureSize = expectedIndexableDataStructure.size();
       constexpr size_t IEqualsSignLength = 2;
       constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
       char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
-      for (size_t i = 0; i < expectedIndexableDataStructureSize; ++i)
+      for (std::remove_const_t<decltype(expectedIndexableDataStructureSize)> i = 0;
+           i < expectedIndexableDataStructureSize; ++i)
       {
          const T& ithExpectedElement = expectedIndexableDataStructure[i];
          const T& ithActualElement = actualIndexableDataStructure[i];
