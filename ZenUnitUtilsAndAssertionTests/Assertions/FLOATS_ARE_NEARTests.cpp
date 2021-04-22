@@ -3,14 +3,20 @@
 namespace ZenUnit
 {
    TESTS(FLOATS_ARE_NEARTests)
+   AFACT(FloatsAreExactlyEqual_DoesNotThrowException)
    AFACT(FloatsDifferenceIsLessThan1EMinus7_DoesNotThrowException)
    AFACT(FloatsDifferenceIsGreaterThanOrEqualTo1EMinus7_ThrowsAnomaly)
    EVIDENCE
 
-   TEST(FloatsDifferenceIsLessThan1EMinus7_DoesNotThrowException)
+   TEST(FloatsAreExactlyEqual_DoesNotThrowException)
    {
       FLOATS_ARE_NEAR(0.0f, 0.0f);
+      FLOATS_ARE_NEAR(-FLT_MAX, -FLT_MAX);
+      FLOATS_ARE_NEAR(FLT_MAX, FLT_MAX);
+   }
 
+   TEST(FloatsDifferenceIsLessThan1EMinus7_DoesNotThrowException)
+   {
       const float f1 = 1e-7f;
       const float f2 = 1.1e-7f;
       FLOATS_ARE_NEAR(f1, f2);

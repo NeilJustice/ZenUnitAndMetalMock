@@ -3,14 +3,20 @@
 namespace ZenUnit
 {
    TESTS(DOUBLES_ARE_NEARTests)
+   AFACT(DoublesAreExactlyEqual_DoesNotThrowException)
    AFACT(DoublesDifferenceIsLessThan1EMinus14_DoesNotThrowException)
    AFACT(DoublesDifferenceIsGreaterThanOrEqualTo1EMinus14_ThrowsAnomaly)
    EVIDENCE
 
-   TEST(DoublesDifferenceIsLessThan1EMinus14_DoesNotThrowException)
+   TEST(DoublesAreExactlyEqual_DoesNotThrowException)
    {
       DOUBLES_ARE_NEAR(0.0, 0.0);
+      DOUBLES_ARE_NEAR(-DBL_MAX, -DBL_MAX);
+      DOUBLES_ARE_NEAR(DBL_MAX, DBL_MAX);
+   }
 
+   TEST(DoublesDifferenceIsLessThan1EMinus14_DoesNotThrowException)
+   {
       const double d1 = 1e-13;
       const double d2 = 1.1e-13;
       DOUBLES_ARE_NEAR(d1, d2);
