@@ -380,7 +380,7 @@ namespace ZenUnit
       const string expectedFullTestNameString = _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value();
       METALMOCK(_consoleMock.WriteMock.CalledOnceWith(expectedFullTestNameString));
       const unsigned expectedElapsedMilliseconds = _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMicroseconds / 1000U;
-      const std::string expectedErrorMessage = String::Concat(
+      const std::string expectedErrorMessage = String::ConcatValues(
          "\nTest succeeded but took ", expectedElapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
       METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
    }
@@ -415,7 +415,7 @@ namespace ZenUnit
       //
       if (expectConsoleWriteLine)
       {
-         const string expectedErrorMessage = String::Concat(" test case ", testCaseNumber, '/', _testResult.totalTestCases);
+         const string expectedErrorMessage = String::ConcatValues(" test case ", testCaseNumber, '/', _testResult.totalTestCases);
          METALMOCK(_consoleMock.WriteMock.CalledOnceWith(expectedErrorMessage));
       }
    }

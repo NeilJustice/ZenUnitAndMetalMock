@@ -179,7 +179,7 @@ _filePathLineNumber);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = R"("A", "B")";
-      expectedAnomaly.why = String::Concat('\n',
+      expectedAnomaly.why = String::ConcatValues('\n',
 "StartOfFailedLine, messageA, messageB)\n",
 "WhyBody\n",
 string(messagePrefixSpaces) + "Message: " + expectedAnomaly.message + "\n",
@@ -380,7 +380,7 @@ _filePathLineNumber);
          metalMockAssertExpression, metalMockWrappedAnomaly, _filePathLineNumber);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = String::Concat('\n',
+      expectedAnomaly.why = String::ConcatValues('\n',
          "  Failed: ", metalMockAssertExpression, '\n',
          "Because of this ZenUnit::Anomaly:",
          metalMockWrappedAnomaly.why, '\n',

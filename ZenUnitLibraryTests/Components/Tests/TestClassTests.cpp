@@ -52,13 +52,13 @@ namespace ZenUnit
          TestClass::GetTestPointerForTestNXNPmfToken(nullptr, &consoleMock, &zenUnitTestRunnerMock, &exitCallerMock);
       //
       METALMOCK(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce());
-      const string expectedExitCodeMessage = String::Concat("[ZenUnit] ExitCode: ", expectedExitCode);
+      const string expectedExitCodeMessage = String::ConcatValues("[ZenUnit] ExitCode: ", expectedExitCode);
       METALMOCK(consoleMock.WriteLineColorMock.CalledAsFollows(
       {
          { "=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red },
          { expectedExitCodeMessage, expectedExitCodeLineColor }
       }));
-      const string expectedErrorMessage = ZenUnit::String::Concat(R"(The above test name was declared using FACTS(TestName).
+      const string expectedErrorMessage = ZenUnit::String::ConcatStrings(R"(The above test name was declared using FACTS(TestName).
 
 Unexpectedly, a corresponding TESTNXN(TestName, ...) test definition was not found in the EVIDENCE section of this test class.
 

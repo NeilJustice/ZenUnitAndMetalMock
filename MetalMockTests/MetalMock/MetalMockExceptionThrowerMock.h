@@ -40,7 +40,7 @@ namespace MetalMock
          }
          exceptionTypeName = *Type::GetName<ExceptionType>();
          exceptionArgCount = sizeof...(ExceptionArgTypes);
-         stringConcatenatedExceptionArgs = String::Concat(forward<ExceptionArgTypes>(exceptionArgs)...);
+         stringConcatenatedExceptionArgs = String::ConcatValues(forward<ExceptionArgTypes>(exceptionArgs)...);
       }
 
       void MetalMockThrowExceptionIfExceptionSet()

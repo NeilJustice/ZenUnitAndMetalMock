@@ -153,7 +153,7 @@ namespace MetalMock
       //
       if (expectAnomaly)
       {
-         const string expectedWhat = String::Concat(R"(
+         const string expectedWhat = String::ConcatValues(R"(
   Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedNumberOfCallsToMetalMockedFunction, R"(
   Actual: )", numberOfCalls, R"(

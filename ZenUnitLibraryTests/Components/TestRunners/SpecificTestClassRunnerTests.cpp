@@ -280,12 +280,12 @@ namespace ZenUnit
       }));
       if (expectTestsPlural)
       {
-         const string expectedRunningTestsMessage = String::Concat(" | Running ", numberOfTests, " tests");
+         const string expectedRunningTestsMessage = String::ConcatValues(" | Running ", numberOfTests, " tests");
          METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestsMessage));
       }
       else
       {
-         const string expectedRunningTestMessage = String::Concat(" | Running ", numberOfTests, " test");
+         const string expectedRunningTestMessage = String::ConcatValues(" | Running ", numberOfTests, " test");
          METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestMessage));
       }
    }

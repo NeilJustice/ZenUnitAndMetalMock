@@ -113,7 +113,7 @@ namespace ZenUnit
       TestRunResult expectedTestRunResultA;
       expectedTestRunResultA._skippedTestClassNamesAndSkipReasons =
       {
-         String::Concat(SkippedTestClassNameA, " skipped because \"", ReasonA, "\"")
+         String::ConcatStrings(SkippedTestClassNameA, " skipped because \"", ReasonA, "\"")
       };
       ARE_EQUAL(expectedTestRunResultA, _testRunResult);
 
@@ -125,8 +125,8 @@ namespace ZenUnit
       TestRunResult expectedTestRunResultB;
       expectedTestRunResultB._skippedTestClassNamesAndSkipReasons =
       {
-         String::Concat(SkippedTestClassNameA, " skipped because \"", ReasonA, "\""),
-         String::Concat(SkippedTestClassNameB, " skipped because \"", ReasonB, "\"")
+         String::ConcatStrings(SkippedTestClassNameA, " skipped because \"", ReasonA, "\""),
+         String::ConcatStrings(SkippedTestClassNameB, " skipped because \"", ReasonB, "\"")
       };
       ARE_EQUAL(expectedTestRunResultB, _testRunResult);
    }
@@ -273,8 +273,8 @@ namespace ZenUnit
       const string expectedStartTimeLine = "  StartTime: " + startDateTime;
       const string expectedEndTimeLine = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine = "   Duration: " + testRunElapsedSeconds + " seconds";
-      const string expectedTestRunMessage = String::Concat("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
-      const string expectedRunResultLine = String::Concat("     Result: ", expectedClosingLineTestsCountText);
+      const string expectedTestRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
+      const string expectedRunResultLine = String::ConcatStrings("     Result: ", expectedClosingLineTestsCountText);
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
       {

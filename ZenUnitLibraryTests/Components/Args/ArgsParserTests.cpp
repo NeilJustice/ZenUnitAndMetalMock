@@ -344,13 +344,13 @@ namespace ZenUnit
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
-      const string unrecognizedNameArg = String::Concat('-', ZenUnit::Random<string>(), '=', ZenUnit::Random<string>());
+      const string unrecognizedNameArg = String::ConcatStrings("-", ZenUnit::Random<string>(), "=", ZenUnit::Random<string>());
       const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //
       THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      const string expectedErrorMessage = String::Concat(
-         "ZenUnit command line usage error: Unrecognized --name=value argument: ", unrecognizedNameArg, '\n');
+      const string expectedErrorMessage = String::ConcatStrings(
+         "ZenUnit command line usage error: Unrecognized --name=value argument: ", unrecognizedNameArg, "\n");
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }

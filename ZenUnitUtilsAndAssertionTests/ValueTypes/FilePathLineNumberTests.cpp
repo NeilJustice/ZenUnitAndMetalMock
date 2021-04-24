@@ -43,7 +43,7 @@ namespace ZenUnit
       oss << filePathLineNumber;
       //
       const string result = oss.str();
-      const string expected = String::Concat(filePath, '(', lineNumber, ')');
+      const string expected = String::ConcatValues(filePath, '(', lineNumber, ')');
       ARE_EQUAL(expected, result);
    }
 

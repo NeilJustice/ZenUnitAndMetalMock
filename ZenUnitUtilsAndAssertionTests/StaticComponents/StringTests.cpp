@@ -4,7 +4,8 @@ namespace ZenUnit
 {
    TESTS(StringTests)
    FACTS(Split_ReturnsExpected)
-   AFACT(Concat_ConcatsValuesIntoString)
+   AFACT(ConcatStrings_ReturnedConcatenatedStrings)
+   AFACT(ConcatValues_ReturnedOStringStreamConcatenatedValues)
    FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
    AFACT(ToInt_EmptyString_ThrowsInvalidArgument)
    FACTS(ToInt_StringNotConvertibleToInt_ThrowsInvalidArgument)
@@ -47,16 +48,24 @@ namespace ZenUnit
       }
    };
 
-   TEST(Concat_ConcatsValuesIntoString)
+   TEST(ConcatStrings_ReturnedConcatenatedStrings)
    {
-      ARE_EQUAL("", String::Concat(""));
-      ARE_EQUAL("1", String::Concat("1"));
-      ARE_EQUAL("12", String::Concat("1", "2"));
-      ARE_EQUAL("123", String::Concat("1", "2", "3"));
+      ARE_EQUAL("", String::ConcatStrings(""));
+      ARE_EQUAL("1", String::ConcatStrings("1"));
+      ARE_EQUAL("12", String::ConcatStrings("1", "2"));
+      ARE_EQUAL("123", String::ConcatStrings("1", "2", "3"));
+   }
+
+   TEST(ConcatValues_ReturnedOStringStreamConcatenatedValues)
+   {
+      ARE_EQUAL("", String::ConcatValues(""));
+      ARE_EQUAL("1", String::ConcatValues("1"));
+      ARE_EQUAL("12", String::ConcatValues("1", "2"));
+      ARE_EQUAL("123", String::ConcatValues("1", "2", "3"));
       const UserType userType1(1);
       const string str = "hello";
       const UserType userType3(3);
-      ARE_EQUAL("1hello3", String::Concat(userType1, str, userType3));
+      ARE_EQUAL("1hello3", String::ConcatValues(userType1, str, userType3));
    }
 
    TEST2X2(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored,
@@ -84,7 +93,7 @@ namespace ZenUnit
       "--1",
       " 0")
    {
-      const std::string expectedExceptionMessage = String::Concat(
+      const std::string expectedExceptionMessage = String::ConcatStrings(
          "ZenUnit::String::ToInt(std::string_view str) called with str not converted to int: \"", str, "\"");
       THROWS_EXCEPTION(String::ToInt(str), invalid_argument, expectedExceptionMessage);
    }
@@ -94,7 +103,7 @@ namespace ZenUnit
       to_string(static_cast<long long>(numeric_limits<int>::min()) - 1),
       to_string(static_cast<long long>(numeric_limits<int>::min()) - 2))
    {
-      const std::string expectedExceptionMessage = String::Concat(
+      const std::string expectedExceptionMessage = String::ConcatStrings(
          "ZenUnit::String::ToInt(std::string_view str) called with str not converted to int: \"", str, "\"");
       THROWS_EXCEPTION(String::ToInt(str), invalid_argument, expectedExceptionMessage);
    }
@@ -104,7 +113,7 @@ namespace ZenUnit
       to_string(static_cast<long long>(numeric_limits<int>::max()) + 1),
       to_string(static_cast<long long>(numeric_limits<int>::max()) + 2))
    {
-      const std::string expectedExceptionMessage = String::Concat(
+      const std::string expectedExceptionMessage = String::ConcatStrings(
          "ZenUnit::String::ToInt(std::string_view str) called with str not converted to int: \"", str, "\"");
       THROWS_EXCEPTION(String::ToInt(str), invalid_argument, expectedExceptionMessage);
    }
@@ -158,7 +167,7 @@ namespace ZenUnit
       "-1",
       " 0")
    {
-      const std::string expectedExceptionMessage = String::Concat(
+      const std::string expectedExceptionMessage = String::ConcatStrings(
          "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"", str, "\"");
       THROWS_EXCEPTION(String::ToUnsigned(str), invalid_argument, expectedExceptionMessage);
    }
@@ -168,7 +177,7 @@ namespace ZenUnit
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 1ull),
       to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))
    {
-      const std::string expectedExceptionMessage = String::Concat(
+      const std::string expectedExceptionMessage = String::ConcatStrings(
          "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"", str, "\"");
       THROWS_EXCEPTION(String::ToUnsigned(str), invalid_argument, expectedExceptionMessage);
    }

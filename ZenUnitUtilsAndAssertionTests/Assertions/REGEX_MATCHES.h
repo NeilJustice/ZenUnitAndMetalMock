@@ -12,8 +12,8 @@ namespace ZenUnit
       const PatternStringType& expectedPattern, const char* expectedPatternText, const StrStringType& str, const char* strText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string expectedLine = String::Concat("Expected string to match: \"", expectedPattern, "\"");
-      const std::string actualLine = String::Concat("     Non-matching string: \"", str, "\"");
+      const std::string expectedLine = String::ConcatStrings("Expected string to match: \"", expectedPattern, "\"");
+      const std::string actualLine = String::ConcatStrings("     Non-matching string: \"", str, "\"");
       throw Anomaly("REGEX_MATCHES", expectedPatternText, strText, "", messagesText, Anomaly::Default(),
          expectedLine, actualLine, ExpectedActualFormat::WholeLines, filePathLineNumber, std::forward<MessageTypes>(messages)...);
    }

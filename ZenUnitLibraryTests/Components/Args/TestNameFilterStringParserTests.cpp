@@ -83,7 +83,7 @@ namespace ZenUnit
       "TestClassName::TestName//1",
       "TestClassName::TestName///1")
    {
-      const string expectedInvalidArgumentMessage = String::Concat("Invalid test name filter string: ", invalidTestNameFilterString,
+      const string expectedInvalidArgumentMessage = String::ConcatStrings("Invalid test name filter string: ", invalidTestNameFilterString,
          ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
       THROWS_EXCEPTION(_testNameFilterStringParser.ParseTestNameFilterString(invalidTestNameFilterString),
          invalid_argument, expectedInvalidArgumentMessage);

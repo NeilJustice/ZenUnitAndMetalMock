@@ -82,7 +82,7 @@ namespace MetalMock
       //
       if (expectAnomaly)
       {
-         const string expectedExceptionMessage = ZenUnit::String::Concat(R"(
+         const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
   Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
@@ -121,7 +121,7 @@ File.cpp(1))");
       //
       if (expectAnomaly)
       {
-         const string expectedExceptionMessage = ZenUnit::String::Concat(R"(
+         const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
   Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedNumberOfCallsToMetalMockedFunction, R"(
   Actual: )", numberOfFunctionCalls, R"(

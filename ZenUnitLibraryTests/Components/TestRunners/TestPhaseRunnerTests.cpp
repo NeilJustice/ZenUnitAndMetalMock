@@ -212,7 +212,7 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(s_anomaly.why));
 
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
-      const string expectedExitMessage = String::Concat(
+      const string expectedExitMessage = String::ConcatValues(
          "[ZenUnit] TestResult: A ZenUnit::Anomaly was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
          "[ZenUnit]   ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
@@ -307,7 +307,7 @@ namespace ZenUnit
          "what(): \"" + s_stdExceptionMessage + "\"")));
 
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith("\n===========\nFatal Error\n===========", Color::Red));
-      const string expectedExitMessage = String::Concat(
+      const string expectedExitMessage = String::ConcatValues(
          "[ZenUnit] TestResult: A std::exception or std::exception subclass was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
          "[ZenUnit]   ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedExitMessage, expectedExitCode));
@@ -357,17 +357,16 @@ namespace ZenUnit
       const size_t expectedEqualsSignsLength =
          exceptionTypeName.size() + strlen(_testPhaseSuffix.c_str());
       const std::string expectedEqualsSigns(expectedEqualsSignsLength, '=');
-      const string expectedExceptionNameAndTestPhaseSuffixLines = String::Concat('\n',
-         expectedEqualsSigns, '\n',
-         exceptionTypeName, _testPhaseSuffix, '\n',
+      const string expectedExceptionNameAndTestPhaseSuffixLines = String::ConcatStrings("\n",
+         expectedEqualsSigns, "\n",
+         exceptionTypeName, _testPhaseSuffix, "\n",
          expectedEqualsSigns);
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(
          expectedExceptionNameAndTestPhaseSuffixLines, Color::Red));
 
       METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
       const string expectedWhat = MetalMock::UnexpectedCallException::MakeExceptionMessage("MetalMockedFunctionSignature");
-      const string expectedTestPhaseSuffixAndWhatLines = String::Concat(
-         "what(): \"", expectedWhat, "\"");
+      const string expectedTestPhaseSuffixAndWhatLines = String::ConcatStrings("what(): \"", expectedWhat, "\"");
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
 
       METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
@@ -491,11 +490,11 @@ namespace ZenUnit
       //
       _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, zenUnitArgs);
       //
-      const string expectedFailFastMessage = String::Concat('\n',
+      const string expectedFailFastMessage = String::ConcatValues("\n",
          "[ZenUnit] A test failed in --fail-fast mode.\n",
-         "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n',
-         "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitModeRandomSeed, '\n',
-         "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, '\n',
+         "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, "\n",
+         "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitModeRandomSeed, "\n",
+         "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, "\n",
          "[ZenUnit]    ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, expectedExitCode));
    }

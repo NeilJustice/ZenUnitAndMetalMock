@@ -13,7 +13,7 @@ namespace MetalMock
       //
       const UnsupportedCalledZeroTimesException ex(metalMockedFunctionSignature);
       //
-      const std::string expectedExceptionMessage = ZenUnit::String::Concat(
+      const std::string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
          "For MetalMocked function \"", metalMockedFunctionSignature, R"(":
 
 Because MetalMock is a strict mocking framework,

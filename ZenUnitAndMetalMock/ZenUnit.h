@@ -778,7 +778,7 @@ namespace ZenUnit
          std::from_chars_result fromCharsResult = std::from_chars(str.data(), str.data() + str.size(), intValue, 10);
          if (fromCharsResult.ec != std::errc{})
          {
-            const std::string exceptionMessage = String::Concat(
+            const std::string exceptionMessage = String::ConcatStrings(
                "ZenUnit::String::ToInt(std::string_view str) called with str not converted to int: \"", str, "\"");
             throw std::invalid_argument(exceptionMessage);
          }
@@ -791,7 +791,7 @@ namespace ZenUnit
          std::from_chars_result fromCharsResult = std::from_chars(str.data(), str.data() + str.size(), unsignedValue, 10);
          if (fromCharsResult.ec != std::errc{})
          {
-            const std::string exceptionMessage = String::Concat(
+            const std::string exceptionMessage = String::ConcatStrings(
                "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"", str, "\"");
             throw std::invalid_argument(exceptionMessage);
          }
@@ -866,7 +866,26 @@ namespace ZenUnit
       }
 
       template<typename... Types>
-      static std::string Concat(Types&&... values)
+		static std::string ConcatStrings(Types&&... strings)
+		{
+			std::string concatenatedString;
+			std::string_view stringViews[] = { strings... };
+			size_t lengthOfAllStrings = 0;
+			for (std::string_view stringView : stringViews)
+			{
+				const size_t stringViewSize = stringView.size();
+				lengthOfAllStrings += stringViewSize;
+			}
+			concatenatedString.reserve(lengthOfAllStrings);
+			for (std::string_view stringView : stringViews)
+			{
+				concatenatedString.append(stringView);
+			}
+			return concatenatedString;
+		}
+
+      template<typename... Types>
+      static std::string ConcatValues(Types&&... values)
       {
          std::ostringstream oss;
          (oss << ... << std::forward<Types>(values));
@@ -878,7 +897,7 @@ namespace ZenUnit
    NOINLINE inline void Exit1DueToZenUnitAssertHavingFailed(
       const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
    {
-      const std::string assertTrueFailedErrorMessage = String::Concat(
+      const std::string assertTrueFailedErrorMessage = String::ConcatValues(
          "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n",
          filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")");
       std::cout << assertTrueFailedErrorMessage << '\n';
@@ -911,11 +930,11 @@ namespace ZenUnit
          const char* const testsOrTemplateTests = testClassIsTemplated ? "TEMPLATE_TESTS(" : "TESTS(";
          if (arity == 0)
          {
-            std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\n",
-               "TEST(", testName, ')');
+            std::string fullTestName = String::ConcatStrings(testsOrTemplateTests, testClassName, ")\n",
+               "TEST(", testName, ")");
             return fullTestName;
          }
-         std::string fullTestName = String::Concat(testsOrTemplateTests, testClassName, ")\n",
+         std::string fullTestName = String::ConcatValues(testsOrTemplateTests, testClassName, ")\n",
             "TEST", static_cast<unsigned>(arity), 'X', static_cast<unsigned>(arity), '(', testName, ')');
          return fullTestName;
       }
@@ -1607,7 +1626,7 @@ namespace ZenUnit
       {
          const std::string toStringedFirst = ToStringer::ToString(p.first);
          const std::string toStringedSecond = ToStringer::ToString(p.second);
-         std::string toStringedPair = String::Concat("(", toStringedFirst, ", ", toStringedSecond, ")");
+         std::string toStringedPair = String::ConcatStrings("(", toStringedFirst, ", ", toStringedSecond, ")");
          return toStringedPair;
       }
 
@@ -1833,7 +1852,7 @@ namespace ZenUnit
          FilePathLineNumber filePathLineNumber)
       {
          Anomaly anomaly;
-         anomaly.why = String::Concat('\n',
+         anomaly.why = String::ConcatValues('\n',
             "  Failed: ", metalMockAssertExpression, '\n',
             "Because of this ZenUnit::Anomaly:",
             metalMockWrappedAnomaly.why, '\n',
@@ -2023,7 +2042,7 @@ namespace ZenUnit
 
       static void ThrowInvalidArgumentDueToInvalidTestNameFilterString(std::string_view invalidTestNameFilterString)
       {
-         const std::string exceptionMessage = String::Concat("Invalid test name filter string: ", invalidTestNameFilterString,
+         const std::string exceptionMessage = String::ConcatStrings("Invalid test name filter string: ", invalidTestNameFilterString,
             ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
          throw std::invalid_argument(exceptionMessage);
       }
@@ -2237,7 +2256,7 @@ namespace ZenUnit
 
          // Example: "[0.12ms]"
          std::string twoDecimalPlaceMillisecondsString =
-            String::Concat("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
+            String::ConcatStrings("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
 
          return twoDecimalPlaceMillisecondsString;
       }
@@ -2902,7 +2921,7 @@ namespace ZenUnit
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedElement = ToStringer::ToString(expectedElement);
-      const std::string singleQuotedToStringedExpectedElement = String::Concat("'", toStringedExpectedElement, "'");
+      const std::string singleQuotedToStringedExpectedElement = String::ConcatStrings("'", toStringedExpectedElement, "'");
       const std::string expectedField = "Collection contains element " + singleQuotedToStringedExpectedElement;
       const std::string actualField = "Collection does not contain element " + singleQuotedToStringedExpectedElement;
       const Anomaly anomaly("CONTAINS_ELEMENT", expectedElementText, actualCollectionText, "", messagesText, Anomaly::Default(),
@@ -2936,11 +2955,11 @@ namespace ZenUnit
       const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
       FilePathLineNumber filePathLineNumber)
    {
-      const std::string messageForExpectedField = String::Concat(
+      const std::string messageForExpectedField = String::ConcatStrings(
          R"(Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)
           to throw a ZenUnit::Anomaly from an
           ARE_EQUAL(expected.)", fieldName, ", actual.", fieldName, ") assert statement.");
-      const std::string messageForActualField(String::Concat(
+      const std::string messageForActualField(String::ConcatStrings(
          "No ZenUnit::Anomaly was thrown despite field '", fieldName, R"('
           differing between the expected and actual objects.)"));
       const Anomaly anomaly("ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL",
@@ -2999,8 +3018,8 @@ namespace ZenUnit
    void FAIL_TEST_Defined(std::string_view testFailureReason, const char* testFailureReasonText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(" Failed: FAIL_TEST(", testFailureReasonText);
-      const std::string quotedTestFailureReason = String::Concat('"', testFailureReason, '"');
+      const std::string failedLinePrefix = String::ConcatStrings(" Failed: FAIL_TEST(", testFailureReasonText);
+      const std::string quotedTestFailureReason = String::ConcatStrings("\"", testFailureReason, "\"");
       const std::string whyBody = "Because: " + quotedTestFailureReason;
       const Anomaly anomaly(failedLinePrefix, whyBody,
          filePathLineNumber, "", messagesText, std::forward<MessageTypes>(messages)...);
@@ -3013,7 +3032,7 @@ namespace ZenUnit
    {
       const size_t collectionSize = collection.size();
       const std::string expectedField = "empty() == true";
-      const std::string actualField = String::Concat("empty() == false (size() == ", collectionSize, ')');
+      const std::string actualField = String::ConcatValues("empty() == false (size() == ", collectionSize, ')');
       const Anomaly anomaly("IS_EMPTY", collectionText, "", "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
@@ -3195,7 +3214,8 @@ namespace ZenUnit
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedPolymorphicPointeeTypeName = expectedPolymorphicPointeeTypeInfo.name();
-      const std::string expectedField = String::Concat("Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"", expectedPolymorphicPointeeTypeName, '\"');
+      const std::string expectedField = String::ConcatStrings(
+         "Pointee to be exact type: typeid(expectedPolymorphicPointeeType).name() = \"", expectedPolymorphicPointeeTypeName, "\"");
       const Anomaly anomaly("POINTEE_IS_EXACT_TYPE", expectedPolymorphicPointeeText, actualPointeeText, "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
@@ -3221,7 +3241,8 @@ namespace ZenUnit
       if (expectedPolymorphicPointeeTypeInfo != actualPointeeTypeInfo)
       {
          const char* const actualPointeeTypeName = typeid(*actualPointer).name();
-         const std::string actualField = String::Concat("   Pointee is exact type:                 typeid(*actualPointer).name() = \"", actualPointeeTypeName, '\"');
+         const std::string actualField = String::ConcatStrings(
+            "   Pointee is exact type:                 typeid(*actualPointer).name() = \"", actualPointeeTypeName, "\"");
          POINTEE_IS_EXACT_TYPE_ThrowAnomaly(
             expectedPolymorphicPointeeTypeInfo, expectedPolymorphicPointeeText,
             actualField, actualPointerText,
@@ -3396,7 +3417,7 @@ namespace ZenUnit
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const char* const expectedField = "fsPath == std::filesystem::path()";
-      const std::string actualField = String::Concat("fsPath != std::filesystem::path() (", fsPath, ")");
+      const std::string actualField = String::ConcatValues("fsPath != std::filesystem::path() (", fsPath, ")");
       const Anomaly anomaly("IS_EMPTY_PATH", fsPathText, "", "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields,
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
@@ -3537,7 +3558,7 @@ namespace ZenUnit
       const char* messagesText,
       MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(failedPrefixSpaces, "Failed: MAPS_ARE_EQUAL(", expectedMapText, ", ", actualMapText);
+      const std::string failedLinePrefix = String::ConcatStrings(failedPrefixSpaces, "Failed: MAPS_ARE_EQUAL(", expectedMapText, ", ", actualMapText);
       const Anomaly anomaly(failedLinePrefix, whyBody, filePathLineNumber, messagePrefixSpaces, messagesText, std::forward<MessageTypes>(messages)...);
       throw anomaly;
    }
@@ -3546,7 +3567,7 @@ namespace ZenUnit
    std::string MAPS_ARE_EQUAL_MakeWhyBody_ExpectedKeyNotInActualMap(const KeyType& expectedKey)
    {
       const std::string toStringedExpectedKey = ToStringer::ToString<KeyType>(expectedKey);
-      std::string whyBody = String::Concat(
+      std::string whyBody = String::ConcatStrings(
          "Because: Actual map does not contain expected key\n",
          "Expected key: ", toStringedExpectedKey);
       return whyBody;
@@ -3561,18 +3582,18 @@ namespace ZenUnit
       const std::string toStringedExpectedValue = ToStringer::ToString<typename std::decay<decltype(expectedValue)>::type>(expectedValue);
       const auto& actualValue = Map::At(actualMap, expectedKey);
       const std::string toStringedActualValue = ToStringer::ToString<typename std::decay<decltype(actualValue)>::type>(actualValue);
-      std::string whyBody = String::Concat(
+      std::string whyBody = String::ConcatStrings(
          "Because: Actual map contains expected key but with an unexpected value\n",
-         "  Expected key: ", toStringedExpectedKey, '\n',
-         "    Actual key: ", toStringedActualKey, '\n',
-         "Expected value: ", toStringedExpectedValue, '\n',
+         "  Expected key: ", toStringedExpectedKey, "\n",
+         "    Actual key: ", toStringedActualKey, "\n",
+         "Expected value: ", toStringedExpectedValue, "\n",
          "  Actual value: ", toStringedActualValue);
       return whyBody;
    }
 
    NOINLINE inline std::string MAPS_ARE_EQUAL_MakeWhyBody_SizesNotEqual(size_t expectedMapSize, size_t actualMapSize)
    {
-      std::string whyBody = String::Concat(
+      std::string whyBody = String::ConcatValues(
          " Because: ARE_EQUAL(expectedMap.size(), actualMap.size()) failed\n",
          "Expected: ", expectedMapSize, '\n',
          "  Actual: ", actualMapSize);
@@ -3621,9 +3642,9 @@ namespace ZenUnit
    NOINLINE void DOES_NOT_THROW_ThrowAnomaly(const std::exception& ex, const char* expressionText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat("  Failed: DOES_NOT_THROW(", expressionText);
+      const std::string failedLinePrefix = String::ConcatStrings("  Failed: DOES_NOT_THROW(", expressionText);
       const std::string* const actualExceptionTypeName = Type::GetName(ex);
-      const std::string whyBody = String::Concat("Expected: No exception was thrown\n",
+      const std::string whyBody = String::ConcatStrings("Expected: No exception was thrown\n",
          "  Actual: ", *actualExceptionTypeName, " thrown\n",
          "  what(): \"", ex.what(), "\"");
       const Anomaly anomaly(failedLinePrefix, whyBody, filePathLineNumber, " ", messagesText, std::forward<MessageTypes>(messages)...);
@@ -3709,8 +3730,8 @@ namespace ZenUnit
       const std::to_chars_result toCharsResult = std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
       if (toCharsResult.ec != std::errc{})
       {
-         const std::string exceptionMessage = String::Concat(
-            "ZenUnit::WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars");
+         const std::string exceptionMessage =
+            "ZenUnit::WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars";
          throw std::invalid_argument(exceptionMessage);
       }
    }
@@ -3775,9 +3796,9 @@ namespace ZenUnit
          if (findIterator == actualElements.end())
          {
             const std::string ithExpectedElementAsString = ToStringer::ToString(ithExpectedElement);
-            const std::string expectedLine = String::Concat(
+            const std::string expectedLine = String::ConcatValues(
                "     To find ith expected element [", ithExpectedElementAsString, "] in actualElements (i=", i, ')');
-            const std::string actualLine = String::Concat(
+            const std::string actualLine = String::ConcatValues(
                "Did not find ith expected element [", ithExpectedElementAsString, "] in actualElements (i=", i, ')');
             const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsText, actualElementsText, "", messagesText, Anomaly::Default(),
                expectedLine,
@@ -3794,9 +3815,9 @@ namespace ZenUnit
          if (findIterator == expectedElements.end())
          {
             const std::string ithActualElementAsString = ToStringer::ToString(ithActualElement);
-            const std::string expectedLine = String::Concat(
+            const std::string expectedLine = String::ConcatValues(
                "     To find ith actual element [", ithActualElementAsString, "] in expectedElements (i=", i, ')');
-            const std::string actualLine = String::Concat(
+            const std::string actualLine = String::ConcatValues(
                "Did not find ith actual element [", ithActualElementAsString, "] in expectedElements (i=", i, ')');
             const Anomaly anomaly("INDEXABLES_ARE_EQUAL_IN_ANY_ORDER", expectedElementsText, actualElementsText, "", messagesText, Anomaly::Default(),
                expectedLine,
@@ -4023,7 +4044,7 @@ namespace ZenUnit
       std::string_view whyBody,
       FilePathLineNumber filePathLineNumber, std::string_view messagesText, MessageTypes&&... messages)
    {
-      const std::string failedLinePrefix = String::Concat(
+      const std::string failedLinePrefix = String::ConcatStrings(
          "  Failed: THROWS_EXCEPTION(", expressionText, ",\n",
          "             ", expectedExactExceptionTypeText, ", ", expectedWhatText);
       const Anomaly anomaly(failedLinePrefix, whyBody, filePathLineNumber, " ", messagesText, std::forward<MessageTypes>(messages)...);
@@ -4251,7 +4272,7 @@ namespace ZenUnit
 
       virtual std::string NextNumberedTestFailureArrow()
       {
-         std::string nextNumberedTestFailureArrow = String::Concat(">>-Test Failure ", _testFailureNumber++, "->");
+         std::string nextNumberedTestFailureArrow = String::ConcatValues(">>-Test Failure ", _testFailureNumber++, "->");
          return nextNumberedTestFailureArrow;
       }
 
@@ -4542,8 +4563,8 @@ namespace ZenUnit
             console->Write(responsibleTestPhaseSuffix);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             console->WriteLineColor("\n==================\nUncaught Exception\n==================", Color::Red);
-            const std::string exceptionTypeAndMessageLines = String::Concat(
-               "  Type: ", *responsibleTestPhaseResult.anomalyOrException->exceptionTypeName, '\n',
+            const std::string exceptionTypeAndMessageLines = String::ConcatStrings(
+               "  Type: ", *responsibleTestPhaseResult.anomalyOrException->exceptionTypeName, "\n",
                "what(): \"", *responsibleTestPhaseResult.anomalyOrException->exceptionMessage, "\"");
             console->WriteLine(exceptionTypeAndMessageLines);
             console->WriteNewLine();
@@ -4557,7 +4578,7 @@ namespace ZenUnit
             console->Write(fullTestNameString);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             const unsigned elapsedMilliseconds = this->elapsedMicroseconds / 1000U;
-            const std::string errorMessage = String::Concat(
+            const std::string errorMessage = String::ConcatValues(
                "\nTest succeeded but took ", elapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
             console->WriteLine(errorMessage);
             break;
@@ -4575,7 +4596,7 @@ namespace ZenUnit
       {
          if (testCaseNumberArgument != std::numeric_limits<size_t>::max())
          {
-            const std::string testCaseNumberMessage = String::Concat(" test case ", testCaseNumberArgument, '/', totalTestCases);
+            const std::string testCaseNumberMessage = String::ConcatValues(" test case ", testCaseNumberArgument, '/', totalTestCases);
             console->Write(testCaseNumberMessage);
          }
       }
@@ -5111,7 +5132,7 @@ namespace ZenUnit
       virtual std::string PrintPreambleLinesAndGetStartDateTime(
          const ZenUnitArgs& zenUnitArgs, size_t testRunIndex, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
-         const std::string zenUnitVersionLine = String::Concat("[C++ Unit Testing Framework ZenUnit ", Version, "]");
+         const std::string zenUnitVersionLine = String::ConcatStrings("[C++ Unit Testing Framework ZenUnit ", Version, "]");
          _console->WriteLineColor(zenUnitVersionLine, Color::Green);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
@@ -5214,14 +5235,13 @@ namespace ZenUnit
 
       virtual void AddSkippedTest(const char* testClassName, const char* testName, const char* skipReason)
       {
-         std::string fullTestNameAndSkipReason =
-            String::Concat(testClassName, ".", testName, " skipped because \"", skipReason, "\"");
+         std::string fullTestNameAndSkipReason = String::ConcatStrings(testClassName, ".", testName, " skipped because \"", skipReason, "\"");
          _skippedFullTestNamesAndSkipReasons.emplace_back(std::move(fullTestNameAndSkipReason));
       }
 
       virtual void AddSkippedTestClassNameAndReason(const char* testClassName, const char* skipReason)
       {
-         std::string testClassNameAndSkipReason = String::Concat(testClassName, " skipped because \"", skipReason, "\"");
+         std::string testClassNameAndSkipReason = String::ConcatStrings(testClassName, " skipped because \"", skipReason, "\"");
          _skippedTestClassNamesAndSkipReasons.emplace_back(std::move(testClassNameAndSkipReason));
       }
 
@@ -5236,9 +5256,9 @@ namespace ZenUnit
          if (_numberOfFailedTestCases > 0)
          {
             const std::string testOrTests = _numberOfFailedTestCases > 1 ? "Tests" : "Test";
-            const std::string firstLine = String::Concat("== ", _numberOfFailedTestCases, ' ', testOrTests, " Failed ==");
+            const std::string firstLine = String::ConcatValues("== ", _numberOfFailedTestCases, ' ', testOrTests, " Failed ==");
             const std::string secondLineEqualsSigns(firstLine.size(), '=');
-            const std::string numberOfTestFailuresLine = String::Concat(firstLine, '\n', secondLineEqualsSigns, '\n');
+            const std::string numberOfTestFailuresLine = String::ConcatStrings(firstLine, "\n", secondLineEqualsSigns, "\n");
             _console->WriteLineColor(numberOfTestFailuresLine, Color::Red);
             _memberForEacherTestClassResults->MemberForEach(&_testClassResults, this, &TestRunResult::PrintTestClassResultFailures);
          }
@@ -5270,38 +5290,37 @@ namespace ZenUnit
             {
                tripletLinesPrefix = "[ZenUnit]";
                successOrFailLinePrefix = "[SUCCESS]";
-               resultMessage = String::Concat("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
+               resultMessage = String::ConcatValues("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
             {
                tripletLinesPrefix = ">>------>";
                successOrFailLinePrefix = ">>-FAIL->";
-               resultMessage = String::Concat(
-                  "     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
+               resultMessage = String::ConcatValues("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string completedCommandLineMessage = String::Concat("  Completed: ", zenUnitArgs.commandLine);
+            const std::string completedCommandLineMessage = String::ConcatStrings("  Completed: ", zenUnitArgs.commandLine);
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string randomSeedMessage = String::Concat(" RandomSeed: --random-seed=", globalZenUnitMode.randomSeed);
+            const std::string randomSeedMessage = String::ConcatValues(" RandomSeed: --random-seed=", globalZenUnitMode.randomSeed);
             _console->WriteLine(randomSeedMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string startTimeMessage = String::Concat("  StartTime: ", startDateTime);
+            const std::string startTimeMessage = String::ConcatStrings("  StartTime: ", startDateTime);
             _console->WriteLine(startTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
             const std::string endDateTime = _watch->DateTimeNow();
-            const std::string endTimeMessage = String::Concat("    EndTime: ", endDateTime);
+            const std::string endTimeMessage = String::ConcatStrings("    EndTime: ", endDateTime);
             _console->WriteLine(endTimeMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string durationMessage = String::Concat("   Duration: ", testRunElapsedSeconds, " seconds");
+            const std::string durationMessage = String::ConcatValues("   Duration: ", testRunElapsedSeconds, " seconds");
             _console->WriteLine(durationMessage);
 
             _console->WriteColor(tripletLinesPrefix, greenOrRed);
-            const std::string testRunMessage = String::Concat("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
+            const std::string testRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
             _console->WriteLine(testRunMessage);
 
             _console->WriteColor(successOrFailLinePrefix, greenOrRed);
@@ -5414,8 +5433,7 @@ namespace ZenUnit
          const std::string leadingZeros(numberOfLeadingMillisecondZeros, '0');
 
          // Example elapsedSecondsWithMillisecondResolution: "0.001"
-         std::string elapsedSecondsWithMillisecondResolution = String::Concat(
-            elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
+         std::string elapsedSecondsWithMillisecondResolution = String::ConcatValues(elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
 
          return elapsedSecondsWithMillisecondResolution;
       }
@@ -5695,7 +5713,7 @@ Fatal Windows C++ Runtime Assertion
          if (zenUnitArgs.failFast && testOutcome != TestOutcome::Success)
          {
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-            const std::string failFastMessage = String::Concat('\n',
+            const std::string failFastMessage = String::ConcatValues('\n',
                "[ZenUnit] A test failed in --fail-fast mode.\n",
                "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n',
                "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n',
@@ -5727,13 +5745,13 @@ Fatal Windows C++ Runtime Assertion
          _console->WriteLine("  Duration: " + testRunDurationInSeconds + " seconds");
 
          _console->WriteColor(">>------> ", Color::Red);
-         const std::string testRunNumberLine = String::Concat(
+         const std::string testRunNumberLine = String::ConcatValues(
             "   TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns);
          _console->WriteLine(testRunNumberLine);
 
          _console->WriteColor(">>------> ", Color::Red);
          const char* const testPhaseName = _testPhaseTranslator->TestPhaseToTestPhaseName(testPhase);
-         const std::string testRunResultLine = String::Concat("    Result: Fatal ... exception thrown during test phase: ", testPhaseName);
+         const std::string testRunResultLine = String::ConcatStrings("    Result: Fatal ... exception thrown during test phase: ", testPhaseName);
          _console->WriteLine(testRunResultLine);
 
          const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
@@ -5746,7 +5764,7 @@ Fatal Windows C++ Runtime Assertion
       {
          const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
          _console->WriteLineColor("\n===========\nFatal Error\n===========", Color::Red);
-         const std::string exitMessage = String::Concat(
+         const std::string exitMessage = String::ConcatValues(
             "[ZenUnit] TestResult: A ", anomalyOrException, " was thrown from a test class constructor, STARTUP function, or CLEANUP function.\n",
             "[ZenUnit]   ExitCode: ", exitCode);
          _console->WriteLineAndExit(exitMessage, exitCode);
@@ -5977,8 +5995,8 @@ Fatal Windows C++ Runtime Assertion
          _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
-         const std::string exceptionTypeNameAndException = String::Concat('\n',
-            "  Type: ", *Type::GetName(ex), '\n',
+         const std::string exceptionTypeNameAndException = String::ConcatStrings("\n",
+            "  Type: ", *Type::GetName(ex), "\n",
             "what(): \"", ex.what(), "\"");
          _console->WriteLine(exceptionTypeNameAndException);
          if (testPhase != TestPhase::TestBody)
@@ -5993,13 +6011,13 @@ Fatal Windows C++ Runtime Assertion
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          const size_t equalsSignsLength = exceptionTypeName.size() + strlen(testPhaseSuffix);
          const std::string equalsSigns(equalsSignsLength, '=');
-         const std::string exceptionTypeNameFourLines = String::Concat('\n',
-            equalsSigns, '\n',
-            exceptionTypeName, testPhaseSuffix, '\n',
+         const std::string exceptionTypeNameFourLines = String::ConcatStrings("\n",
+            equalsSigns, "\n",
+            exceptionTypeName, testPhaseSuffix, "\n",
             equalsSigns);
          _console->WriteLineColor(exceptionTypeNameFourLines, Color::Red);
          PopulateTestPhaseResultWithExceptionInformation(ex, &testPhaseResult);
-         const std::string testPhaseSuffixAndExceptionWhatLine = String::Concat("what(): \"", ex.what(), "\"");
+         const std::string testPhaseSuffixAndExceptionWhatLine = String::ConcatStrings("what(): \"", ex.what(), "\"");
          _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
       }
       catch (...)
@@ -6199,8 +6217,7 @@ Fatal Windows C++ Runtime Assertion
       {
          _protected_console->WriteColor("@", Color::Green);
          _protected_console->WriteColor(_testClassName, Color::Green);
-         const std::string spacePipeSpaceNumberOfNamedTests = String::Concat(
-            " | Running ", _tests.size(), _tests.size() == 1 ? " test" : " tests");
+         const std::string spacePipeSpaceNumberOfNamedTests = String::ConcatValues(" | Running ", _tests.size(), _tests.size() == 1 ? " test" : " tests");
          _protected_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
@@ -7174,7 +7191,7 @@ To fix this mismatch either change FACTS(TestName) to AFACT(TestName) in the tes
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10, in the EVIDENCE section of this test class.
 )";
             console->WriteLine(testSyntaxMismatchErrorMessage);
-            const std::string exitCodeLine = String::Concat("[ZenUnit] ExitCode: ", exitCode);
+            const std::string exitCodeLine = String::ConcatValues("[ZenUnit] ExitCode: ", exitCode);
             const Color exitCodeLineColor = exitCode == 0 ? Color::Green : Color::Red;
             console->WriteLineColor(exitCodeLine, exitCodeLineColor);
             exitCaller->CallExit(exitCode);
