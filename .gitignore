@@ -29,6 +29,7 @@ covhtml/
 .ninja_log
 build.ninja
 callgrind.out.*
+callgrind_results.txt
 rules.ninja
 Makefile
 
