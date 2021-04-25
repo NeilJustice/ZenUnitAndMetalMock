@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    TESTS(ConsoleTests)
    AFACT(DefaultConstructor_SetsFunctionPointers_NewsConsoleColorer)
-   AFACT(Write_CallsWriteColorWithWhite)
+   AFACT(Write_WritesMessageToCout)
    FACTS(WriteColor_WritesMessageInSpecifiedColor)
    AFACT(WriteLine_CallsWriteLineWithWhite)
    FACTS(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
@@ -68,13 +68,9 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(console._consoleColorer);
    }
 
-   TEST(Write_CallsWriteColorWithWhite)
+   TEST(Write_WritesMessageToCout)
    {
-      _consoleSelfMocked.WriteColorMock.Expect();
-      //
       _consoleSelfMocked.Write(_message);
-      //
-      METALMOCK(_consoleSelfMocked.WriteColorMock.CalledOnceWith(_message, Color::White));
    }
 
    TEST2X2(WriteColor_WritesMessageInSpecifiedColor,

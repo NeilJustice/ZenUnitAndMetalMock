@@ -489,12 +489,13 @@ namespace ZenUnit
 
    TEST3X3(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow,
       size_t testCaseNumber, size_t expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-      size_t(1), size_t(1), size_t(0),
-      size_t(2), size_t(2), size_t(1),
-      size_t(3), size_t(3), size_t(2))
+      1ULL, 1ULL, 0ULL,
+      2ULL, 2ULL, 1ULL,
+      3ULL, 3ULL, 2ULL)
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteMock.Expect();
+      _consoleMock->WriteSizeTMock.Expect();
       _consoleMock->WriteStringsCommaSeparatedMock.Expect();
       const vector<string> splitTestCaseArgs = { "Arg0", "Argument1" };
       //
@@ -505,14 +506,13 @@ namespace ZenUnit
          { " [", Color::Green },
          { "]", Color::Green }
       }));
-      METALMOCK(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(
-         splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N));
+      METALMOCK(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N));
       METALMOCK(_consoleMock->WriteMock.CalledAsFollows(
       {
-         { to_string(expectedTestCaseNumber) },
          { " ("s },
          { ") -> "s }
       }));
+      METALMOCK(_consoleMock->WriteSizeTMock.CalledOnceWith(expectedTestCaseNumber));
    }
 
    TEST(WriteLineOKIfSuccessOrSuccessButPastDeadline_CallsTestResultWriteLineOKIfSuccessOrSuccessButPastDeadline)

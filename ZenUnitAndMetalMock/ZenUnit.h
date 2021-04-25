@@ -1174,7 +1174,12 @@ namespace ZenUnit
 
       virtual void Write(std::string_view message) const
       {
-         WriteColor(message, Color::White);
+         std::cout << message;
+      }
+
+      virtual void WriteSizeT(size_t value) const
+      {
+         std::cout << value;
       }
 
       virtual void WriteColor(std::string_view message, Color color) const
@@ -6654,16 +6659,14 @@ Fatal Windows C++ Runtime Assertion
       static bool TestNameFilterMatchesTestCase(const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
       {
          ZENUNIT_ASSERT(testCaseNumber >= 1);
-         const bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(
-            fullTestName.testClassName, fullTestName.testName, testCaseNumber);
+         const bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(fullTestName.testClassName, fullTestName.testName, testCaseNumber);
          return testNameFilterMatchesTestCase;
       }
 
       virtual void PrintTestCaseNumberThenArgsThenArrow(size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
          _console->WriteColor(" [", Color::Green);
-         const std::string testCaseNumberString = std::to_string(testCaseNumber);
-         _console->Write(testCaseNumberString);
+         _console->WriteSizeT(testCaseNumber);
          _console->WriteColor("]", Color::Green);
          _console->Write(" (");
          const size_t testCaseArgsPrintingStartIndex = (testCaseNumber - 1) * N;

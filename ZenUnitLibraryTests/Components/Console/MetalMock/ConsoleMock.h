@@ -4,6 +4,7 @@ class ConsoleMock : public Metal::Mock<Console>
 {
 public:
    METALMOCK_VOID1_CONST(Write, std::string_view)
+   METALMOCK_VOID1_CONST(WriteSizeT, size_t)
    METALMOCK_VOID2_CONST(WriteColor, std::string_view, Color)
    METALMOCK_VOID1_CONST(WriteLine, std::string_view)
    METALMOCK_VOID2_CONST(WriteLineColor, std::string_view, Color)
