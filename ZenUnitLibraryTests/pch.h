@@ -21,6 +21,7 @@ using namespace std;
 #include "ZenUnitTestUtils/OnlyInsertionOperatorPrintableUserType.h"
 #include "ZenUnitTestUtils/OnlyZenUnitPrintableUserType.h"
 #include "ZenUnitTestUtils/TestUtil.h"
+#include "ZenUnitTestUtils/TestingNonDefaults.h"
 #include "ZenUnitTestUtils/TestingTestClass.h"
 #include "ZenUnitTestUtils/UserType.h"
 

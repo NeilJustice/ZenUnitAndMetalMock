@@ -4624,6 +4624,7 @@ namespace ZenUnit
       friend class Equalizer<TestClassResult>;
       friend class TestClassResultEqualizerAndRandomTests;
       friend TestClassResult TestableRandomTestClassResult(const RandomGenerator* randomGenerator);
+      friend TestClassResult TestingNonDefaultTestClassResult();
    private:
       std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
       std::vector<TestResult> _testResults;
@@ -4711,13 +4712,6 @@ namespace ZenUnit
       virtual void PrintTestFailures(const ThreeArgForEacherType* threeArgForEacher, const Console* console, TestFailureNumberer* testFailureNumberer) const
       {
          threeArgForEacher->ThreeArgForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
-      }
-
-      static TestClassResult TestingNonDefault()
-      {
-         TestClassResult testClassResult;
-         testClassResult._testResults.resize(1);
-         return testClassResult;
       }
    private:
       static void PrintTestResultIfFailure(const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)

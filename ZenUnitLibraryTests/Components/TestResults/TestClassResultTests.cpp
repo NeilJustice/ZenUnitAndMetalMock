@@ -51,7 +51,7 @@ namespace ZenUnit
 
    TEST(CopyConstructor_CopiesForEacherAndTestResults)
    {
-      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      TestClassResult testClassResult = TestingNonDefaultTestClassResult();
       //
       TestClassResult copyOfTestClassResult(testClassResult);
       //
@@ -60,7 +60,7 @@ namespace ZenUnit
 
    TEST(AssignmentOperator_CopiesForEacherAndTestResults)
    {
-      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      TestClassResult testClassResult = TestingNonDefaultTestClassResult();
       TestClassResult copy;
       //
       copy = testClassResult;
@@ -72,33 +72,33 @@ namespace ZenUnit
    #ifdef _WIN32
    TEST(AssignmentOperator_SelfAssignment_NothingHappens)
    {
-      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      TestClassResult testClassResult = TestingNonDefaultTestClassResult();
       //
       testClassResult = testClassResult;
       //
-      ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
+      ARE_EQUAL(TestingNonDefaultTestClassResult(), testClassResult);
    }
    #endif
 
    TEST(MoveConstructor_MovesForEacherAndTestResults)
    {
-      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      TestClassResult testClassResult = TestingNonDefaultTestClassResult();
       //
       const TestClassResult moved(std::move(testClassResult));
       //
       ARE_EQUAL(TestClassResult(), testClassResult);
-      ARE_EQUAL(TestClassResult::TestingNonDefault(), moved);
+      ARE_EQUAL(TestingNonDefaultTestClassResult(), moved);
    }
 
    TEST(MoveAssignmentOperator_MovesForEacherAndTestResults)
    {
-      TestClassResult testClassResult = TestClassResult::TestingNonDefault();
+      TestClassResult testClassResult = TestingNonDefaultTestClassResult();
       TestClassResult movedTestClassResult;
       //
       movedTestClassResult = std::move(testClassResult);
       //
       ARE_EQUAL(TestClassResult(), testClassResult);
-      ARE_EQUAL(TestClassResult::TestingNonDefault(), movedTestClassResult);
+      ARE_EQUAL(TestingNonDefaultTestClassResult(), movedTestClassResult);
    }
 
    TEST(AddTestResults_AppendTestResultsToEndOfTestResultsVector)

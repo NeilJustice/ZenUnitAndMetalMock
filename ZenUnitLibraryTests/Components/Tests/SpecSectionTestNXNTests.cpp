@@ -2,7 +2,6 @@
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
-#include "ZenUnitTestUtils/TestingNonDefaultTestResult.h"
 
 namespace ZenUnit
 {

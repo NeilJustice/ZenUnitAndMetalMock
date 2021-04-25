@@ -6,7 +6,6 @@
 #include "ZenUnitTestUtils/EqualizersAndRandoms/FilePathLineNumberEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
-#include "ZenUnitTestUtils/TestingNonDefaultTestResult.h"
 
 namespace ZenUnit
 {

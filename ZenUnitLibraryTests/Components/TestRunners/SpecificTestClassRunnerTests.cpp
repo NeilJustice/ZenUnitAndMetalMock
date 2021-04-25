@@ -198,7 +198,7 @@ namespace ZenUnit
       }
       _voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
       _protected_consoleMock->WriteNewLineMock.Expect();
-      _specificTestClassRunner->_testClassResult = TestClassResult::TestingNonDefault();
+      _specificTestClassRunner->_testClassResult = TestingNonDefaultTestClassResult();
       //
       const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
       //
@@ -216,7 +216,7 @@ namespace ZenUnit
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
          &_specificTestClassRunner->_testClassResult));
       METALMOCK(_protected_consoleMock->WriteNewLineMock.CalledOnce());
-      ARE_EQUAL(TestClassResult::TestingNonDefault(), testClassResult);
+      ARE_EQUAL(TestingNonDefaultTestClassResult(), testClassResult);
       ARE_EQUAL(TestClassResult(), _specificTestClassRunner->_testClassResult);
    }
 
