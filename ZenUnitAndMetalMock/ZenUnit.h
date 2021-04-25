@@ -4655,9 +4655,13 @@ namespace ZenUnit
 
       virtual ~TestClassResult() = default;
 
-      virtual void AddTestResults(const std::vector<TestResult>& testResults)
+      virtual void AddTestResults(std::vector<TestResult> testResults)
       {
-         _testResults.insert(_testResults.end(), testResults.cbegin(), testResults.cend());
+         _testResults.reserve(_testResults.capacity() + testResults.size());
+         for (TestResult& testResult : testResults)
+         {
+            _testResults.emplace_back(std::move(testResult));
+         }
       }
 
       virtual unsigned SumOfTestResultMicroseconds() const
@@ -6203,13 +6207,11 @@ Fatal Windows C++ Runtime Assertion
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          if (zenUnitArgs.randomTestOrdering)
          {
-            _twoArgMemberForEacher->RandomTwoArgMemberForEach(
-               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, globalZenUnitMode.randomSeed);
+            _twoArgMemberForEacher->RandomTwoArgMemberForEach(&_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, globalZenUnitMode.randomSeed);
          }
          else
          {
-            _twoArgMemberForEacher->TwoArgMemberForEach(
-               &_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
+            _twoArgMemberForEacher->TwoArgMemberForEach(&_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
          }
       }
 
@@ -6221,22 +6223,21 @@ Fatal Windows C++ Runtime Assertion
          _protected_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
-      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
-         Test* newableDeletableTest, TestClassResult* outTestClassResult) const
+      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* newableDeletableTest, TestClassResult* outTestClassResult) const
       {
          _protected_console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
          _protected_console->Write(TestClassIsNewableAndDeletableString);
-         const std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
+         std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
          ZENUNIT_ASSERT(newableDeletableTestResults.size() == 1);
-         outTestClassResult->AddTestResults(newableDeletableTestResults);
-         const TestResult newableDeletableTestResult = newableDeletableTestResults[0];
+         const TestResult& newableDeletableTestResult = newableDeletableTestResults[0];
          const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
+         const unsigned elapsedMicroseconds = newableDeletableTestResult.elapsedMicroseconds;
+         outTestClassResult->AddTestResults(std::move(newableDeletableTestResults));
          if (testClassIsNewableAndDeletable)
          {
             _protected_console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString =
-               outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(newableDeletableTestResult.elapsedMicroseconds);
+            const std::string twoDecimalPlaceMillisecondsString = outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(elapsedMicroseconds);
             _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return testClassIsNewableAndDeletable;
@@ -6253,9 +6254,9 @@ Fatal Windows C++ Runtime Assertion
             _protected_console->WriteColor("|", Color::Green);
             _protected_console->Write(testName);
             test->WritePostTestNameMessage(_protected_console.get());
-            const std::vector<TestResult> testResults = test->RunTest();
+            std::vector<TestResult> testResults = test->RunTest();
             test->WritePostTestCompletionMessage(_protected_console.get(), testResults[0]);
-            outTestClassResult->AddTestResults(testResults);
+            outTestClassResult->AddTestResults(std::move(testResults));
          }
       }
 

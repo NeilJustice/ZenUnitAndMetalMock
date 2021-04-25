@@ -306,8 +306,7 @@ namespace ZenUnit
       {
          _protected_consoleMock->WriteColorMock.Expect();
          _protected_consoleMock->WriteLineMock.Expect();
-         testResultThreeDecimalMillisecondsString = testClassResultMock.
-            MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+         testResultThreeDecimalMillisecondsString = testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       }
       TestMock testMock;
 
@@ -317,8 +316,8 @@ namespace ZenUnit
       const vector<TestResult> testResults{ testResult };
       testMock.RunTestMock.Return(testResults);
       //
-      const bool testClassTypeIsNewableAndDeletable = _specificTestClassRunner->
-         ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
+      const bool testClassTypeIsNewableAndDeletable =
+         _specificTestClassRunner->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
       //
       if (expectWriteLineOK)
       {
