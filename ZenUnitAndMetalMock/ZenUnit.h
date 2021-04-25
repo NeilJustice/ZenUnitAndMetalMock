@@ -6620,8 +6620,8 @@ Fatal Windows C++ Runtime Assertion
          TestResult testResult = MockableCallBaseRunTest();
          testResult.testCaseNumber = testCaseNumber;
          testResult.totalTestCases = NumberOfTestCases();
-         _testResults.push_back(testResult);
          WriteLineOKIfSuccessOrSuccessButPastDeadline(testResult);
+         _testResults.emplace_back(std::move(testResult));
       }
 
       virtual TestResult MockableCallBaseRunTest()
