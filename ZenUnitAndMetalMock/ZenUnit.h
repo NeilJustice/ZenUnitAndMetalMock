@@ -6592,7 +6592,7 @@ Fatal Windows C++ Runtime Assertion
          Exit1IfInvalidTestCaseNumberSpecified();
          // Reset _currentTestCaseNumber to 1 to ready this TestNXN for another test run in case --test-runs=N is specified
          _currentTestCaseNumber = 1;
-         return _testResults;
+         return std::move(_testResults);
       }
 
       void Cleanup() override
