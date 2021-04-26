@@ -4,12 +4,9 @@
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestCasesAccumulatorMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestClassResultMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidZeroArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidTwoArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberForEacherMock.h"
@@ -46,19 +43,23 @@ namespace ZenUnit
 
    unique_ptr<SpecificTestClassRunner<TestingTestClass>> _specificTestClassRunner;
 
-   // Function Pointers
-   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
-
-   // Function Callers
+   // Base Class Function Callers
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<TestNameFilter>, TestClassRunner,
       bool(TestClassRunner::*)(const TestNameFilter&, const char*) const, const char*>;
    TwoArgMemberAnyerMockType* _protected_twoArgMemberAnyerMock = nullptr;
 
+   // Base Class Constant Components
    ConsoleMock* _protected_consoleMock = nullptr;
 
-   NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<
-      TestingTestClass>, Test*, TestClassResult*>* _nonVoidTwoArgFunctionCallerMock = nullptr;
+   // Function Pointers
+   METALMOCK_NONVOID1_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
+   METALMOCK_NONVOID0_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
+
+   // Function Callers
+   using _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMockType =
+      NonVoidOneArgMemberFunctionCallerMock<TestResult, SpecificTestClassRunner<TestingTestClass>, Test*>;
+   _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMockType* _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock = nullptr;
 
    using TwoArgTestAnyerMockType = TwoArgAnyerMock<
       const std::vector<std::unique_ptr<Test>>,
@@ -83,14 +84,16 @@ namespace ZenUnit
    STARTUP
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
-      // Protected Function Callers
+      // Base Class Function Callers
       _specificTestClassRunner->_protected_twoArgMemberAnyer.reset(_protected_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
-      // Protected Constant Components
+      // Base Class Constant Components
       _specificTestClassRunner->_protected_console.reset(_protected_consoleMock = new ConsoleMock);
       // Function Pointers
-      _specificTestClassRunner->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      _specificTestClassRunner->_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
+      _specificTestClassRunner->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
       // Function Callers
-      _specificTestClassRunner->_nonVoidTwoArgFunctionCaller.reset(_nonVoidTwoArgFunctionCallerMock = new NonVoidTwoArgMemberFunctionCallerMock<bool, SpecificTestClassRunner<TestingTestClass>, Test*, TestClassResult*>);
+      _specificTestClassRunner->_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests.reset(
+         _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock = new _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMockType);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>);
@@ -109,7 +112,9 @@ namespace ZenUnit
       // Function Pointers
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
       // Function Callers
-      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._nonVoidTwoArgFunctionCaller);
+      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString, specificTestClassRunner._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgTestAnyer);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgMemberForEacher);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidZeroArgMemberFunctionCaller);
@@ -194,13 +199,16 @@ namespace ZenUnit
    }
 
    TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult,
-      bool testClassTypeNewableAndDeletable, bool expectDoRunTestsCall,
-      false, false,
-      true, true)
+      TestOutcome testOutcome, bool expectDoRunTestsCall,
+      TestOutcome::Anomaly, false,
+      TestOutcome::Exception, false,
+      TestOutcome::Success, true)
    {
       _voidZeroArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
 
-      _nonVoidTwoArgFunctionCallerMock->CallConstMemberFunctionMock.Return(testClassTypeNewableAndDeletable);
+      TestResult testClassIsNewableAndDeletableTestResult;
+      testClassIsNewableAndDeletableTestResult.testOutcome = testOutcome;
+      _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock->CallConstMemberFunctionMock.Return(testClassIsNewableAndDeletableTestResult);
 
       const size_t numberOfTestResults = ZenUnit::RandomBetween<size_t>(1, 3);
       _testCasesAccumulatorMock->SumNumberOfTestCasesMock.Return(numberOfTestResults);
@@ -212,15 +220,17 @@ namespace ZenUnit
       _voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
       _protected_consoleMock->WriteNewLineMock.Expect();
       _specificTestClassRunner->_testClassResult = TestingNonDefaultTestClassResult();
+      TestClassResult expectedResultingTestClassResult = _specificTestClassRunner->_testClassResult;
+      expectedResultingTestClassResult.AddTestResult(testClassIsNewableAndDeletableTestResult);
       //
       const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
       //
       METALMOCK(_voidZeroArgMemberFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassNameAndNumberOfNamedTests));
 
-      METALMOCK(_nonVoidTwoArgFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
+      METALMOCK(_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
-         &_specificTestClassRunner->_newableDeletableTest, &_specificTestClassRunner->_testClassResult));
+         &_specificTestClassRunner->_newableDeletableTest));
 
       METALMOCK(_testCasesAccumulatorMock->SumNumberOfTestCasesMock.CalledOnceWith(&_specificTestClassRunner->_tests));
 
@@ -236,8 +246,8 @@ namespace ZenUnit
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
          &_specificTestClassRunner->_testClassResult));
       METALMOCK(_protected_consoleMock->WriteNewLineMock.CalledOnce());
-      ARE_EQUAL(TestingNonDefaultTestClassResult(), testClassResult);
-      ARE_EQUAL(TestClassResult(), _specificTestClassRunner->_testClassResult);
+      ARE_EQUAL(expectedResultingTestClassResult, testClassResult);
+      IS_DEFAULT_VALUE(_specificTestClassRunner->_testClassResult); // Assertion that _testClassResult was std::moved from
    }
 
    TEST2X2(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests,
@@ -247,7 +257,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.randomTestOrdering = randomTestOrdering;
-      GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
       if (expectRandomForEach)
       {
          _twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.Expect();
@@ -261,7 +271,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->DoRunTests();
       //
-      METALMOCK(GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       if (expectRandomForEach)
       {
          METALMOCK(_twoArgMemberForEacherMock->RandomTwoArgMemberForEachMock.CalledOnceWith(
@@ -310,34 +320,31 @@ namespace ZenUnit
       }
    }
 
-   TEST3X3(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDeletableTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable,
-      bool expectedReturnValue, TestOutcome newableDeletableTestOutcome, bool expectWriteLineOK,
-      false, TestOutcome::Anomaly, false,
-      false, TestOutcome::Exception, false,
-      true, TestOutcome::Success, true)
+   TEST2X2(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDeletableTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable,
+      TestOutcome newableDeletableTestOutcome, bool expectWriteLineOK,
+      TestOutcome::Anomaly, false,
+      TestOutcome::Exception, false,
+      TestOutcome::Success, true)
    {
       _protected_consoleMock->WriteColorMock.Expect();
       _protected_consoleMock->WriteMock.Expect();
 
-      TestClassResultMock testClassResultMock;
-      testClassResultMock.AddTestResultsMock.Expect();
       string testResultThreeDecimalMillisecondsString;
       if (expectWriteLineOK)
       {
          _protected_consoleMock->WriteColorMock.Expect();
          _protected_consoleMock->WriteLineMock.Expect();
-         testResultThreeDecimalMillisecondsString = testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+         testResultThreeDecimalMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       }
       TestMock testMock;
 
-      TestResult testResult;
-      testResult.testOutcome = newableDeletableTestOutcome;
-      testResult.elapsedMicroseconds = ZenUnit::Random<unsigned>();
-      const vector<TestResult> testResults{ testResult };
-      testMock.RunTestMock.Return(testResults);
+      TestResult newableAndDeletableTestResult;
+      newableAndDeletableTestResult.testOutcome = newableDeletableTestOutcome;
+      newableAndDeletableTestResult.elapsedMicroseconds = ZenUnit::Random<unsigned>();
+      const vector<TestResult> newableAndDeletableTestResults{ newableAndDeletableTestResult };
+      testMock.RunTestMock.Return(newableAndDeletableTestResults);
       //
-      const bool testClassTypeIsNewableAndDeletable =
-         _specificTestClassRunner->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock, &testClassResultMock);
+      const TestResult returnedNewableAndDeletableTestResult = _specificTestClassRunner->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock);
       //
       if (expectWriteLineOK)
       {
@@ -346,7 +353,7 @@ namespace ZenUnit
             { "|", Color::Green },
             { "OK ", Color::Green }
          }));
-         METALMOCK(testClassResultMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(testResult.elapsedMicroseconds));
+         METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(newableAndDeletableTestResult.elapsedMicroseconds));
          METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }
       else
@@ -355,15 +362,14 @@ namespace ZenUnit
       }
       METALMOCK(_protected_consoleMock->WriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> "));
       METALMOCK(testMock.RunTestMock.CalledOnce());
-      METALMOCK(testClassResultMock.AddTestResultsMock.CalledOnceWith(testResults));
-      ARE_EQUAL(expectedReturnValue, testClassTypeIsNewableAndDeletable);
+      ARE_EQUAL(newableAndDeletableTestResult, returnedNewableAndDeletableTestResult);
    }
 
    TEST(RunTest_TestNameFiltersAreNonEmpty_NoneOfTheTestNameFiltersMatchTheTestName_DoesNotRunTest)
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.testNameFilters.resize(ZenUnit::RandomBetween<size_t>(1, 2));
-      GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       TestMock* const testMock = new TestMock;
       const string testName = Random<string>();
@@ -376,7 +382,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
-      METALMOCK(GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       METALMOCK(testMock->NameMock.CalledOnce());
       METALMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
          zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
@@ -390,7 +396,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.testNameFilters.resize(testNameFiltersSize);
-      GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _protected_consoleMock->WriteColorMock.Expect();
       _protected_consoleMock->WriteMock.Expect();
@@ -414,7 +420,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
-      METALMOCK(GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       METALMOCK(testMock->NameMock.CalledOnce());
       if (expectAnyerCall)
       {

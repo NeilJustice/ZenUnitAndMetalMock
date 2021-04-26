@@ -2299,8 +2299,7 @@ namespace ZenUnit
       std::function<int(std::string_view)> _call_String_ToInt;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
       // Function Callers
-      std::unique_ptr<const NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>
-         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser;
+      std::unique_ptr<const NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>> _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
@@ -2311,8 +2310,7 @@ namespace ZenUnit
          : _call_String_ToInt(String::ToInt)
          , _call_String_ToUnsigned(String::ToUnsigned)
          // Function Callers
-         , _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(
-            std::make_unique<NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>())
+         , _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(std::make_unique<NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
@@ -4662,9 +4660,9 @@ namespace ZenUnit
 
       virtual ~TestClassResult() = default;
 
-      virtual void ReserveVectorCapacityForNumberOfTestResults(size_t numberOfTestResults)
+      virtual void AddTestResult(TestResult testResult)
       {
-         _testResults.reserve(numberOfTestResults);
+         _testResults.emplace_back(std::move(testResult));
       }
 
       virtual void AddTestResults(std::vector<TestResult> testResults)
@@ -4675,17 +4673,19 @@ namespace ZenUnit
          }
       }
 
-      virtual unsigned SumOfTestResultMicroseconds() const
-      {
-         const unsigned sumOfTestResultMicroseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0U,
-            [](unsigned runningSum, const TestResult& testResult) { return runningSum + testResult.elapsedMicroseconds; });
-         return sumOfTestResultMicroseconds;
-      }
-
       virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
       {
          std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
          return twoDecimalPlaceMillisecondsString;
+      }
+
+      virtual size_t NumberOfFailedTestCases() const
+      {
+         const ptrdiff_t numberOfFailedTestCases = std::count_if(_testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
+         {
+            return testResult.testOutcome != TestOutcome::Success;
+         });
+         return static_cast<size_t>(numberOfFailedTestCases);
       }
 
       virtual void PrintTestClassResultLine(const Console* console) const
@@ -4705,18 +4705,21 @@ namespace ZenUnit
          }
       }
 
-      virtual size_t NumberOfFailedTestCases() const
-      {
-         const ptrdiff_t numberOfFailedTestCases = std::count_if(_testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
-         {
-            return testResult.testOutcome != TestOutcome::Success;
-         });
-         return static_cast<size_t>(numberOfFailedTestCases);
-      }
-
       virtual void PrintTestFailures(const ThreeArgForEacherType* threeArgForEacher, const Console* console, TestFailureNumberer* testFailureNumberer) const
       {
          threeArgForEacher->ThreeArgForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
+      }
+
+      virtual void ReserveVectorCapacityForNumberOfTestResults(size_t numberOfTestResults)
+      {
+         _testResults.reserve(numberOfTestResults);
+      }
+
+      virtual unsigned SumOfTestResultMicroseconds() const
+      {
+         const unsigned sumOfTestResultMicroseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0U,
+            [](unsigned runningSum, const TestResult& testResult) { return runningSum + testResult.elapsedMicroseconds; });
+         return sumOfTestResultMicroseconds;
       }
    private:
       static void PrintTestResultIfFailure(const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)
@@ -6123,16 +6126,17 @@ Fatal Windows C++ Runtime Assertion
       friend class SpecificTestClassRunnerTests;
    private:
       // Function Pointers
+      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
 
       // Function Callers
-      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<
-         bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>> _nonVoidTwoArgFunctionCaller;
+      using _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType =
+         NonVoidOneArgMemberFunctionCaller<TestResult, SpecificTestClassRunner<TestClassType>, Test*>;
+      std::unique_ptr<const _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>
+         _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests;
 
       using TwoArgTestAnyerType = TwoArgAnyer<
-         const std::vector<std::unique_ptr<Test>>,
-         bool(*)(const std::unique_ptr<Test>&,
-            const TestNameFilter&), const TestNameFilter&>;
+         const std::vector<std::unique_ptr<Test>>, bool(*)(const std::unique_ptr<Test>&, const TestNameFilter&), const TestNameFilter&>;
       std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
 
       using TwoArgMemberForEacherType = TwoArgMemberForEacher<
@@ -6154,16 +6158,15 @@ Fatal Windows C++ Runtime Assertion
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
          // Function Pointers
-         : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
+         : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
+         , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          // Function Callers
-         , _nonVoidTwoArgFunctionCaller(std::make_unique<
-            NonVoidTwoArgMemberFunctionCaller<bool, SpecificTestClassRunner<TestClassType>, Test*, TestClassResult*>>())
+         , _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
+            std::make_unique<_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>())
          , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
-         , _voidZeroArgMemberFunctionCaller(std::make_unique<
-            VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>>())
-         , _voidOneArgMemberFunctionCaller(std::make_unique<
-            VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
+         , _voidZeroArgMemberFunctionCaller(std::make_unique<VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>>())
+         , _voidOneArgMemberFunctionCaller(std::make_unique<VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
          // Constant Components
          , _testCasesAccumulator(std::make_unique<TestCasesAccumulator>())
          // Mutable Fields
@@ -6211,14 +6214,14 @@ Fatal Windows C++ Runtime Assertion
       {
          _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
 
-         const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->CallConstMemberFunction(
-            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest, &_testClassResult);
+         TestResult newableAndDeletableTestResult = _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests->CallConstMemberFunction(
+            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest);
+         constexpr size_t LengthOfNewableAndDeletableTestResult = 1;
+         const size_t numberOfTestResultsForThisTestClass = LengthOfNewableAndDeletableTestResult + _testCasesAccumulator->SumNumberOfTestCases(&_tests);
+         _testClassResult.ReserveVectorCapacityForNumberOfTestResults(numberOfTestResultsForThisTestClass);
+         _testClassResult.AddTestResult(std::move(newableAndDeletableTestResult));
 
-         constexpr size_t NewableAndDeletableTestResult = 1;
-         const size_t numberOfTestResults = NewableAndDeletableTestResult + _testCasesAccumulator->SumNumberOfTestCases(&_tests);
-         _testClassResult.ReserveVectorCapacityForNumberOfTestResults(numberOfTestResults);
-
-         if (testClassIsNewableAndDeletable)
+         if (newableAndDeletableTestResult.testOutcome == TestOutcome::Success)
          {
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
@@ -6248,24 +6251,22 @@ Fatal Windows C++ Runtime Assertion
          _protected_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
-      bool ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* newableDeletableTest, TestClassResult* outTestClassResult) const
+      TestResult ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* testClassIsNewableAndDeletableTest) const
       {
          _protected_console->WriteColor("|", Color::Green);
-         static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
-         _protected_console->Write(TestClassIsNewableAndDeletableString);
-         std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
-         ZENUNIT_ASSERT(newableDeletableTestResults.size() == 1);
-         const TestResult& newableDeletableTestResult = newableDeletableTestResults[0];
-         const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
-         const unsigned elapsedMicroseconds = newableDeletableTestResult.elapsedMicroseconds;
-         outTestClassResult->AddTestResults(std::move(newableDeletableTestResults));
-         if (testClassIsNewableAndDeletable)
+         _protected_console->Write("TestClassIsNewableAndDeletable -> ");
+         // testClassIsNewableAndDeletableTest->RunTest() registers NXN tests by operator newing the test class for the first time
+         std::vector<TestResult> newableAndDeletableTestResults = testClassIsNewableAndDeletableTest->RunTest();
+         ZENUNIT_ASSERT(newableAndDeletableTestResults.size() == 1);
+         TestResult& newableAndDeletableTestResult = newableAndDeletableTestResults[0];
+         if (newableAndDeletableTestResult.testOutcome == TestOutcome::Success)
          {
             _protected_console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString = outTestClassResult->MicrosecondsToTwoDecimalPlaceMillisecondsString(elapsedMicroseconds);
+            const std::string twoDecimalPlaceMillisecondsString =
+               _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(newableAndDeletableTestResult.elapsedMicroseconds);
             _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
-         return testClassIsNewableAndDeletable;
+         return std::move(newableAndDeletableTestResult);
       }
 
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const

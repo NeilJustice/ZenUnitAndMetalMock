@@ -15,7 +15,8 @@ namespace ZenUnit
    #endif
    AFACT(MoveConstructor_MovesForEacherAndTestResults)
    AFACT(MoveAssignmentOperator_MovesForEacherAndTestResults)
-   AFACT(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
+   AFACT(AddTestResult_EmplacesBackMovedTestResult)
+   AFACT(AddTestResults_EmplacesBackMovedTestResults)
    AFACT(NumberOfFailedTestCases_ReturnsNumberOfNonSuccessTestsInTestResultsVector)
    AFACT(PrintTestFailures_PrintsJustTestFailedToConsole)
    AFACT(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
@@ -102,7 +103,29 @@ namespace ZenUnit
       ARE_EQUAL(TestingNonDefaultTestClassResult(), movedTestClassResult);
    }
 
-   TEST(AddTestResults_AppendTestResultsToEndOfTestResultsVector)
+   TEST(AddTestResult_EmplacesBackMovedTestResult)
+   {
+      TestResult testResult1 = ZenUnit::Random<TestResult>();
+      const TestResult copyOfTestResult1 = testResult1;
+      //
+      _testClassResult.AddTestResult(std::move(testResult1));
+      //
+      TestClassResult expectedTestClassResult1;
+      expectedTestClassResult1._testResults.emplace_back(copyOfTestResult1);
+      ARE_EQUAL(expectedTestClassResult1, _testClassResult);
+
+      TestResult testResult2 = ZenUnit::Random<TestResult>();
+      const TestResult copyOfTestResult2 = testResult2;
+      //
+      _testClassResult.AddTestResult(std::move(testResult2));
+      //
+      TestClassResult expectedTestClassResult2;
+      expectedTestClassResult2._testResults.emplace_back(copyOfTestResult1);
+      expectedTestClassResult2._testResults.emplace_back(copyOfTestResult2);
+      ARE_EQUAL(expectedTestClassResult2, _testClassResult);
+   }
+
+   TEST(AddTestResults_EmplacesBackMovedTestResults)
    {
       _testClassResult.AddTestResults({});
       //

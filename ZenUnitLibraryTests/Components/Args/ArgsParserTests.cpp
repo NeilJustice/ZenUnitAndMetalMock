@@ -35,8 +35,7 @@ namespace ZenUnit
    METALMOCK_NONVOID1_STATIC(int, ZenUnit::String, ToInt, std::string_view)
    METALMOCK_NONVOID1_STATIC(unsigned, ZenUnit::String, ToUnsigned, std::string_view)
    // Function Callers
-   NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>*
-      _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = nullptr;
+   NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>* _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = nullptr;
    // Constant Components
    ConsoleMock* _consoleMock = nullptr;
    TestNameFilterStringParserMock* _testNameFilterStringParserMock = nullptr;
@@ -49,8 +48,7 @@ namespace ZenUnit
       _argsParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
       // Function Callers
       _argsParser._caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser.reset(
-         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock =
-            new NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>);
+         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = new NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>);
       // Constant Components
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
