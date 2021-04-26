@@ -4620,9 +4620,10 @@ namespace ZenUnit
 
    class TestClassResult
    {
-      friend class TestClassResultTests;
       friend class Equalizer<TestClassResult>;
+      friend class TestClassResultTests;
       friend class TestClassResultEqualizerAndRandomTests;
+      friend class SpecificTestClassRunnerTests;
       friend TestClassResult TestableRandomTestClassResult(const RandomGenerator* randomGenerator);
       friend TestClassResult TestingNonDefaultTestClassResult();
    private:
@@ -4661,9 +4662,13 @@ namespace ZenUnit
 
       virtual ~TestClassResult() = default;
 
+      virtual void ReserveVectorCapacityForNumberOfTestResults(size_t numberOfTestResults)
+      {
+         _testResults.reserve(numberOfTestResults);
+      }
+
       virtual void AddTestResults(std::vector<TestResult> testResults)
       {
-         _testResults.reserve(_testResults.capacity() + testResults.size());
          for (TestResult& testResult : testResults)
          {
             _testResults.emplace_back(std::move(testResult));
@@ -6094,6 +6099,24 @@ Fatal Windows C++ Runtime Assertion
       }
    };
 
+   class TestCasesAccumulator
+   {
+   public:
+      virtual ~TestCasesAccumulator() = default;
+
+      virtual size_t SumNumberOfTestCases(const std::vector<std::unique_ptr<Test>>* tests) const
+      {
+         const size_t numberOfTestResults = std::accumulate(
+            tests->cbegin(), tests->cend(), 0ULL, [](size_t runningSumOfTestResults, const std::unique_ptr<Test>& test)
+            {
+               const size_t numberOfTestCases = test->NumberOfTestCases();
+               const size_t newRunningSumOfTestResults = runningSumOfTestResults + numberOfTestCases;
+               return newRunningSumOfTestResults;
+            });
+         return numberOfTestResults;
+      }
+   };
+
    template<typename TestClassType>
    class SpecificTestClassRunner : public TestClassRunner
    {
@@ -6119,12 +6142,10 @@ Fatal Windows C++ Runtime Assertion
          TestClassResult*>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
-      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<
-         SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
-
-      std::unique_ptr<const VoidOneArgMemberFunctionCaller<
-         SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgMemberFunctionCaller;
-
+      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
+      std::unique_ptr<const VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgMemberFunctionCaller;
+      // Constant Components
+      std::unique_ptr<const TestCasesAccumulator> _testCasesAccumulator;
       // Mutable Fields
       NewableDeletableTest<TestClassType> _newableDeletableTest;
       const char* _testClassName;
@@ -6143,6 +6164,8 @@ Fatal Windows C++ Runtime Assertion
             VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>>())
          , _voidOneArgMemberFunctionCaller(std::make_unique<
             VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
+         // Constant Components
+         , _testCasesAccumulator(std::make_unique<TestCasesAccumulator>())
          // Mutable Fields
          , _newableDeletableTest(testClassName)
          , _testClassName(testClassName)
@@ -6186,17 +6209,20 @@ Fatal Windows C++ Runtime Assertion
 
       TestClassResult RunTests() override
       {
-         _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(
-            this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
+         _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
+
          const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->CallConstMemberFunction(
-            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
-            &_newableDeletableTest, &_testClassResult);
+            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest, &_testClassResult);
+
+         constexpr size_t NewableAndDeletableTestResult = 1;
+         const size_t numberOfTestResults = NewableAndDeletableTestResult + _testCasesAccumulator->SumNumberOfTestCases(&_tests);
+         _testClassResult.ReserveVectorCapacityForNumberOfTestResults(numberOfTestResults);
+
          if (testClassIsNewableAndDeletable)
          {
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(
-            this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
+         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          _protected_console->WriteNewLine();
          return std::move(_testClassResult);
       }
@@ -7149,8 +7175,7 @@ Fatal Windows C++ Runtime Assertion
          if (!DerivedTestClass::ZenUnit_allNXNTestsHaveBeenRegistered)
          {
             Test* const newTestNXNPointer = operatorNewTestNXN();
-            std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>&
-               testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
+            std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
             const bool didEmplaceTestNXNPointer = testNXNPmfTokenToTestPointer.emplace(pmfToken, newTestNXNPointer).second;
             ZENUNIT_ASSERT(didEmplaceTestNXNPointer);
          }
@@ -7166,15 +7191,10 @@ Fatal Windows C++ Runtime Assertion
       }
 
       static const std::unique_ptr<ZenUnit::Test>* GetTestPointerForTestNXNPmfToken(
-         const PmfToken* pmfToken,
-         const Console* console,
-         const ZenUnitTestRunner* zenUnitTestRunner,
-         const ExitCaller* exitCaller)
+         const PmfToken* pmfToken, const Console* console, const ZenUnitTestRunner* zenUnitTestRunner, const ExitCaller* exitCaller)
       {
-         const std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>&
-            testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
-         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator
-            findIter = testNXNPmfTokenToTestPointer.find(pmfToken);
+         const std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter = testNXNPmfTokenToTestPointer.find(pmfToken);
          if (findIter == testNXNPmfTokenToTestPointer.end())
          {
             console->WriteLineColor("=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red);

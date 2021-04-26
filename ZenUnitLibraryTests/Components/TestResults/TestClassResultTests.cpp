@@ -21,6 +21,7 @@ namespace ZenUnit
    AFACT(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    FACTS(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed)
    AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
+   AFACT(ReserveVectorCapacityForNumberOfTestResults_ReservesTestResultsVector)
    AFACT(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
    AFACT(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
    EVIDENCE
@@ -223,6 +224,15 @@ namespace ZenUnit
       TestClassResult::PrintTestResultIfFailure(testResultMock, &console, &testFailureNumberer);
       //
       METALMOCK(testResultMock.PrintIfFailureMock.CalledOnceWith(&console, &testFailureNumberer));
+   }
+
+   TEST(ReserveVectorCapacityForNumberOfTestResults_ReservesTestResultsVector)
+   {
+      const size_t numberOfTestResults = ZenUnit::RandomBetween<size_t>(0, 3);
+      //
+      _testClassResult.ReserveVectorCapacityForNumberOfTestResults(numberOfTestResults);
+      //
+      ARE_EQUAL(numberOfTestResults, _testClassResult._testResults.capacity());
    }
 
    TEST(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
