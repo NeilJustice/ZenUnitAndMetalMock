@@ -53,7 +53,7 @@ def append_args(exePath: str, args: str) -> str:
 
 def run_parallel_multiprocessing(func: Any, iterable: Any) -> bool:
    cpuCount = multiprocessing.cpu_count()
-   pool = multiprocessing.Pool(cpuCount)
+   pool = multiprocessing.Pool(cpuCount) # pylint: disable=consider-using-with
    exitCodes = pool.map(func, iterable)
    pool.close()
    allCommandsSucceeded = not any(exitCodes)
@@ -61,7 +61,7 @@ def run_parallel_multiprocessing(func: Any, iterable: Any) -> bool:
 
 def run_parallel_processpoolexecutor(func: Any, iterable: Any) -> bool:
    cpuCount = multiprocessing.cpu_count()
-   processPoolExecutor = concurrent.futures.ProcessPoolExecutor(cpuCount)
+   processPoolExecutor = concurrent.futures.ProcessPoolExecutor(cpuCount) # pylint: disable=consider-using-with
    exitCodes = processPoolExecutor.map(func, iterable)
    processPoolExecutor.shutdown(wait=True)
    allCommandsSucceeded = not any(exitCodes)
