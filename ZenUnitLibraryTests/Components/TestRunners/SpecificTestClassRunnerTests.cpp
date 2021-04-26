@@ -313,7 +313,7 @@ namespace ZenUnit
       TestResult testResult;
       testResult.testOutcome = newableDeletableTestOutcome;
       testResult.elapsedMicroseconds = ZenUnit::Random<unsigned>();
-      const vector<TestResult> testResults{ testResult };
+      const SmallVector<TestResult> testResults = { testResult };
       testMock.RunTestMock.Return(testResults);
       //
       const bool testClassTypeIsNewableAndDeletable =
@@ -381,7 +381,7 @@ namespace ZenUnit
       testMock->WritePostTestNameMessageMock.Expect();
       TestResult test0;
       test0.fullTestName = FullTestName("", "Test0", 0);
-      const vector<TestResult> TestResults{ test0, TestResult() };
+      const SmallVector<TestResult> TestResults{ test0, TestResult() };
       testMock->RunTestMock.Return(TestResults);
       testMock->WritePostTestCompletionMessageMock.Expect();
       const unique_ptr<Test> test(testMock);

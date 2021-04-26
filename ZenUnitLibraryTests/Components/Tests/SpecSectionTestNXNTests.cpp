@@ -103,12 +103,12 @@ namespace ZenUnit
    TEST(RunTest_GetsTestFromAddress_RunsTest_ReturnsTestResults)
    {
       TestMock* const testMock = new TestMock;
-      const vector<TestResult> testTestResults = { TestingNonDefaultTestResult() };
+      const SmallVector<TestResult> testTestResults = { TestingNonDefaultTestResult() };
       testMock->RunTestMock.Return(testTestResults);
       const unique_ptr<Test> testMockUniquePtr(testMock);
       _specSectionTestNXNSelfMocked->PmfTokenToTestMock.Return(&testMockUniquePtr);
       //
-      const vector<TestResult> testResults = _specSectionTestNXNSelfMocked->RunTest();
+      const SmallVector<TestResult> testResults = _specSectionTestNXNSelfMocked->RunTest();
       //
       METALMOCK(_specSectionTestNXNSelfMocked->PmfTokenToTestMock.CalledOnce());
       METALMOCK(testMock->RunTestMock.CalledOnce());

@@ -153,7 +153,7 @@ namespace ZenUnit
 
    TEST(PrintTestFailures_PrintsJustTestFailedToConsole)
    {
-      using TypedefThreeArgForEacherMock = ThreeArgForEacherMock<vector<TestResult>,
+      using TypedefThreeArgForEacherMock = ThreeArgForEacherMock<SmallVector<TestResult>,
          void(*)(const TestResult&, const Console*, TestFailureNumberer*),
          const Console*, TestFailureNumberer*>;
       const TypedefThreeArgForEacherMock forEacherThreeArgsMock;

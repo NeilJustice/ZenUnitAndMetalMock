@@ -24,7 +24,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedNumberOfTestCases, testNXN.NumberOfTestCases());
    }
 
-   void AssertTwoExpectedTestResults(const vector<TestResult>& testResults, unsigned char expectedArity)
+   void AssertTwoExpectedTestResults(const SmallVector<TestResult>& testResults, unsigned char expectedArity)
    {
       ARE_EQUAL(2, testResults.size());
       ARE_EQUAL(FullTestName(TestClassName, TestName, expectedArity), testResults[0].fullTestName);
@@ -164,7 +164,7 @@ namespace ZenUnit
          "10, 20", 10, 20);
       AssertTestNXNState(test1X1_2TestCases, "TESTS(Tests)\nTEST1X1(Test)", 2);
 
-      const vector<TestResult> testResults = test1X1_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test1X1_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 1);
       const tuple<size_t, int> expectedFirstCall(1ULL, 10);
       const tuple<size_t, int> expectedSecondCall(2ULL, 20);
@@ -203,7 +203,7 @@ namespace ZenUnit
             30, string());
       AssertTestNXNState(test2X2_2TestCases, "TESTS(Tests)\nTEST2X2(Test)", 2);
 
-      const vector<TestResult> testResults = test2X2_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test2X2_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 2);
       const tuple<size_t, int, string> expectedFirstCall(1ULL, 10, string());
       const tuple<size_t, int, string> expectedSecondCall(2ULL, 30, string());
@@ -242,7 +242,7 @@ namespace ZenUnit
             4, 5, string());
       AssertTestNXNState(test3X3_2TestCases, "TESTS(Tests)\nTEST3X3(Test)", 2);
 
-      const vector<TestResult> testResults = test3X3_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test3X3_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 3);
       const tuple<size_t, int, int, string> expectedFirstCall(1ULL, 1, 2, string());
       const tuple<size_t, int, int, string> expectedSecondCall(2ULL, 4, 5, string());
@@ -281,7 +281,7 @@ namespace ZenUnit
             5, 6, 7, string());
       AssertTestNXNState(test4X4_2TestCases, "TESTS(Tests)\nTEST4X4(Test)", 2);
 
-      const vector<TestResult> testResults = test4X4_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test4X4_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 4);
       const tuple<size_t, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, string());
       const tuple<size_t, int, int, int, string> expectedSecondCall(2ULL, 5, 6, 7, string());
@@ -320,7 +320,7 @@ namespace ZenUnit
             6, 7, 8, 9, string());
       AssertTestNXNState(test5X5_2TestCases, "TESTS(Tests)\nTEST5X5(Test)", 2);
 
-      const vector<TestResult> testResults = test5X5_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test5X5_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 5);
       const tuple<size_t, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, string());
       const tuple<size_t, int, int, int, int, string> expectedSecondCall(2ULL, 6, 7, 8, 9, string());
@@ -359,7 +359,7 @@ namespace ZenUnit
             7, 8, 9, 10, 11, string());
       AssertTestNXNState(test6X6_2TestCases, "TESTS(Tests)\nTEST6X6(Test)", 2);
 
-      const vector<TestResult> testResults = test6X6_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test6X6_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 6);
       const tuple<size_t, int, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, 5, string());
       const tuple<size_t, int, int, int, int, int, string> expectedSecondCall(2ULL, 7, 8, 9, 10, 11, string());
@@ -398,7 +398,7 @@ namespace ZenUnit
             8, 9, 10, 11, 12, 13, string());
       AssertTestNXNState(test7X7_2TestCases, "TESTS(Tests)\nTEST7X7(Test)", 2);
 
-      const vector<TestResult> testResults = test7X7_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test7X7_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 7);
       const tuple<size_t, int, int, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, 5, 6, string());
       const tuple<size_t, int, int, int, int, int, int, string> expectedSecondCall(2ULL, 8, 9, 10, 11, 12, 13, string());
@@ -437,7 +437,7 @@ namespace ZenUnit
             9, 10, 11, 12, 13, 14, 15, string());
       AssertTestNXNState(test8X8_2TestCases, "TESTS(Tests)\nTEST8X8(Test)", 2);
 
-      const vector<TestResult> testResults = test8X8_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test8X8_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 8);
       const tuple<size_t, int, int, int, int, int, int, int, string> expectedFirstCall(1ULL, 1, 2, 3, 4, 5, 6, 7, string());
       const tuple<size_t, int, int, int, int, int, int, int, string> expectedSecondCall(2ULL, 9, 10, 11, 12, 13, 14, 15, string());
@@ -476,7 +476,7 @@ namespace ZenUnit
             10, 11, 12, 13, 14, 15, 16, 17, string());
       AssertTestNXNState(test9X9_2TestCases, "TESTS(Tests)\nTEST9X9(Test)", 2);
 
-      const vector<TestResult> testResults = test9X9_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test9X9_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 9);
       const tuple<size_t, int, int, int, int, int, int, int, int, string> expectedFirstCall(
          1ULL, 1, 2, 3, 4, 5, 6, 7, 8, string());
@@ -517,7 +517,7 @@ namespace ZenUnit
             11, 12, 13, 14, 15, 16, 17, 18, 19, string());
       AssertTestNXNState(test10X10_2TestCases, "TESTS(Tests)\nTEST10X10(Test)", 2);
 
-      const vector<TestResult> testResults = test10X10_2TestCases.RunTest();
+      const SmallVector<TestResult> testResults = test10X10_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 10);
       const tuple<size_t, int, int, int, int, int, int, int, int, int, string> expectedFirstCall(
          1ULL, 1, 2, 3, 4, 5, 6, 7, 8, 9, string());

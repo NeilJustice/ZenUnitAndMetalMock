@@ -11,6 +11,7 @@ source_group("" FILES
    pch.cpp
    EveryZenUnitAssertion.cpp
    FizzBuzzTests.cpp
+   PredicateCounterTests.cpp
    SetTests.cpp
    STARTUPAndCLEANUPTests.cpp
    ZenUnitExamplesTestsMain.cpp)

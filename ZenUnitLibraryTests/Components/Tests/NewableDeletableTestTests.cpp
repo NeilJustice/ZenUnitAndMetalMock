@@ -64,14 +64,14 @@ namespace ZenUnit
       constructorFailTestResult.elapsedMicroseconds = elapsedMicroseconds;
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
-      const vector<TestResult> testResults = _newableDeletableTest->RunTest();
+      const SmallVector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
       METALMOCK(_stopwatchMock->StartMock.CalledOnce());
       METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
       METALMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->_protected_fullTestName, failedConstructorTestPhaseResult));
-      const vector<TestResult> expectedTestResults{ constructorFailTestResult };
+      const SmallVector<TestResult> expectedTestResults{ constructorFailTestResult };
       METALMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }
@@ -92,7 +92,7 @@ namespace ZenUnit
       sixArgCtorTestResult.elapsedMicroseconds = elapsedMicroseconds;
       _testResultFactoryMock->MakeConstructorDestructorSuccessMock.Return(sixArgCtorTestResult);
       //
-      const vector<TestResult> testResults = _newableDeletableTest->RunTest();
+      const SmallVector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
       METALMOCK(_stopwatchMock->StartMock.CalledOnce());
       METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
@@ -103,7 +103,7 @@ namespace ZenUnit
       METALMOCK(_testResultFactoryMock->MakeConstructorDestructorSuccessMock.CalledOnceWith(
          _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
       METALMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
-      const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
+      const SmallVector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }
 
