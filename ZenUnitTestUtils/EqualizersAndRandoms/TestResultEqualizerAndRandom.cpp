@@ -6,12 +6,6 @@
 
 namespace ZenUnit
 {
-   bool operator==(const TestResult& leftTestResult, const TestResult& rightTestResult)
-   {
-      Equalizer<TestResult>::AssertEqual(leftTestResult, rightTestResult);
-      return true;
-   }
-
    void Equalizer<TestResult>::AssertEqual(const TestResult& expectedTestResult, const TestResult& actualTestResult)
    {
       FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, fullTestName);

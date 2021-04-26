@@ -4,7 +4,7 @@ unusedFunction:ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTestsMain.c
 unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/TestPhaseResultEqualizerAndRandom.cpp:27
 unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.cpp:41
 useStlAlgorithm:ZenUnitAndMetalMock/MetalMock.h:1006
-useStlAlgorithm:ZenUnitAndMetalMock/ZenUnit.h:4940
+useStlAlgorithm:ZenUnitAndMetalMock/ZenUnit.h:4669
 
 # Linux
 preprocessorErrorDirective:/usr/include/c++/v1/__config:104

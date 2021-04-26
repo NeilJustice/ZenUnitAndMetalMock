@@ -13,7 +13,7 @@ namespace ZenUnit
    TestClassResult TestingNonDefaultTestClassResult()
    {
       TestClassResult testClassResult;
-      testClassResult._testResults = { TestResult() };
+      testClassResult._testResults.resize(1);
       return testClassResult;
    }
 }

@@ -44,9 +44,9 @@ namespace ZenUnit
 
    #if defined(_WIN32)
       #if defined _DEBUG
-         static_assert(sizeof(TestClassResult) == 336);
+         static_assert(sizeof(TestClassResult) == 104);
       #elif NDEBUG
-         static_assert(sizeof(TestClassResult) == 336);
+         static_assert(sizeof(TestClassResult) == 96);
       #endif
    #endif
 

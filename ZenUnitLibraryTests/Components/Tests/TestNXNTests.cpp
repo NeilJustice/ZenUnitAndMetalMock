@@ -187,7 +187,7 @@ namespace ZenUnit
 
       test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.Expect();
       //
-      const SmallVector<TestResult> testResults = test1X1SelfMocked.RunTest();
+      const vector<TestResult> testResults = test1X1SelfMocked.RunTest();
       //
       METALMOCK(GetArgsMock.CalledOnce());
       METALMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering));
@@ -297,7 +297,7 @@ namespace ZenUnit
       expectedTestResult.totalTestCases = 2;
       expectedTestResult.fullTestName.testName = testName.c_str();
       METALMOCK(test1X1SelfMocked.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.CalledOnceWith(expectedTestResult));
-      SmallVector<TestResult> expectedResulingTestResults = { expectedTestResult };
+      vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test1X1SelfMocked._testResults);
    }
 
@@ -342,13 +342,13 @@ namespace ZenUnit
       expectedTestResult.totalTestCases = 3;
       expectedTestResult.fullTestName.testName = testName.c_str();
       METALMOCK(test2X2SelfMocked.WriteLineOKIfSuccessOrSuccessButPastDeadlineMock.CalledOnceWith(expectedTestResult));
-      SmallVector<TestResult> expectedResulingTestResults = { expectedTestResult };
+      vector<TestResult> expectedResulingTestResults = { expectedTestResult };
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
 
    TEST(Exit1IfInvalidTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
    {
-      _testNXN->_testResults = { ZenUnit::Random<TestResult>() };
+      _testNXN->_testResults.resize(1);
       _testNXN->Exit1IfInvalidTestCaseNumberSpecified();
    }
 

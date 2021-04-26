@@ -3,8 +3,6 @@ class ZenUnitTestingRandomGenerator;
 
 namespace ZenUnit
 {
-   bool operator==(const TestResult& leftTestResult, const TestResult& rightTestResult);
-
    template<>
    class Equalizer<TestResult>
    {

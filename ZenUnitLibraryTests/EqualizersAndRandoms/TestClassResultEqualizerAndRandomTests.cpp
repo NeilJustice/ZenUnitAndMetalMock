@@ -11,8 +11,7 @@ namespace ZenUnit
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(TestClassResult);
-      const SmallVector<TestResult> nonEmptyTestResultsSmallVector = { ZenUnit::Random<TestResult>() };
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestClassResult, _testResults, nonEmptyTestResultsSmallVector);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestClassResult, _testResults, ZenUnit::RandomNonEmptyVector<TestResult>());
    }
 
    TEST(TestableRandomTestClassResult_ReturnsTestClassResultWithAllRandomFields)

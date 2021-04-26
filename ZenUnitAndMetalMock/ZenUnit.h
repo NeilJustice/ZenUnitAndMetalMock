@@ -88,274 +88,6 @@ namespace ZenUnit
 
 namespace ZenUnit
 {
-   template<typename T>
-   class SmallVector
-   {
-      template<typename T>
-      friend class SmallVectorTests;
-   private:
-      T _singleElement;
-      std::unique_ptr<std::vector<T>> _vector;
-      bool _isSize1;
-   public:
-      SmallVector()
-         : _singleElement()
-         , _isSize1(false)
-      {
-      }
-
-      SmallVector(std::initializer_list<T> elements)
-      {
-         const size_t numberOfElements = elements.size();
-         if (numberOfElements == 1)
-         {
-            _singleElement = std::move(*elements.begin());
-            _isSize1 = true;
-         }
-         else
-         {
-            _singleElement = T{};
-            _vector = std::make_unique<std::vector<T>>(elements);
-            _isSize1 = false;
-         }
-      }
-
-      SmallVector(const SmallVector& otherSmallVector)
-      {
-         const size_t otherSize = otherSmallVector.size();
-         if (otherSize == 0)
-         {
-            _singleElement = T{};
-            _vector = nullptr;
-            _isSize1 = false;
-         }
-         else if (otherSize == 1)
-         {
-            _singleElement = otherSmallVector._singleElement;
-            _vector = nullptr;
-            _isSize1 = true;
-         }
-         else
-         {
-            _singleElement = T{};
-            _vector = make_unique<vector<T>>(*otherSmallVector._vector);
-            _isSize1 = false;
-         }
-      }
-
-      SmallVector& operator=(const SmallVector& otherSmallVector)
-      {
-         const size_t otherSmallVectorSize = otherSmallVector.size();
-         if (otherSmallVectorSize == 1)
-         {
-            _singleElement = otherSmallVector._singleElement;
-            _isSize1 = true;
-         }
-         else if (otherSmallVectorSize > 1)
-         {
-            _vector = std::make_unique<std::vector<T>>(*otherSmallVector._vector);
-            _isSize1 = false;
-         }
-         return *this;
-      }
-
-      SmallVector(SmallVector&& otherSmallVector) noexcept
-      {
-         *this = std::move(otherSmallVector);
-      }
-
-      SmallVector& operator=(SmallVector&& otherSmallVector) noexcept
-      {
-         const size_t otherSmallVectorSize = otherSmallVector.size();
-         if (otherSmallVectorSize == 0)
-         {
-            _singleElement = T{};
-            _isSize1 = false;
-         }
-         else if (otherSmallVectorSize == 1)
-         {
-            _singleElement = std::move(otherSmallVector._singleElement);
-            _isSize1 = true;
-         }
-         else if (otherSmallVectorSize > 1)
-         {
-            _singleElement = T{};
-            _vector = std::move(otherSmallVector._vector);
-            _isSize1 = false;
-         }
-         return *this;
-      }
-
-      bool empty() const
-      {
-         if (_isSize1)
-         {
-            return false;
-         }
-         if (_vector != nullptr)
-         {
-            const bool isEmpty = _vector->empty();
-            return isEmpty;
-         }
-         return true;
-      }
-
-      size_t size() const
-      {
-         if (_isSize1)
-         {
-            return 1;
-         }
-         if (_vector != nullptr)
-         {
-            const size_t vectorSize = _vector->size();
-            return vectorSize;
-         }
-         return 0;
-      }
-
-      void reserve(size_t size)
-      {
-         if (size > 1)
-         {
-            if (_vector == nullptr)
-            {
-               _vector = std::make_unique<std::vector<T>>();
-               _vector->reserve(size);
-            }
-            else
-            {
-               _vector->reserve(size);
-            }
-         }
-      }
-
-      size_t capacity() const
-      {
-         if (_vector == nullptr)
-         {
-            return 1;
-         }
-         const size_t capacity = _vector->capacity();
-         return capacity;
-      }
-
-      T* begin() noexcept
-      {
-         if (_isSize1)
-         {
-            return &_singleElement;
-         }
-         if (_vector != nullptr)
-         {
-            T* const vectorbegin = &*_vector->begin();
-            return vectorbegin;
-         }
-         return nullptr;
-      }
-
-      const T* cbegin() const noexcept
-      {
-         if (_isSize1)
-         {
-            return &_singleElement;
-         }
-         if (_vector != nullptr)
-         {
-            const T* const vectorcbegin = &*_vector->cbegin();
-            return vectorcbegin;
-         }
-         return nullptr;
-      }
-
-      T* end() noexcept
-      {
-         if (_isSize1)
-         {
-            return &_singleElement + 1;
-         }
-         if (_vector != nullptr)
-         {
-            T* const vectorend = &_vector->back() + 1;
-            return vectorend;
-         }
-         return nullptr;
-      }
-
-      const T* cend() const noexcept
-      {
-         if (_isSize1)
-         {
-            return &_singleElement + 1;
-         }
-         if (_vector != nullptr)
-         {
-            const T* const vectorcend = &_vector->back() + 1;
-            return vectorcend;
-         }
-         return nullptr;
-      }
-
-      template<typename ElementType>
-      void emplace_back(ElementType&& element)
-      {
-         const size_t smallVectorSize = size();
-         if (smallVectorSize == 0)
-         {
-            _singleElement = std::move(element);
-            _isSize1 = true;
-         }
-         else if (smallVectorSize == 1)
-         {
-            _vector = std::make_unique<std::vector<T>>(2ULL);
-            (*_vector)[0] = std::move(_singleElement);
-            _singleElement = T{};
-            (*_vector)[1] = std::move(element);
-            _isSize1 = false;
-         }
-         else
-         {
-            _vector->emplace_back(std::move(element));
-         }
-      }
-
-      const T& operator[](size_t index) const
-      {
-         const size_t smallVectorSize = size();
-         if (index >= smallVectorSize)
-         {
-            throw std::out_of_range("index out of range: " + std::to_string(index));
-         }
-         if (smallVectorSize == 1)
-         {
-            return _singleElement;
-         }
-         const T& element = (*_vector)[index];
-         return element;
-      }
-
-      friend bool operator==(const SmallVector<T>& leftSmallVector, const SmallVector<T>& rightSmallVector)
-      {
-         const size_t leftSmallVectorSize = leftSmallVector.size();
-         const size_t rightSmallVectorSize = rightSmallVector.size();
-         if (leftSmallVectorSize != rightSmallVectorSize)
-         {
-            return false;
-         }
-         if (leftSmallVectorSize == 0)
-         {
-            return true;
-         }
-         if (leftSmallVectorSize == 1)
-         {
-            const bool singleElementsAreEqual = leftSmallVector._singleElement == rightSmallVector._singleElement;
-            return singleElementsAreEqual;
-         }
-         const bool vectorsAreEqual = *leftSmallVector._vector == *rightSmallVector._vector;
-         return vectorsAreEqual;
-      }
-   };
-
    class TestNameFilter;
 
    struct ZenUnitArgs
@@ -4879,7 +4611,7 @@ namespace ZenUnit
    static_assert(std::is_move_assignable_v<TestResult>);
 
    using ThreeArgForEacherType = const ThreeArgForEacher<
-      SmallVector<TestResult>,
+      std::vector<TestResult>,
       void(*)(const TestResult&, const Console*, TestFailureNumberer*),
       const Console*,
       TestFailureNumberer*>;
@@ -4895,7 +4627,7 @@ namespace ZenUnit
       friend TestClassResult TestingNonDefaultTestClassResult();
    private:
       std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
-      SmallVector<TestResult> _testResults;
+      std::vector<TestResult> _testResults;
    public:
       TestClassResult() noexcept
          : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
@@ -4923,18 +4655,15 @@ namespace ZenUnit
 
       TestClassResult& operator=(TestClassResult&& testClassResult) noexcept
       {
-         _testResults = std::exchange(testClassResult._testResults, SmallVector<TestResult>());
+         _testResults = std::exchange(testClassResult._testResults, std::vector<TestResult>());
          return *this;
       }
 
       virtual ~TestClassResult() = default;
 
-      virtual void AddTestResults(SmallVector<TestResult> testResults)
+      virtual void AddTestResults(std::vector<TestResult> testResults)
       {
-         const size_t testResultsCapacity = _testResults.capacity();
-         const size_t testResultsSize = testResults.size();
-         const size_t newCapacity = testResultsCapacity + testResultsSize;
-         _testResults.reserve(newCapacity);
+         _testResults.reserve(_testResults.capacity() + testResults.size());
          for (TestResult& testResult : testResults)
          {
             _testResults.emplace_back(std::move(testResult));
@@ -6161,7 +5890,7 @@ Fatal Windows C++ Runtime Assertion
          return 0;
       }
 
-      virtual SmallVector<TestResult> RunTest()
+      virtual std::vector<TestResult> RunTest()
       {
          return {};
       }
@@ -6332,21 +6061,25 @@ Fatal Windows C++ Runtime Assertion
          return 1;
       }
 
-      SmallVector<TestResult> RunTest() override
+      std::vector<TestResult> RunTest() override
       {
          _testPhaseStopwatch->Start();
-         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const TestPhaseResult constructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
+            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
+               _protected_fullTestName, constructorTestPhaseResult);
             constructorFailTestResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
-            SmallVector<TestResult> testResults = { std::move(constructorFailTestResult) };
+            std::vector<TestResult> testResults = { std::move(constructorFailTestResult) };
             return testResults;
          }
-         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         const TestPhaseResult destructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(
+            _protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          testResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
-         SmallVector<TestResult> testResults = { std::move(testResult) };
+         std::vector<TestResult> testResults = { std::move(testResult) };
          return testResults;
       }
 
@@ -6453,14 +6186,17 @@ Fatal Windows C++ Runtime Assertion
 
       TestClassResult RunTests() override
       {
-         _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
+         _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(
+            this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
          const bool testClassIsNewableAndDeletable = _nonVoidTwoArgFunctionCaller->CallConstMemberFunction(
-            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest, &_testClassResult);
+            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
+            &_newableDeletableTest, &_testClassResult);
          if (testClassIsNewableAndDeletable)
          {
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
+         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(
+            this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          _protected_console->WriteNewLine();
          return std::move(_testClassResult);
       }
@@ -6491,7 +6227,7 @@ Fatal Windows C++ Runtime Assertion
          _protected_console->WriteColor("|", Color::Green);
          static const std::string TestClassIsNewableAndDeletableString = "TestClassIsNewableAndDeletable -> ";
          _protected_console->Write(TestClassIsNewableAndDeletableString);
-         SmallVector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
+         std::vector<TestResult> newableDeletableTestResults = newableDeletableTest->RunTest();
          ZENUNIT_ASSERT(newableDeletableTestResults.size() == 1);
          const TestResult& newableDeletableTestResult = newableDeletableTestResults[0];
          const bool testClassIsNewableAndDeletable = newableDeletableTestResult.testOutcome == TestOutcome::Success;
@@ -6517,7 +6253,7 @@ Fatal Windows C++ Runtime Assertion
             _protected_console->WriteColor("|", Color::Green);
             _protected_console->Write(testName);
             test->WritePostTestNameMessage(_protected_console.get());
-            SmallVector<TestResult> testResults = test->RunTest();
+            std::vector<TestResult> testResults = test->RunTest();
             test->WritePostTestCompletionMessage(_protected_console.get(), testResults[0]);
             outTestClassResult->AddTestResults(std::move(testResults));
          }
@@ -6566,10 +6302,10 @@ Fatal Windows C++ Runtime Assertion
          testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(console);
       }
 
-      SmallVector<TestResult> RunTest() override
+      std::vector<TestResult> RunTest() override
       {
          TestResult testResult = BaseRunTest();
-         SmallVector<TestResult> testResults{ std::move(testResult) };
+         std::vector<TestResult> testResults{ std::move(testResult) };
          return testResults;
       }
 
@@ -6664,10 +6400,10 @@ Fatal Windows C++ Runtime Assertion
          console->WriteLine("...");
       }
 
-      SmallVector<TestResult> RunTest() override
+      std::vector<TestResult> RunTest() override
       {
          const std::unique_ptr<Test>* const test = PmfTokenToTest();
-         SmallVector<TestResult> testResults = (*test)->RunTest();
+         std::vector<TestResult> testResults = (*test)->RunTest();
          return testResults;
       }
    private:
@@ -6790,7 +6526,7 @@ Fatal Windows C++ Runtime Assertion
       const char* const _testCaseArgsText;
       std::unique_ptr<TestClassType> _testClass;
       size_t _currentTestCaseNumber;
-      SmallVector<TestResult> _testResults;
+      std::vector<TestResult> _testResults;
    protected:
       const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _protected_testCaseArgs;
    public:
@@ -6840,7 +6576,7 @@ Fatal Windows C++ Runtime Assertion
       {
       }
 
-      SmallVector<TestResult> RunTest() override
+      std::vector<TestResult> RunTest() override
       {
          ZENUNIT_ASSERT(_currentTestCaseNumber == 1);
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();

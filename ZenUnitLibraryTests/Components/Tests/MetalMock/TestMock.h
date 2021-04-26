@@ -13,7 +13,7 @@ public:
    METALMOCK_NONVOID0_CONST(string, FilePathLineNumberString)
    METALMOCK_NONVOID0_CONST(size_t, NumberOfTestCases)
    METALMOCK_VOID1_CONST(WritePostTestNameMessage, const Console*)
-   METALMOCK_NONVOID0(SmallVector<TestResult>, RunTest)
+   METALMOCK_NONVOID0(vector<TestResult>, RunTest)
    METALMOCK_VOID0(NewTestClass)
    METALMOCK_VOID0(Startup)
    METALMOCK_VOID0(TestBody)
