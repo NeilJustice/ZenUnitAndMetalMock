@@ -30,6 +30,7 @@ covhtml/
 build.ninja
 callgrind.out.*
 callgrind_results.txt
+heaptrack.ZenUnitUtilsAndAssertionTests.*.zst
 rules.ninja
 Makefile
 
