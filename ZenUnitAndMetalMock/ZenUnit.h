@@ -91,7 +91,7 @@ namespace ZenUnit
    template<typename T>
    class SmallVector
    {
-      template<typename T>
+      template<typename _T>
       friend class SmallVectorTests;
    private:
       T _singleElement;
@@ -138,7 +138,7 @@ namespace ZenUnit
          else
          {
             _singleElement = T{};
-            _vector = make_unique<vector<T>>(*otherSmallVector._vector);
+            _vector = std::make_unique<std::vector<T>>(*otherSmallVector._vector);
             _isSize1 = false;
          }
       }
