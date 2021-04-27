@@ -1,0 +1,48 @@
+name: ZenUnitAndMetalMock
+
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+         os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+        
+      - uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
+        
+      - name: Install pip packages
+        run: pip install --upgrade --upgrade-strategy eager -r dev-requirements.txt
+        
+      - name: pylint, flake8, then run ZenUnitPy unit tests with coverage and pytest
+        run: python ZenUnitPy/RunZenUnitPyTestsWithCoverageAndLinting.py
+        working-directory: ZenUnitPy
+        env:
+          PYTHONPATH: "."
+      
+      - name: Install ninja-build
+        run: sudo apt-get install ninja-build
+        
+      - name: Run BuildAndInstallCPlusPlusProgram.py
+        run: python ZenUnitPy/ZenUnitPy/BuildZenUnitAndMetalMock.py --cmake-generator=Ninja --cmake-build-type=Debug --cmake-definitions=""
+        env:
+          CXX: "/usr/bin/clang++"
+          PYTHONPATH: ZenUnitPy
+          
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ZenUnitPy/ZenUnitPyTests/CoberturaCodeCoverageResults_ZenUnitPyTests.xml
+          fail_ci_if_error: true
