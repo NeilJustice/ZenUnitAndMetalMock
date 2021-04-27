@@ -198,7 +198,8 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    // mutate-exception-type and mutate-exception-message.
 
    const std::string expectedExceptionMessage =
-      "Invalid FizzBuzz(int endNumber) argument: endNumber [" + std::to_string(invalidFizzBuzzEndNumber) + "] must be >= 1";
+      "Invalid FizzBuzz(int endNumber) argument: endNumber [" + 
+         std::to_string(invalidFizzBuzzEndNumber) + "] must be >= 1";
    THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber),
       std::invalid_argument, expectedExceptionMessage);
 }
