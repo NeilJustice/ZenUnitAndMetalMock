@@ -240,7 +240,8 @@ std::string FizzBuzz(int endNumber)
    if (endNumber <= 0)
    {
       const std::string exceptionMessage =
-         "Invalid FizzBuzz(int endNumber) argument: endNumber [" + std::to_string(endNumber) + "] must be >= 1";
+         "Invalid FizzBuzz(int endNumber) argument: endNumber [" +
+            std::to_string(endNumber) + "] must be >= 1";
       throw std::invalid_argument(exceptionMessage);
    }
    std::ostringstream fizzBuzzSequenceBuilder;
