@@ -2,6 +2,12 @@
 
 [![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B20) ![MIT](https://img.shields.io/badge/license-MIT-green) ![GitHub last commit](https://img.shields.io/github/last-commit/NeilJustice/ZenUnitAndMetalMock)
 
+|Build Type|Build Status|
+|----------|------------|
+|GitHub Actions Debug build - ubuntu-latest Clang 10.0.0|[![ZenUnitAndMetalMock](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg)](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml)|
+|AppVeyor Debug and Release build - Visual Studio 2019 x64|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
+|Codecov.io code coverage for ZenUnitPyUtils DevOps code|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
+
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
 ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests:
@@ -43,10 +49,6 @@ MetalMock is a "double strict" mocking framework so as to be useful for rigorous
 A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called.
 
 A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explictedly asserted as having been called, thereby minimizing the likelihood of extraneous function calls being present in a C++ program being unit tested with ZenUnit and MetalMock.
-
-|Build Type|Build Status|
-|----------|------------|
-|AppVeyor Debug and Release build - Visual Studio 2019 x64|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
 
 ##### ZenUnit.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnitAndMetalMock/ZenUnit.h)
 ##### MetalMock.h: [![download](https://img.shields.io/badge/download%20%20-link-blue.svg)](https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/master/ZenUnitAndMetalMock/MetalMock.h)
