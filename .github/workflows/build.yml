@@ -28,7 +28,7 @@ jobs:
         run: pip install --upgrade --upgrade-strategy eager -r dev-requirements.txt
         
       - name: pylint, flake8, then run ZenUnitPy unit tests with coverage and pytest
-        run: python ZenUnitPy/RunZenUnitPyTestsWithCoverageAndLinting.py
+        run: python ZenUnitPy/MypyFlake8PylintThenRunTestsWithCoverage.py
         working-directory: ZenUnitPy
         env:
           PYTHONPATH: "."
