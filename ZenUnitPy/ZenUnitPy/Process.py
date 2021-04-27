@@ -5,9 +5,9 @@ import platform
 import shlex
 import subprocess
 import sys
-import threading
 import time
 from typing import Any, List
+from ZenUnitPy import ProcessThread
 
 def bytes_to_utf8(byteString: bytes) -> str:
    utf8 = byteString.decode('utf-8')
@@ -81,30 +81,16 @@ def run_and_check_stdout_for_substring(command: str, substring: str) -> None:
    if not stdOutContainsSubstring:
       sys.exit(1)
 
-class ProcessThread(threading.Thread): # pragma nocover
-
-   def __init__(self, commandIndex: int, command: str, commandSuffixArg: str, outExitCodes: List[int]):
-      threading.Thread.__init__(self)
-      self.commandIndex = commandIndex
-      self.command = command
-      self.commandSuffixArg = commandSuffixArg
-      self.outExitCodes = outExitCodes
-
-   def run(self) -> None:
-      fullCommand = self.command + self.commandSuffixArg
-      exitCode = run_and_get_exit_code(fullCommand)
-      self.outExitCodes[self.commandIndex] = exitCode
-
 def run_parallel_processthread(command: str, commandSuffixArgs: List[str]) -> bool: # pragma nocover
    numberOfCommands = len(commandSuffixArgs)
-   processThreads: List[ProcessThread.ProcessThread] = []
-   processExitCodes: List[int] = [0] * numberOfCommands
+   processThreads = [None] * numberOfCommands
+   processExitCodes = [0] * numberOfCommands
    beginTime = time.process_time()
    for commandIndex, commandSuffixArg in enumerate(commandSuffixArgs):
-      processThread = ProcessThread(commandIndex, command, commandSuffixArg, processExitCodes)
+      processThread = ProcessThread.ProcessThread(commandIndex, command, commandSuffixArg, processExitCodes)
       processThread.start()
-      processThreads.append(processThread)
-   for processThread in processThreads:
+      processThreads[commandIndex] = processThread # type: ignore
+   for processThread in processThreads: # type: ignore
       processThread.join()
    endTime = time.process_time()
    elapsedMilliseconds = int((endTime - beginTime) * 1000)

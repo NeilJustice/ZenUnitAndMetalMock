@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>RunZenUnitPyTestsWithCoverageAndLinting.py</StartupFile>
+    <StartupFile>MypyFlake8PylintThenRunTestsWithCoverage.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
@@ -35,11 +35,14 @@
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />
+    <Compile Include="ProcessThread.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Python.py" />
     <Compile Include="Random.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RunZenUnitPyTestsWithCoverageAndLinting.py" />
+    <Compile Include="MypyFlake8PylintThenRunTestsWithCoverage.py" />
     <Compile Include="UnitTester.py">
       <SubType>Code</SubType>
     </Compile>

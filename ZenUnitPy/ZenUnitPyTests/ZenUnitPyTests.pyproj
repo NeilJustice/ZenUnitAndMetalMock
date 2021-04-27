@@ -6,7 +6,7 @@
     <ProjectGuid>5be2bd06-b3d6-4e12-9d37-cb82aa0ef9d3</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>RunZenUnitPyTestsWithCoverageAndLintingTests.py</StartupFile>
+    <StartupFile>RunAllWithCoverage.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <WorkingDirectory>..</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -45,7 +45,7 @@
     <Compile Include="Random.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RunZenUnitPyTestsWithCoverageAndLintingTests.py" />
+    <Compile Include="MypyFlake8PylintThenRunTestsWithCoverageTests.py" />
     <Compile Include="UnitTesterTests.py">
       <SubType>Code</SubType>
     </Compile>

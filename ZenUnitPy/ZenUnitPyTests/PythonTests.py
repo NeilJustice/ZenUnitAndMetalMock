@@ -8,8 +8,9 @@ from ZenUnitPy import Python, Process, UnitTester, Random
 
 testNames = [
 'test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders',
-'test_pylint_all_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential',
-'test_flake8_all_RunsFlake8WithFlake8Config',
+'test_run_mypy_RunsMypyDot',
+'test_run_pylint_on_all_files_in_parallel_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential',
+'test_run_flake8_RunsFlake8WithFlake8Config',
 'test_run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode'
 ]
 
@@ -28,7 +29,15 @@ class PythonTests(unittest.TestCase):
       Process.run_and_get_exit_code.assert_called_once_with(PythonTests.ExpectedPylintCommand + pythonFilePath)
       self.assertEqual(pylintExitCode, pylintExitCode)
 
-   def test_pylint_all_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential(self):
+   @staticmethod
+   @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
+   def test_run_mypy_RunsMypyDot(_1):
+      #
+      Python.run_mypy()
+      #
+      Process.fail_fast_run('mypy .')
+
+   def test_run_pylint_on_all_files_in_parallel_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential(self):
       @patch('glob.glob', spec_set=True)
       @patch('platform.system', spec_set=True)
       @patch('ZenUnitPy.Process.run_parallel_processpoolexecutor', spec_set=True)
@@ -44,7 +53,7 @@ class PythonTests(unittest.TestCase):
             else:
                Process.run_parallel_processthread.return_value = allPylintsSucceeded
             #
-            Python.pylint_all()
+            Python.run_pylint_on_all_files_in_parallel()
             #
             glob.glob.assert_called_once_with('**/*.py', recursive=True)
             platform.system.assert_called_once_with()
@@ -64,9 +73,9 @@ class PythonTests(unittest.TestCase):
 
    @staticmethod
    @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
-   def test_flake8_all_RunsFlake8WithFlake8Config(_1):
+   def test_run_flake8_RunsFlake8WithFlake8Config(_1):
       #
-      Python.flake8_all()
+      Python.run_flake8()
       #
       expectedFlake8Command = 'flake8 --config=.flake8 --show-source --benchmark'
       Process.fail_fast_run.assert_called_once_with(expectedFlake8Command)

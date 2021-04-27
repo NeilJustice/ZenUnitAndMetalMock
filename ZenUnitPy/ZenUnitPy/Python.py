@@ -11,7 +11,10 @@ def pylint_file(pythonFilePath: str) -> int:
    pylintExitCode = Process.run_and_get_exit_code(pylintCommand)
    return pylintExitCode
 
-def pylint_all() -> None:
+def run_mypy() -> None:
+   Process.fail_fast_run('mypy .')
+
+def run_pylint_on_all_files_in_parallel() -> None:
    pyFilePaths = glob.glob('**/*.py', recursive=True)
    allPylintsSucceeded = False
    if platform.system() == 'Windows':
@@ -21,7 +24,7 @@ def pylint_all() -> None:
    if not allPylintsSucceeded:
       sys.exit(1)
 
-def flake8_all() -> None:
+def run_flake8() -> None:
    flake8Command = 'flake8 --config=.flake8 --show-source --benchmark'
    Process.fail_fast_run(flake8Command)
 
