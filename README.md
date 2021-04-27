@@ -1079,3 +1079,4 @@ ZenUnit.h and MetalMock.h installed on Windows:
 * [The many authors of Google Test and Google Mock](https://github.com/google/googletest)
 * [My colleagues at Quantlab](https://www.quantlab.com)
 * [My colleagues at Emerson](https://www.emerson.com/en-us/automation/deltav)
+* [Alex Denisov and Stanislav Pankevich, authors of C++ mutation testing framework Mull](https://github.com/mull-project/mull)
