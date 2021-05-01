@@ -5,17 +5,16 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>MypyFlake8PylintThenRunTestsWithCoverage.py</StartupFile>
+    <StartupFile>BuildAndTestZenUnitAndMetalMock.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitPy</Name>
     <RootNamespace>ZenUnitPy</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>
-    </CommandLineArguments>
+    <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <WorkingDirectory>D:\Code\ZenUnitAndMetalMock\ZenUnitPy</WorkingDirectory>
+    <WorkingDirectory>D:\Code\ZenUnitAndMetalMock</WorkingDirectory>
     <InterpreterId>
     </InterpreterId>
   </PropertyGroup>
@@ -28,10 +27,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArgParser.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BuildZenUnitAndMetalMock.py" />
+    <Compile Include="BuildAndTestZenUnitAndMetalMock.py" />
     <Compile Include="CMake.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Process.py" />
@@ -39,14 +35,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Python.py" />
-    <Compile Include="Random.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MypyFlake8PylintThenRunTestsWithCoverage.py" />
     <Compile Include="UnitTester.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util.py" />
     <Compile Include="__init__.py" />
   </ItemGroup>
   <PropertyGroup>

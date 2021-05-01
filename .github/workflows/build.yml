@@ -37,7 +37,7 @@ jobs:
         run: sudo apt-get install ninja-build
         
       - name: Run BuildAndInstallCPlusPlusProgram.py
-        run: python ZenUnitPy/ZenUnitPy/BuildZenUnitAndMetalMock.py --cmake-generator=Ninja --cmake-build-type=Debug --cmake-definitions=""
+        run: python ZenUnitPy/ZenUnitPy/BuildAndTestZenUnitAndMetalMock.py --cmake-generator=Ninja --cmake-build-type=Debug --cmake-definitions=""
         env:
           CXX: "/usr/bin/clang++"
           PYTHONPATH: ZenUnitPy

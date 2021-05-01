@@ -4,7 +4,8 @@ import platform
 import sys
 import unittest
 from unittest.mock import call, patch
-from ZenUnitPy import Python, Process, UnitTester, Random
+from ZenUnitPy import Python, Process, UnitTester
+from ZenUnitPyTests import Random
 
 testNames = [
 'test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders',

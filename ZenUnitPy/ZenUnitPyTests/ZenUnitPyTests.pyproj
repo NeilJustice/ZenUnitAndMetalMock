@@ -29,17 +29,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArgParserTests.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BuildZenUnitAndMetalMockTests.py" />
+    <Compile Include="BuildAndTestZenUnitAndMetalMockTests.py" />
     <Compile Include="CMakeTests.py" />
     <Compile Include="FileSystemTests.py" />
     <Compile Include="ProcessTests.py" />
     <Compile Include="PythonTests.py" />
-    <Compile Include="RandomTests.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="RunAll.py" />
     <Compile Include="RunAllWithCoverage.py" />
     <Compile Include="Random.py">
@@ -49,7 +43,6 @@
     <Compile Include="UnitTesterTests.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UtilTests.py" />
     <Compile Include="__init__.py" />
   </ItemGroup>
   <PropertyGroup>

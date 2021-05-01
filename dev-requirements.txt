@@ -1,4 +1,5 @@
 coverage
+docopt
 flake8
 mypy
 pylint

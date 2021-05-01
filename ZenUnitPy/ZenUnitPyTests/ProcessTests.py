@@ -7,7 +7,8 @@ import subprocess
 import sys
 import unittest
 from unittest.mock import patch, call
-from ZenUnitPy import Process, UnitTester, Random
+from ZenUnitPy import Process, UnitTester
+from ZenUnitPyTests import Random
 
 testNames = [
 'test_fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero',

@@ -1,12 +1,15 @@
 import os
 import platform
+import sys
 import unittest
 from unittest.mock import call, patch
-from ZenUnitPy import ArgParser, CMake, BuildZenUnitAndMetalMock, Process, Random, UnitTester, Util
+import docopt # type: ignore
+from ZenUnitPy import CMake, BuildAndTestZenUnitAndMetalMock, Process, UnitTester
+from ZenUnitPyTests import Random
 
 testNames = [
-'test_main_ArgsLengthIsNot4_PrintsUsageAndExits1',
-'test_main_ArgsLengthIs4_CMakes_Builds_Returns0',
+'test_docstring__IsExpectedString',
+'test_main_CMakesZenUnitAndMetalMock_BuildsZenUnitAndMetalMock_RunsAllUnitTestBinaries_Returns0',
 'test_linux_cmake_and_build_RunsCMakes_RunsNinja',
 'test_windows_cmake_build_RunsCMakes_RunsCMakeBuildToRunMSBuild',
 ]
@@ -18,47 +21,35 @@ class BuildZenUnitTests(unittest.TestCase):
       self.cmakeBuildType = Random.string()
       self.cmakeDefinitions = Random.string()
 
-   def test_main_ArgsLengthIsNot4_PrintsUsageAndExits1(self):
-      @patch('ZenUnitPy.Util.print_and_exit', spec_set=True)
-      def testcase(argsLength, _1):
-         with self.subTest(f'{argsLength}'):
-            invalidArgs = [Random.string()] * argsLength
-            #
-            BuildZenUnitAndMetalMock.main(invalidArgs)
-            #
-            Util.print_and_exit.assert_called_once_with(
-'Invalid args: ' + ' '.join(invalidArgs) + '\n'
-"""Usage: python BuildZenUnitAndMetalMock.py --cmake-generator=<CMakeGenerator> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", 1)
-      testcase(0)
-      testcase(1)
-      testcase(2)
-      testcase(3)
-      testcase(5)
+   def test_docstring__IsExpectedString(self):
+      self.assertEqual("""Usage: BuildAndTestZenUnitAndMetalMock.py --cmake-generator=<CMakeGenerator> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>""", BuildAndTestZenUnitAndMetalMock.__doc__)
 
-   def test_main_ArgsLengthIs4_CMakes_Builds_Returns0(self):
+   def test_main_CMakesZenUnitAndMetalMock_BuildsZenUnitAndMetalMock_RunsAllUnitTestBinaries_Returns0(self):
+      @patch('docopt.docopt', spec_set=True)
       @patch('platform.system', spec_set=True)
-      @patch('ZenUnitPy.ArgParser.parse_arg', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnitAndMetalMock.linux_cmake_build', spec_set=True)
-      @patch('ZenUnitPy.BuildZenUnitAndMetalMock.windows_cmake_build', spec_set=True)
+      @patch('ZenUnitPy.BuildAndTestZenUnitAndMetalMock.linux_cmake_build', spec_set=True)
+      @patch('ZenUnitPy.BuildAndTestZenUnitAndMetalMock.windows_cmake_build', spec_set=True)
       @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
       @patch('os.chdir', spec_true=True)
-      def testcase(platformSystem, expectLinux, _1, _2, _3, _4, _5, _6):
+      @patch('builtins.print', spec_set=True)
+      def testcase(platformSystem, expectLinux, printMock, _1, _2, _3, _4, _5, _6):
          with self.subTest(f'{platformSystem}, {expectLinux}'):
-            ArgParser.parse_arg.side_effect = [self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions]
+            docopt.docopt.return_value =\
+            {
+               '--cmake-generator': self.cmakeGenerator,
+               '--cmake-build-type': self.cmakeBuildType,
+               '--cmake-definitions': self.cmakeDefinitions
+            }
             platform.system.return_value = platformSystem
-            args = [Random.string(), Random.string(), Random.string(), Random.string()]
             #
-            exitCode = BuildZenUnitAndMetalMock.main(args)
+            exitCode = BuildAndTestZenUnitAndMetalMock.main()
             #
-            self.assertEqual(3, len(ArgParser.parse_arg.call_args_list))
-            ArgParser.parse_arg.assert_has_calls([
-               call('--cmake-generator', args[1]),
-               call('--cmake-build-type', args[2]),
-               call('--cmake-definitions', args[3])
-            ])
+            expectedRunningSysArgvMessage = f'Running {sys.argv}\n'
+            printMock.assert_called_once_with(expectedRunningSysArgvMessage)
+            docopt.docopt.assert_called_once_with(BuildAndTestZenUnitAndMetalMock.__doc__)
             platform.system.assert_called_once_with()
             if expectLinux:
-               BuildZenUnitAndMetalMock.linux_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+               BuildAndTestZenUnitAndMetalMock.linux_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
                self.assertEqual(6, len(Process.fail_fast_run.call_args_list))
                Process.fail_fast_run.assert_has_calls([
                   call('MetalMockExamples/MetalMockExamples --test-runs=2 --random --max-test-milliseconds=200'),
@@ -69,7 +60,7 @@ class BuildZenUnitTests(unittest.TestCase):
                   call('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=2 --random --max-test-milliseconds=200')])
                os.chdir.assert_called_once_with('..')
             else:
-               BuildZenUnitAndMetalMock.windows_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
+               BuildAndTestZenUnitAndMetalMock.windows_cmake_build.assert_called_once_with(self.cmakeGenerator, self.cmakeBuildType, self.cmakeDefinitions)
                Process.fail_fast_run.assert_has_calls([
                   call(f'MetalMockExamples/{self.cmakeBuildType}/MetalMockExamples.exe --random --max-test-milliseconds=200'),
                   call(f'MetalMockTests/{self.cmakeBuildType}/MetalMockTests.exe --random --max-test-milliseconds=200'),
@@ -90,7 +81,7 @@ class BuildZenUnitTests(unittest.TestCase):
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument}'):
             #
-            BuildZenUnitAndMetalMock.linux_cmake_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions)
+            BuildAndTestZenUnitAndMetalMock.linux_cmake_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with(self.cmakeBuildType, self.cmakeGenerator, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '..')
             Process.fail_fast_run.assert_called_once_with('ninja -v')
@@ -104,7 +95,7 @@ class BuildZenUnitTests(unittest.TestCase):
       def testcase(cmakeDefinitions, expectedCMakeDefinitionsArgument, _1, _2):
          with self.subTest(f'{cmakeDefinitions, expectedCMakeDefinitionsArgument, }'):
             #
-            BuildZenUnitAndMetalMock.windows_cmake_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions)
+            BuildAndTestZenUnitAndMetalMock.windows_cmake_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
             expectedCMakeBuildCommand = 'cmake.exe --build . --config {0}'.format(self.cmakeBuildType)
