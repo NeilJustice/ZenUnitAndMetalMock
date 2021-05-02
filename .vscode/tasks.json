@@ -46,8 +46,7 @@
             "clear": true
          },
          "group": {
-            "kind": "test",
-            "isDefault": true
+            "kind": "test"
          }
       },
       {
