@@ -580,7 +580,7 @@ Example ZenUnit command line arguments:
    const char* testClassName::ZenUnit_testClassName = nullptr; \
    bool testClassName::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
    std::nullptr_t ZenUnit_TestClassRegistrar_##testClassName = \
-      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<testClassName>(#testClassName));
+      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<testClassName>>(#testClassName));
 
 // Skips the running of a test class with a specified skip reason.
 #define SKIP_TESTS(testClassName, skipReason) }; \
@@ -590,7 +590,7 @@ Example ZenUnit command line arguments:
    template<> const char* testClassName<__VA_ARGS__>::ZenUnit_testClassName = nullptr; \
    template<> bool testClassName<__VA_ARGS__>::ZenUnit_allNXNTestsHaveBeenRegistered = false; \
    std::nullptr_t ZENUNIT_FUSE(ZENUNIT_FUSE(ZENUNIT_FUSE(ZenUnit_TemplateTestClassRegistrar_, testClassName), _Line), __LINE__) = \
-      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(new ZenUnit::SpecificTestClassRunner<testClassName<__VA_ARGS__>>(#testClassName"<"#__VA_ARGS__">"));
+      ZenUnit::ZenUnitTestRunner::Instance()->AddTestClassRunner(std::make_unique<ZenUnit::SpecificTestClassRunner<testClassName<__VA_ARGS__>>>(#testClassName"<"#__VA_ARGS__">"));
 
 // Registers a templated test class with specified template parameters to be run when ZenUnit::RunTests(int argc, char* argv[]) is called.
 // Specify __VA_ARGS__ with type names to run the templated test class with.
@@ -4992,6 +4992,7 @@ namespace ZenUnit
    class TestClassRunnerRunner
    {
       friend class TestClassRunnerRunnerTests;
+      friend class ZenUnitTestRunnerTests;
    private:
       // Function Callers
       std::unique_ptr<const Transformer<std::unique_ptr<TestClassRunner>, TestClassResult>> _transformer;
@@ -5050,9 +5051,9 @@ namespace ZenUnit
          return numberOfTestClassesToBeRun;
       }
 
-      virtual void AddTestClassRunner(TestClassRunner* testClassRunner)
+      virtual void AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
       {
-         _testClassRunners.emplace_back(testClassRunner);
+         _testClassRunners.emplace_back(std::move(testClassRunner));
       }
 
       virtual void ApplyTestNameFiltersIfAny(const std::vector<TestNameFilter>& testNameFilters)
@@ -5553,9 +5554,9 @@ namespace ZenUnit
          return _zenUnitArgs;
       }
 
-      std::nullptr_t AddTestClassRunner(TestClassRunner* testClassRunner)
+      std::nullptr_t AddTestClassRunner(std::unique_ptr<TestClassRunner> testClassRunner)
       {
-         _testClassRunnerRunner->AddTestClassRunner(testClassRunner);
+         _testClassRunnerRunner->AddTestClassRunner(std::move(testClassRunner));
          return nullptr;
       }
 
@@ -7171,13 +7172,13 @@ Fatal Windows C++ Runtime Assertion
          return testNXNPmfTokenToTestPointer;
       }
 
-      static std::nullptr_t RegisterTestNXN(const PmfToken* pmfToken, const std::function<Test*()>& operatorNewTestNXN)
+      static std::nullptr_t RegisterTestNXN(const PmfToken* pmfToken, const std::function<std::unique_ptr<Test>()>& testCreatingFunction)
       {
          if (!DerivedTestClass::ZenUnit_allNXNTestsHaveBeenRegistered)
          {
-            Test* const newTestNXNPointer = operatorNewTestNXN();
+            std::unique_ptr<Test> newTestNXNPointer = testCreatingFunction();
             std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
-            const bool didEmplaceTestNXNPointer = testNXNPmfTokenToTestPointer.emplace(pmfToken, newTestNXNPointer).second;
+            const bool didEmplaceTestNXNPointer = testNXNPmfTokenToTestPointer.emplace(pmfToken, std::move(newTestNXNPointer)).second;
             ZENUNIT_ASSERT(didEmplaceTestNXNPointer);
          }
          return nullptr;
@@ -7231,7 +7232,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test1X1<DerivedTestClass, Arg1Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test1X1<DerivedTestClass, Arg1Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, test1X1Function, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7245,7 +7246,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test2X2<DerivedTestClass, Arg1Type, Arg2Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test2X2<DerivedTestClass, Arg1Type, Arg2Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7259,7 +7260,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test3X3<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test3X3<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7273,7 +7274,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test4X4<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test4X4<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7287,7 +7288,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test5X5<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test5X5<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7301,7 +7302,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test6X6<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test6X6<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7315,7 +7316,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test7X7<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test7X7<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7329,7 +7330,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test8X8<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test8X8<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
@@ -7342,7 +7343,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test9X9<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test9X9<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7356,7 +7357,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return new ZenUnit::Test10X10<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TestCaseArgTypes...>(
+            return std::make_unique<ZenUnit::Test10X10<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });

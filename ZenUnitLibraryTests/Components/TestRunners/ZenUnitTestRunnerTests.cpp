@@ -149,12 +149,13 @@ namespace ZenUnit
 
    TEST(AddTestClassRunner_EmplacesBackTestClassRunner_ReturnsNullptr)
    {
-      _testClassRunnerRunnerMock->AddTestClassRunnerMock.Expect();
-      SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(ZenUnit::Random<const char*>());
+      _zenUnitTestRunner._testClassRunnerRunner = make_unique<TestClassRunnerRunner>();
+      unique_ptr<SpecificTestClassRunner<TestingTestClass>> specificTestClassRunner =
+         make_unique<SpecificTestClassRunner<TestingTestClass>>(ZenUnit::Random<const char*>());
       //
-      const std::nullptr_t returnValue = _zenUnitTestRunner.AddTestClassRunner(&specificTestClassRunner);
+      const std::nullptr_t returnValue = _zenUnitTestRunner.AddTestClassRunner(std::move(specificTestClassRunner));
       //
-      METALMOCK(_testClassRunnerRunnerMock->AddTestClassRunnerMock.CalledOnceWith(&specificTestClassRunner));
+      ARE_EQUAL(1, _zenUnitTestRunner._testClassRunnerRunner->_testClassRunners.size());
       IS_NULLPTR(returnValue);
    }
 
@@ -162,9 +163,9 @@ namespace ZenUnit
       int zenUnitArgsTestRuns, size_t expectedNumberOfTestRuns,
       -2, numeric_limits<size_t>::max(),
       -1, numeric_limits<size_t>::max(),
-      0, size_t(0),
-      1, size_t(1),
-      2, size_t(2))
+      0, 0ULL,
+      1, 1ULL,
+      2, 2ULL)
    {
 #if defined _WIN32 && defined _DEBUG
       _CrtSetReportHookMock.Return(nullptr);
