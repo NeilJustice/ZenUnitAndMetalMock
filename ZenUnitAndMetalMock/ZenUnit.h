@@ -26,21 +26,16 @@ namespace ZenUnit
 #include <unordered_set>
 
 #if defined __linux__ || defined __APPLE__
-#include <climits>
-#include <cfloat>
-#include <cxxabi.h>
-#include <climits>
-#include <cxxabi.h>
-#include <iomanip>
-#include <memory>
-#include <pwd.h>
-#include <string.h>
-#include <unistd.h>
-#include <utility>
+#include <cfloat> // FLT_MAX and DBL_MAX
+#include <climits> // ULLONG_MAX
+#include <cxxabi.h> // abi::__cxa_demangle()
+#include <pwd.h> // getpwuid()
+#include <string.h> // strcasecmp(), strcmp(), strlen(), strstr()
+#include <unistd.h> // isatty(), geteuid(), gethostname()
 #endif
 
 #if defined _WIN32
-#include <numeric> // std::accumulate
+#include <numeric> // std::accumulate()
 #define WIN32_LEAN_AND_MEAN // ~40% faster Windows.h compile speed
 #define NOGDI // ~10% faster Windows.h compile speed
 #define NOMINMAX // Undefines Windows.h macros min and max
@@ -3733,8 +3728,7 @@ namespace ZenUnit
       const std::to_chars_result toCharsResult = std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
       if (toCharsResult.ec != std::errc{})
       {
-         const std::string exceptionMessage =
-            "ZenUnit::WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars";
+         const std::string exceptionMessage = "ZenUnit::WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars";
          throw std::invalid_argument(exceptionMessage);
       }
    }
@@ -5070,8 +5064,7 @@ namespace ZenUnit
          std::vector<TestClassResult> testClassResults;
          if (zenUnitArgs.randomTestOrdering)
          {
-            testClassResults = _transformer->RandomTransform(
-               &_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, globalZenUnitMode.randomSeed);
+            testClassResults = _transformer->RandomTransform(&_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, globalZenUnitMode.randomSeed);
          }
          else
          {
@@ -5825,8 +5818,7 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult) const
       {
-         TestResult testResult = TestResult::ConstructorDestructorSuccess(
-            fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         TestResult testResult = TestResult::ConstructorDestructorSuccess(fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          return testResult;
       }
 
@@ -5936,35 +5928,24 @@ Fatal Windows C++ Runtime Assertion
    protected:
       TestResult BaseRunTest()
       {
-         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
-            &Test::CallNewTestClass, this, TestPhase::Constructor);
+         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
             const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
                _protected_fullTestName, constructorTestPhaseResult);
             return constructorFailTestResult;
          }
-
-         const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(
-            &Test::CallStartup, this, TestPhase::Startup);
+         const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
          if (startupTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
-               &Test::CallDeleteTestClass, this, TestPhase::Destructor);
+            const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
             const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(
                _protected_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
             return startupFailTestResult;
          }
-
-         const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(
-            &Test::CallTestBody, this, TestPhase::TestBody);
-
-         const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(
-            &Test::CallCleanup, this, TestPhase::Cleanup);
-
-         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(
-            &Test::CallDeleteTestClass, this, TestPhase::Destructor);
-
+         const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
+         const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
+         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult = _testResultFactory->MakeFullTestResult(
             _protected_fullTestName,
             constructorTestPhaseResult,
@@ -6013,8 +5994,7 @@ Fatal Windows C++ Runtime Assertion
          _console->WriteLine(exceptionTypeNameAndException);
          if (testPhase != TestPhase::TestBody)
          {
-            FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup(
-               "std::exception or std::exception subclass", zenUnitArgs);
+            FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup("std::exception or std::exception subclass", zenUnitArgs);
          }
       }
       catch (const MetalMockException& ex)
@@ -6038,8 +6018,7 @@ Fatal Windows C++ Runtime Assertion
          return TestPhaseResult();
       }
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess->CallConstMemberFunction(
-         this, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
-         testPhaseResult.testOutcome, zenUnitArgs);
+         this, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess, testPhaseResult.testOutcome, zenUnitArgs);
       return testPhaseResult;
    }
 
@@ -6073,20 +6052,16 @@ Fatal Windows C++ Runtime Assertion
       std::vector<TestResult> RunTest() override
       {
          _testPhaseStopwatch->Start();
-         const TestPhaseResult constructorTestPhaseResult =
-            _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
-               _protected_fullTestName, constructorTestPhaseResult);
+            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
             constructorFailTestResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
             std::vector<TestResult> testResults = { std::move(constructorFailTestResult) };
             return testResults;
          }
-         const TestPhaseResult destructorTestPhaseResult =
-            _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(
-            _protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          testResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          std::vector<TestResult> testResults = { std::move(testResult) };
          return testResults;
@@ -6136,9 +6111,12 @@ Fatal Windows C++ Runtime Assertion
       std::unique_ptr<const _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>
          _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests;
 
-      using TwoArgTestAnyerType = TwoArgAnyer<
-         const std::vector<std::unique_ptr<Test>>, bool(*)(const std::unique_ptr<Test>&, const TestNameFilter&), const TestNameFilter&>;
-      std::unique_ptr<const TwoArgTestAnyerType> _twoArgTestAnyer;
+      using _twoArgTestAnyerType = TwoArgAnyer<
+         const std::vector<std::unique_ptr<Test>>,
+         bool(*)(const std::unique_ptr<Test>&,
+         const TestNameFilter&),
+         const TestNameFilter&>;
+      std::unique_ptr<const _twoArgTestAnyerType> _twoArgTestAnyer;
 
       using TwoArgMemberForEacherType = TwoArgMemberForEacher<
          std::unique_ptr<Test>,
@@ -6164,7 +6142,7 @@ Fatal Windows C++ Runtime Assertion
          // Function Callers
          , _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
             std::make_unique<_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>())
-         , _twoArgTestAnyer(std::make_unique<TwoArgTestAnyerType>())
+         , _twoArgTestAnyer(std::make_unique<_twoArgTestAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          , _voidZeroArgMemberFunctionCaller(std::make_unique<VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>>())
          , _voidOneArgMemberFunctionCaller(std::make_unique<VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
@@ -6188,8 +6166,7 @@ Fatal Windows C++ Runtime Assertion
          {
             return true;
          }
-         const bool thisTestClassHasATestThatMatchesTestNameFilter =
-            _twoArgTestAnyer->TwoArgAny(&_tests, TestNameFilterMatchesTestName, testNameFilter);
+         const bool thisTestClassHasATestThatMatchesTestNameFilter = _twoArgTestAnyer->TwoArgAny(&_tests, TestNameFilterMatchesTestName, testNameFilter);
          return thisTestClassHasATestThatMatchesTestNameFilter;
       }
 
@@ -6214,14 +6191,12 @@ Fatal Windows C++ Runtime Assertion
       TestClassResult RunTests() override
       {
          _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
-
          TestResult newableAndDeletableTestResult = _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests->CallConstMemberFunction(
             this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest);
          constexpr size_t LengthOfNewableAndDeletableTestResult = 1;
          const size_t numberOfTestResultsForThisTestClass = LengthOfNewableAndDeletableTestResult + _testCasesAccumulator->SumNumberOfTestCases(&_tests);
          _testClassResult.ReserveVectorCapacityForNumberOfTestResults(numberOfTestResultsForThisTestClass);
          _testClassResult.AddTestResult(std::move(newableAndDeletableTestResult));
-
          if (newableAndDeletableTestResult.testOutcome == TestOutcome::Success)
          {
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
@@ -6707,8 +6682,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call1ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6722,8 +6696,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call2ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6738,8 +6711,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call3ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6755,8 +6727,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call4ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6773,8 +6744,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call5ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6792,8 +6762,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call6ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6812,8 +6781,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call7ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6833,8 +6801,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call8ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6855,8 +6822,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call9ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -6951,9 +6917,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test1X1(const char* testClassName, const char* testName,
          Test1X1MemberFunction test1X1MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 1, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test1X1MemberFunction(test1X1MemberFunction)
+         : TestNXN<TestClassType, 1, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test1X1MemberFunction(test1X1MemberFunction)
       {
       }
 
@@ -6973,9 +6937,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test2X2(const char* testClassName, const char* testName,
          Test2X2MemberFunction test2X2MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 2, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test2X2MemberFunction(test2X2MemberFunction)
+         : TestNXN<TestClassType, 2, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test2X2MemberFunction(test2X2MemberFunction)
       {
       }
 
@@ -6995,9 +6957,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test3X3(const char* testClassName, const char* testName,
          Test3X3MemberFunction test3X3MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 3, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test3X3MemberFunction(test3X3MemberFunction)
+         : TestNXN<TestClassType, 3, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test3X3MemberFunction(test3X3MemberFunction)
       {
       }
 
@@ -7017,9 +6977,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test4X4(const char* testClassName, const char* testName,
          Test4X4MemberFunction test4X4MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 4, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test4X4MemberFunction(test4X4MemberFunction)
+         : TestNXN<TestClassType, 4, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test4X4MemberFunction(test4X4MemberFunction)
       {
       }
 
@@ -7039,9 +6997,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test5X5(const char* testClassName, const char* testName,
          Test5X5MemberFunction test5X5MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 5, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test5X5MemberFunction(test5X5MemberFunction)
+         : TestNXN<TestClassType, 5, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test5X5MemberFunction(test5X5MemberFunction)
       {
       }
 
@@ -7061,9 +7017,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test6X6(const char* testClassName, const char* testName,
          Test6X6MemberFunction test6X6MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 6, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test6X6MemberFunction(test6X6MemberFunction)
+         : TestNXN<TestClassType, 6, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test6X6MemberFunction(test6X6MemberFunction)
       {
       }
 
@@ -7083,9 +7037,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test7X7(const char* testClassName, const char* testName,
          Test7X7MemberFunction test7X7MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 7, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test7X7MemberFunction(test7X7MemberFunction)
+         : TestNXN<TestClassType, 7, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test7X7MemberFunction(test7X7MemberFunction)
       {
       }
 
@@ -7105,9 +7057,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test8X8(const char* testClassName, const char* testName,
          Test8X8MemberFunction test8X8MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 8, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test8X8MemberFunction(test8X8MemberFunction)
+         : TestNXN<TestClassType, 8, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test8X8MemberFunction(test8X8MemberFunction)
       {
       }
 
@@ -7127,9 +7077,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test9X9(const char* testClassName, const char* testName,
          Test9X9MemberFunction test9X9MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 9, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
-         , _test9X9MemberFunction(test9X9MemberFunction)
+         : TestNXN<TestClassType, 9, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...), _test9X9MemberFunction(test9X9MemberFunction)
       {
       }
 
@@ -7464,9 +7412,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    class Equalizer<std::pair<FirstType, SecondType>>
    {
    public:
-      static void AssertEqual(
-         const std::pair<FirstType, SecondType>& expectedPair,
-         const std::pair<FirstType, SecondType>& actualPair)
+      static void AssertEqual(const std::pair<FirstType, SecondType>& expectedPair, const std::pair<FirstType, SecondType>& actualPair)
       {
          PAIRS_ARE_EQUAL(expectedPair, actualPair);
       }
@@ -7476,9 +7422,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    class Equalizer<std::tuple<Types...>>
    {
    public:
-      static void AssertEqual(
-         const std::tuple<Types...>& expectedTuple,
-         const std::tuple<Types...>& actualTuple)
+      static void AssertEqual(const std::tuple<Types...>& expectedTuple, const std::tuple<Types...>& actualTuple)
       {
          TUPLES_ARE_EQUAL(expectedTuple, actualTuple);
       }
@@ -7488,9 +7432,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    class Equalizer<std::vector<T>>
    {
    public:
-      static void AssertEqual(
-         const std::vector<T>& expectedVector,
-         const std::vector<T>& actualVector)
+      static void AssertEqual(const std::vector<T>& expectedVector, const std::vector<T>& actualVector)
       {
          VECTORS_ARE_EQUAL(expectedVector, actualVector);
       }
@@ -7776,8 +7718,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       std::tuple<TupleTypes...> randomTuple;
       CallFunctionOnEachMutableTupleElement(randomTuple, [](auto tupleElementReferenceWrapper)
       {
-         tupleElementReferenceWrapper.get() = ZenUnit::Random<
-            std::remove_reference_t<decltype(tupleElementReferenceWrapper.get())>>();
+         tupleElementReferenceWrapper.get() = ZenUnit::Random<std::remove_reference_t<decltype(tupleElementReferenceWrapper.get())>>();
       }, GenerateIndexSequence<sizeof...(TupleTypes)>());
       return randomTuple;
    }
@@ -7964,8 +7905,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       else if constexpr (is_vector_v<T>)
       {
-         std::vector<typename T::value_type> randomVector =
-            RandomVector<typename T::value_type>();
+         std::vector<typename T::value_type> randomVector = RandomVector<typename T::value_type>();
          return randomVector;
       }
       else if constexpr (is_unordered_map_v<T>)
