@@ -3,5 +3,5 @@ set -ev
 
 cd ZenUnitPy
 export PYTHONPATH=.
-python ZenUnitPy/RunZenUnitPyTestsWithCoverageAndLinting.py
+python ZenUnitPy/MypyFlake8PylintThenRunTestsWithCoverage.py
 cd ..
