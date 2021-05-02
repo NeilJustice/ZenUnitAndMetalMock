@@ -36,9 +36,23 @@ EVIDENCE
 RUN_TEMPLATE_TESTS(SkippedTemplateTestClassB, map)
 THEN_SKIP_TEMPLATE_TESTS(SkippedTemplateTestClassB, Reason, unordered_map)
 
-int main(int argc, char* argv[])
+int main()
 {
-   ZenUnit::globalZenUnitMode.selfTest = true;
-   const int exitCode = ZenUnit::RunTests(argc, argv);
-   return exitCode;
+   cout << "sizeof(Anomaly): " << sizeof(ZenUnit::Anomaly) << '\n';
+   cout << "sizeof(AnomalyOrException): " << sizeof(ZenUnit::AnomalyOrException) << '\n';
+   cout << "sizeof(FilePathLineNumber): " << sizeof(ZenUnit::FilePathLineNumber) << '\n';
+   cout << "sizeof(FullTestName): " << sizeof(ZenUnit::FullTestName) << '\n';
+   cout << "sizeof(Test): " << sizeof(ZenUnit::Test) << '\n';
+   cout << "sizeof(TestClassResult): " << sizeof(ZenUnit::TestClassResult) << '\n';
+   cout << "sizeof(TestNameFilter): " << sizeof(ZenUnit::TestNameFilter) << '\n';
+   cout << "sizeof(TestPhaseResult): " << sizeof(ZenUnit::TestPhaseResult) << '\n';
+   cout << "sizeof(TestResult): " << sizeof(ZenUnit::TestResult) << '\n';
+   cout << "sizeof(ZenUnitArgs): " << sizeof(ZenUnit::ZenUnitArgs) << '\n';
 }
+
+// int main(int argc, char* argv[])
+// {
+//    ZenUnit::globalZenUnitMode.selfTest = true;
+//    const int exitCode = ZenUnit::RunTests(argc, argv);
+//    return exitCode;
+// }
