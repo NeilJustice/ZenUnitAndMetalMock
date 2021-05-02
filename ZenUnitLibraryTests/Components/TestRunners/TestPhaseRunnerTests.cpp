@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestRunStopwatchStopperMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestPhaseTranslatorMock.h"

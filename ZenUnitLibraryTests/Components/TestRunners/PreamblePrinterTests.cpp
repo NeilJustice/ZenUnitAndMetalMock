@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerRunnerMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/MetalMock/EnvironmentServiceMock.h"

@@ -19,8 +19,10 @@ namespace ZenUnit
    TEST(DefaultConstructor_NewsConsoleAndNewArgMemberAnyer)
    {
       TestClassRunner testClassRunner;
-      DELETE_TO_ASSERT_NEWED(testClassRunner._protected_console);
+      // Function Callers
       DELETE_TO_ASSERT_NEWED(testClassRunner._protected_twoArgMemberAnyer);
+      // Constant Components
+      DELETE_TO_ASSERT_NEWED(testClassRunner._protected_console);
    }
 
    TEST(TestClassName_ReturnNullptr)

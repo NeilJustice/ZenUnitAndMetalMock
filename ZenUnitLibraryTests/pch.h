@@ -37,4 +37,7 @@ using namespace std;
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestRunResultEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
+// ZenUnitLibraryTests Components Console MetalMock
+#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
+
 #endif

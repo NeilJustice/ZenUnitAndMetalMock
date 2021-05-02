@@ -3,11 +3,11 @@
 #include <unistd.h>
 #endif
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/ArgsParserMock.h"
-#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestRunResultMock.h"
+#include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/ExitCodeLinePrinterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/PreamblePrinterMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerRunnerMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestRunResultMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidOneArgMemberFunctionCallerMock.h"
@@ -64,6 +64,7 @@ namespace ZenUnit
    // Constant Components
    ArgsParserMock* _argsParserMock = nullptr;
    ConsoleMock* _consoleMock = nullptr;
+   ExitCodeLinePrinterMock* _exitCodeLinePrinterMock = nullptr;
    PreamblePrinterMock* _preamblePrinterMock = nullptr;
    WatchMock* _watchMock = nullptr;
    // Mutable Components
@@ -100,6 +101,7 @@ namespace ZenUnit
       // Constant Components
       _zenUnitTestRunner._argsParser.reset(_argsParserMock = new ArgsParserMock);
       _zenUnitTestRunner._console.reset(_consoleMock = new ConsoleMock);
+      _zenUnitTestRunner._exitCodeLinePrinter.reset(_exitCodeLinePrinterMock = new ExitCodeLinePrinterMock);
       _zenUnitTestRunner._preamblePrinter.reset(_preamblePrinterMock = new PreamblePrinterMock);
       _zenUnitTestRunner._watch.reset(_watchMock = new WatchMock);
       // Mutable Components
@@ -124,6 +126,7 @@ namespace ZenUnit
       // Constant Components
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._argsParser);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._console);
+      DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._exitCodeLinePrinter);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._preamblePrinter);
       DELETE_TO_ASSERT_NEWED(zenUnitTestRunner._watch);
       // Mutable Components
@@ -176,14 +179,15 @@ namespace ZenUnit
 
       _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
-      const int numberOfFailedTestRuns =
-         _nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.ReturnRandom();
+      const int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.ReturnRandom();
+
+      _exitCodeLinePrinterMock->PrintExitCodeLineMock.Expect();
 
       _consoleMock->WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.Expect();
 
       const vector<string> commandLineArgs = ZenUnit::RandomVector<string>();
       //
-      const int returnedNumberOfFailedTestRuns = _zenUnitTestRunner.RunTestsNumberOfTestRunsTimes(commandLineArgs);
+      const int returnedZenUnitExitCode = _zenUnitTestRunner.RunTestsNumberOfTestRunsTimes(commandLineArgs);
       //
 #if defined _WIN32 && defined _DEBUG
       METALMOCK(_CrtSetReportHookMock.CalledOnceWith(ZenUnitTestRunner::FailFastInResponseToWindowsCrtAssertionFailure));
@@ -192,8 +196,9 @@ namespace ZenUnit
       METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
       METALMOCK(_nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.CalledOnceWith(
          expectedNumberOfTestRuns, &_zenUnitTestRunner, &ZenUnitTestRunner::RunTests));
+      METALMOCK(_exitCodeLinePrinterMock->PrintExitCodeLineMock.CalledOnceWith(zenUnitExitCode, zenUnitArgs.alwaysExit0));
       METALMOCK(_consoleMock->WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
-      ARE_EQUAL(numberOfFailedTestRuns, returnedNumberOfFailedTestRuns);
+      ARE_EQUAL(zenUnitExitCode, returnedZenUnitExitCode);
    }
 
    TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)

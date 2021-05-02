@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 
 namespace ZenUnit
 {

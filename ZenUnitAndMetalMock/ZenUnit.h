@@ -5288,43 +5288,43 @@ namespace ZenUnit
          else
          {
             const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
-            std::string tripletLinesPrefix;
+            std::string bracketedZenUnitOrFailArrowPrefix;
             std::string successOrFailLinePrefix;
             std::string resultMessage;
             if (_numberOfFailedTestCases == 0)
             {
-               tripletLinesPrefix = "[ZenUnit]";
+               bracketedZenUnitOrFailArrowPrefix = "[ZenUnit]";
                successOrFailLinePrefix = "[SUCCESS]";
                resultMessage = String::ConcatValues("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
             }
             else
             {
-               tripletLinesPrefix = ">>------>";
+               bracketedZenUnitOrFailArrowPrefix = ">>------>";
                successOrFailLinePrefix = ">>-FAIL->";
                resultMessage = String::ConcatValues("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
             }
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string completedCommandLineMessage = String::ConcatStrings("  Completed: ", zenUnitArgs.commandLine);
             _console->WriteLine(completedCommandLineMessage);
 
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string randomSeedMessage = String::ConcatValues(" RandomSeed: --random-seed=", globalZenUnitMode.randomSeed);
             _console->WriteLine(randomSeedMessage);
 
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string startTimeMessage = String::ConcatStrings("  StartTime: ", startDateTime);
             _console->WriteLine(startTimeMessage);
 
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string endDateTime = _watch->DateTimeNow();
             const std::string endTimeMessage = String::ConcatStrings("    EndTime: ", endDateTime);
             _console->WriteLine(endTimeMessage);
 
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string durationMessage = String::ConcatValues("   Duration: ", testRunElapsedSeconds, " seconds");
             _console->WriteLine(durationMessage);
 
-            _console->WriteColor(tripletLinesPrefix, greenOrRed);
+            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string testRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
             _console->WriteLine(testRunMessage);
 
@@ -5339,8 +5339,7 @@ namespace ZenUnit
          {
             return 0;
          }
-         const bool haveSkippedTestsOrTestClasses =
-            !_skippedFullTestNamesAndSkipReasons.empty() || !_skippedTestClassNamesAndSkipReasons.empty();
+         const bool haveSkippedTestsOrTestClasses = !_skippedFullTestNamesAndSkipReasons.empty() || !_skippedTestClassNamesAndSkipReasons.empty();
          if (zenUnitArgs.exit1IfTestsSkipped && haveSkippedTestsOrTestClasses)
          {
             return 1;
@@ -5465,6 +5464,44 @@ namespace ZenUnit
       virtual ~NTimesMemberFunctionAccumulator() = default;
    };
 
+   class ExitCodeLinePrinter
+   {
+      friend class ExitCodeLinePrinterTests;
+   private:
+      // Constant Components
+      std::unique_ptr<const Console> _console;
+   public:
+      ExitCodeLinePrinter()
+         // Constant Components
+         : _console(std::make_unique<Console>())
+      {
+      }
+
+      virtual ~ExitCodeLinePrinter() = default;
+
+      virtual void PrintExitCodeLine(int zenUnitExitCode, bool alwaysExit0) const
+      {
+         if (alwaysExit0)
+         {
+            _console->WriteColor("[ZenUnit]", Color::Green);
+            _console->WriteLine("   ExitCode: 0");
+         }
+         else
+         {
+            if (zenUnitExitCode == 0)
+            {
+               _console->WriteColor("[ZenUnit]", Color::Green);
+               _console->WriteLine("   ExitCode: 0");
+            }
+            else
+            {
+               _console->WriteColor(">>------>", Color::Red);
+               _console->WriteLine("   ExitCode: " + std::to_string(zenUnitExitCode));
+            }
+         }
+      }
+   };
+
    class ZenUnitTestRunner
    {
       friend class ZenUnitTestRunnerTests;
@@ -5488,6 +5525,7 @@ namespace ZenUnit
       // Constant Components
       std::unique_ptr<const ArgsParser> _argsParser;
       std::unique_ptr<const Console> _console;
+      std::unique_ptr<const ExitCodeLinePrinter> _exitCodeLinePrinter;
       std::unique_ptr<const PreamblePrinter> _preamblePrinter;
       std::unique_ptr<const Watch> _watch;
       // Mutable Components
@@ -5517,6 +5555,7 @@ namespace ZenUnit
          // Constant Components
          , _argsParser(std::make_unique<ArgsParser>())
          , _console(std::make_unique<Console>())
+         , _exitCodeLinePrinter(std::make_unique<ExitCodeLinePrinter>())
          , _preamblePrinter(std::make_unique<PreamblePrinter>())
          , _watch(std::make_unique<Watch>())
          // Mutable Components
@@ -5574,10 +5613,11 @@ namespace ZenUnit
          _testClassRunnerRunner->ApplyTestNameFiltersIfAny(_zenUnitArgs.testNameFilters);
          const size_t numberOfTestRuns = _zenUnitArgs.testRuns < 0 ?
             std::numeric_limits<size_t>::max() : static_cast<size_t>(_zenUnitArgs.testRuns);
-         const int numberOfFailedTestRuns = _nTimesMemberFunctionAccumulator_RunTests->
+         const int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTests->
             AccumulateNonConstMemberFunctionNTimes(numberOfTestRuns, this, &ZenUnitTestRunner::RunTests);
+         _exitCodeLinePrinter->PrintExitCodeLine(zenUnitExitCode, _zenUnitArgs.alwaysExit0);
          _console->WaitForEnterKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
-         return numberOfFailedTestRuns;
+         return zenUnitExitCode;
       }
 
       std::string StopTestRunStopwatchAndGetElapsedSeconds()
@@ -5606,14 +5646,14 @@ Fatal Windows C++ Runtime Assertion
       {
          SetNewRandomEngineForNewTestRun();
          SetCurrentTestRunNumber(testRunIndex);
-         const int testRunExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
+         const int zenUnitExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
             this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs, testRunIndex);
-         ZENUNIT_ASSERT(testRunExitCode == 0 || testRunExitCode == 1);
+         ZENUNIT_ASSERT(zenUnitExitCode == 0 || zenUnitExitCode == 1);
          _testRunResult->ResetStateInPreparationForNextTestRun();
          _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
             this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
          _console->WriteNewLineIfValuesAreNotEqual(testRunIndex, numberOfTestRuns - 1ULL);
-         return testRunExitCode;
+         return zenUnitExitCode;
       }
 
       int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& zenUnitArgs, size_t testRunIndex)

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
-#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/ITestCaseNumberGeneratorMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"

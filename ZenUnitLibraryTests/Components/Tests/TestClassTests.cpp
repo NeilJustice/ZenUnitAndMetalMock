@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleColorerMock.h"
-#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/Components/Misc/MetalMock/ExitCallerMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/ZenUnitTestRunnerMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"

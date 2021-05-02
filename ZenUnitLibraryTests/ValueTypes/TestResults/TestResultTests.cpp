@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestFailureNumbererMock.h"
 
 namespace ZenUnit
@@ -43,7 +42,7 @@ namespace ZenUnit
    STARTUP
    {
       // Mocks
-      _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = 
+      _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
          BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
       // Testing Fields
       ConstructorTestPhaseResult = TestPhaseResult(TestPhase::Constructor);
@@ -182,8 +181,8 @@ namespace ZenUnit
       expectedTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
       expectedTestResult.testOutcome = expectedTestResultOutcome;
       expectedTestResult.elapsedMicroseconds =
-         ConstructorTestPhaseResult.elapsedMicroseconds + 
-         StartupTestPhaseResult.elapsedMicroseconds + 
+         ConstructorTestPhaseResult.elapsedMicroseconds +
+         StartupTestPhaseResult.elapsedMicroseconds +
          DestructorTestPhaseResult.elapsedMicroseconds;
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
@@ -320,7 +319,7 @@ namespace ZenUnit
       const string exceptionTypeName = Random<string>();
       const string exceptionWhatString = Random<string>();
       const char* const exceptionWhat = exceptionWhatString.c_str();
-      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleTestPhaseResultField).anomalyOrException = 
+      (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleTestPhaseResultField).anomalyOrException =
          make_shared<AnomalyOrException>(&exceptionTypeName, exceptionWhat);
       (_testResult_WriteTestCaseNumberIfAnyMocked.*expectedResponsibleTestPhaseResultField).testPhase = testPhase;
       _testResult_WriteTestCaseNumberIfAnyMocked.responsibleTestPhaseResultField = expectedResponsibleTestPhaseResultField;
