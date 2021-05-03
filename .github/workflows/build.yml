@@ -34,7 +34,7 @@ jobs:
           PYTHONPATH: "."
       
       - name: Install ninja-build
-        run: sudo apt-get install ninja-build
+        run: sudo apt-get install ninja-build lcov
         
       - name: Run BuildAndInstallCPlusPlusProgram.py
         run: python ZenUnitPy/ZenUnitPy/BuildAndTestZenUnitAndMetalMock.py --cmake-generator=Ninja --cmake-build-type=Debug --cmake-definitions=""
@@ -46,3 +46,17 @@ jobs:
         with:
           files: ZenUnitPy/ZenUnitPyTests/CoberturaCodeCoverageResults_ZenUnitPyTests.xml
           fail_ci_if_error: true
+
+  sonarcloud:
+    name: SonarCloud scan FileRevisorPyUtils
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: SonarCloud scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
