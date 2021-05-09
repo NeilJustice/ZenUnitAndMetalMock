@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ev
 
-export PYTHONPATH=ZenUnitPy
+export PYTHONPATH=ZenUnitDevOpsPython
 export CXX=/usr/bin/clang++
-python ZenUnitPy/ZenUnitPy/BuildAndTestZenUnitAndMetalMock.py --cmake-generator=Ninja --cmake-build-type=Debug --cmake-definitions="-DClangAddressSanitizerMode=ON"
+python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py --cmake-generator=Ninja --cmake-build-type=Debug --cmake-definitions="-DClangAddressSanitizerMode=ON"

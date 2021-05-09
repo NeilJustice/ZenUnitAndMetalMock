@@ -1,0 +1,11 @@
+[flake8]
+# E111 indentation is not a multiple of 4
+# E114 indentation is not a multiple of 4 (comment)
+# E121 continuation line under-indented for hanging indent
+# E122 continuation line missing indentation or outdented
+# E261 at least two spaces before inline comment
+# E302 expected 2 blank lines, found 1
+# E305 expected 2 blank lines after class or function definition, found 1
+# E402 module level import not at top of file
+# E501 line too long
+ignore=E111,E114,E121,E122,E261,E302,E305,E402,E501

@@ -6,8 +6,8 @@
 |----------|------------|
 |GitHub Actions Debug build - ubuntu-latest Clang 10.0.0|[![ZenUnitAndMetalMock](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg)](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml)|
 |AppVeyor Debug and Release build - Visual Studio 2019 x64|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
-|Codecov.io code coverage for ZenUnitPyUtils DevOps code|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
-|SonarCloud scan of ZenUnitPy Python code|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_GitHubActionsCPlusPlus&metric=alert_status)](https://sonarcloud.io/dashboard?id=NeilJustice_GitHubActionsCPlusPlus)|
+|Codecov.io code coverage for ZenUnitDevOpsPythonUtils DevOps code|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
+|SonarCloud scan of ZenUnitDevOpsPython Python code|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_GitHubActionsCPlusPlus&metric=alert_status)](https://sonarcloud.io/dashboard?id=NeilJustice_GitHubActionsCPlusPlus)|
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
@@ -1057,7 +1057,7 @@ ZenUnit.h and MetalMock.h installed on Windows:
 |----------------------|-------------------------------------|
 |GitHub Actions build|In progress|
 |Update implementations of `FLOATS_ARE_NEAR` and `DOUBLES_ARE_NEAR` to compare based on Units in the Last Place (ULPs)|Awaiting implementation|
-|SonarCloud Python static analysis badge for ZenUnitPyUtils|Awaiting implementation|
+|SonarCloud Python static analysis badge for ZenUnitDevOpsPythonUtils|Awaiting implementation|
 |SonarCloud C++ static analysis badge|Awaiting implementation|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 

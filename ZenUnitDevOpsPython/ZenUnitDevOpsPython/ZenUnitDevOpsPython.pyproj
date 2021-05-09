@@ -3,22 +3,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>5be2bd06-b3d6-4e12-9d37-cb82aa0ef9d3</ProjectGuid>
-    <ProjectHome>
-    </ProjectHome>
-    <StartupFile>RunAllWithCoverage.py</StartupFile>
+    <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>BuildAndTestZenUnitAndMetalMock.py</StartupFile>
     <SearchPath>..\</SearchPath>
-    <WorkingDirectory>..</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>ZenUnitPyTests</Name>
-    <RootNamespace>ZenUnitPyTests</RootNamespace>
-    <IsWindowsApplication>False</IsWindowsApplication>
+    <Name>ZenUnitDevOpsPython</Name>
+    <RootNamespace>ZenUnitDevOpsPython</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>
-    </CommandLineArguments>
+    <CommandLineArguments>--cmake-generator="Visual Studio 16 2019" --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
-    <InterpreterArguments>
-    </InterpreterArguments>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <WorkingDirectory>D:\Code\ZenUnitAndMetalMock</WorkingDirectory>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,18 +27,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BuildAndTestZenUnitAndMetalMockTests.py" />
-    <Compile Include="CMakeTests.py" />
-    <Compile Include="FileSystemTests.py" />
-    <Compile Include="ProcessTests.py" />
-    <Compile Include="PythonTests.py" />
-    <Compile Include="RunAll.py" />
-    <Compile Include="RunAllWithCoverage.py" />
-    <Compile Include="Random.py">
+    <Compile Include="BuildAndTestZenUnitAndMetalMock.py" />
+    <Compile Include="CMake.py" />
+    <Compile Include="FileSystem.py" />
+    <Compile Include="Process.py" />
+    <Compile Include="ProcessThread.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MypyFlake8PylintThenRunTestsWithCoverageTests.py" />
-    <Compile Include="UnitTesterTests.py">
+    <Compile Include="Python.py" />
+    <Compile Include="MypyFlake8PylintThenRunTestsWithCoverage.py" />
+    <Compile Include="UnitTester.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="__init__.py" />
@@ -48,9 +44,5 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
   </PropertyGroup>
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>

@@ -2,7 +2,7 @@ import glob
 import os
 import platform
 import sys
-from ZenUnitPy import Process
+from ZenUnitDevOpsPython import Process
 
 PylintCommand = 'pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append(\'.\')\" '
 

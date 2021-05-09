@@ -7,8 +7,8 @@ import subprocess
 import sys
 import unittest
 from unittest.mock import patch, call
-from ZenUnitPy import Process, UnitTester
-from ZenUnitPyTests import Random
+from ZenUnitDevOpsPython import Process, UnitTester
+from ZenUnitDevOpsPythonTests import Random
 
 testNames = [
 'test_fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero',
@@ -34,7 +34,7 @@ class ProcessTests(unittest.TestCase):
       self.ExpectedPylintcommand = 'pylint --rcfile=.pylintrc --init-hook=\"sys.path.append(\'.\')\" '
 
    def test_fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero(self):
-      @patch('ZenUnitPy.Process.run_and_get_exit_code', spec_set=True)
+      @patch('ZenUnitDevOpsPython.Process.run_and_get_exit_code', spec_set=True)
       @patch('builtins.print', spec_set=True)
       @patch('sys.exit', spec_set=True)
       def testcase(exitCode, expectPrintCommandFailedAndExit, _1, printMock, _3):
@@ -56,7 +56,7 @@ class ProcessTests(unittest.TestCase):
 
    @patch('os.getcwd', spec_set=True)
    @patch('builtins.print', spec_set=True)
-   @patch('ZenUnitPy.Process.cross_platform_subprocess_call', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.cross_platform_subprocess_call', spec_set=True)
    def test_run_and_get_exit_code_RunsProcess_ReturnsExitCode(self, _1, printMock, _3):
       os.getcwd.return_value = self.currentWorkingDirectory
       subprocessReturnValue = Random.integer()
@@ -71,7 +71,7 @@ class ProcessTests(unittest.TestCase):
 
    @patch('os.getcwd', spec_set=True)
    @patch('builtins.print', spec_set=True)
-   @patch('ZenUnitPy.Process.cross_platform_subprocess_call', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.cross_platform_subprocess_call', spec_set=True)
    @patch('sys.exit', spec_set=True)
    def test_run_and_get_exit_code_RunsProcess_ProcessRaisesAnException_PrintsException_Exits1(self, _1, _2, printMock, _4):
       os.getcwd.return_value = self.currentWorkingDirectory
@@ -113,8 +113,8 @@ class ProcessTests(unittest.TestCase):
       testcase('Linux', True)
       testcase('OSX', True)
 
-   @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
-   @patch('ZenUnitPy.Process.append_args', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.fail_fast_run', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.append_args', spec_set=True)
    def test_run_exe_CallsRunWithExpected(self, _1, _2):
       appendArgsReturnValue = Random.string()
       Process.append_args.return_value = appendArgsReturnValue
@@ -240,7 +240,7 @@ class ProcessTests(unittest.TestCase):
 
    @patch('shlex.split', spec_set=True)
    @patch('subprocess.check_output', spec_set=True)
-   @patch('ZenUnitPy.Process.bytes_to_utf8', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.bytes_to_utf8', spec_set=True)
    def test_run_and_get_stdout(self, _1, _2, _3):
       shlexReturnValue = Random.string()
       shlex.split.return_value = shlexReturnValue
@@ -262,7 +262,7 @@ class ProcessTests(unittest.TestCase):
 
    def test_run_and_check_stdout_for_substring(self):
       @patch('builtins.print', spec_set=True)
-      @patch('ZenUnitPy.Process.run_and_get_stdout', spec_set=True)
+      @patch('ZenUnitDevOpsPython.Process.run_and_get_stdout', spec_set=True)
       @patch('sys.exit', spec_set=True)
       def testcase(stdout, substring, expectExit, _1, _2, printMock):
          with self.subTest(f'{stdout, substring, expectExit}'):

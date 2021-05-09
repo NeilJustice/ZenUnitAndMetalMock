@@ -4,8 +4,8 @@ import platform
 import sys
 import unittest
 from unittest.mock import call, patch
-from ZenUnitPy import Python, Process, UnitTester
-from ZenUnitPyTests import Random
+from ZenUnitDevOpsPython import Python, Process, UnitTester
+from ZenUnitDevOpsPythonTests import Random
 
 testNames = [
 'test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders',
@@ -19,7 +19,7 @@ class PythonTests(unittest.TestCase):
 
    ExpectedPylintCommand = 'pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append(\'.\')\" '
 
-   @patch('ZenUnitPy.Process.run_and_get_exit_code', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.run_and_get_exit_code', spec_set=True)
    def test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders(self, _1):
       pylintExitCode = Random.integer()
       Process.run_and_get_exit_code.return_value = pylintExitCode
@@ -31,7 +31,7 @@ class PythonTests(unittest.TestCase):
       self.assertEqual(pylintExitCode, pylintExitCode)
 
    @staticmethod
-   @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.fail_fast_run', spec_set=True)
    def test_run_mypy_RunsMypyDot(_1):
       #
       Python.run_mypy()
@@ -41,8 +41,8 @@ class PythonTests(unittest.TestCase):
    def test_run_pylint_on_all_files_in_parallel_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential(self):
       @patch('glob.glob', spec_set=True)
       @patch('platform.system', spec_set=True)
-      @patch('ZenUnitPy.Process.run_parallel_processpoolexecutor', spec_set=True)
-      @patch('ZenUnitPy.Process.run_parallel_processthread', spec_set=True)
+      @patch('ZenUnitDevOpsPython.Process.run_parallel_processpoolexecutor', spec_set=True)
+      @patch('ZenUnitDevOpsPython.Process.run_parallel_processthread', spec_set=True)
       @patch('sys.exit', spec_set=True)
       def testcase(platformSystem, expectedMapParallel, allPylintsSucceeded, expectSysExit1, _1, _2, _3, _4, _5):
          with self.subTest(f'{platformSystem, expectedMapParallel, allPylintsSucceeded, expectSysExit1}'):
@@ -73,7 +73,7 @@ class PythonTests(unittest.TestCase):
       testcase('windows', True, False, True)
 
    @staticmethod
-   @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
+   @patch('ZenUnitDevOpsPython.Process.fail_fast_run', spec_set=True)
    def test_run_flake8_RunsFlake8WithFlake8Config(_1):
       #
       Python.run_flake8()
@@ -83,8 +83,8 @@ class PythonTests(unittest.TestCase):
 
    def test_run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode(self):
       @patch('os.getcwd', spec_set=True)
-      @patch('ZenUnitPy.Process.fail_fast_run', spec_set=True)
-      @patch('ZenUnitPy.Process.run_and_get_exit_code', spec_set=True)
+      @patch('ZenUnitDevOpsPython.Process.fail_fast_run', spec_set=True)
+      @patch('ZenUnitDevOpsPython.Process.run_and_get_exit_code', spec_set=True)
       @patch('sys.exit', spec_set=True)
       @patch('builtins.print', spec_set=True)
       def testcase(reportExitCode, expectedConcludingPrint, printMock, _2, _3, _4, _5):

@@ -1,6 +1,6 @@
 import threading
 from typing import List
-from ZenUnitPy import Process
+from ZenUnitDevOpsPython import Process
 
 class ProcessThread(threading.Thread): # pragma nocover
 

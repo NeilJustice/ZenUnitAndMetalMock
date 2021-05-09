@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock, patch, sentinel
-from ZenUnitPy import UnitTester
-from ZenUnitPyTests import Random
+from ZenUnitDevOpsPython import UnitTester
+from ZenUnitDevOpsPythonTests import Random
 
 testNames = ['test_run_tests_RunsTestSuiteWithTextTestRunner']
 
