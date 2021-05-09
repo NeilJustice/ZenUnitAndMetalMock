@@ -16,7 +16,7 @@ add_library(ZenUnitTestUtils ${sourceFilePaths})
 ConfigurePlatformSpecificPrecompiledHeaders()
 
 if(UNIX)
-   if(CodeCovMode)
+   if(LCovCodeCoverageMode)
      target_link_libraries(ZenUnitTestUtils CodeCovLibraryInterface)
    endif()
 endif()

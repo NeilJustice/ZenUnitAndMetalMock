@@ -58,7 +58,7 @@ ConfigurePlatformSpecificPrecompiledHeaders()
 OnWindowsAddPostBuildStepToRunTests()
 
 if(UNIX AND NOT APPLE)
-   if(CodeCovMode)
+   if(LCovCodeCoverageMode)
      target_link_libraries(ZenUnitLibraryTests CodeCovLibraryInterface)
    endif()
 endif()

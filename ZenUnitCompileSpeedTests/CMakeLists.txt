@@ -18,7 +18,7 @@ endif()
 ConfigurePlatformSpecificPrecompiledHeaders()
 
 if(UNIX AND NOT APPLE)
-   if(CodeCovMode)
+   if(LCovCodeCoverageMode)
      target_link_libraries(ZenUnitCompileSpeedTests CodeCovLibraryInterface)
    endif()
 endif()
