@@ -1005,7 +1005,7 @@ Seen in this screenshot is function `ZenUnit::ArgsParser::Parse` for parsing Zen
 
 ### ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows
 
-Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting that an expected value is equal to actual value:
+Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting that an expected value is equal to an actual value:
 
 ![ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
 
