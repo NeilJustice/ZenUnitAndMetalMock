@@ -35,7 +35,7 @@ jobs:
 
       - name: Install apt packages
         run: sudo apt-get install ninja-build
-        
+
       - name: Install lcov if g++-10 Release
         run: sudo apt-get install lcov
         if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
@@ -47,10 +47,10 @@ jobs:
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions=""
         env:
-          CXX: "/usr/bin/clang++"
+          CXX: "/usr/bin/${{ matrix.cxx }}"
           PYTHONPATH: ZenUnitDevOpsPython
         if: ${{ matrix.cxx == 'clang++' || (matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Debug') }}
-          
+
       - name: Run BuildAndTestZenUnitAndMetalMock.py in code coverage mode if g++-10 Release
         run: |
           python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
@@ -58,7 +58,7 @@ jobs:
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions="-DLCovCodeCoverageMode=ON"
         env:
-          CXX: "/usr/bin/clang++"
+          CXX: "/usr/bin/${{ matrix.cxx }}"
           PYTHONPATH: ZenUnitDevOpsPython
         if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
 
@@ -92,4 +92,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    
+
