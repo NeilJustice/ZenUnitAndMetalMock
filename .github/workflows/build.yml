@@ -19,10 +19,10 @@ jobs:
         with:
           python-version: 3.9
         
-      #- uses: actions/cache@v2
-       # with:
-        #  path: ${{ env.pythonLocation }}
-         # key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
+      - uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
         
       - name: Install pip packages
         run: pip install --upgrade --upgrade-strategy eager -r dev-requirements.txt
