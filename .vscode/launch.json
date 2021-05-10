@@ -10,6 +10,18 @@
          "cwd": "${workspaceRoot}",
          "program": "Debug/ZenUnitLibraryTests/ZenUnitLibraryTests",
          "linux": { "MIMode": "gdb" }
+      },
+      {
+         "name": "Debug Python",
+         "type": "python",
+         "python": "/usr/bin/python",
+         "request": "launch",
+         "program": "${file}",
+         "args": [ "" ],
+         "env": { "PYTHONPATH": ".." },
+         "stopOnEntry": false,
+         "console": "integratedTerminal",
+         "cwd": "${fileDirname}"
       }
    ]
 }

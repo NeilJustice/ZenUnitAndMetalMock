@@ -29,9 +29,8 @@ jobs:
 
       - name: Mypy, Flake8, Pylint, then run unit tests with coverage and pytest
         run: python ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py
-        working-directory: ZenUnitDevOpsPython
         env:
-          PYTHONPATH: "."
+          PYTHONPATH: .
 
       - name: Install apt packages
         run: sudo apt-get install ninja-build
@@ -42,24 +41,24 @@ jobs:
 
       - name: Run BuildAndTestZenUnitAndMetalMock.py in non code coverage mode if clang++ Debug/Release or g++-10 Debug
         run: |
-          python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
+          python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
             --cmake-generator=Ninja \
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions=""
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
-          PYTHONPATH: ZenUnitDevOpsPython
+          PYTHONPATH: .
         if: ${{ matrix.cxx == 'clang++' || (matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Debug') }}
 
       - name: Run BuildAndTestZenUnitAndMetalMock.py in code coverage mode if g++-10 Release
         run: |
-          python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
+          python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
             --cmake-generator=Ninja \
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions="-DLCovCodeCoverageMode=ON"
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
-          PYTHONPATH: ZenUnitDevOpsPython
+          PYTHONPATH: .
         if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
 
       - name: Install and run lcov 1.15 then upload to Codecov.io if g++-10 Release
@@ -75,21 +74,11 @@ jobs:
 
       - uses: codecov/codecov-action@v1
         with:
-          files: ZenUnitDevOpsPython/ZenUnitDevOpsPythonTests/CoberturaCodeCoverageResults_ZenUnitDevOpsPythonTests.xml
+          files: ZenUnitDevOpsPythonTests/CoberturaCodeCoverageResults_ZenUnitDevOpsPythonTests.xml
           fail_ci_if_error: true
-
-  sonarcloud:
-    name: SonarCloud scan ZenUnitAndMetalMockDevOpsPython
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-

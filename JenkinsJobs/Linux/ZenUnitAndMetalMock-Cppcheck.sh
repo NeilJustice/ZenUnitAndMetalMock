@@ -41,4 +41,3 @@ if [ $? = 1 ]; then
    echo "Cppcheck failed with exit code 1"
    exit 1
 fi
-
