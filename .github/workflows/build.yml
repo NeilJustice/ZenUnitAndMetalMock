@@ -23,20 +23,28 @@ jobs:
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
+          
+      - name: Install apt packages
+        run: sudo apt-get install ninja-build
+        
+      - name: Install lcov if g++-10 Release
+        run: sudo apt-get install lcov
+        if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
 
       - name: Install pip packages
         run: pip install --upgrade --upgrade-strategy eager -r dev-requirements.txt
 
-      - name: Mypy, Flake8, Pylint, then run unit tests with coverage and pytest
-        run: python ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py
+      - name: Mypy, Flake8, Pylint, then run unit tests with coverage and pytest if g++-10 Release
+        run: python ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py --run-tests-with-coverage-python-file=ZenUnitDevOpsPythonTests/RunAllWithCoverage.py
         env:
-          PYTHONPATH: .
-
-      - name: Install apt packages
-        run: sudo apt-get install ninja-build
-
-      - name: Install lcov if g++-10 Release
-        run: sudo apt-get install lcov
+          PYTHONPATH: "."
+        if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
+          
+      - name: Upload Python code coverage if g++-10 Release
+        uses: codecov/codecov-action@v1
+        with:
+          files: ZenUnitDevOpsPythonTests/CoberturaCodeCoverageResults_ZenUnitDevOpsPythonTests.xml
+          fail_ci_if_error: true
         if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
 
       - name: Run BuildAndTestZenUnitAndMetalMock.py in non code coverage mode if clang++ Debug/Release or g++-10 Debug
@@ -59,7 +67,7 @@ jobs:
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
           PYTHONPATH: .
-        if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
+        if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}            
 
       - name: Install and run lcov 1.15 then upload to Codecov.io if g++-10 Release
         run: |
@@ -72,13 +80,9 @@ jobs:
           bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
         if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
 
-      - uses: codecov/codecov-action@v1
-        with:
-          files: ZenUnitDevOpsPythonTests/CoberturaCodeCoverageResults_ZenUnitDevOpsPythonTests.xml
-          fail_ci_if_error: true
-
-      - name: SonarCloud scan
+      - name: SonarCloud scan if Clang Debug
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}          
+        if: ${{ matrix.cxx == 'clang++' && matrix.cmake_build_type == 'Debug' }}
