@@ -44,9 +44,6 @@
             "panel": "dedicated",
             "showReuseMessage": false,
             "clear": true
-         },
-         "group": {
-            "kind": "test"
          }
       },
       {
@@ -141,10 +138,6 @@
             "panel": "dedicated",
             "showReuseMessage": false,
             "clear": true
-         },
-         "group": {
-            "kind": "test",
-            "isDefault": true
          }
       },
       {
@@ -158,10 +151,6 @@
             "panel": "dedicated",
             "showReuseMessage": false,
             "clear": true
-         },
-         "group": {
-            "kind": "build",
-            "isDefault": true
          }
       },
       {
