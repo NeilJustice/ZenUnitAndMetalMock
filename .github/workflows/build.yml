@@ -80,9 +80,9 @@ jobs:
           bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
         if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
 
-      - name: SonarCloud scan if Clang Debug
+      - name: SonarCloud scan if g++-10 Release
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}          
-        if: ${{ matrix.cxx == 'clang++' && matrix.cmake_build_type == 'Debug' }}
+        if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}
