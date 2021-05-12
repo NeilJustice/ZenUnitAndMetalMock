@@ -5634,10 +5634,10 @@ namespace ZenUnit
 ===================================
 Fatal Windows C++ Runtime Assertion
 ===================================)", Color::Red);
-         console.Write(fileNameLineNumberErrorMessage);
+         console.WriteLine(fileNameLineNumberErrorMessage);
          const std::string randomSeedLine = "[ZenUnit] RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed);
          console.WriteLine(randomSeedLine);
-         console.WriteLineColor("[ZenUnit]   ExitCode: 1", Color::Red);
+         console.WriteLine("[ZenUnit]   ExitCode: 1");
          exit(1);
       }
 #endif
