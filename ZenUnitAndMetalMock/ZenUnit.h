@@ -3028,7 +3028,8 @@ namespace ZenUnit
    NOINLINE void IS_EMPTY_ThrowAnomaly(const CollectionType& collection, const char* collectionText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const size_t collectionSize = collection.size();
+      // auto here instead of size_t because Qt containers .size() returns int
+      const auto collectionSize = collection.size();
       const std::string expectedField = "empty() == true";
       const std::string actualField = String::ConcatValues("empty() == false (size() == ", collectionSize, ')');
       const Anomaly anomaly("IS_EMPTY", collectionText, "", "", messagesText, Anomaly::Default(),
