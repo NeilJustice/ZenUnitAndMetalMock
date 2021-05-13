@@ -3721,7 +3721,8 @@ namespace ZenUnit
       };
    }
 
-   inline void WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars)
+   template<std::integral IntegerType>
+   inline void WriteIntegerToCharArray(IntegerType value, char* outChars)
    {
       ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615ULL);
       //                           12345678901234567890
@@ -3729,7 +3730,7 @@ namespace ZenUnit
       const std::to_chars_result toCharsResult = std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
       if (toCharsResult.ec != std::errc{})
       {
-         const std::string exceptionMessage = "ZenUnit::WriteUnsignedLongLongToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars";
+         const std::string exceptionMessage = "ZenUnit::WriteIntegerToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars";
          throw std::invalid_argument(exceptionMessage);
       }
    }
@@ -3746,7 +3747,7 @@ namespace ZenUnit
       CallBinaryFunctionOnEachPairOfTupleElements(expectedTuple, actualTuple,
          [&tupleIndexMessage, &tupleIndex](const auto& expectedTupleElement, const auto& actualTupleElement)
          {
-            WriteUnsignedLongLongToCharArray(tupleIndex++, tupleIndexMessage + Length_TupleIndexSpaceEqualsSignSpace);
+            WriteIntegerToCharArray(tupleIndex++, tupleIndexMessage + Length_TupleIndexSpaceEqualsSignSpace);
             ARE_EQUAL(expectedTupleElement, actualTupleElement, tupleIndexMessage);
          }, GenerateIndexSequence<sizeof...(TupleTypes)>());
    }
@@ -3855,7 +3856,7 @@ namespace ZenUnit
          {
             const auto& ithExpectedElement = expectedArray[i];
             const auto& ithActualElement = actualArray[i];
-            WriteUnsignedLongLongToCharArray(i, indexMessage + IEqualsSignLength);
+            WriteIntegerToCharArray(i, indexMessage + IEqualsSignLength);
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
       }
@@ -3897,7 +3898,7 @@ namespace ZenUnit
          {
             const auto& ithExpectedElement = expectedStdArray[i];
             const auto& ithActualElement = actualStdArray[i];
-            WriteUnsignedLongLongToCharArray(i, indexMessage + IEqualsSignLength);
+            WriteIntegerToCharArray(i, indexMessage + IEqualsSignLength);
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
          }
       }
@@ -4203,7 +4204,7 @@ namespace ZenUnit
       {
          const T& ithExpectedElement = expectedIndexableDataStructure[i];
          const T& ithActualElement = actualIndexableDataStructure[i];
-         WriteUnsignedLongLongToCharArray(i, indexMessage + IEqualsSignLength);
+         WriteIntegerToCharArray(i, indexMessage + IEqualsSignLength);
          try
          {
             ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
