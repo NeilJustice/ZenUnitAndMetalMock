@@ -58,7 +58,7 @@ RelWithDebInfo/
 *.pch
 *.psess
 *.sln
-!ZenUnitDevOpsPython/ZenUnitDevOpsPython.sln
+!ZenUnitDevOpsPython.sln
 *.stamp
 *.tlog
 *.user
