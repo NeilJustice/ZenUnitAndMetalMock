@@ -3634,9 +3634,11 @@ namespace ZenUnit
       METALMOCK_NONVOID2_CONST(size_t, SizeTBetween, size_t, size_t)
 
       METALMOCK_NONVOID0_CONST(float, Float)
+      METALMOCK_NONVOID2_CONST(float, FloatBetween, float, float)
       METALMOCK_NONVOID0_CONST(std::vector<float>, FloatVector)
 
       METALMOCK_NONVOID0_CONST(double, Double)
+      METALMOCK_NONVOID2_CONST(double, DoubleBetween, double, double)
       METALMOCK_NONVOID0_CONST(std::vector<double>, DoubleVector)
 
       METALMOCK_NONVOID0_CONST(const char*, ConstCharPointer)

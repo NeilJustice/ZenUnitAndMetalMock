@@ -8356,6 +8356,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomFloat;
       }
 
+      virtual float FloatBetween(float inclusiveMinValue, float inclusiveMaxValue) const
+      {
+         const float randomFloat = RandomFloatBetween(inclusiveMinValue, inclusiveMaxValue);
+         return randomFloat;
+      }
+
       virtual std::vector<float> FloatVector() const
       {
          std::vector<float> randomFloatVector = RandomVector<float>();
@@ -8365,6 +8371,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       virtual double Double() const
       {
          const double randomDouble = Random<double>();
+         return randomDouble;
+      }
+
+      virtual double DoubleBetween(double inclusiveMinValue, double inclusiveMaxValue) const
+      {
+         const double randomDouble = RandomDoubleBetween(inclusiveMinValue, inclusiveMaxValue);
          return randomDouble;
       }
 
