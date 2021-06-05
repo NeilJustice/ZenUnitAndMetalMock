@@ -9,7 +9,7 @@ if [[ "$osname" == *"Linux" ]]; then
 elif [ "$osname" == "Msys" ]; then
    powershell.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-Cppcheck.ps1
    powershell.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-ZenUnitDevOpsPython-Mypy-Flake8-Pylint-SonarQube.ps1
-   powershell.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-Debug.ps1
+   powershell.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-Debug.ps1 "OFF"
 fi
 jenkinsJobExitCode=$?
 if [ "$jenkinsJobExitCode" -ne 0 ]; then
