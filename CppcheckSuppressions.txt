@@ -1,12 +1,12 @@
+danglingTemporaryLifetime:*
 noExplicitConstructor:*
 unmatchedSuppression:*
 useStlAlgorithm:*
-unusedFunction:ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTestsMain.cpp:14
-unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/TestPhaseResultEqualizerAndRandom.cpp:27
-unusedFunction:ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.cpp:41
+unusedFunction:*
 
 # Linux
 preprocessorErrorDirective:/usr/include/c++/v1/__config:104
+selfInitialization:*MetalMock.h:1469
 
 # Windows
 accessForwarded:*
