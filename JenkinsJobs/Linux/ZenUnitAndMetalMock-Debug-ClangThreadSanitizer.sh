@@ -6,4 +6,4 @@ export CXX=/usr/bin/clang++
 python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
    --cmake-generator=Ninja \
    --cmake-build-type=Debug \
-   --cmake-definitions="-DClangThreadSanitizerMode=ON"
+   --cmake-definitions="-DClangThreadSanitizerMode=ON -DFastLinuxDebugBuildMode=ON"
