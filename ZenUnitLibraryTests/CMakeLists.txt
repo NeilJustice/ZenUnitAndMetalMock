@@ -54,8 +54,8 @@ if(WIN32)
    target_link_libraries(ZenUnitLibraryTests shlwapi)
 endif()
 
-ConfigurePlatformSpecificPrecompiledHeaders()
-OnWindowsAddPostBuildStepToRunTests()
+IfMSVCEnablePrecompiledHeaders()
+IfMSVCAddPostBuildStepToRunTestsRandomly()
 
 if(UNIX AND NOT APPLE)
    if(LCovCodeCoverageMode)

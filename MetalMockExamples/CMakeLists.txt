@@ -14,8 +14,8 @@ if(UNIX AND NOT APPLE)
    target_link_libraries(MetalMockExamples stdc++fs)
 endif()
 
-ConfigurePlatformSpecificPrecompiledHeaders()
-OnWindowsAddPostBuildStepToRunTests()
+IfMSVCEnablePrecompiledHeaders()
+IfMSVCAddPostBuildStepToRunTestsRandomly()
 
 if(UNIX AND NOT APPLE)
    if(LCovCodeCoverageMode)

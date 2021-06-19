@@ -36,48 +36,14 @@ elseif(MSVC)
    set(GoogleBenchmarkLibraryPath "C:/lib/GoogleBenchmark/benchmark$(Configuration).lib")
 endif()
 
-macro(ConfigurePlatformSpecificPrecompiledHeaders)
-   if(UNIX OR APPLE)
-      if(ClangAddressSanitizerMode)
-         set(SanitizerArgs "-fsanitize=address")
-      elseif(ClangUndefinedBehaviorSanitizerMode)
-         set(SanitizerArgs "-fsanitize=undefined")
-      elseif(ClangThreadSanitizerMode)
-         set(SanitizerArgs "-fsanitize=thread")
-      else()
-         set(SanitizerArgs "")
-      endif()
-      set(PchDotHFilePath "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h")
-      if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-         if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments -g
-               ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
-         elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-pragma-once-outside-header -pedantic -Wno-gnu-zero-variadic-macro-arguments -O3
-               ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
-         endif()
-         append(CMAKE_CXX_FLAGS "-include-pch ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/pch.h.gch")
-      elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-         if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-attributes -g
-               ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
-         elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-            add_custom_target(${PROJECT_NAME}Pch ${CMAKE_CXX_COMPILER}
-               -std=c++2a -Wall -Wextra -Werror -pthread -Wno-attributes -DNDEBUG -O3
-               ${SanitizerArgs} -I${CMAKE_SOURCE_DIR} -I${ZenUnitIncludeDirectory} -x c++-header ${PchDotHFilePath})
-         endif()
-      endif()
-      add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}Pch)
-   elseif(MSVC)
+macro(IfMSVCEnablePrecompiledHeaders)
+   if(MSVC)
       set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/Yupch.h")
       set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Yc")
    endif()
 endmacro()
 
-macro(OnWindowsAddPostBuildStepToRunTests)
+macro(IfMSVCAddPostBuildStepToRunTestsRandomly)
    if(MSVC)
       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) --random)
    endif()

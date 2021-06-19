@@ -71,5 +71,4 @@ if(UNIX AND NOT APPLE)
    add_custom_target(clang-tidy COMMAND
       find -name "*.cpp" -print0 | xargs -0 -n 1 -P ${numberOfThreads} -t clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-   add_dependencies(clang-tidy ZenUnitUtilsAndAssertionTestsPch ZenUnitCompileSpeedTestsPch ZenUnitExamplesPch ZenUnitLibraryTestsPch ZenUnitTestUtilsPch MetalMockTestsPch MetalMockExamplesPch)
 endif()

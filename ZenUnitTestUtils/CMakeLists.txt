@@ -13,7 +13,7 @@ source_group("" FILES ${sourceFilePaths})
 
 add_library(ZenUnitTestUtils ${sourceFilePaths})
 
-ConfigurePlatformSpecificPrecompiledHeaders()
+IfMSVCEnablePrecompiledHeaders()
 
 if(UNIX)
    if(LCovCodeCoverageMode)
