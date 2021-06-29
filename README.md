@@ -1061,7 +1061,7 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### MetalMock features roadmap
 
-|Future MetalMock Feature|Implementation Status As Of 6/5/2021|
+|Future MetalMock feature|Implementation status as of 6/5/2021|
 |------------------------|-------------------------------------|
 |Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness|Awaiting implementation|
 
