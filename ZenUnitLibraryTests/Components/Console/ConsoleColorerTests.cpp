@@ -12,8 +12,9 @@ namespace ZenUnit
 {
    TESTS(ConsoleColorerTests)
    AFACT(DefaultConstructor_SetsFunctionPointers_SetsSupportsColorAndSupportsColorSetToFalse)
-   FACTS(SetSupportsColorIfUnset_SetsSupportsColorIfUnset)
    FACTS(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite)
+   FACTS(SetSupportsColorIfUnset_SetsSupportsColorIfUnset)
+   AFACT(SetTextColor_CodeCoverage)
    FACTS(UnsetColor_CallsSetTextColorWhiteIfDidSetTextColorTrue)
    FACTS(SupportsColor_ReturnsTrueIfStdoutIsATTY)
 #if defined _WIN32
@@ -51,28 +52,6 @@ namespace ZenUnit
       IS_FALSE(consoleColorer._standardOutputSupportsColorSet);
    }
 
-   TEST2X2(SetSupportsColorIfUnset_SetsSupportsColorIfUnset,
-      bool supportsColorSet, bool expectSupportsColorCall,
-      false, true,
-      true, false)
-   {
-      _consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColorSet = supportsColorSet;
-      const bool supportsColorReturnValue = ZenUnit::Random<bool>();
-      if (expectSupportsColorCall)
-      {
-         _consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.Return(supportsColorReturnValue);
-      }
-      //
-      _consoleColorer_StandardOutputSupportsColorMocked.SetSupportsColorIfUnset();
-      //
-      if (expectSupportsColorCall)
-      {
-         METALMOCK(_consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.CalledOnce());
-         ARE_EQUAL(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColor, supportsColorReturnValue);
-      }
-      IS_TRUE(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColorSet);
-   }
-
    TEST3X3(SetColor_CallsSupportsColorAndSetTextColorIfColorNotWhite,
       Color color, bool supportsColor, bool expectSetTextColorCallAndExpectedReturnValue,
       Color::White, false, false,
@@ -99,6 +78,34 @@ namespace ZenUnit
          METALMOCK(_consoleColorer_SetCallsMocked.SetTextColorMock.CalledOnceWith(color));
       }
       ARE_EQUAL(expectSetTextColorCallAndExpectedReturnValue, didSetColor);
+   }
+
+   TEST2X2(SetSupportsColorIfUnset_SetsSupportsColorIfUnset,
+      bool supportsColorSet, bool expectSupportsColorCall,
+      false, true,
+      true, false)
+   {
+      _consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColorSet = supportsColorSet;
+      const bool supportsColorReturnValue = ZenUnit::Random<bool>();
+      if (expectSupportsColorCall)
+      {
+         _consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.Return(supportsColorReturnValue);
+      }
+      //
+      _consoleColorer_StandardOutputSupportsColorMocked.SetSupportsColorIfUnset();
+      //
+      if (expectSupportsColorCall)
+      {
+         METALMOCK(_consoleColorer_StandardOutputSupportsColorMocked.StandardOutputSupportsColorMock.CalledOnce());
+         ARE_EQUAL(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColor, supportsColorReturnValue);
+      }
+      IS_TRUE(_consoleColorer_StandardOutputSupportsColorMocked._standardOutputSupportsColorSet);
+   }
+
+   TEST(SetTextColor_CodeCoverage)
+   {
+      const Color color = ZenUnit::RandomEnum<Color>(Color::MaxValue);
+      _consoleColorer.SetTextColor(color);
    }
 
    TEST2X2(UnsetColor_CallsSetTextColorWhiteIfDidSetTextColorTrue,

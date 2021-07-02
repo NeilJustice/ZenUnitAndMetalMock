@@ -639,7 +639,8 @@ namespace ZenUnit
    {
       Unset,
       Fields,
-      WholeLines
+      WholeLines,
+      MaxValue
    };
 
    enum class Color : unsigned char
@@ -649,7 +650,8 @@ namespace ZenUnit
       White,
       Teal,
       Green,
-      Yellow
+      Yellow,
+      MaxValue
    };
 
 #if defined _WIN32
@@ -670,7 +672,8 @@ namespace ZenUnit
       Red,
       Pink,
       Yellow,
-      White
+      White,
+      MaxValue
    };
 #endif
 
@@ -1021,6 +1024,7 @@ namespace ZenUnit
       case Color::Green: linuxColor = "\033[32m"; break;
       case Color::Yellow: linuxColor = "\033[33m"; break;
       case Color::Unset:
+      case Color::MaxValue:
       default: linuxColor = "\033[0m"; break;
       };
       return linuxColor;
@@ -1038,6 +1042,7 @@ namespace ZenUnit
       case Color::Green: windowsColor = WindowsColor::Green; break;
       case Color::Yellow: windowsColor = WindowsColor::Yellow; break;
       case Color::Unset:
+      case Color::MaxValue:
       default: windowsColor = WindowsColor::White; break;
       };
       return windowsColor;
@@ -1110,8 +1115,7 @@ namespace ZenUnit
 #elif defined _WIN32
          const HANDLE stdOutHandle = _call_GetStdHandle(STD_OUTPUT_HANDLE);
          const WindowsColor windowsColor = ColorToWindowsColor(color);
-         const BOOL didSetConsoleTextAttr = _call_SetConsoleTextAttribute(stdOutHandle, static_cast<WORD>(windowsColor));
-         ZENUNIT_ASSERT(didSetConsoleTextAttr == TRUE);
+         _call_SetConsoleTextAttribute(stdOutHandle, static_cast<WORD>(windowsColor));
 #endif
       }
    private:
