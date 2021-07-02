@@ -375,15 +375,10 @@ _filePathLineNumber);
       const string metalMockAssertExpression = ZenUnit::Random<string>();
       const Anomaly metalMockWrappedAnomaly = ZenUnit::Random<Anomaly>();
       //
-      const Anomaly anomaly = Anomaly::METALMOCKWrapped(
-         metalMockAssertExpression, metalMockWrappedAnomaly, _filePathLineNumber);
+      const Anomaly anomaly = Anomaly::METALMOCKWrapped(metalMockAssertExpression, metalMockWrappedAnomaly, _filePathLineNumber);
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = String::ConcatValues('\n',
-         "  Failed: ", metalMockAssertExpression, '\n',
-         "Because of this ZenUnit::Anomaly:",
-         metalMockWrappedAnomaly.why, '\n',
-         _filePathLineNumber);
+      expectedAnomaly.why = String::ConcatValues('\n', "  Failed: ", metalMockAssertExpression, '\n', "Because of this ZenUnit::Anomaly:", metalMockWrappedAnomaly.why, '\n', _filePathLineNumber);
       ARE_EQUAL(expectedAnomaly, anomaly);
    }
 
