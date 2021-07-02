@@ -75,10 +75,9 @@ namespace MetalMock
       //
       _oneArgumentMetalMocker->MetalMockIt(1);
       //
-      using CallType = OneArgumentFunctionCall<int>;
-      const vector<CallType> expectedCalls
+      const vector<OneArgumentFunctionCall<int>> expectedCalls
       {
-         CallType(1)
+         OneArgumentFunctionCall<int>(1)
       };
       VECTORS_ARE_EQUAL(expectedCalls, _oneArgumentMetalMocker->metalMockedFunctionCallHistory);
       METALMOCK(_oneArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
