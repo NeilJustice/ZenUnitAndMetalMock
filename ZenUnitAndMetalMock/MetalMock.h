@@ -1570,7 +1570,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   struct FiveArgumentFunctionCall // LCOV_EXCL_LINE
+   struct FiveArgumentFunctionCall
    {
       ArgumentStorage<Arg1Type> firstArgument;
       ArgumentStorage<Arg2Type> secondArgument;
