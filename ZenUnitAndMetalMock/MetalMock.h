@@ -991,7 +991,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
          {
             throw std::invalid_argument("MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty");
          }
-         std::copy(returnValues.cbegin(), returnValues.cend(), std::back_inserter(_returnValues));
+         _returnValues.insert(_returnValues.end(), returnValues.cbegin(), returnValues.cend());
       }
 
       template<typename ContainerType>
