@@ -4267,6 +4267,7 @@ namespace ZenUnit
    private:
       unsigned _testFailureNumber = 1U;
    public:
+      TestFailureNumberer() {}
       virtual ~TestFailureNumberer() = default;
 
       virtual std::string NextNumberedTestFailureArrow()
