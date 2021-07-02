@@ -63,10 +63,9 @@ namespace MetalMock
       //
       _metalMocker->MetalMockIt(1, 2, 3, 4);
       //
-      using CallType = FourArgumentFunctionCall<int, int, int, int>;
-      const vector<CallType> expectedCalls
+      const vector<FourArgumentFunctionCall<int, int, int, int>> expectedCalls
       {
-         CallType(1, 2, 3, 4)
+         FourArgumentFunctionCall<int, int, int, int>(1, 2, 3, 4)
       };
       VECTORS_ARE_EQUAL(expectedCalls, _metalMocker->metalMockedFunctionCallHistory);
       METALMOCK(_metalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
