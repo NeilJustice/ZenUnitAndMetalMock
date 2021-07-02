@@ -1852,11 +1852,7 @@ namespace ZenUnit
          FilePathLineNumber filePathLineNumber)
       {
          Anomaly anomaly;
-         anomaly.why = String::ConcatValues('\n',
-            "  Failed: ", metalMockAssertExpression, '\n',
-            "Because of this ZenUnit::Anomaly:",
-            metalMockWrappedAnomaly.why, '\n',
-            filePathLineNumber);
+         anomaly.why = String::ConcatValues('\n', "  Failed: ", metalMockAssertExpression, '\n', "Because of this ZenUnit::Anomaly:", metalMockWrappedAnomaly.why, '\n', filePathLineNumber);
          return anomaly;
       }
 
