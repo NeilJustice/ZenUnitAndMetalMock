@@ -5761,12 +5761,8 @@ Fatal Windows C++ Runtime Assertion
          if (zenUnitArgs.failFast && testOutcome != TestOutcome::Success)
          {
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-            const std::string failFastMessage = String::ConcatValues('\n',
-               "[ZenUnit] A test failed in --fail-fast mode.\n",
-               "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n',
-               "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n',
-               "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, '\n',
-               "[ZenUnit]    ExitCode: ", exitCode);
+            // One line String::ConcatValues to fix apparent lcov/Codecov.io bug whereby line-breaked String::ConcatValue arguments are labeled as partially uncovered
+            const std::string failFastMessage = String::ConcatValues('\n', "[ZenUnit] A test failed in --fail-fast mode.\n", "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n', "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n', "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, '\n', "[ZenUnit]    ExitCode: ", exitCode);
             _console->WriteLineAndExit(failFastMessage, exitCode);
          }
       }
