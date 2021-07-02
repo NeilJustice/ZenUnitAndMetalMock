@@ -1,6 +1,6 @@
 #include "pch.h"
 
-// Component To Be MetalMocked
+// Component to be MetalMocked
 class ComponentB
 {
 public:
@@ -9,7 +9,7 @@ public:
    virtual ~ComponentB() = default;
 };
 
-// Class Under Test
+// Class under test
 class ComponentA
 {
    friend class ComponentATests;
@@ -22,7 +22,7 @@ public:
    {
    }
 
-   // Function Under Test
+   // Function under test
    void Act()
    {
       _componentB->ConstVirtualFunction();
@@ -30,7 +30,7 @@ public:
    }
 };
 
-// MetalMock Class Definition
+// MetalMock class definition
 class ComponentBMock : public Metal::Mock<ComponentB>
 {
 public:
@@ -38,7 +38,7 @@ public:
    METALMOCK_VOID0(NonConstVirtualFunction)
 };
 
-// ZenUnit Test Class
+// ZenUnit test class
 TESTS(ComponentATests)
 AFACT(DefaultConstructor_NewsComponentB)
 AFACT(Act_CallsComponentBVirtualFunctions)
@@ -70,3 +70,17 @@ TEST(Act_CallsComponentBVirtualFunctions)
 }
 
 RUN_TESTS(ComponentATests)
+
+
+TESTS(ComponentBTests)
+AFACT(FunctionCodeCoverage)
+EVIDENCE
+
+TEST(FunctionCodeCoverage)
+{
+   ComponentB componentB;
+   componentB.ConstVirtualFunction();
+   componentB.NonConstVirtualFunction();
+}
+
+RUN_TESTS(ComponentBTests)
