@@ -50,11 +50,14 @@ namespace ZenUnit
    AFACT(ARE_EQUAL_OneTypeEqualizerIsDefined_CallsItsAssertEqualFunction)
    AFACT(ARE_EQUAL_TwoTypeEqualizerIsDefined_CallsItsAssertEqualFunction)
    AFACT(ARE_EQUAL_BothOneAndTwoTypeEqualizersAreDefined_CallsOneTypeEqualizerAssertEqual)
-   AFACT(ARE_EQUAL_Int32sAreEqual_DoesNotThrowException)
+   AFACT(ARE_EQUAL_Int32sAreEqual_DoesNotThrowAnomaly)
    AFACT(ARE_EQUAL_IntLiteralsAreNotEqual_ThrowsAnomaly)
    AFACT(ARE_EQUAL_IntVariablesAreNotEqual_ThrowsAnomaly__MessagesTestCase)
    AFACT(ARE_EQUAL_StdStringsAreNotEqual_ThrowsAnomaly)
    AFACT(ARE_EQUAL_StringViewsAreNotEqual_ThrowsAnomaly)
+   AFACT(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNullptr_DoesNotThrowAnomaly)
+   AFACT(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNotNullptr_ThrowsAnomaly)
+   AFACT(ARE_EQUAL_LeftConstCharPointersIsNotNullptr_RightConstCharPointerIsNullptr_ThrowsAnomaly)
    AFACT(EqualizerBothOneAndTwoTypeTestStruct_AssertEqual_CodeCoverage)
    EVIDENCE
 
@@ -100,7 +103,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   TEST(ARE_EQUAL_Int32sAreEqual_DoesNotThrowException)
+   TEST(ARE_EQUAL_Int32sAreEqual_DoesNotThrowAnomaly)
    {
       ARE_EQUAL(numeric_limits<int>::min(), numeric_limits<int>::min());
       ARE_EQUAL(numeric_limits<int>::min() + 1, numeric_limits<int>::min() + 1);
@@ -152,6 +155,35 @@ namespace ZenUnit
 "  Failed: ARE_EQUAL(expected, actual)",
 "Expected: \"expected\"",
 "  Actual: \"actual\"",
+"File.cpp(1)"));
+   }
+
+   TEST(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNullptr_DoesNotThrowAnomaly)
+   {
+      const char* const expected = nullptr;
+      const char* const actual = nullptr;
+      ARE_EQUAL(expected, actual);
+   }
+
+   TEST(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNotNullptr_ThrowsAnomaly)
+   {
+      const char* const expected = nullptr;
+      const char* const actual = "not_nullptr";
+      THROWS_EXCEPTION(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARE_EQUAL(expected, actual)",
+"Expected: nullptr",
+"  Actual: \"not_nullptr\"",
+"File.cpp(1)"));
+   }
+
+   TEST(ARE_EQUAL_LeftConstCharPointersIsNotNullptr_RightConstCharPointerIsNullptr_ThrowsAnomaly)
+   {
+      const char* const expected = "not_nullptr";
+      const char* const actual = nullptr;
+      THROWS_EXCEPTION(ARE_EQUAL(expected, actual), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARE_EQUAL(expected, actual)",
+"Expected: \"not_nullptr\"",
+"  Actual: nullptr",
 "File.cpp(1)"));
    }
 
