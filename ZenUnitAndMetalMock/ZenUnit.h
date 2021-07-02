@@ -889,7 +889,7 @@ namespace ZenUnit
       }
    };
 
-   NOINLINE inline void Exit1DueToZenUnitAssertHavingFailed(
+   NOINLINE inline void Exit1DueToZenUnitInternalAssertionHavingFailed(
       const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
    {
       const std::string assertTrueFailedErrorMessage = String::ConcatValues(
@@ -903,7 +903,7 @@ namespace ZenUnit
    {
       if (!predicateResult)
       {
-         Exit1DueToZenUnitAssertHavingFailed(predicateText, filePathLineNumber, functionName);
+         Exit1DueToZenUnitInternalAssertionHavingFailed(predicateText, filePathLineNumber, functionName);
       }
    }
 
