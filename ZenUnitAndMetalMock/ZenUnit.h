@@ -1636,17 +1636,16 @@ namespace ZenUnit
          std::ostringstream oss;
          oss << '(';
          size_t tupleIndex = 0;
-         CallFunctionOnEachConstTupleElement(
-            t, [&oss, &tupleIndex](const auto& tupleElement)
+         CallFunctionOnEachConstTupleElement(t, [&oss, &tupleIndex](const auto& tupleElement)
+         {
+            const std::string elementAsString = ToString(tupleElement);
+            oss << elementAsString;
+            if (tupleIndex != sizeof...(TupleTypes) - 1)
             {
-               const std::string elementAsString = ToString(tupleElement);
-               oss << elementAsString;
-               if (tupleIndex != sizeof...(TupleTypes) - 1)
-               {
-                  oss << ", ";
-               }
-               ++tupleIndex;
-            }, GenerateIndexSequence<sizeof...(TupleTypes)>());
+               oss << ", ";
+            }
+            ++tupleIndex;
+         }, GenerateIndexSequence<sizeof...(TupleTypes)>());
          oss << ')';
          std::string toStringedTuple = oss.str();
          return toStringedTuple;
