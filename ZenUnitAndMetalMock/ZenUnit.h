@@ -902,7 +902,7 @@ namespace ZenUnit
    {
       if (!predicateResult)
       {
-         Exit1DueToZenUnitInternalAssertionHavingFailed(predicateText, filePathLineNumber, functionName);
+         Exit1DueToZenUnitInternalAssertionHavingFailed(predicateText, filePathLineNumber, functionName); // LCOV_EXCL_LINE
       }
    }
 
