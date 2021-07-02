@@ -24,6 +24,7 @@ public:
 TESTS(FreeFunctionMockingTests)
 AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 AFACT(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
+AFACT(GlobalFreeFunction_ReturnsValuePlus1)
 EVIDENCE
 
 MetalMockFreeFunctionMockingExample _metalMockFreeFunctionMockingExample;
@@ -35,8 +36,7 @@ STARTUP
 {
    // Post-construction dependency injection of MetalMock objects
    // to overwrite std::functions with MetalMock objects
-   _metalMockFreeFunctionMockingExample._call_GlobalFreeFunction =
-      BIND_1ARG_METALMOCK_OBJECT(GlobalFreeFunctionMock);
+   _metalMockFreeFunctionMockingExample._call_GlobalFreeFunction = BIND_1ARG_METALMOCK_OBJECT(GlobalFreeFunctionMock);
 }
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
@@ -54,6 +54,15 @@ TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
    //
    METALMOCK(GlobalFreeFunctionMock.CalledOnceWith(input));
    ARE_EQUAL(globalFreeFunctionReturnValue, returnValue);
+}
+
+TEST(GlobalFreeFunction_ReturnsValuePlus1)
+{
+   const int value = ZenUnit::RandomBetween<int>(-3, 3);
+   //
+   const int valuePlus1 = GlobalFreeFunction(value);
+   //
+   ARE_EQUAL(value + 1, valuePlus1);
 }
 
 RUN_TESTS(FreeFunctionMockingTests)
