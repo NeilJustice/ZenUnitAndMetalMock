@@ -1259,8 +1259,8 @@ namespace ZenUnit
    private:
       static int GetCharFromStandardInput() // LCOV_EXCL_LINE
       {
-         const int c = std::cin.get();
-         return c;
+         const int c = std::cin.get(); // LCOV_EXCL_LINE
+         return c; // LCOV_EXCL_LINE
       }
 
       virtual void DoWriteStringsCommaSeparated(const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
