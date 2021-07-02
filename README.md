@@ -1011,7 +1011,7 @@ Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting t
 
 ### Linux Jenkins jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 33 with Clang 11.0.0 and GCC 10.2.1 to statically analyze and unit test ZenUnit and MetalMock:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 34 with Clang 12.0.0 and GCC 11.1.1 to statically analyze and unit test ZenUnit and MetalMock:
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
@@ -1054,14 +1054,13 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit features roadmap
 
-|Future ZenUnit feature|Implementation status as of 6/5/2021|
+|Future ZenUnit feature|Implementation status as of 7/1/2021|
 |----------------------|------------------------------------|
-|Update implementations of `FLOATS_ARE_NEAR` and `DOUBLES_ARE_NEAR` to compare based on Units in the Last Place (ULPs)|Awaiting implementation|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 
 ### MetalMock features roadmap
 
-|Future MetalMock feature|Implementation status as of 6/5/2021|
+|Future MetalMock feature|Implementation status as of 7/1/2021|
 |------------------------|-------------------------------------|
 |Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness|Awaiting implementation|
 
