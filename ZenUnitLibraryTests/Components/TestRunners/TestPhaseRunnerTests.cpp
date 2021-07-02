@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestRunStopwatchStopperMock.h"
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
+#include "ZenUnitLibraryTests/Components/Time/MetalMock/TestRunStopwatchStopperMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestPhaseTranslatorMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidTwoArgMemberFunctionCallerMock.h"
@@ -11,7 +11,7 @@
 namespace ZenUnit
 {
    TESTS(TestPhaseRunnerTests)
-   AFACT(DefaultConstructor_NewsComponents_SetsGetArgsFunction)
+   AFACT(DefaultConstructor_SetsFunctionPointers_NewsComponents)
    AFACT(RunTestPhase_FunctionDoesNotThrowException_ReturnsNoExceptionThrownTestPhaseResult)
    AFACT(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
    FACTS(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsNotTestBody_WritesErrorMessageAndFailFastExitsWithCode1UnlessAlwaysExit0IsTrue)
@@ -28,8 +28,7 @@ namespace ZenUnit
    // Function Pointers
    METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
    // Function Callers
-   VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>*
-      _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = nullptr;
+   VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>* _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = nullptr;
    // Constant Components
    ConsoleMock* _consoleMock = nullptr;
    TestPhaseTranslatorMock* _testPhaseTranslatorMock = nullptr;
@@ -52,8 +51,7 @@ namespace ZenUnit
       // Function Pointers
       _testPhaseRunner._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
       // Function Callers
-      _testPhaseRunner._caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess.reset(
-         _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = new VoidTwoArgMemberFunctionCallerMock<
+      _testPhaseRunner._caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess.reset(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = new VoidTwoArgMemberFunctionCallerMock<
          TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
       // Constant Components
       _testPhaseRunner._console.reset(_consoleMock = new ConsoleMock);
@@ -74,11 +72,12 @@ namespace ZenUnit
       TestPhaseRunnerTests::s_numberOfCallsToFunctionThatDoesNotThrowAnException = 0;
    }
 
-   TEST(DefaultConstructor_NewsComponents_SetsGetArgsFunction)
+   TEST(DefaultConstructor_SetsFunctionPointers_NewsComponents)
    {
       TestPhaseRunner testPhaseRunner;
-      // Function Callers
+      // Function Pointers
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, testPhaseRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
+      // Function Callers
       DELETE_TO_ASSERT_NEWED(testPhaseRunner._caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess);
       // Constant Components
       DELETE_TO_ASSERT_NEWED(testPhaseRunner._console);
@@ -422,7 +421,8 @@ namespace ZenUnit
       //
       METALMOCK(_testPhaseStopwatchMock->StartMock.CalledOnce());
       METALMOCK(GetZenUnitArgsMock.CalledOnce());
-      METALMOCK(_testRunStopwatchStopperMock->StopTestRunStopwatchAndGetElapsedSecondsMock.CalledOnce());
+      ZenUnitTestRunner* const zenUnitTestRunner = ZenUnit::ZenUnitTestRunner::Instance();
+      METALMOCK(_testRunStopwatchStopperMock->StopTestRunStopwatchAndGetElapsedSecondsMock.CalledOnceWith(zenUnitTestRunner));
       METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(
          "\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red));
       METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(

@@ -5621,7 +5621,7 @@ namespace ZenUnit
          return zenUnitExitCode;
       }
 
-      std::string StopTestRunStopwatchAndGetElapsedSeconds()
+      virtual std::string StopTestRunStopwatchAndGetElapsedSeconds()
       {
          std::string elapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
          return elapsedSeconds;
@@ -5708,9 +5708,9 @@ Fatal Windows C++ Runtime Assertion
    class TestRunStopwatchStopper
    {
    public:
-      virtual std::string StopTestRunStopwatchAndGetElapsedSeconds() const
+      virtual std::string StopTestRunStopwatchAndGetElapsedSeconds(ZenUnitTestRunner* zenUnitTestRunner) const
       {
-         const std::string testRunDurationInSeconds = ZenUnit::ZenUnitTestRunner::Instance()->StopTestRunStopwatchAndGetElapsedSeconds();
+         std::string testRunDurationInSeconds = zenUnitTestRunner->StopTestRunStopwatchAndGetElapsedSeconds();
          return testRunDurationInSeconds;
       }
 
@@ -5767,7 +5767,8 @@ Fatal Windows C++ Runtime Assertion
 
       void FailFastDueToDotDotDotException(const ZenUnitArgs& zenUnitArgs, TestPhase testPhase) const
       {
-         const std::string testRunDurationInSeconds = _testRunStopwatchStopper->StopTestRunStopwatchAndGetElapsedSeconds();
+         ZenUnitTestRunner* const zenUnitTestRunner = ZenUnit::ZenUnitTestRunner::Instance();
+         const std::string testRunDurationInSeconds = _testRunStopwatchStopper->StopTestRunStopwatchAndGetElapsedSeconds(zenUnitTestRunner);
          _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
 
          _console->WriteColor(">>------> ", Color::Red);
