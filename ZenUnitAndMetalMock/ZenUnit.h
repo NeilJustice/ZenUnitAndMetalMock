@@ -911,7 +911,7 @@ namespace ZenUnit
    {
       const char* testClassName;
       const char* testName;
-      unsigned char arity; // 0 if TEST, 1 if TEST1X2, 2 if TEST2X2, 3 if TEST3X3, ...
+      unsigned char arity; // 0 if TEST, 1 if TEST1X1, 2 if TEST2X2, 3 if TEST3X3, ...
 
       FullTestName() noexcept
          : testClassName(""), testName(""), arity(0) {}
