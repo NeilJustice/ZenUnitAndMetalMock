@@ -7,10 +7,10 @@ namespace ZenUnit
    AFACT(CallDoesNotThrowException_ThrowsAnomaly_MessagesTestCase)
    AFACT(CallThrowsSubclassOfExpectedException_ThrowsAnomaly)
    AFACT(CallThrowsNonSubclassOfExpectedExceptionType_ThrowsAnomaly)
-   AFACT(CallThrowsExactExpectedExceptionType_WhatTextDoesNotMatchExactly_ThrowsAnomaly)
-   AFACT(CallThrowsExactExpectedExceptionType_WhatTextMatchesExceptForCase_ThrowsAnomaly)
-   AFACT(CallThrowsExactExpectedExceptionType_ActualWhatTextContainsExpectedWhatTextAsAnExactSubstringMatchButNotAnEntireStringMatch_ThrowsAnomaly)
-   AFACT(CallThrowsExactExpectedExceptionType_WhatTextMatchesExactly_DoesNotThrowException)
+   AFACT(CallThrowsExactExpectedExceptionType_ExceptionMessageDoesNotMatchExactly_ThrowsAnomaly)
+   AFACT(CallThrowsExactExpectedExceptionType_ExceptionMessageMatchesExceptForCase_ThrowsAnomaly)
+   AFACT(CallThrowsExactExpectedExceptionType_ActualExceptionMessageContainsExpectedExceptionMessageAsAnExactSubstringMatchButNotAnEntireStringMatch_ThrowsAnomaly)
+   AFACT(CallThrowsExactExpectedExceptionType_ExceptionMessageMatchesExactly_DoesNotThrowException)
    AFACT(NeverThrownType_whatReturnsNullptr_CodeCoverage)
    EVIDENCE
 
@@ -96,7 +96,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(CallThrowsExactExpectedExceptionType_WhatTextDoesNotMatchExactly_ThrowsAnomaly)
+   TEST(CallThrowsExactExpectedExceptionType_ExceptionMessageDoesNotMatchExactly_ThrowsAnomaly)
    {
       const string whatText = ZenUnit::Random<string>();
       try
@@ -118,7 +118,7 @@ namespace ZenUnit
       }
    }
 
-   TEST(CallThrowsExactExpectedExceptionType_WhatTextMatchesExceptForCase_ThrowsAnomaly)
+   TEST(CallThrowsExactExpectedExceptionType_ExceptionMessageMatchesExceptForCase_ThrowsAnomaly)
    {
       try
       {
@@ -139,28 +139,28 @@ namespace ZenUnit
       }
    }
 
-   TEST(CallThrowsExactExpectedExceptionType_ActualWhatTextContainsExpectedWhatTextAsAnExactSubstringMatchButNotAnEntireStringMatch_ThrowsAnomaly)
+   TEST(CallThrowsExactExpectedExceptionType_ActualExceptionMessageContainsExpectedExceptionMessageAsAnExactSubstringMatchButNotAnEntireStringMatch_ThrowsAnomaly)
    {
-//      try
-//      {
-//         THROWS_EXCEPTION([] { throw runtime_error("timestamp E123: error message"); }(),
-//            runtime_error, "error message");
-//         FAIL_TEST("THROWS_EXCEPTION() did not throw Anomaly as expected"); // LCOV_EXCL_LINE
-//      }
-//      catch (const Anomaly & anomaly)
-//      {
-//         ARE_EQUAL(TestUtil::NewlineConcat("",
-//"  Failed: THROWS_EXCEPTION([]{ throw runtime_error(\"timestamp E123: error message\"); }(), runtime_error,",
-//"          \"error message\")",
-//"Expected exception thrown: std::runtime_error exactly",
-//"  Actual exception thrown: std::runtime_error exactly",
-//"Expected what(): \"error message\"",
-//"  Actual what(): \"timestamp E123: error message\"",
-//"File.cpp(1)"), anomaly.why);
-//      }
+      try
+      {
+         THROWS_EXCEPTION([] { throw runtime_error("timestamp E123: error message"); }(),
+            runtime_error, "error message");
+         FAIL_TEST("THROWS_EXCEPTION() did not throw Anomaly as expected"); // LCOV_EXCL_LINE
+      }
+      catch (const Anomaly & anomaly)
+      {
+         ARE_EQUAL(TestUtil::NewlineConcat("",
+"  Failed: THROWS_EXCEPTION([] { throw runtime_error(\"timestamp E123: error message\"); }(),",
+"             runtime_error, \"error message\")",
+"Expected exception thrown: std::runtime_error exactly",
+"  Actual exception thrown: std::runtime_error exactly",
+"Expected what(): \"error message\"",
+"  Actual what(): \"timestamp E123: error message\"",
+"File.cpp(1)"), anomaly.why);
+      }
    }
 
-   TEST(CallThrowsExactExpectedExceptionType_WhatTextMatchesExactly_DoesNotThrowException)
+   TEST(CallThrowsExactExpectedExceptionType_ExceptionMessageMatchesExactly_DoesNotThrowException)
    {
       const string whatText = ZenUnit::Random<string>();
       THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(), runtime_error, whatText);
