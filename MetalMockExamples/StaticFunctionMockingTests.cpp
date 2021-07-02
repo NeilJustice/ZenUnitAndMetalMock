@@ -35,6 +35,8 @@ public:
 TESTS(StaticFunctionMockingExampleTests)
 AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 AFACT(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
+AFACT(StaticFunctions_VoidStaticFunction_CodeCoverage)
+AFACT(StaticFunctions_NonVoidStaticFunction_ReturnsInputPlus100)
 EVIDENCE
 
 StaticFunctionMockingExample _staticFunctionMockingExample;
@@ -78,6 +80,21 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
    METALMOCK(_call_VoidStaticFunctionMock.CalledOnce());
    METALMOCK(_call_NonVoidStaticFunctionMock.CalledOnceWith(input));
    ARE_EQUAL(nonVoidStaticFunctionReturnValue, returnValue);
+}
+
+TEST(StaticFunctions_VoidStaticFunction_CodeCoverage)
+{
+   StaticFunctions::VoidStaticFunction();
+}
+
+TEST(StaticFunctions_NonVoidStaticFunction_ReturnsInputPlus100)
+{
+   const int input = ZenUnit::RandomBetween<int>(-3, 3);
+   //
+   const int returnValue = StaticFunctions::NonVoidStaticFunction(input);
+   //
+   const int expectedReturnValue = input + 100;
+   ARE_EQUAL(expectedReturnValue, returnValue);
 }
 
 RUN_TESTS(StaticFunctionMockingExampleTests)
