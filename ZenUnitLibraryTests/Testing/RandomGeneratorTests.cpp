@@ -3,11 +3,29 @@
 namespace ZenUnit
 {
    TESTS(RandomGeneratorTests)
+   AFACT(RandomEngineForCurrentTestRun_randomEngineForCurrentTestRunIsNotNullptr_ReturnsRandomEngineForCurrentTestRun)
+   AFACT(RandomEngineForCurrentTestRun_randomEngineForCurrentTestRunIsNullptr_SetsNewRandomEngineForNewTestRun_ReturnsRandomEngineForCurrentTestRun)
    AFACT(AllRandomGeneratorFunctions_ReturnsRandomValues)
    AFACT(Enum_ReturnsIntBetween0InclusiveAndEnumMaxValueExclusive)
    EVIDENCE
 
    RandomGenerator _randomGenerator;
+
+   TEST(RandomEngineForCurrentTestRun_randomEngineForCurrentTestRunIsNotNullptr_ReturnsRandomEngineForCurrentTestRun)
+   {
+      std::default_random_engine& defaultRandomEngine = ZenUnit::RandomEngineForCurrentTestRun();
+      //
+      defaultRandomEngine.discard(0);
+   }
+
+   TEST(RandomEngineForCurrentTestRun_randomEngineForCurrentTestRunIsNullptr_SetsNewRandomEngineForNewTestRun_ReturnsRandomEngineForCurrentTestRun)
+   {
+      ZenUnit::globalZenUnitMode.randomEngineForCurrentTestRun.reset();
+      //
+      std::default_random_engine& defaultRandomEngine = ZenUnit::RandomEngineForCurrentTestRun();
+      //
+      defaultRandomEngine.discard(0);
+   }
 
    TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
    {
