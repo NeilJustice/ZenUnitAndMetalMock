@@ -3523,9 +3523,8 @@ namespace ZenUnit
    public:
       static void Print(std::ostream& os, const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& twoArgumentFunctionCallRef)
       {
-         os << "MetalMock::TwoArgumentFunctionCall:\n"
-               "Argument1: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
-               "Argument2: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.secondArgumentReference.value);
+         // One line because when line-breaked, Codecov.io incorrectly reports this line as uncovered
+         os << "MetalMock::TwoArgumentFunctionCall:\n" "Argument1: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.firstArgumentReference.value) << '\n' << "Argument2: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.secondArgumentReference.value);
       }
    };
 
