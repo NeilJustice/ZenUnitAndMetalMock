@@ -48,7 +48,7 @@ namespace ZenUnit
 
    TEST(PointerIsEmptyUniqueArrayPtr_ThrowsAnomaly)
    {
-      unique_ptr<const int[]> emptyUniqueArrayPtr{};
+      unique_ptr<const int[]> emptyUniqueArrayPtr = nullptr;
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr)",
