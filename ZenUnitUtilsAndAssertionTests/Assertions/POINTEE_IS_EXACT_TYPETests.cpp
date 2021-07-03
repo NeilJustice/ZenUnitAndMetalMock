@@ -8,6 +8,8 @@ public:
 
 class DerivedClassA : public BaseClassA
 {
+public:
+   DerivedClassA() {}
 };
 
 class BaseClassB
@@ -67,7 +69,7 @@ namespace ZenUnit
 
    TEST(ActualPointerIsNotNull_ActualPointeeTypeIsASubclassOfExpectedPointeeType_ThrowsAnomaly)
    {
-      const DerivedClassA derivedClassInstance{};
+      const DerivedClassA derivedClassInstance;
       const BaseClassA* const actualPointer = &derivedClassInstance;
       const string expectedPolymorphicPointeeTypeName = typeid(BaseClassA).name();
       const string expectedActualPointeeTypeName = typeid(*actualPointer).name();
@@ -80,7 +82,7 @@ namespace ZenUnit
 
    TEST(ActualPointerIsNotNull_ActualPointeeTypeIsExactlyExpectedPointeeType_DoesNotThrowException)
    {
-      const DerivedClassA derivedClassInstance{};
+      const DerivedClassA derivedClassInstance;
       const BaseClassA* const actualPointer = &derivedClassInstance;
       DOES_NOT_THROW(POINTEE_IS_EXACT_TYPE(DerivedClassA, actualPointer));
    }
