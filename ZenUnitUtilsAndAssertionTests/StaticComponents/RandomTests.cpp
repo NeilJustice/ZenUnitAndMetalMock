@@ -227,6 +227,13 @@ namespace ZenUnit
       const unsigned long long unsignedLongLong2 = ZenUnit::RandomNon0NotEqualToValue<unsigned long long>(unsignedLongLong1);
       ARE_NOT_EQUAL(0, unsignedLongLong2);
       ARE_NOT_EQUAL(unsignedLongLong1, unsignedLongLong2);
+
+      // Code coverage for the while-loop body in RandomNon0NotEqualToValue
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const int returnValue = ZenUnit::RandomNon0NotEqualToValue<int>(INT_MAX);
+         ARE_NOT_EQUAL(INT_MAX, returnValue);
+      }
    }
 
    TEST(Random_Float_ReturnsRandomFloat)
