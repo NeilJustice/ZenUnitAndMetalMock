@@ -64,7 +64,7 @@ namespace MetalMock
       //
       _metalMocker->MetalMockIt(1, 2);
       //
-      const vector<TwoArgumentFunctionCall<int, int>> expectedCalls
+      const vector<TwoArgumentFunctionCall<int, int>> expectedCalls =
       {
          TwoArgumentFunctionCall<int, int>(1, 2)
       };

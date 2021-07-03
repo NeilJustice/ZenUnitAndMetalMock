@@ -75,7 +75,7 @@ namespace MetalMock
       //
       _oneArgumentMetalMocker->MetalMockIt(1);
       //
-      const vector<OneArgumentFunctionCall<int>> expectedCalls
+      const vector<OneArgumentFunctionCall<int>> expectedCalls =
       {
          OneArgumentFunctionCall<int>(1)
       };

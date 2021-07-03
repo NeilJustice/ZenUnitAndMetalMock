@@ -64,7 +64,7 @@ namespace MetalMock
       //
       _threeArgumentMetalMocker->MetalMockIt(1, 2, 3);
       //
-      const vector<ThreeArgumentFunctionCall<int, int, int>> expectedCalls
+      const vector<ThreeArgumentFunctionCall<int, int, int>> expectedCalls =
       {
          ThreeArgumentFunctionCall<int, int, int>(1, 2, 3)
       };
