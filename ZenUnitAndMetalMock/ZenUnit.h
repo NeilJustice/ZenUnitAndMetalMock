@@ -4844,6 +4844,8 @@ namespace ZenUnit
    class TwoArgMemberAnyer
    {
    public:
+      TwoArgMemberAnyer() {}
+
       virtual bool TwoArgAny(
          const CollectionType& collection,
          const ClassType* classInstance,

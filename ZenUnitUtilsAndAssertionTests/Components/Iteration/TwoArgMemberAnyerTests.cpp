@@ -64,11 +64,9 @@ namespace ZenUnit
    TEST(TwoArgAny_CollectionEmpty_ReturnsFalse)
    {
       const CollectionType<T> emptyCollection;
-      const TwoArgMemberAnyer<CollectionType<T>, Class,
-         decltype(&Class::PredicateThatThrowsIfCalled), const Arg2Type&> twoArgMemberAnyer;
+      const TwoArgMemberAnyer<CollectionType<T>, Class, decltype(&Class::PredicateThatThrowsIfCalled), const Arg2Type&> twoArgMemberAnyer;
       //
-      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(
-         emptyCollection, &_classInstance, &Class::PredicateThatThrowsIfCalled, Arg2Type{});
+      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(emptyCollection, &_classInstance, &Class::PredicateThatThrowsIfCalled, Arg2Type{});
       //
       IS_EMPTY(_classInstance.predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
@@ -77,11 +75,9 @@ namespace ZenUnit
    TEST(TwoArgAny_1ElementCollection_ElementDoesNotMatchPredicate_ReturnsFalse)
    {
       const CollectionType<T> collection = { 1 };
-      const TwoArgMemberAnyer<CollectionType<T>, Class,
-         decltype(&Class::AlwaysFalsePredicate), const Arg2Type&> twoArgMemberAnyer;
+      const TwoArgMemberAnyer<CollectionType<T>, Class, decltype(&Class::AlwaysFalsePredicate), const Arg2Type&> twoArgMemberAnyer;
       //
-      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(
-         collection, &_classInstance, &Class::AlwaysFalsePredicate, _arg2);
+      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(collection, &_classInstance, &Class::AlwaysFalsePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 } };
       VECTORS_ARE_EQUAL(expectedPredicateArgs, _classInstance.predicateArgs);
@@ -90,11 +86,9 @@ namespace ZenUnit
 
    TEST(TwoArgAny_2ElementCollection_FirstOfTwoElementsMatchesPredicate_CallsPredicateOnce_ReturnsTrue)
    {
-      const TwoArgMemberAnyer<CollectionType<T>, Class,
-         decltype(&Class::ElementValueOneReturnsTruePredicate), const Arg2Type&> twoArgMemberAnyer;
+      const TwoArgMemberAnyer<CollectionType<T>, Class, decltype(&Class::ElementValueOneReturnsTruePredicate), const Arg2Type&> twoArgMemberAnyer;
       //
-      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(
-         _twoCollection, &_classInstance, &Class::ElementValueOneReturnsTruePredicate, _arg2);
+      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(_twoCollection, &_classInstance, &Class::ElementValueOneReturnsTruePredicate, _arg2);
       //
       const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 } };
       VECTORS_ARE_EQUAL(expectedPredicateArgs, _classInstance.predicateArgs);
@@ -105,26 +99,22 @@ namespace ZenUnit
 
    TEST(TwoArgAny_2ElementCollection_SecondOfTwoElementsMatchesPredicate_CallsPredicateTwice_ReturnsTrue)
    {
-      const TwoArgMemberAnyer<CollectionType<T>, Class,
-         decltype(&Class::ElementValueTwoReturnsTruePredicate), const Arg2Type&> twoArgMemberAnyer;
+      const TwoArgMemberAnyer<CollectionType<T>, Class, decltype(&Class::ElementValueTwoReturnsTruePredicate), const Arg2Type&> twoArgMemberAnyer;
       //
-      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(
-         _twoCollection, &_classInstance, &Class::ElementValueTwoReturnsTruePredicate, _arg2);
-      ////
-      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
+      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(_twoCollection, &_classInstance, &Class::ElementValueTwoReturnsTruePredicate, _arg2);
+      //
+      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 }, { T(2), _arg2 } };
       VECTORS_ARE_EQUAL(expectedPredicateArgs, _classInstance.predicateArgs);
       IS_TRUE(anyElementMatchesPredicate);
    }
 
    TEST(TwoArgAny_2ElementCollection_NeitherElementMatchesPredicate_CallsPredicateTwice_ReturnsFalse)
    {
-      const TwoArgMemberAnyer<CollectionType<T>, Class,
-         decltype(&Class::AlwaysFalsePredicate), const Arg2Type&> twoArgMemberAnyer;
+      const TwoArgMemberAnyer<CollectionType<T>, Class, decltype(&Class::AlwaysFalsePredicate), const Arg2Type&> twoArgMemberAnyer;
       //
-      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(
-         _twoCollection, &_classInstance, &Class::AlwaysFalsePredicate, _arg2);
+      const bool anyElementMatchesPredicate = twoArgMemberAnyer.TwoArgAny(_twoCollection, &_classInstance, &Class::AlwaysFalsePredicate, _arg2);
       //
-      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 },{ T(2), _arg2 } };
+      const vector<pair<T, Arg2Type>> expectedPredicateArgs = { { T(1), _arg2 }, { T(2), _arg2 } };
       VECTORS_ARE_EQUAL(expectedPredicateArgs, _classInstance.predicateArgs);
       IS_FALSE(anyElementMatchesPredicate);
    }
