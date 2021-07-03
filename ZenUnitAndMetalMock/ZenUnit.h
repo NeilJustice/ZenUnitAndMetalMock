@@ -6474,6 +6474,8 @@ Fatal Windows C++ Runtime Assertion
       size_t _maxTestCaseNumber = 0;
       size_t _currentTestCaseNumber = 1;
    public:
+      SequentialTestCaseNumberGenerator() {}
+
       void Initialize(size_t numberOfTestCaseArgs, size_t N) override
       {
          ZENUNIT_ASSERT(N >= 1);
