@@ -153,6 +153,9 @@ namespace ZenUnit
       componentMock.FunctionThatTakesAPairMock.MetalMockIt(p);
       //
       METALMOCK(componentMock.FunctionThatTakesAPairMock.CalledOnceWith(p));
+
+      Component component{};
+      component.FunctionThatTakesAPair(p); // Code coverage
    }
 
    RUN_TESTS(PAIRS_ARE_EQUALTests)
