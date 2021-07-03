@@ -8313,18 +8313,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomEnumAsInt;
       }
 
-      virtual long Long() const
-      {
-         const long randomLong = Random<long>();
-         return randomLong;
-      }
-
-      virtual unsigned long UnsignedLong() const
-      {
-         const unsigned long randomUnsignedLong = Random<unsigned long>();
-         return randomUnsignedLong;
-      }
-
       virtual long long LongLong() const
       {
          const long long randomLongLong = Random<long long>();
