@@ -72,11 +72,19 @@ namespace ZenUnit
       const float randomFloat = _randomGenerator.Float();
       ARE_EQUAL(randomFloat, randomFloat);
 
+      const float randomFloatBetween = _randomGenerator.FloatBetween(-3.0f, 3.0f);
+      IS_GREATER_THAN_OR_EQUAL(randomFloatBetween, -3.0f);
+      IS_LESS_THAN_OR_EQUAL(randomFloatBetween, 3.0f);
+
       const vector<float> randomFloatVector = _randomGenerator.FloatVector();
       ARE_EQUAL(randomFloatVector, randomFloatVector);
 
       const double randomDouble = _randomGenerator.Double();
       ARE_EQUAL(randomDouble, randomDouble);
+
+      const double randomDoubleBetween = _randomGenerator.DoubleBetween(-3.0, 3.0);
+      IS_GREATER_THAN_OR_EQUAL(randomDoubleBetween, -3.0);
+      IS_LESS_THAN_OR_EQUAL(randomDoubleBetween, 3.0);
 
       const vector<double> randomDoubleVector = _randomGenerator.DoubleVector();
       ARE_EQUAL(randomDoubleVector, randomDoubleVector);
