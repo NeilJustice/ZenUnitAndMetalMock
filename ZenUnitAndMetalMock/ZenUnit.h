@@ -892,8 +892,7 @@ namespace ZenUnit
       }
    };
 
-   NOINLINE inline void Exit1DueToZenUnitInternalAssertionHavingFailed(
-      const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
+   NOINLINE inline void Exit1DueToZenUnitInternalAssertionHavingFailed(const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
    {
       const std::string assertTrueFailedErrorMessage = String::ConcatValues( // LCOV_EXCL_LINE
          "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n", // LCOV_EXCL_LINE
