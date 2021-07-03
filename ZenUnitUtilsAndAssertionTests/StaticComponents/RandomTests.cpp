@@ -29,6 +29,7 @@ namespace ZenUnit
    AFACT(RandomStringWithLength_ReturnsRandomStringWithLength)
    AFACT(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+   AFACT(RandomSizeTBetween_InclusiveLowerBoundEqualsInclusiveUpperBound_ReturnsInclusiveLowerBound)
    AFACT(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomFloatBetween_ReturnsRandomFloatBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomDoubleBetween_ReturnsRandomDoubleBetweenInclusiveLowerBoundAndInclusiveUpperBound)
@@ -553,6 +554,15 @@ namespace ZenUnit
             FAIL_TEST("ZenUnit::RandomDoubleBetween(-3.0, 3.0) unexpectedly returned out-of-bounds value"); // LCOV_EXCL_LINE
          }
       }
+   }
+
+   TEST(RandomSizeTBetween_InclusiveLowerBoundEqualsInclusiveUpperBound_ReturnsInclusiveLowerBound)
+   {
+      const size_t randomSizeT00 = RandomSizeTBetween(0, 0);
+      ARE_EQUAL(0, randomSizeT00);
+
+      const size_t randomSizeT1010 = RandomSizeTBetween(10, 10);
+      ARE_EQUAL(10, randomSizeT1010);
    }
 
    TEST(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
