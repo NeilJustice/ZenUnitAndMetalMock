@@ -55,7 +55,7 @@ namespace ZenUnit
 
    TEST(PointerIsEmptyUniquePtr_ThrowsAnomaly)
    {
-      unique_ptr<const int> emptyUniquePtr;
+      unique_ptr<const int> emptyUniquePtr{};
       THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DELETE_TO_ASSERT_NEWED(emptyUniquePtr)",
 "Expected: not a nullptr",
@@ -65,7 +65,7 @@ namespace ZenUnit
 
    TEST(PointerIsEmptySharedPtr_ThrowsAnomaly)
    {
-      shared_ptr<const int> emptySharedPtr;
+      shared_ptr<const int> emptySharedPtr{};
       THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DELETE_TO_ASSERT_NEWED(emptySharedPtr)",
 "Expected: not a nullptr",
