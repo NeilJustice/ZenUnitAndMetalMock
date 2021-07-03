@@ -40,10 +40,7 @@ namespace ZenUnit
       //
       _threeArgForEacher.ThreeArgForEach(&oneItemVector, Bind(), c, s);
       //
-      const vector<tuple<int, char, string>> expectedFuncCalls
-      {
-         { 1, c, s }
-      };
+      const vector<tuple<int, char, string>> expectedFuncCalls = { { 1, c, s } };
       VECTORS_ARE_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
@@ -55,11 +52,7 @@ namespace ZenUnit
       //
       _threeArgForEacher.ThreeArgForEach(&oneItemVector, Bind(), c, s);
       //
-      const vector<tuple<int, char, string>> expectedFuncCalls
-      {
-         { 1, c, s },
-         { 2, c, s }
-      };
+      const vector<tuple<int, char, string>> expectedFuncCalls = { { 1, c, s }, { 2, c, s } };
       VECTORS_ARE_EQUAL(expectedFuncCalls, _funcCalls);
    }
 
