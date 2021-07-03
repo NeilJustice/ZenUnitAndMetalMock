@@ -28,7 +28,8 @@ namespace MetalMock
    AFACT(MetalMockNextReturnValue_NoReturnValueWasPreviouslySpecified_ThrowsReturnValueMustBeSpecifiedException__NonDefaultConstructibleReturnType)
    AFACT(MetalMockNextReturnValue_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter__DefaultConstructibleReturnType)
    AFACT(MetalMockNextReturnValue_ReturnValuesSpecified_ReturnsValuesThenLastValueThereafter__NonDefaultConstructibleReturnType)
-   AFACT(MetalMockAddContainerReturnValues_ReturnValuesIsEmpty_ThrowsInvalidArgument)
+   AFACT(MetalMockAddContainerReturnValues_ReturnValuesAreEmpty_ThrowsInvalidArgument__ConstLValueReferenceTestCase)
+   AFACT(MetalMockAddContainerReturnValues_ReturnValuesAreEmpty_ThrowsInvalidArgument__RValueReferenceTestCase)
    EVIDENCE
 
    string _metalMockedFunctionSignature;
@@ -119,7 +120,17 @@ namespace MetalMock
       ARE_EQUAL(NonDefaultConstructible(10), valueReturner.MetalMockNextReturnValue());
    }
 
-   TEST(MetalMockAddContainerReturnValues_ReturnValuesIsEmpty_ThrowsInvalidArgument)
+   TEST(MetalMockAddContainerReturnValues_ReturnValuesAreEmpty_ThrowsInvalidArgument__ConstLValueReferenceTestCase)
+   {
+      ValueReturner<int> valueReturner(_metalMockedFunctionSignature);
+      const char* const expectedExceptionMessage =
+         "MetalMock::ValueReturner::MetalMockAddContainerReturnValues(const ContainerType& returnValues): returnValues cannot be empty";
+      const vector<int> emptyReturnValues;
+      THROWS_EXCEPTION(valueReturner.MetalMockAddContainerReturnValues(emptyReturnValues),
+         invalid_argument, expectedExceptionMessage);
+   }
+
+   TEST(MetalMockAddContainerReturnValues_ReturnValuesAreEmpty_ThrowsInvalidArgument__RValueReferenceTestCase)
    {
       ValueReturner<int> valueReturner(_metalMockedFunctionSignature);
       const char* const expectedExceptionMessage =
