@@ -3726,11 +3726,7 @@ namespace ZenUnit
       //                           12345678901234567890
       constexpr size_t LengthOfSizeTMaxValue = 20;
       const std::to_chars_result toCharsResult = std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
-      if (toCharsResult.ec != std::errc{})
-      {
-         const std::string exceptionMessage = "ZenUnit::WriteIntegerToCharArray(unsigned long long value, char* outChars) called with value not convertable to chars";
-         throw std::invalid_argument(exceptionMessage);
-      }
+      ZENUNIT_ASSERT(toCharsResult.ec == std::errc{});
    }
 
    template<typename... TupleTypes>
