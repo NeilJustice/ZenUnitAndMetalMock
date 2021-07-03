@@ -166,6 +166,9 @@ namespace ZenUnit
       componentMock.FunctionThatTakesATupleMock.MetalMockIt(t);
       //
       METALMOCK(componentMock.FunctionThatTakesATupleMock.CalledOnceWith(t));
+
+      Component component;
+      component.FunctionThatTakesATuple(t); // Code coverage
    }
 
    RUN_TESTS(TUPLES_ARE_EQUALTests)
