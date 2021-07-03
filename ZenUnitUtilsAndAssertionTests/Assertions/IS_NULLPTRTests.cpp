@@ -19,13 +19,13 @@ namespace ZenUnit
 
    TEST(UniquePointerIsNull_DoesNotThrowException)
    {
-      const unique_ptr<const int> nullUniquePtr;
+      const unique_ptr<const int> nullUniquePtr{};
       IS_NULLPTR(nullUniquePtr);
    }
 
    TEST(SharedPointerIsNull_DoesNotThrowException)
    {
-      const shared_ptr<const int> nullSharedPtr;
+      const shared_ptr<const int> nullSharedPtr{};
       IS_NULLPTR(nullSharedPtr);
    }
 
