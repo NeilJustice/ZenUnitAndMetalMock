@@ -2,8 +2,7 @@
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
-#ifndef METALMOCKDOTH
-#define METALMOCKDOTH
+#pragma once
 #include "ZenUnitAndMetalMock/ZenUnit.h"
 #include <atomic>
 #include <deque>
@@ -3657,5 +3656,3 @@ namespace ZenUnit
       METALMOCK_NONVOID0_CONST(UnorderedMapType, UnorderedMap)
    };
 }
-
-#endif

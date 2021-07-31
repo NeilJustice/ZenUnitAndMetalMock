@@ -1,5 +1,4 @@
-#ifndef MetalMockExamples_PCH
-#define MetalMockExamples_PCH
+#pragma once
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 
 #if defined _WIN32
@@ -11,5 +10,3 @@
 
 #include "ZenUnitAndMetalMock/ZenUnit.h"
 #include "ZenUnitAndMetalMock/MetalMock.h"
-
-#endif

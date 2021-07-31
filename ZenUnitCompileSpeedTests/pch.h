@@ -1,7 +1,3 @@
-#ifndef ZenUnitLibraryTests_PCH
-#define ZenUnitLibraryTests_PCH
-
+#pragma once
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 #include "ZenUnitAndMetalMock/ZenUnit.h"
-
-#endif

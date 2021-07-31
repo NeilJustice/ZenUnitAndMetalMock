@@ -1,6 +1,4 @@
-#ifndef ZenUnitUtilsAndAssertionTests_PCH
-#define ZenUnitUtilsAndAssertionTests_PCH
-
+#pragma once
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 
 #include "ZenUnitAndMetalMock/ZenUnit.h"
@@ -12,5 +10,3 @@ using namespace std;
 #include "ZenUnitTestUtils/TestUtil.h"
 #include "ZenUnitTestUtils/UserType.h"
 #include "ZenUnitTestUtils/OnlyZenUnitEqualizerUserType.h"
-
-#endif

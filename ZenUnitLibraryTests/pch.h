@@ -1,6 +1,4 @@
-#ifndef ZenUnitLibraryTests_PCH
-#define ZenUnitLibraryTests_PCH
-
+#pragma once
 #include "ZenUnitLibraryTests/IfWindowsIgnoreTheseWarningGlobally.h"
 
 #if defined _WIN32
@@ -39,5 +37,3 @@ using namespace std;
 
 // ZenUnitLibraryTests Components Console MetalMock
 #include "ZenUnitLibraryTests/Components/Console/MetalMock/ConsoleMock.h"
-
-#endif

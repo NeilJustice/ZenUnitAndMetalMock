@@ -2,8 +2,7 @@
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
-#ifndef ZENUNITDOTH
-#define ZENUNITDOTH
+#pragma once
 
 namespace ZenUnit
 {
@@ -8468,5 +8467,3 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return exitCode;
    }
 }
-
-#endif // ZENUNITDOTH
