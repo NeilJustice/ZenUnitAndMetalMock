@@ -864,23 +864,23 @@ namespace ZenUnit
       }
 
       template<typename... Types>
-		static std::string ConcatStrings(Types&&... strings)
-		{
-			std::string concatenatedString;
-			std::string_view stringViews[] = { strings... };
-			size_t lengthOfAllStrings = 0;
-			for (std::string_view stringView : stringViews)
-			{
-				const size_t stringViewSize = stringView.size();
-				lengthOfAllStrings += stringViewSize;
-			}
-			concatenatedString.reserve(lengthOfAllStrings);
-			for (std::string_view stringView : stringViews)
-			{
-				concatenatedString.append(stringView);
-			}
-			return concatenatedString;
-		}
+      static std::string ConcatStrings(Types&&... strings)
+      {
+         std::string concatenatedString;
+         std::string_view stringViews[] = { strings... };
+         size_t lengthOfAllStrings = 0;
+         for (std::string_view stringView : stringViews)
+         {
+            const size_t stringViewSize = stringView.size();
+            lengthOfAllStrings += stringViewSize;
+         }
+         concatenatedString.reserve(lengthOfAllStrings);
+         for (std::string_view stringView : stringViews)
+         {
+            concatenatedString.append(stringView);
+         }
+         return concatenatedString;
+      }
 
       template<typename... Types>
       static std::string ConcatValues(Types&&... values)
