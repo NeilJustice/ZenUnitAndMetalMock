@@ -4,10 +4,11 @@ unmatchedSuppression:*
 useStlAlgorithm:*
 unusedFunction:*
 
-# Linux
+# Suppressions of issues only detected with the Linux version of Cppcheck
 preprocessorErrorDirective:/usr/include/c++/v1/__config:104
-selfInitialization:*MetalMock.h:1469
+selfInitialization:*
+templateRecursion:*
 
-# Windows
+# Suppressions of issues only detected with the Windows version of Cppcheck
 accessForwarded:*
 syntaxError:*

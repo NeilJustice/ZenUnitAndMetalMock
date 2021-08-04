@@ -38,6 +38,8 @@ cppcheck \
    --error-exitcode=1 \
    .
 if [ $? = 1 ]; then
-   echo "Cppcheck failed with exit code 1"
+   echo "Error: Cppcheck failed with exit code 1"
+   echo "cppcheck_results.txt:"
+   cat cppcheck_results.txt
    exit 1
 fi

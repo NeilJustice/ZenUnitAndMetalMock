@@ -1,5 +1,16 @@
 #include "pch.h"
-#include "MetalMockTests/MetalMock/ConsoleMock.h"
+
+class METALMOCKTestingClass
+{
+public:
+   virtual void Function(string_view) const {}
+};
+
+class METALMOCKTestingClassMock : public Metal::Mock<METALMOCKTestingClass>
+{
+public:
+   METALMOCK_VOID1_CONST(Function, string_view)
+};
 
 namespace MetalMock
 {
@@ -10,34 +21,34 @@ namespace MetalMock
 
    TEST(METALMOCKWrappedAssertionDoesNotThrow_NothingHappens)
    {
-      ConsoleMock consoleMock;
-      consoleMock.WriteLineMock.Expect();
+      METALMOCKTestingClassMock mock;
+      mock.FunctionMock.Expect();
       const string message = ZenUnit::Random<string>();
       //
-      consoleMock.WriteLine(message);
+      mock.Function(message);
       //
-      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(message));
+      METALMOCK(mock.FunctionMock.CalledOnceWith(message));
    }
 
    TEST(METALMOCKWrappedAssertionThrows_RethrowsMETALMOCKWrappedAnomaly)
    {
-      ConsoleMock consoleMock;
-      consoleMock.WriteLineMock.Expect();
-      consoleMock.WriteLine("message");
-      const string expectedMessage = "Message";
+      METALMOCKTestingClassMock mock;
+      mock.FunctionMock.Expect();
+      mock.Function("message");
+      const string message = "Message";
 
-      const string expectedWhat = TestUtil::NewlineConcat("",
-"  Failed: METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage))",
+      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+"  Failed: METALMOCK(mock.FunctionMock.CalledOnceWith(message))",
 "Because of this ZenUnit::Anomaly:",
 "  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature)",
 "Expected: \"Message\"",
 "  Actual: \"message\"",
-" Message: \"virtual void ZenUnit::Console::WriteLine(string_view) const\"",
+" Message: \"virtual void METALMOCKTestingClass::Function(string_view) const\"",
 "File.cpp(1)",
 "File.cpp(1)");
       THROWS_EXCEPTION(
-         METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedMessage)),
-         Anomaly, expectedWhat);
+         METALMOCK(mock.FunctionMock.CalledOnceWith(message)),
+         Anomaly, expectedExceptionMessage);
    }
 
    RUN_TESTS(METALMOCKTests)
