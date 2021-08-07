@@ -678,8 +678,11 @@ namespace ZenUnit
 
    TEST(RandomLessThan_ReturnsARandomValueBetweenTMinValueAndExclusiveUpperBoundMinus1)
    {
-      const T randomTValue = ZenUnit::RandomLessThan<T>(3);
-      IS_LESS_THAN(randomTValue, T{3});
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const T randomTValue = ZenUnit::RandomLessThan<T>(3);
+         IS_LESS_THAN(randomTValue, T{3});
+      }
    }
 
    RUN_TEMPLATE_TESTS(RandomLessThanTests, short)
@@ -695,8 +698,11 @@ namespace ZenUnit
 
    TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenTMinValueAndInclusiveUpperBound)
    {
-      const T randomTValue = ZenUnit::RandomLessThanOrEqualTo<T>(3);
-      IS_LESS_THAN_OR_EQUAL(randomTValue, T{3});
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const T randomTValue = ZenUnit::RandomLessThanOrEqualTo<T>(3);
+         IS_LESS_THAN_OR_EQUAL(randomTValue, T{3});
+      }
    }
 
    RUN_TEMPLATE_TESTS(RandomLessThanOrEqualToTests, short)
@@ -712,8 +718,11 @@ namespace ZenUnit
 
    TEST(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
    {
-      const T randomTValue = ZenUnit::RandomGreaterThanOrEqualTo<T>(3);
-      IS_GREATER_THAN_OR_EQUAL(randomTValue, T{3});
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const T randomTValue = ZenUnit::RandomGreaterThanOrEqualTo<T>(3);
+         IS_GREATER_THAN_OR_EQUAL(randomTValue, T{3});
+      }
    }
 
    RUN_TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, short)
@@ -729,8 +738,11 @@ namespace ZenUnit
 
    TEST(RandomGreaterThan_ReturnsARandomValueBetweenExclusiveLowerBoundPlus1AndTMaxValue)
    {
-      const T randomTValue = ZenUnit::RandomGreaterThan<T>(3);
-      IS_GREATER_THAN(randomTValue, T{3});
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const T randomTValue = ZenUnit::RandomGreaterThan<T>(3);
+         IS_GREATER_THAN(randomTValue, T{3});
+      }
    }
 
    RUN_TEMPLATE_TESTS(RandomGreaterThanTests, short)

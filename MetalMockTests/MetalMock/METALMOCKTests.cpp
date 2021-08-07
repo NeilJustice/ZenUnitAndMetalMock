@@ -55,7 +55,7 @@ namespace MetalMock
 
    TEST(METALMOCKTestingClass_Function_CodeCoverage)
    {
-      METALMOCKTestingClass metalmockTestingClass;
+      METALMOCKTestingClass metalmockTestingClass{};
       metalmockTestingClass.Function(ZenUnit::Random<string>());
    }
 
