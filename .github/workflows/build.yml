@@ -5,10 +5,8 @@ jobs:
   build:
     strategy:
       matrix:
-         cmake_build_type: [Release]
-         cxx: [g++-10]
-         #cmake_build_type: [Debug, Release]
-         #cxx: [clang++, g++-10]
+         cmake_build_type: [Debug, Release]
+         cxx: [clang++, g++-10]
 
     runs-on: ubuntu-latest
 
