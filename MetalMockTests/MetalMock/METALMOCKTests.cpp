@@ -18,6 +18,7 @@ namespace MetalMock
    TESTS(METALMOCKTests)
    AFACT(METALMOCKWrappedAssertionDoesNotThrow_NothingHappens)
    AFACT(METALMOCKWrappedAssertionThrows_RethrowsMETALMOCKWrappedAnomaly)
+   AFACT(METALMOCKTestingClass_Function_CodeCoverage)
    EVIDENCE
 
    TEST(METALMOCKWrappedAssertionDoesNotThrow_NothingHappens)
@@ -50,6 +51,12 @@ namespace MetalMock
       THROWS_EXCEPTION(
          METALMOCK(mock.FunctionMock.CalledOnceWith(message)),
          Anomaly, expectedExceptionMessage);
+   }
+
+   TEST(METALMOCKTestingClass_Function_CodeCoverage)
+   {
+      METALMOCKTestingClass metalmockTestingClass;
+      metalmockTestingClass.Function(ZenUnit::Random<string>());
    }
 
    RUN_TESTS(METALMOCKTests)
