@@ -7,7 +7,7 @@
 |GitHub Actions Debug and Release build - ubuntu-latest Clang 10.0.0 / GCC 10.2.0|[![ZenUnitAndMetalMock](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg)](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml)|
 |AppVeyor Debug and Release build - Visual Studio 2019 x64|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
 |Codecov.io code coverage for ZenUnitAndMetalMock's C++ and for ZenUnitDevOpsPython|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
-|SonarCloud scan of ZenUnitDevOpsPython|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_ZenUnitAndMetalMock&metric=alert_status)](https://sonarcloud.io/dashboard?id=NeilJustice_ZenUnitAndMetalMock)|
+|SonarCloud scan of ZenUnitDevOpsPython - the Python code which builds and tests ZenUnit and MetalMock|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_ZenUnitAndMetalMock&metric=alert_status)](https://sonarcloud.io/dashboard?id=NeilJustice_ZenUnitAndMetalMock)|
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
