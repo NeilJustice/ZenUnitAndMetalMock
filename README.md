@@ -49,7 +49,7 @@ MetalMock is a "double strict" mocking framework so as to be useful for rigorous
 
 A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called.
 
-A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explictedly asserted as having been called, thereby minimizing the likelihood of extraneous function calls being present in a C++ program being unit tested with ZenUnit and MetalMock.
+A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of extraneous function calls being present in a C++ program being unit tested with ZenUnit and MetalMock.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
@@ -94,9 +94,8 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
 
 ### ZenUnit command line usage
 
-```
+```prolog
 C++ Unit Testing Framework ZenUnit v0.11.0
-https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
 Testing Utility Options:
@@ -196,7 +195,7 @@ TEST1X1(FizzBuzz_EndNumberIs0OrNegative_ThrowsInvalidArgumentException,
    // mutate-exception-type and mutate-exception-message.
 
    const std::string expectedExceptionMessage =
-      "Invalid FizzBuzz(int endNumber) argument: endNumber [" + 
+      "Invalid FizzBuzz(int endNumber) argument: endNumber [" +
          std::to_string(invalidFizzBuzzEndNumber) + "] must be >= 1";
    THROWS_EXCEPTION(FizzBuzz(invalidFizzBuzzEndNumber),
       std::invalid_argument, expectedExceptionMessage);
@@ -1054,13 +1053,13 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit features roadmap
 
-|Future ZenUnit feature|Implementation status as of 7/1/2021|
+|Future ZenUnit feature|Implementation status as of 8/14/2021|
 |----------------------|------------------------------------|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 
 ### MetalMock features roadmap
 
-|Future MetalMock feature|Implementation status as of 7/1/2021|
+|Future MetalMock feature|Implementation status as of 8/14/2021|
 |------------------------|-------------------------------------|
 |Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness|Awaiting implementation|
 
@@ -1075,6 +1074,6 @@ ZenUnit.h and MetalMock.h installed on Windows:
 * [Roy Osherove, author of The Art of Unit Testing, a book which early on influenced my thinking on unit testing and mocking](https://osherove.com/)
 * [The many authors of Typemock Isolator and Typemock Isolator++](https://www.typemock.com)
 * [The many authors of Google Test and Google Mock](https://github.com/google/googletest)
+* [Alex Denisov and Stanislav Pankevich, authors of C++ mutation testing framework Mull](https://github.com/mull-project/mull)
 * [My colleagues at Quantlab](https://www.quantlab.com)
 * [My colleagues at Emerson](https://www.emerson.com/en-us/automation/deltav)
-* [Alex Denisov and Stanislav Pankevich, authors of C++ mutation testing framework Mull](https://github.com/mull-project/mull)
