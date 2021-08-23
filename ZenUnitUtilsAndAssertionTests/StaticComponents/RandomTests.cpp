@@ -466,7 +466,7 @@ namespace ZenUnit
 
    TEST(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
    {
-      const size_t length = ZenUnit::RandomBetween<size_t>(0, 3);
+      const size_t length = ZenUnit::RandomBetween<size_t>(1, 3);
       //
       const wstring randomWideStringWithLength = ZenUnit::RandomWideStringWithLength(length);
       //
