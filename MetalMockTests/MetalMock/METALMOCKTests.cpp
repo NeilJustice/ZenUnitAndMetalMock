@@ -3,6 +3,7 @@
 class METALMOCKTestingClass
 {
 public:
+   METALMOCKTestingClass() {}
    virtual ~METALMOCKTestingClass() = default;
    virtual void Function(string_view) const {}
 };
