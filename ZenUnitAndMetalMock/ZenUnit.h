@@ -1225,7 +1225,7 @@ namespace ZenUnit
 
       virtual void WaitForEnterKeyIfDebuggerPresentOrValueTrue(bool doWait) const
       {
-         if (doWait || DebuggerIsPresent())
+         if (doWait || DebuggerIsPresentOnWindows())
          {
             WriteLine("Press enter to continue...");
             WaitForEnterKey();
@@ -1244,7 +1244,7 @@ namespace ZenUnit
          }
       }
 
-      virtual bool DebuggerIsPresent() const
+      virtual bool DebuggerIsPresentOnWindows() const
       {
 #if defined __linux__ || defined __APPLE__
          return false;

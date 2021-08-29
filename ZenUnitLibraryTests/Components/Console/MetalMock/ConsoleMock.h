@@ -14,7 +14,7 @@ public:
    METALMOCK_VOID3_CONST(WriteStringsCommaSeparated, const vector<string>&, size_t, size_t)
    METALMOCK_VOID1_CONST(WaitForEnterKeyIfDebuggerPresentOrValueTrue, bool)
    METALMOCK_VOID0_CONST(WaitForEnterKey)
-   METALMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
+   METALMOCK_NONVOID0_CONST(bool, DebuggerIsPresentOnWindows)
 };
 
 class WriteLineAndExitException : public exception

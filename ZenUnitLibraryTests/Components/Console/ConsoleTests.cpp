@@ -17,7 +17,7 @@ namespace ZenUnit
    FACTS(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue)
    AFACT(WaitForEnterKey_CallsGetCharFromStandardInputUntilNewline)
 #if defined _WIN32
-   FACTS(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
+   FACTS(DebuggerIsPresentOnWindows_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
 #endif
    EVIDENCE
 
@@ -38,7 +38,7 @@ namespace ZenUnit
    public:
       METALMOCK_VOID2_CONST(WriteColor, std::string_view, Color)
       METALMOCK_VOID2_CONST(WriteLineColor, std::string_view, Color)
-      METALMOCK_NONVOID0_CONST(bool, DebuggerIsPresent)
+      METALMOCK_NONVOID0_CONST(bool, DebuggerIsPresentOnWindows)
       METALMOCK_VOID0_CONST(WaitForEnterKey)
       METALMOCK_VOID0_CONST(WriteNewLine)
    } _consoleSelfMocked;
@@ -200,7 +200,7 @@ namespace ZenUnit
    {
       if (!doWait)
       {
-         _consoleSelfMocked.DebuggerIsPresentMock.Return(debuggerIsPresent);
+         _consoleSelfMocked.DebuggerIsPresentOnWindowsMock.Return(debuggerIsPresent);
       }
       if (expectPressAnyKeyAndGetChar)
       {
@@ -212,7 +212,7 @@ namespace ZenUnit
       //
       if (!doWait)
       {
-         METALMOCK(_consoleSelfMocked.DebuggerIsPresentMock.CalledOnce());
+         METALMOCK(_consoleSelfMocked.DebuggerIsPresentOnWindowsMock.CalledOnce());
       }
       if (expectPressAnyKeyAndGetChar)
       {
@@ -231,7 +231,7 @@ namespace ZenUnit
    }
 
 #if defined _WIN32
-   TEST2X2(DebuggerIsPresent_ReturnsTrueIfIsDebuggerPresentFunctionReturns1,
+   TEST2X2(DebuggerIsPresentOnWindows_ReturnsTrueIfIsDebuggerPresentFunctionReturns1,
       int isDebuggerPresentReturnValue, bool expectedReturnValue,
       0, false,
       1, true,
@@ -239,10 +239,10 @@ namespace ZenUnit
    {
       _call_IsDebuggerPresentMock.Return(isDebuggerPresentReturnValue);
       //
-      const bool debuggerIsPresent = _console.DebuggerIsPresent();
+      const bool debuggerIsPresentOnWindows = _console.DebuggerIsPresentOnWindows();
       //
       METALMOCK(_call_IsDebuggerPresentMock.CalledOnce());
-      ARE_EQUAL(expectedReturnValue, debuggerIsPresent);
+      ARE_EQUAL(expectedReturnValue, debuggerIsPresentOnWindows);
    }
 #endif
 
