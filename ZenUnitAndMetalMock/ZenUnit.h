@@ -2753,7 +2753,7 @@ namespace ZenUnit
       }
    }
 
-   template<typename ExpectedFloatingPointType, typename ActualFloatingPointType, typename... MessageTypes>
+   template<std::floating_point ExpectedFloatingPointType, std::floating_point ActualFloatingPointType, typename... MessageTypes>
    NOINLINE void ARE_WITHIN_ThrowAnomaly(
       ExpectedFloatingPointType expectedFloatingPointValue, const char* expectedFloatingPointValueText,
       ActualFloatingPointType actualFloatingPointValue, const char* actualFloatingPointValueText,
@@ -2771,7 +2771,7 @@ namespace ZenUnit
          filePathLineNumber, std::forward<MessageTypes>(messages)...);
    }
 
-   template<typename ExpectedFloatingPointType, typename ActualFloatingPointType, typename... MessageTypes>
+   template<std::floating_point ExpectedFloatingPointType, std::floating_point ActualFloatingPointType, typename... MessageTypes>
    void ARE_WITHIN_Defined(
       ExpectedFloatingPointType expectedFloatingPointValue, const char* expectedFloatingPointValueText,
       ActualFloatingPointType  actualFloatingPointValue, const char* actualFloatingPointValueText,
