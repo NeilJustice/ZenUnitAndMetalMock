@@ -184,6 +184,8 @@ namespace ZenUnit
    {
       THROWS_EXCEPTION(ZenUnit::RandomNon0NotEqualToValue<int>(0),
          invalid_argument, "ZenUnit::RandomNon0NotEqualToValue<T>(const T& notEqualValue) called with notEqualValue == T{0}");
+      THROWS_EXCEPTION(ZenUnit::RandomNon0NotEqualToValue<double>(0.0),
+         invalid_argument, "ZenUnit::RandomNon0NotEqualToValue<T>(const T& notEqualValue) called with notEqualValue == T{0}");
    }
 
    TEST(RandomNon0NotEqualToValue_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualTo0AndNotEqualToTheExceptValue)

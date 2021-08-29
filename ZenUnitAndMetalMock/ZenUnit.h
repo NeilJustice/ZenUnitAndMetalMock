@@ -7691,7 +7691,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomInteger;
    }
 
-   template<std::integral T>
+   template<typename T>
    T RandomNon0NotEqualToValue(const T& notEqualValue)
    {
       static const T zeroTValue{0};
