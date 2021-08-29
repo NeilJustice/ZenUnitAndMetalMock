@@ -7520,7 +7520,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<typename T>
    T Random();
 
-   template<typename T>
+   template<std::integral T>
    T RandomBetween(long long inclusiveLowerBound, long long inclusiveUpperBound)
    {
       if (inclusiveLowerBound == inclusiveUpperBound)
@@ -7600,7 +7600,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomDoubleBetween;
    }
 
-   template<typename T>
+   template<std::integral T>
    T RandomLessThan(T exclusiveUpperBound)
    {
       constexpr T minTValue = std::numeric_limits<T>::min();
@@ -7620,7 +7620,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
-   template<typename T>
+   template<std::integral T>
    T RandomLessThanOrEqualTo(T inclusiveUpperBound)
    {
       const int equivalenceClass1Or2Or3 = RandomBetween<int>(1, 3);
@@ -7639,7 +7639,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
-   template<typename T>
+   template<std::integral T>
    T RandomGreaterThan(T exclusiveLowerBound)
    {
       constexpr T maxTValue = std::numeric_limits<T>::max();
@@ -7659,7 +7659,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
-   template<typename T>
+   template<std::integral T>
    T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
    {
       const int equivalenceClass1Or2Or3 = RandomBetween<int>(1, 3);
@@ -7691,7 +7691,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomInteger;
    }
 
-   template<typename T>
+   template<std::integral T>
    T RandomNon0NotEqualToValue(const T& notEqualValue)
    {
       static const T zeroTValue{0};
