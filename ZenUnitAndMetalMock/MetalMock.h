@@ -766,13 +766,13 @@ ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Typ
 
 namespace MetalMock
 {
-   inline std::atomic<unsigned long long> _globalAtomicFunctionCallSequenceNumber;
+   inline std::atomic<unsigned long long> _metalMockedFunctionCallSequenceNumber;
 
    struct FunctionCallSequenceNumber
    {
       unsigned long long functionCallSequenceNumber;
 
-      FunctionCallSequenceNumber() : functionCallSequenceNumber(_globalAtomicFunctionCallSequenceNumber++) {}
+      FunctionCallSequenceNumber() : functionCallSequenceNumber(_metalMockedFunctionCallSequenceNumber++) {}
 
       FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumber) const
       {

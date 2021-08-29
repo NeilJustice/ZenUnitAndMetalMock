@@ -58,13 +58,13 @@ namespace MetalMock
 
    TEST(MetalMockIt_ExpectedIsTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
    {
-      const unsigned long long startingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_globalAtomicFunctionCallSequenceNumber;
+      const unsigned long long startingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_metalMockedFunctionCallSequenceNumber;
       _zeroArgumentMetalMocker->wasExpected = true;
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       //
       _zeroArgumentMetalMocker->MetalMockIt();
       //
-      const unsigned long long endingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_globalAtomicFunctionCallSequenceNumber;
+      const unsigned long long endingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_metalMockedFunctionCallSequenceNumber;
       IS_GREATER_THAN(endingGlobalAtomicFunctionCallSequenceNumber, startingGlobalAtomicFunctionCallSequenceNumber);
       ARE_EQUAL(1, _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.size());
       METALMOCK(_zeroArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
