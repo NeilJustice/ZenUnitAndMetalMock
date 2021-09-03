@@ -8295,6 +8295,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomInt;
       }
 
+      virtual int IntBetween(int inclusiveLowerBound, int inclusiveUpperBound) const
+      {
+         const int randomIntBetween = RandomBetween<int>(inclusiveLowerBound, inclusiveUpperBound);
+         return randomIntBetween;
+      }
+
       virtual unsigned UnsignedInt() const
       {
          const unsigned int randomUnsignedInt = Random<unsigned int>();

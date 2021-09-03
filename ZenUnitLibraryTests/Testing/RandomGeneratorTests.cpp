@@ -47,6 +47,11 @@ namespace ZenUnit
       const int randomInt = _randomGenerator.Int();
       ARE_EQUAL(randomInt, randomInt);
 
+      const int randomIntBetween1And3 = _randomGenerator.IntBetween(1, 3);
+      IS_TRUE(randomIntBetween1And3 >= 1 && randomIntBetween1And3 <= 3);
+      const int randomIntBetween5And7 = _randomGenerator.IntBetween(5, 7);
+      IS_TRUE(randomIntBetween5And7 >= 5 && randomIntBetween5And7 <= 7);
+
       const unsigned int randomUnsignedInt = _randomGenerator.UnsignedInt();
       ARE_EQUAL(randomUnsignedInt, randomUnsignedInt);
 
