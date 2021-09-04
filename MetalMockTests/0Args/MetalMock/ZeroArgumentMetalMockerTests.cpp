@@ -30,7 +30,7 @@ namespace MetalMock
       ARE_EQUAL(_metalMockedFunctionSignature, zeroArgumentMetalMocker.metalMockedFunctionSignature);
       IS_FALSE(zeroArgumentMetalMocker.wasExpected);
       IS_FALSE(zeroArgumentMetalMocker.wasAsserted);
-      IS_EMPTY(zeroArgumentMetalMocker.metalMockedFunctionCallSequenceNumbers);
+      IS_EMPTY(zeroArgumentMetalMocker.metalMockedFunctionCallSequenceNumberAndSignatures);
    }
 
    TEST(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
@@ -58,18 +58,17 @@ namespace MetalMock
 
    TEST(MetalMockIt_ExpectedIsTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
    {
-      const unsigned long long startingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_metalMockedFunctionCallSequenceNumber;
+      const unsigned long long startingGlobalAtomicFunctionCallSequenceNumberAndSignature = MetalMock::_metalMockedFunctionCallSequenceNumberAndSignature;
       _zeroArgumentMetalMocker->wasExpected = true;
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       //
       _zeroArgumentMetalMocker->MetalMockIt();
       //
-      const unsigned long long endingGlobalAtomicFunctionCallSequenceNumber = MetalMock::_metalMockedFunctionCallSequenceNumber;
-      IS_GREATER_THAN(endingGlobalAtomicFunctionCallSequenceNumber, startingGlobalAtomicFunctionCallSequenceNumber);
-      ARE_EQUAL(1, _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.size());
+      const unsigned long long endingGlobalAtomicFunctionCallSequenceNumberAndSignature = MetalMock::_metalMockedFunctionCallSequenceNumberAndSignature;
+      IS_GREATER_THAN(endingGlobalAtomicFunctionCallSequenceNumberAndSignature, startingGlobalAtomicFunctionCallSequenceNumberAndSignature);
+      ARE_EQUAL(1, _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumberAndSignatures.size());
       METALMOCK(_zeroArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
-      const FunctionCallSequenceNumber functionCallSequenceNumber = _zeroArgumentMetalMocker->CalledOnce();
-      ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers[0], functionCallSequenceNumber);
+      _zeroArgumentMetalMocker->CalledOnce();
    }
 
    TEST2X2(CalledOnce_SetsAssertedToTrue_FunctionWasCalledOnce_DoesNotThrowException,
@@ -78,12 +77,12 @@ namespace MetalMock
       1ULL, false,
       2ULL, true)
    {
-      _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.resize(numberOfFunctionCalls);
+      _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumberAndSignatures.resize(numberOfFunctionCalls);
       //
       if (expectAnomaly)
       {
          const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumberAndSignatures.size(), this->metalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -92,8 +91,7 @@ File.cpp(1))");
       }
       else
       {
-         const FunctionCallSequenceNumber functionCallSequenceNumber = _zeroArgumentMetalMocker->CalledOnce();
-         ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers[0], functionCallSequenceNumber);
+         _zeroArgumentMetalMocker->CalledOnce();
       }
       //
       IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
@@ -117,12 +115,12 @@ File.cpp(1))");
       2ULL, 2ULL, false,
       3ULL, 2ULL, true)
    {
-      _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.resize(numberOfFunctionCalls);
+      _zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumberAndSignatures.resize(numberOfFunctionCalls);
       //
       if (expectAnomaly)
       {
          const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumbers.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumberAndSignatures.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedNumberOfCallsToMetalMockedFunction, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -132,8 +130,7 @@ File.cpp(1))");
       }
       else
       {
-         const FunctionCallSequenceNumber functionCallSequenceNumber = _zeroArgumentMetalMocker->CalledNTimes(expectedNumberOfCallsToMetalMockedFunction);
-         ARE_EQUAL(_zeroArgumentMetalMocker->metalMockedFunctionCallSequenceNumbers.back(), functionCallSequenceNumber);
+         _zeroArgumentMetalMocker->CalledNTimes(expectedNumberOfCallsToMetalMockedFunction);
       }
       //
       IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);

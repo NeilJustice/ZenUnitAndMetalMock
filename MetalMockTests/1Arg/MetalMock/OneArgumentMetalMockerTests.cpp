@@ -119,8 +119,7 @@ namespace MetalMock
          }
          else
          {
-            const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledOnceWith(expectedArgument);
-            ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory[0].functionCallSequenceNumber, functionCallSequenceNumber);
+            _oneArgumentMetalMocker->CalledOnceWith(expectedArgument);
          }
       }
       //
@@ -159,8 +158,7 @@ File.cpp(1))");
       }
       else
       {
-         const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledNTimesWith(expectedNumberOfCallsToMetalMockedFunction, 0);
-         ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory.back().functionCallSequenceNumber, functionCallSequenceNumber);
+         _oneArgumentMetalMocker->CalledNTimesWith(expectedNumberOfCallsToMetalMockedFunction, 0);
       }
       //
       IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
@@ -284,10 +282,9 @@ File.cpp(1))");
       };
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 10 };
       //
-      const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledAsFollows(expectedArgumentFunctionCalls);
+      _oneArgumentMetalMocker->CalledAsFollows(expectedArgumentFunctionCalls);
       //
       IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-      ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory.back().functionCallSequenceNumber, functionCallSequenceNumber);
    }
 
    TEST(CalledAsFollowsInAnyOrder_ExpectedCallsSizeIs0_ThrowsUnsupportedCalledZeroTimesException_DoesNotSetAssertedToTrue)
@@ -352,10 +349,9 @@ File.cpp(1))");
       };
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 20 };
       //
-      const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
+      _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
       //
       IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-      ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory.back().functionCallSequenceNumber, functionCallSequenceNumber);
    }
 
    TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfCalls_ArgsAreEqualInDifferentOrder_DoesNotThrowAnomaly)
@@ -369,10 +365,9 @@ File.cpp(1))");
       };
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 20, 10 };
       //
-      const FunctionCallSequenceNumber functionCallSequenceNumber = _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
+      _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
       //
       IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-      ARE_EQUAL(_oneArgumentMetalMocker->metalMockedFunctionCallHistory.back().functionCallSequenceNumber, functionCallSequenceNumber);
    }
 
    RUN_TESTS(OneArgumentMetalMockerTests)
