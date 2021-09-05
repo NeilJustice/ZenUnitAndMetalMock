@@ -3159,6 +3159,11 @@ private:
       typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class SevenArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
+      template<
+         typename MetalMockObjectType,
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
+      friend class MetalMock7ArgsTester;
       friend class SevenArgumentMetalMockerTests;
    public:
       std::vector<SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> metalMockedFunctionCallHistory;
