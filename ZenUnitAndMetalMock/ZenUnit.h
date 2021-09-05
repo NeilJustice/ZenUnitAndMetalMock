@@ -2922,7 +2922,7 @@ namespace ZenUnit
       const std::string toStringedExpectedElement = ToStringer::ToString(expectedElement);
       const std::string singleQuotedToStringedExpectedElement = String::ConcatStrings("'", toStringedExpectedElement, "'");
       const std::string expectedField = "Collection contains element " + singleQuotedToStringedExpectedElement;
-      const std::string actualField = "Collection does not contain element " + singleQuotedToStringedExpectedElement;
+      const std::string actualField = "Collection does not contain the above element";
       const Anomaly anomaly("CONTAINS_ELEMENT", expectedElementText, actualCollectionText, "", messagesText, Anomaly::Default(),
          expectedField, actualField, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;

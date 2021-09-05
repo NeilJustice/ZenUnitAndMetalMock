@@ -28,7 +28,7 @@ namespace ZenUnit
       THROWS_EXCEPTION(CONTAINS_ELEMENT(0, emptyIntVector), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: CONTAINS_ELEMENT(0, emptyIntVector)",
 "Expected: Collection contains element '0'",
-"  Actual: Collection does not contain element '0'",
+"  Actual: Collection does not contain the above element",
 "File.cpp(1)"));
    }
 
@@ -52,7 +52,7 @@ namespace ZenUnit
       THROWS_EXCEPTION(CONTAINS_ELEMENT(kvp, emptyIntIntMap), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: CONTAINS_ELEMENT(kvp, emptyIntIntMap)",
 "Expected: Collection contains element '(0, 0)'",
-"  Actual: Collection does not contain element '(0, 0)'",
+"  Actual: Collection does not contain the above element",
 "File.cpp(1)"));
    }
 
@@ -74,7 +74,7 @@ namespace ZenUnit
       THROWS_EXCEPTION(CONTAINS_ELEMENT(0, emptyIntSet, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: CONTAINS_ELEMENT(0, emptyIntSet, messageA, messageB)",
 "Expected: Collection contains element '0'",
-"  Actual: Collection does not contain element '0'",
+"  Actual: Collection does not contain the above element",
 " Message: \"A\", \"B\"",
 "File.cpp(1)"));
    }

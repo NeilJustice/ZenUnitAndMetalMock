@@ -2091,6 +2091,18 @@ private:
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2)
+      {
+         this->MetalMockSetAsserted();
+         const TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type> expectedTwoArgumentFunctionCall(expectedArg1, expectedArg2);
+         const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>> actualTwoArgumentFunctionCalls =
+            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>,
+               TwoArgumentFunctionCall<Arg1Type, Arg2Type>>(this->metalMockedFunctionCallHistory);
+         CONTAINS_ELEMENT(expectedTwoArgumentFunctionCall, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledOnceWith(
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument)

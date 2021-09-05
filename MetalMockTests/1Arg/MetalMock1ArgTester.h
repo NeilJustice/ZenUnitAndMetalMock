@@ -251,7 +251,7 @@ namespace MetalMock
          {
             metalMockObject.wasExpected = true;
             //
-            metalMockObject.MetalMockIt(100);
+            metalMockObject.MetalMockIt(20);
             metalMockObject.MetalMockIt(10);
             metalMockObject.MetalMockIt(10);
             //
@@ -271,14 +271,13 @@ namespace MetalMock
          {
             metalMockObject.wasExpected = true;
             //
-            metalMockObject.MetalMockIt(100);
+            metalMockObject.MetalMockIt(20);
             //
             const string expectedExceptionMessage = String::ConcatValues(R"(
   Failed: CONTAINS_ELEMENT(expectedOneArgumentFunctionCall, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)
 Expected: Collection contains element 'MetalMock::OneArgumentFunctionCall:
 Argument: 10'
-  Actual: Collection does not contain element 'MetalMock::OneArgumentFunctionCall:
-Argument: 10'
+  Actual: Collection does not contain the above element
  Message: ")", expectedFunctionSignature, R"("
 File.cpp(1))");
             THROWS_EXCEPTION(metalMockObject.CalledWith(10),

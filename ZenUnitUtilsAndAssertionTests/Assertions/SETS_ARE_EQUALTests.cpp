@@ -105,7 +105,7 @@ namespace ZenUnit
 "}",
 " Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed",
 "Expected: Collection contains element '1'",
-"  Actual: Collection does not contain element '1'",
+"  Actual: Collection does not contain the above element",
 " Message: \"A\", \"B\"",
 "File.cpp(1)",
 "File.cpp(1)"));
@@ -129,7 +129,7 @@ namespace ZenUnit
 "}",
 " Because: CONTAINS_ELEMENT(expectedElement, actualSet) failed",
 "Expected: Collection contains element 'UserType@1'",
-"  Actual: Collection does not contain element 'UserType@1'",
+"  Actual: Collection does not contain the above element",
 "File.cpp(1)",
 "File.cpp(1)"));
    }
