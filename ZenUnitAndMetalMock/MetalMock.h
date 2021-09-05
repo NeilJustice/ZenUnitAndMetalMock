@@ -1188,7 +1188,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticMockType>
       friend class MetalMock0ArgsTester;
    private:
-      std::vector<FunctionCallSequenceNumberAndSignature> metalMockedFunctionCallSequenceNumberAndSignatures;
+      std::vector<FunctionCallSequenceNumberAndSignature> functionCallSequenceNumbersAndSignatures;
    protected:
       std::function<void()> callInsteadFunction;
    public:
@@ -1200,7 +1200,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       void MetalMockIt()
       {
          this->MetalMockThrowIfNotExpected();
-         this->metalMockedFunctionCallSequenceNumberAndSignatures.emplace_back();
+         this->functionCallSequenceNumbersAndSignatures.emplace_back();
          if (this->callInsteadFunction)
          {
             this->callInsteadFunction();
@@ -1219,18 +1219,22 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumberAndSignatures.size(), this->metalMockedFunctionSignature);
-         FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature = this->metalMockedFunctionCallSequenceNumberAndSignatures[0];
-         return functionCallSequenceNumberAndSignature;
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->functionCallSequenceNumbersAndSignatures.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
       FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfCallsToMetalMockedFunction)
       {
          this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallSequenceNumberAndSignatures.size(), this->metalMockedFunctionSignature);
-         FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature = this->metalMockedFunctionCallSequenceNumberAndSignatures.back();
-         return functionCallSequenceNumberAndSignature;
+         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->functionCallSequenceNumbersAndSignatures.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+   private:
+      FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
+      {
+         this->functionCallSequenceNumbersAndSignatures[0].metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         return this->functionCallSequenceNumbersAndSignatures[0];
       }
    };
 
