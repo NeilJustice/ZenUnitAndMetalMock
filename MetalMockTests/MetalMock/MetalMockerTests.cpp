@@ -16,8 +16,8 @@ namespace MetalMock
    AFACT(MetalMockSetAsserted_SetsAssertedTrue_CallableTwice)
    AFACT(MetalMockThrowIfNotExpected_ExpectedTrue_DoesNotThrowException)
    AFACT(MetalMockThrowIfNotExpected_ExpectedFalse_ThrowsUnexpectedCallException)
-   AFACT(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_ThrowsUnsupportedCalledZeroTimesException)
-   FACTS(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrowException)
+   AFACT(MetalMockThrowIfExpectedNumberOfFunctionCalls0_ExpectedNumberOfFunctionCalls0_ThrowsUnsupportedCalledZeroTimesException)
+   FACTS(MetalMockThrowIfExpectedNumberOfFunctionCalls0_ExpectedNumberOfFunctionCallsGreaterThan0_DoesNotThrowException)
    AFACT(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_ThrowsUnsupportedCalledZeroTimesException)
    FACTS(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrowException)
    AFACT(MetalMockThrowExceptionIfExceptionSet_CallsExceptionThrowerMetalMockThrowIfExceptionSet)
@@ -112,19 +112,19 @@ namespace MetalMock
          UnexpectedCallException, expectedExceptionMessage2);
    }
 
-   TEST(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCalls0_ThrowsUnsupportedCalledZeroTimesException)
+   TEST(MetalMockThrowIfExpectedNumberOfFunctionCalls0_ExpectedNumberOfFunctionCalls0_ThrowsUnsupportedCalledZeroTimesException)
    {
       const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(ExpectedMetalMockedFunctionSignature);
-      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(0),
+      THROWS_EXCEPTION(_metalMocker->MetalMockThrowIfExpectedNumberOfFunctionCalls0(0),
          UnsupportedCalledZeroTimesException, expectedExceptionMessage);
    }
 
-   TEST1X1(MetalMockThrowIfExpectedNumberOfCalls0_ExpectedNumberOfCallsGreaterThan0_DoesNotThrowException,
-      size_t expectedNumberOfCallsToMetalMockedFunction,
+   TEST1X1(MetalMockThrowIfExpectedNumberOfFunctionCalls0_ExpectedNumberOfFunctionCallsGreaterThan0_DoesNotThrowException,
+      size_t expectedNumberOfFunctionCalls,
       1ULL,
       2ULL)
    {
-      DOES_NOT_THROW(_metalMocker->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction));
+      DOES_NOT_THROW(_metalMocker->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls));
    }
 
    TEST(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_ThrowsUnsupportedCalledZeroTimesException)

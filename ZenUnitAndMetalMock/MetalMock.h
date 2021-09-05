@@ -1097,9 +1097,9 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
          this->wasAsserted = true;
       }
 
-      void MetalMockThrowIfExpectedNumberOfCalls0(size_t expectedNumberOfCallsToMetalMockedFunction)
+      void MetalMockThrowIfExpectedNumberOfFunctionCalls0(size_t expectedNumberOfFunctionCalls)
       {
-         if (expectedNumberOfCallsToMetalMockedFunction == 0)
+         if (expectedNumberOfFunctionCalls == 0)
          {
             _metalMockExceptionIsInFlight = true;
             throw UnsupportedCalledZeroTimesException(metalMockedFunctionSignature);
@@ -1188,7 +1188,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticMockType>
       friend class MetalMock0ArgsTester;
    private:
-      std::vector<FunctionCallSequenceNumberAndSignature> functionCallSequenceNumbersAndSignatures;
+      std::vector<FunctionCallSequenceNumberAndSignature> metalMockedFunctionCallHistory;
    protected:
       std::function<void()> callInsteadFunction;
    public:
@@ -1200,7 +1200,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       void MetalMockIt()
       {
          this->MetalMockThrowIfNotExpected();
-         this->functionCallSequenceNumbersAndSignatures.emplace_back();
+         this->metalMockedFunctionCallHistory.emplace_back();
          if (this->callInsteadFunction)
          {
             this->callInsteadFunction();
@@ -1218,23 +1218,23 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       FunctionCallSequenceNumberAndSignature CalledOnce()
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->functionCallSequenceNumbersAndSignatures.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfCallsToMetalMockedFunction)
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->functionCallSequenceNumbersAndSignatures.size(), this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
    private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->functionCallSequenceNumbersAndSignatures[0].metalMockedFunctionSignature = this->metalMockedFunctionSignature;
-         return this->functionCallSequenceNumbersAndSignatures[0];
+         this->metalMockedFunctionCallHistory[0].metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         return this->metalMockedFunctionCallHistory[0];
       }
    };
 
@@ -1834,18 +1834,28 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       FunctionCallSequenceNumberAndSignature CalledOnceWith(const ArgType& expectedArgument)
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledNTimesWith(size_t expectedNumberOfCallsToMetalMockedFunction, const ArgType& expectedArgument)
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
+      FunctionCallSequenceNumberAndSignature CalledNTimesWith(
+         size_t expectedNumberOfFunctionCalls,
+         const ArgType& expectedArgument)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -2074,22 +2084,30 @@ private:
          const Arg2Type& expectedSecondArgument)
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledNTimesWith(
-         size_t expectedNumberOfCallsToMetalMockedFunction,
+         size_t expectedNumberOfFunctionCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -2282,24 +2300,32 @@ private:
          const Arg3Type& expectedThirdArgument)
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledNTimesWith(
-         size_t expectedNumberOfCallsToMetalMockedFunction,
+         size_t expectedNumberOfFunctionCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -2496,8 +2522,8 @@ private:
          const Arg4Type& expectedFourthArgument)
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
@@ -2505,17 +2531,25 @@ private:
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledNTimesWith(
-         size_t expectedNumberOfCallsToMetalMockedFunction,
+         size_t expectedNumberOfFunctionCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument,
          const Arg4Type& expectedFourthArgument)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -2702,8 +2736,8 @@ private:
          const Arg5Type& expectedFifthArgument)
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
@@ -2712,18 +2746,26 @@ private:
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledNTimesWith(
-         size_t expectedNumberOfCallsToMetalMockedFunction,
+         size_t expectedNumberOfFunctionCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument,
          const Arg4Type& expectedFourthArgument,
          const Arg5Type& expectedFifthArgument)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -2914,8 +2956,8 @@ private:
          const Arg6Type& expectedSixthArgument)
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
@@ -2925,8 +2967,16 @@ private:
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledNTimesWith(
-         size_t expectedNumberOfCallsToMetalMockedFunction,
+         size_t expectedNumberOfFunctionCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument,
@@ -2934,10 +2984,10 @@ private:
          const Arg5Type& expectedFifthArgument,
          const Arg6Type& expectedSixthArgument)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
@@ -3122,8 +3172,8 @@ private:
          const Arg7Type& expectedSeventhArgument)
       {
          this->MetalMockSetAsserted();
-         constexpr size_t expectedNumberOfCallsToMetalMockedFunction = 1;
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         constexpr size_t expectedNumberOfFunctionCalls = 1;
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
          ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
@@ -3134,8 +3184,16 @@ private:
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledNTimes(size_t expectedNumberOfFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledNTimesWith(
-         size_t expectedNumberOfCallsToMetalMockedFunction,
+         size_t expectedNumberOfFunctionCalls,
          const Arg1Type& expectedFirstArgument,
          const Arg2Type& expectedSecondArgument,
          const Arg3Type& expectedThirdArgument,
@@ -3144,10 +3202,10 @@ private:
          const Arg6Type& expectedSixthArgument,
          const Arg7Type& expectedSeventhArgument)
       {
-         this->MetalMockThrowIfExpectedNumberOfCalls0(expectedNumberOfCallsToMetalMockedFunction);
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
          this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         for (size_t i = 0; i < expectedNumberOfCallsToMetalMockedFunction; ++i)
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+         for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);

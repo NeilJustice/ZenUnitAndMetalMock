@@ -13,12 +13,12 @@ namespace MetalMock
    EVIDENCE
 
    NonVoidOneArgumentMetalMocker<int, int> _nonVoidOneArgumentMetalMocker;
-   static int s_numberOfCallsToCallInsteadFunction;
+   static int s_numberOfFunctionCallsToCallInsteadFunction;
    static int s_callInsteadReturnValue;
 
    STARTUP
    {
-      s_numberOfCallsToCallInsteadFunction = 0;
+      s_numberOfFunctionCallsToCallInsteadFunction = 0;
       s_callInsteadReturnValue = ZenUnit::Random<int>();
    }
 
@@ -42,7 +42,7 @@ namespace MetalMock
 
    static int CallInsteadFunction(int)
    {
-      ++s_numberOfCallsToCallInsteadFunction;
+      ++s_numberOfFunctionCallsToCallInsteadFunction;
       return s_callInsteadReturnValue;
    }
 
@@ -56,7 +56,7 @@ namespace MetalMock
       //
       const int returnValue = _nonVoidOneArgumentMetalMocker.MetalMockItAndReturnValue(arg1);
       //
-      ARE_EQUAL(1, s_numberOfCallsToCallInsteadFunction);
+      ARE_EQUAL(1, s_numberOfFunctionCallsToCallInsteadFunction);
       ARE_EQUAL(s_callInsteadReturnValue, returnValue);
    }
 
@@ -125,6 +125,6 @@ namespace MetalMock
 
    RUN_TESTS(NonVoidOneArgumentMetalMockerTests)
 
-   int NonVoidOneArgumentMetalMockerTests::s_numberOfCallsToCallInsteadFunction = 0;
+   int NonVoidOneArgumentMetalMockerTests::s_numberOfFunctionCallsToCallInsteadFunction = 0;
    int NonVoidOneArgumentMetalMockerTests::s_callInsteadReturnValue = 0;
 }

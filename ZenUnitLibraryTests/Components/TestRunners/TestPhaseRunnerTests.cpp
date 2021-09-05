@@ -42,7 +42,7 @@ namespace ZenUnit
    const unsigned _elapsedMicroseconds = ZenUnit::Random<unsigned>();
    const string _testPhaseSuffix = ZenUnit::Random<string>();
 
-   static int s_numberOfCallsToFunctionThatDoesNotThrowAnException;
+   static int s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException;
    static string s_stdExceptionMessage;
    static Anomaly s_anomaly;
 
@@ -69,7 +69,7 @@ namespace ZenUnit
 
    CLEANUP
    {
-      TestPhaseRunnerTests::s_numberOfCallsToFunctionThatDoesNotThrowAnException = 0;
+      TestPhaseRunnerTests::s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException = 0;
    }
 
    TEST(DefaultConstructor_SetsFunctionPointers_NewsComponents)
@@ -103,7 +103,7 @@ namespace ZenUnit
    static void FunctionThatDoesNotThrowAnException(Test* test)
    {
       IS_NOT_NULLPTR(test);
-      ++s_numberOfCallsToFunctionThatDoesNotThrowAnException;
+      ++s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException;
    }
 
    TEST(RunTestPhase_FunctionDoesNotThrowException_ReturnsNoExceptionThrownTestPhaseResult)
@@ -120,7 +120,7 @@ namespace ZenUnit
          FunctionThatDoesNotThrowAnException, _testMock.get(), TestPhase::Startup);
       //
       METALMOCK(GetZenUnitArgsMock.CalledOnce());
-      ARE_EQUAL(1, TestPhaseRunnerTests::s_numberOfCallsToFunctionThatDoesNotThrowAnException);
+      ARE_EQUAL(1, TestPhaseRunnerTests::s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException);
       AssertStopwatchStartAndStopCalled();
       METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
@@ -500,7 +500,7 @@ namespace ZenUnit
 
    RUN_TESTS(TestPhaseRunnerTests)
 
-   int TestPhaseRunnerTests::s_numberOfCallsToFunctionThatDoesNotThrowAnException;
+   int TestPhaseRunnerTests::s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException;
    string TestPhaseRunnerTests::s_stdExceptionMessage;
    Anomaly TestPhaseRunnerTests::s_anomaly;
 }

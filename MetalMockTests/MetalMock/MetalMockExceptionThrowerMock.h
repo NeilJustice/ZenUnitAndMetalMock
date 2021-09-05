@@ -9,13 +9,13 @@ namespace MetalMock
       string exceptionTypeName;
       size_t exceptionArgCount;
       string stringConcatenatedExceptionArgs;
-      unsigned numberOfCallsToMetalMockThrowExceptionIfExceptionSet;
+      unsigned numberOfFunctionCallsToMetalMockThrowExceptionIfExceptionSet;
       bool expectCallToExpectAndThrowException;
       bool expectCallToMetalMockThrowExceptionIfExceptionSet;
    public:
       MetalMockExceptionThrowerMock() noexcept
          : exceptionArgCount(0)
-         , numberOfCallsToMetalMockThrowExceptionIfExceptionSet(0)
+         , numberOfFunctionCallsToMetalMockThrowExceptionIfExceptionSet(0)
          , expectCallToExpectAndThrowException(false)
          , expectCallToMetalMockThrowExceptionIfExceptionSet(false)
       {
@@ -49,7 +49,7 @@ namespace MetalMock
          {
             throw runtime_error("Unexpected call to MetalMockExceptionThrowerMock::MetalMockThrowExceptionIfExceptionSet()"); // LCOV_EXCL_LINE
          }
-         ++numberOfCallsToMetalMockThrowExceptionIfExceptionSet;
+         ++numberOfFunctionCallsToMetalMockThrowExceptionIfExceptionSet;
       }
 
       void AssertExpectAndThrowExceptionCalledOnceWith(
@@ -64,7 +64,7 @@ namespace MetalMock
 
       void AssertMetalMockThrowExceptionIfExceptionSetCalledOnce()
       {
-         ARE_EQUAL(1, numberOfCallsToMetalMockThrowExceptionIfExceptionSet);
+         ARE_EQUAL(1, numberOfFunctionCallsToMetalMockThrowExceptionIfExceptionSet);
       }
    };
 }

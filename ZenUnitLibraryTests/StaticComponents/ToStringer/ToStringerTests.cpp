@@ -11,25 +11,25 @@ namespace ZenUnit
    {
       int value;
       mutable int argValue;
-      mutable size_t numberOfCalls;
+      mutable size_t numberOfFunctionCalls;
 
       explicit ToStringerTestStruct(int value)
          : value(value)
          , argValue(0)
-         , numberOfCalls(0)
+         , numberOfFunctionCalls(0)
       {
       }
 
       friend ostream& operator<<(ostream& os, const ToStringerTestStruct& sts)
       {
-         ++sts.numberOfCalls;
+         ++sts.numberOfFunctionCalls;
          sts.argValue = sts.value;
          return os;
       }
 
       void AssertInsertionOperatorCalledOnceWith(int expectedValue)
       {
-         ARE_EQUAL(1, numberOfCalls);
+         ARE_EQUAL(1, numberOfFunctionCalls);
          ARE_EQUAL(expectedValue, argValue);
       }
    };

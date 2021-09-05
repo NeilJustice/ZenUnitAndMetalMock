@@ -30,18 +30,18 @@ namespace MetalMock
 
    struct CallInsteadFunctionCallHistory
    {
-      size_t numberOfCalls = 0;
+      size_t numberOfFunctionCalls = 0;
       int arg = 0;
 
       void RecordFunctionCall(int argValue)
       {
-         ++numberOfCalls;
+         ++numberOfFunctionCalls;
          arg = argValue;
       }
 
       void AssertCalledOnceWith(int expectedArg) const
       {
-         ARE_EQUAL(1, numberOfCalls);
+         ARE_EQUAL(1, numberOfFunctionCalls);
          ARE_EQUAL(expectedArg, arg);
       }
    } _callInsteadFunctionCallHistory;

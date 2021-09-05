@@ -7,7 +7,7 @@ namespace MetalMock
    AFACT(Constructor_SetsFields)
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(MetalMockIt_ExpectedFalse_Throws)
-   AFACT(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
+   AFACT(MetalMockIt_ExpectedTrue_IncrementsNumberOfFunctionCalls_CallsMetalMockThrowIfExceptionSet)
    AFACT(CallInstead_CallsSuppliedFunctionWhenMetalMockedFunctionIsCalled)
    EVIDENCE
 
@@ -56,7 +56,7 @@ namespace MetalMock
          UnexpectedCallException, expectedExceptionMessage);
    }
 
-   TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfCalls_CallsMetalMockThrowIfExceptionSet)
+   TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfFunctionCalls_CallsMetalMockThrowIfExceptionSet)
    {
       _metalMocker->wasExpected = true;
       _metalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();

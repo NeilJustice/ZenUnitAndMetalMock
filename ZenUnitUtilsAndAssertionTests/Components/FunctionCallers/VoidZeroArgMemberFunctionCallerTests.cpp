@@ -10,16 +10,16 @@ namespace ZenUnit
    class Class
    {
    public:
-      mutable unsigned numberOfCalls = 0;
+      mutable unsigned numberOfFunctionCalls = 0;
 
       void ConstMemberZeroArgFunction() const
       {
-         ++numberOfCalls;
+         ++numberOfFunctionCalls;
       }
 
       void NonConstMemberZeroArgFunction()
       {
-         ++numberOfCalls;
+         ++numberOfFunctionCalls;
       }
    };
 
@@ -28,28 +28,28 @@ namespace ZenUnit
 
    TEST(CallConstMemberFunction_CallsConstMemberFunctionOnce)
    {
-      IS_ZERO(_classInstance.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfFunctionCalls);
       //
       _voidZeroArgMemberFunctionCaller.CallConstMemberFunction(&_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, _classInstance.numberOfCalls);
+      ARE_EQUAL(1, _classInstance.numberOfFunctionCalls);
       //
       _voidZeroArgMemberFunctionCaller.CallConstMemberFunction(&_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, _classInstance.numberOfCalls);
+      ARE_EQUAL(2, _classInstance.numberOfFunctionCalls);
    }
 
    TEST(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce)
    {
-      IS_ZERO(_classInstance.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfFunctionCalls);
       //
       _voidZeroArgMemberFunctionCaller.CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, _classInstance.numberOfCalls);
+      ARE_EQUAL(1, _classInstance.numberOfFunctionCalls);
       //
       _voidZeroArgMemberFunctionCaller.CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, _classInstance.numberOfCalls);
+      ARE_EQUAL(2, _classInstance.numberOfFunctionCalls);
    }
 
    RUN_TESTS(VoidZeroArgMemberFunctionCallerTests)

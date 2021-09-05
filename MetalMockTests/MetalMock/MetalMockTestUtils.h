@@ -15,7 +15,7 @@ struct MetalMockTestUtil
       const string& expectedSignature, size_t expectedCallCount, size_t actualCallCount)
    {
       const string expectedWhat = String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfCallsToMetalMockedFunction, actualNumberOfCalls, this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, actualNumberOfFunctionCalls, this->metalMockedFunctionSignature)
 Expected: )", expectedCallCount, R"(
   Actual: )", actualCallCount, R"(
  Message: ")", expectedSignature, R"("

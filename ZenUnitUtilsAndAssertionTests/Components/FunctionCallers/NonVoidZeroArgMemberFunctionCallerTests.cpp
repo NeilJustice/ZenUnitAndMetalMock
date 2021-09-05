@@ -11,18 +11,18 @@ namespace ZenUnit
    class Class
    {
    public:
-      mutable size_t numberOfCalls = 0;
+      mutable size_t numberOfFunctionCalls = 0;
       ReturnType returnValue = ZenUnit::Random<ReturnType>();
 
       ReturnType ConstMemberZeroArgFunction() const
       {
-         ++numberOfCalls;
+         ++numberOfFunctionCalls;
          return returnValue;
       }
 
       ReturnType NonConstMemberZeroArgFunction()
       {
-         ++numberOfCalls;
+         ++numberOfFunctionCalls;
          return returnValue;
       }
    };
@@ -32,35 +32,35 @@ namespace ZenUnit
 
    TEST(CallConstMemberFunction_CallsConstMemberFunctionOnce)
    {
-      IS_ZERO(_classInstance.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfFunctionCalls);
       //
       const ReturnType returnValueA = _nonVoidZeroArgMemberFunctionCaller.CallConstMemberFunction(
          &_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, _classInstance.numberOfCalls);
+      ARE_EQUAL(1, _classInstance.numberOfFunctionCalls);
       ARE_EQUAL(_classInstance.returnValue, returnValueA);
       //
       const ReturnType returnValueB = _nonVoidZeroArgMemberFunctionCaller.CallConstMemberFunction(
          &_classInstance, &Class::ConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, _classInstance.numberOfCalls);
+      ARE_EQUAL(2, _classInstance.numberOfFunctionCalls);
       ARE_EQUAL(_classInstance.returnValue, returnValueB);
    }
 
    TEST(CallNonConstMemberFunction_CallsNonConstMemberFunctionOnce)
    {
-      IS_ZERO(_classInstance.numberOfCalls);
+      IS_ZERO(_classInstance.numberOfFunctionCalls);
       //
       const ReturnType returnValueA = _nonVoidZeroArgMemberFunctionCaller.
          CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(1, _classInstance.numberOfCalls);
+      ARE_EQUAL(1, _classInstance.numberOfFunctionCalls);
       ARE_EQUAL(_classInstance.returnValue, returnValueA);
       //
       const ReturnType returnValueB = _nonVoidZeroArgMemberFunctionCaller.
          CallNonConstMemberFunction(&_classInstance, &Class::NonConstMemberZeroArgFunction);
       //
-      ARE_EQUAL(2, _classInstance.numberOfCalls);
+      ARE_EQUAL(2, _classInstance.numberOfFunctionCalls);
       ARE_EQUAL(_classInstance.returnValue, returnValueB);
    }
 
