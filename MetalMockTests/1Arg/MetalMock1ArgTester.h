@@ -414,7 +414,7 @@ File.cpp(1))");
       void CalledNTimes_FunctionNotCalledNTimes_ThrowsException()
       {
          const size_t actualNumberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
-         const size_t expectedNumberOfFunctionCalls = ZenUnit::RandomNotEqualToValue<size_t>(actualNumberOfFunctionCalls);
+         const size_t expectedNumberOfFunctionCalls = ZenUnit::RandomNon0NotEqualToValue<size_t>(actualNumberOfFunctionCalls);
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
             metalMockObject.wasExpected = true;
