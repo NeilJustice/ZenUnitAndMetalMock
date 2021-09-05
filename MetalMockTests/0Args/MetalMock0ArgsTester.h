@@ -171,10 +171,7 @@ namespace MetalMock
             const size_t numberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
             metalMockObject.wasExpected = true;
             //
-            for (size_t i = 0; i < numberOfFunctionCalls; ++i)
-            {
-               metalMockObject.MetalMockIt();
-            }
+            MetalMockTestUtils::CallNTimes(numberOfFunctionCalls, [&]{ metalMockObject.MetalMockIt(); });
             //
             metalMockObject.Called();
          };
