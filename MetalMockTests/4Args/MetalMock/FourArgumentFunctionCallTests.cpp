@@ -68,8 +68,8 @@ namespace MetalMock
    const T<4> V4 = T<4>(true);
 
    using Call4 = FourArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>>;
-   using CallRef4 = FourArgumentFunctionCallReference<T<1>, T<2>, T<3>, T<4>>;
-   using CallRefString4 = FourArgumentFunctionCallReference<string, string, string, string>;
+   using CallRef4 = FourArgumentFunctionCallReferences<T<1>, T<2>, T<3>, T<4>>;
+   using CallRefString4 = FourArgumentFunctionCallReferences<string, string, string, string>;
 
    TEST(Constructor_SetsReferences)
    {

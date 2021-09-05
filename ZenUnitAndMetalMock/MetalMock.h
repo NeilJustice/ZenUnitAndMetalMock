@@ -1557,20 +1557,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   struct FourArgumentFunctionCallReference
+   struct FourArgumentFunctionCallReferences
    {
       const ReferenceStorage<Arg1Type> arg1Reference;
       const ReferenceStorage<Arg2Type> arg2Reference;
       const ReferenceStorage<Arg3Type> arg3Reference;
       const ReferenceStorage<Arg4Type> arg4Reference;
 
-      FourArgumentFunctionCallReference(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3, const Arg4Type& arg4)
+      FourArgumentFunctionCallReferences(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3, const Arg4Type& arg4)
          : arg1Reference(arg1)
          , arg2Reference(arg2)
          , arg3Reference(arg3)
          , arg4Reference(arg4) {}
 
-      explicit FourArgumentFunctionCallReference(const FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCall)
+      explicit FourArgumentFunctionCallReferences(const FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCall)
          : arg1Reference(fourArgumentFunctionCall.arg1.value)
          , arg2Reference(fourArgumentFunctionCall.arg2.value)
          , arg3Reference(fourArgumentFunctionCall.arg3.value)
@@ -2545,6 +2545,23 @@ private:
       }
    };
 
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
+   bool operator==(
+      const MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCallReference,
+      const MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCallReference)
+   {
+      try
+      {
+         ZenUnit::Equalizer<MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>::AssertEqual(
+            expectedFourArgumentFunctionCallReference, actualFourArgumentFunctionCallReference);
+      }
+      catch (const ZenUnit::Anomaly&)
+      {
+         return false;
+      }
+      return true;
+   }
+
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -2576,6 +2593,22 @@ private:
          this->MetalMockThrowIfNotExpected(arg1, arg2, arg3, arg4);
          metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3, arg4);
          this->MetalMockThrowExceptionIfExceptionSet();
+      }
+
+      FunctionCallSequenceNumberAndSignature CalledWith(
+         const Arg1Type& expectedArg1,
+         const Arg2Type& expectedArg2,
+         const Arg3Type& expectedArg3,
+         const Arg4Type& expectedArg4)
+      {
+         this->MetalMockSetAsserted();
+         const FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type> expectedFourArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3, expectedArg4);
+         const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> actualFourArgumentFunctionCalls =
+            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>,
+               FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(this->metalMockedFunctionCallHistory);
+         CONTAINS_ELEMENT(expectedFourArgumentFunctionCall, actualFourArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
       FunctionCallSequenceNumberAndSignature CalledOnceWith(
@@ -2624,13 +2657,13 @@ private:
       }
 
       FunctionCallSequenceNumberAndSignature CalledAsFollows(
-         const std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentFunctionCalls)
+         const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentFunctionCalls.size());
          this->MetalMockSetAsserted();
-         const std::vector<FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> actualFourArgumentFunctionCalls =
+         const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> actualFourArgumentFunctionCalls =
             MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
-               FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>,
+               FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>,
                FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(this->metalMockedFunctionCallHistory);
          VECTORS_ARE_EQUAL(expectedFourArgumentFunctionCalls, actualFourArgumentFunctionCalls, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
@@ -3576,12 +3609,12 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class Equalizer<MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   class Equalizer<MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
    public:
       static void AssertEqual(
-         const MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
-         const MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
+         const MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
+         const MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
       {
          ARE_EQUAL(expectedFourArgumentFunctionCall.arg1Reference.value, actualFourArgumentFunctionCall.arg1Reference.value);
          ARE_EQUAL(expectedFourArgumentFunctionCall.arg2Reference.value, actualFourArgumentFunctionCall.arg2Reference.value);
@@ -3728,10 +3761,10 @@ namespace ZenUnit
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class Printer<MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
+   class Printer<MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>
    {
    public:
-      static void Print(std::ostream& os, const MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCallRef)
+      static void Print(std::ostream& os, const MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCallRef)
       {
          os << "MetalMock::FourArgumentFunctionCall:\n"
                "Argument1: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.arg1Reference.value) << '\n' <<
