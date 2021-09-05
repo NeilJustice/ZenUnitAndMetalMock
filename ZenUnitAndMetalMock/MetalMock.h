@@ -1181,12 +1181,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    template<typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class ZeroArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
-      friend class ZeroArgumentMetalMockerTests;
       template<
          typename MetalMockObjectType,
          typename FreeFunctionMockObjectType,
          typename StaticFunctionMockObjectType>
       friend class MetalMock0ArgsTester;
+      friend class ZeroArgumentMetalMockerTests;
    private:
       std::vector<FunctionCallSequenceNumberAndSignature> metalMockedFunctionCallHistory;
    protected:
@@ -1806,12 +1806,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class OneArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
-      friend class OneArgumentMetalMockerTests;
       template<
          typename MetalMockObjectType,
          typename FreeFunctionMockObjectType,
          typename StaticFunctionMockObjectType>
       friend class MetalMock1ArgTester;
+      friend class OneArgumentMetalMockerTests;
    private:
       std::vector<OneArgumentFunctionCall<ArgType>> metalMockedFunctionCallHistory;
    public:
@@ -2052,12 +2052,12 @@ private:
       typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class TwoArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
-      friend class TwoArgumentMetalMockerTests;
       template<
          typename MetalMockObjectType,
          typename FreeFunctionMockObjectType,
          typename StaticFunctionMockObjectType>
       friend class MetalMock2ArgsTester;
+      friend class TwoArgumentMetalMockerTests;
    protected:
       std::function<void(Arg1Type, Arg2Type)> baseVoidCallInsteadFunction;
    public:
@@ -2500,6 +2500,11 @@ private:
       typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class FourArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
+      template<
+         typename MetalMockObjectType,
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
+      friend class MetalMock4ArgsTester;
       friend class FourArgumentMetalMockerTests;
    public:
       std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> metalMockedFunctionCallHistory;
@@ -2712,6 +2717,11 @@ private:
       typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class FiveArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
+      template<
+         typename MetalMockObjectType,
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
+      friend class MetalMock5ArgsTester;
       friend class FiveArgumentMetalMockerTests;
    public:
       std::vector<FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> metalMockedFunctionCallHistory;
