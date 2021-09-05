@@ -1065,6 +1065,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       std::function<void(int)> _call_exit;
       std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
       // Mutable Fields
+      size_t _functionCallAssertionIndex = 0;
       bool _metalMockExceptionIsInFlight = false;
    protected:
       // Mutable Components
@@ -1154,6 +1155,20 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
             });
          return metalMockFunctionCallReferences;
       }
+
+      FunctionCallSequenceNumberAndSignature NextFunctionCallSequenceNumberAndSignature(
+         std::vector<FunctionCallSequenceNumberAndSignature>& metalMockedFunctionCallHistory)
+      {
+         const size_t functionCallAssertionIndex = _functionCallAssertionIndex++;
+         const size_t metalMockedFunctionCallCount = metalMockedFunctionCallHistory.size();
+         if (functionCallAssertionIndex == metalMockedFunctionCallCount)
+         {
+            throw FunctionAssertedOneMoreTimeThanItWasCalledException(metalMockedFunctionSignature, metalMockedFunctionCallCount);
+         }
+         FunctionCallSequenceNumberAndSignature& nextFunctionCallSequenceNumber = metalMockedFunctionCallHistory[functionCallAssertionIndex];
+         nextFunctionCallSequenceNumber.metalMockedFunctionSignature = metalMockedFunctionSignature;
+         return nextFunctionCallSequenceNumber;
+      }
    private:
       void MetalMockExitIfExpectedButNotAsserted() const
       {
@@ -1215,7 +1230,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       friend class ZeroArgumentMetalMockerTests;
    private:
       std::vector<FunctionCallSequenceNumberAndSignature> metalMockedFunctionCallHistory;
-      size_t _functionCallAssertionIndex = 0;
    protected:
       std::function<void()> callInsteadFunction;
    public:
@@ -1242,11 +1256,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ZeroArgumentMetalMocker::wasAsserted = true;
       }
 
+      void CalledNTimes(size_t expectedNumberOfFunctionCalls)
+      {
+         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
+         this->MetalMockSetAsserted();
+         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+      }
+
       FunctionCallSequenceNumberAndSignature Called()
       {
          this->MetalMockSetAsserted();
          IS_NOT_EMPTY(this->metalMockedFunctionCallHistory, this->metalMockedFunctionSignature);
-         return NextFunctionCallSequenceNumberAndSignature();
+         return this->NextFunctionCallSequenceNumberAndSignature(this->metalMockedFunctionCallHistory);
       }
 
       FunctionCallSequenceNumberAndSignature CalledOnce()
@@ -1254,27 +1275,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         return NextFunctionCallSequenceNumberAndSignature();
-      }
-
-      void CalledNTimes(size_t expectedNumberOfFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedNumberOfFunctionCalls0(expectedNumberOfFunctionCalls);
-         this->MetalMockSetAsserted();
-         ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-      }
-   private:
-      FunctionCallSequenceNumberAndSignature NextFunctionCallSequenceNumberAndSignature()
-      {
-         const size_t functionCallAssertionIndex = _functionCallAssertionIndex++;
-         const size_t metalMockedFunctionCallCount = this->metalMockedFunctionCallHistory.size();
-         if (functionCallAssertionIndex == metalMockedFunctionCallCount)
-         {
-            throw FunctionAssertedOneMoreTimeThanItWasCalledException(this->metalMockedFunctionSignature, metalMockedFunctionCallCount);
-         }
-         FunctionCallSequenceNumberAndSignature& nextFunctionCallSequenceNumber = this->metalMockedFunctionCallHistory[functionCallAssertionIndex];
-         nextFunctionCallSequenceNumber.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
-         return nextFunctionCallSequenceNumber;
+         return this->NextFunctionCallSequenceNumberAndSignature(this->metalMockedFunctionCallHistory);
       }
    };
 
