@@ -1214,6 +1214,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ZeroArgumentMetalMocker::wasAsserted = true;
       }
 
+      void Called()
+      {
+         this->MetalMockSetAsserted();
+         IS_NOT_EMPTY(this->metalMockedFunctionCallHistory, this->metalMockedFunctionSignature);
+      }
+
       FunctionCallSequenceNumberAndSignature CalledOnce()
       {
          this->MetalMockSetAsserted();

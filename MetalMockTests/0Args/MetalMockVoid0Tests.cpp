@@ -29,10 +29,12 @@ namespace MetalMock
    AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
+   AFACT(Called_FunctionCalledOneOrMoreTimes_DoesNotThrowException)
+   AFACT(Called_FunctionNotCalled_ThrowsAnomaly)
    AFACT(CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException)
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
-   AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
+   AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsAnomaly)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
@@ -89,6 +91,16 @@ namespace MetalMock
       _metalMock0ArgsTester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
    }
 
+   TEST(Called_FunctionCalledOneOrMoreTimes_DoesNotThrowException)
+   {
+      _metalMock0ArgsTester->Called_FunctionCalledOneOrMoreTimes_DoesNotThrowException();
+   }
+
+   TEST(Called_FunctionNotCalled_ThrowsAnomaly)
+   {
+      _metalMock0ArgsTester->Called_FunctionNotCalled_ThrowsAnomaly();
+   }
+
    TEST(CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException)
    {
       _metalMock0ArgsTester->CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException();
@@ -104,9 +116,9 @@ namespace MetalMock
       _metalMock0ArgsTester->CalledNTimes_FunctionCalledNTimes_DoesNotThrowException();
    }
 
-   TEST(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
+   TEST(CalledNTimes_FunctionNotCalledNTimes_ThrowsAnomaly)
    {
-      _metalMock0ArgsTester->CalledNTimes_FunctionNotCalledNTimes_ThrowsException();
+      _metalMock0ArgsTester->CalledNTimes_FunctionNotCalledNTimes_ThrowsAnomaly();
    }
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)

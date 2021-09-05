@@ -164,6 +164,48 @@ namespace MetalMock
          assertAfterSecondCall(_staticMockObject, _staticFunctionSignature);
       }
 
+      void Called_FunctionCalledOneOrMoreTimes_DoesNotThrowException()
+      {
+         const auto test = [](auto& metalMockObject)
+         {
+            const size_t numberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
+            metalMockObject.wasExpected = true;
+            //
+            for (size_t i = 0; i < numberOfFunctionCalls; ++i)
+            {
+               metalMockObject.MetalMockIt();
+            }
+            //
+            metalMockObject.Called();
+         };
+         test(_metalMockObject.VirtualFunctionMock);
+         test(_metalMockObject.VirtualFunctionConstMock);
+         test(_metalMockObject.NonVirtualFunctionMock);
+         test(_metalMockObject.NonVirtualFunctionConstMock);
+         test(_freeFunctionMockObject);
+         test(_staticMockObject);
+      }
+
+      void Called_FunctionNotCalled_ThrowsAnomaly()
+      {
+         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            THROWS_EXCEPTION(metalMockObject.Called(),
+               Anomaly, "\n"
+"  Failed: IS_NOT_EMPTY(this->metalMockedFunctionCallHistory, this->metalMockedFunctionSignature)\n"
+"Expected: empty() == false\n"
+"  Actual: empty() == true\n"
+" Message: \"" + expectedFunctionSignature + "\"\n"
+"File.cpp(1)");
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
+      }
+
       void CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException()
       {
          const auto test = [](auto& metalMockObject)
@@ -217,7 +259,7 @@ namespace MetalMock
          test(_staticMockObject);
       }
 
-      void CalledNTimes_FunctionNotCalledNTimes_ThrowsException()
+      void CalledNTimes_FunctionNotCalledNTimes_ThrowsAnomaly()
       {
          const size_t actualNumberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
          const size_t expectedNumberOfFunctionCalls = ZenUnit::RandomNotEqualToValue<size_t>(actualNumberOfFunctionCalls);
