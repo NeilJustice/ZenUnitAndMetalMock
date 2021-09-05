@@ -3050,6 +3050,23 @@ private:
       }
    };
 
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
+   bool operator==(
+      const MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCallReference,
+      const MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCallReference)
+   {
+      try
+      {
+         ZenUnit::Equalizer<MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>::AssertEqual(
+            expectedSixArgumentFunctionCallReference, actualSixArgumentFunctionCallReference);
+      }
+      catch (const ZenUnit::Anomaly&)
+      {
+         return false;
+      }
+      return true;
+   }
+
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -3085,6 +3102,24 @@ private:
          this->MetalMockThrowIfNotExpected(arg1, arg2, arg3, arg4, arg5, arg6);
          metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6);
          this->MetalMockThrowExceptionIfExceptionSet();
+      }
+
+      FunctionCallSequenceNumberAndSignature CalledWith(
+         const Arg1Type& expectedArg1,
+         const Arg2Type& expectedArg2,
+         const Arg3Type& expectedArg3,
+         const Arg4Type& expectedArg4,
+         const Arg5Type& expectedArg5,
+         const Arg6Type& expectedArg6)
+      {
+         this->MetalMockSetAsserted();
+         const SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> expectedSixArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3, expectedArg4, expectedArg5, expectedArg6);
+         const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> actualSixArgumentFunctionCalls =
+            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>,
+               SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>(this->metalMockedFunctionCallHistory);
+         CONTAINS_ELEMENT(expectedSixArgumentFunctionCall, actualSixArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
       FunctionCallSequenceNumberAndSignature CalledOnceWith(

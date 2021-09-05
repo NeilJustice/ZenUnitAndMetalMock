@@ -88,8 +88,6 @@ namespace MetalMock
          StaticFunctionSignature);
    }
 
-   // MetalMock1ArgTester Tests
-
    TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    {
       _metalMock2ArgsTester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
@@ -208,8 +206,6 @@ namespace MetalMock
    {
       _metalMock2ArgsTester->CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException(expectedCallsSize);
    }
-
-   // MetalMockVoid2Tests
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    {

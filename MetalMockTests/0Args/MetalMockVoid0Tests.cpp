@@ -26,7 +26,6 @@ namespace MetalMock
    };
 
    TESTS(MetalMockVoid0Tests)
-   // MetalMock0ArgsTester Tests
    AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
@@ -34,7 +33,6 @@ namespace MetalMock
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
-   // MetalMockVoid0Tests
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
@@ -76,8 +74,6 @@ namespace MetalMock
          StaticFunctionSignature);
    }
 
-   // MetalMock0ArgsTester Tests
-
    TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    {
       _metalMock0ArgsTester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
@@ -112,8 +108,6 @@ namespace MetalMock
    {
       _metalMock0ArgsTester->CalledNTimes_FunctionNotCalledNTimes_ThrowsException();
    }
-
-   // MetalMockVoid0Tests
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    {

@@ -30,6 +30,9 @@ namespace MetalMock
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
+   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
@@ -71,8 +74,6 @@ namespace MetalMock
          StaticFunctionSignature);
    }
 
-   // MetalMock1ArgTester Tests
-
    TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    {
       _metalMock6ArgsTester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();
@@ -91,6 +92,21 @@ namespace MetalMock
    TEST(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
    {
       _metalMock6ArgsTester->CalledNTimes_FunctionNotCalledNTimes_ThrowsException();
+   }
+
+   TEST(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   {
+      _metalMock6ArgsTester->CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException();
+   }
+
+   TEST(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   {
+      _metalMock6ArgsTester->CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
+   }
+
+   TEST(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   {
+      _metalMock6ArgsTester->CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
    }
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)

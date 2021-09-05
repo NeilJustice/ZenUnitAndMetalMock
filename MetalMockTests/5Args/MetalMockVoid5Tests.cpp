@@ -74,8 +74,6 @@ namespace MetalMock
          StaticFunctionSignature);
    }
 
-   // MetalMock1ArgTester Tests
-
    TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    {
       _metalMock5ArgsTester->MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException();

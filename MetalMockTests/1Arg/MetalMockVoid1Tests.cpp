@@ -209,8 +209,6 @@ namespace MetalMock
       _metalMock1ArgTester->CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException(expectedCallsSize);
    }
 
-   // MetalMockVoid1Tests
-
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    {
       const auto test = [](auto& metalMockObject)
