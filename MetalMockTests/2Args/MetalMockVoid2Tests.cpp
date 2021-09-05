@@ -35,6 +35,9 @@ namespace MetalMock
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    AFACT(CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
+   AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
+   AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
+   AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
    FACTS(CalledNTimesWith_NIs1OrGreater_FunctionWasNotCalledNTimes_ThrowsAnomaly)
    AFACT(CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesButNotWithExpectedArg_ThrowsAnomaly)
    FACTS(CalledNTimesWith_NIs1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrowException)
@@ -128,6 +131,21 @@ namespace MetalMock
    TEST(CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    {
       _metalMock2ArgsTester->CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException();
+   }
+
+   TEST(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
+   {
+      _metalMock2ArgsTester->CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException();
+   }
+
+   TEST(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
+   {
+      _metalMock2ArgsTester->CalledNTimes_FunctionCalledNTimes_DoesNotThrowException();
+   }
+
+   TEST(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
+   {
+      _metalMock2ArgsTester->CalledNTimes_FunctionNotCalledNTimes_ThrowsException();
    }
 
    TEST2X2(CalledNTimesWith_NIs1OrGreater_FunctionWasNotCalledNTimes_ThrowsAnomaly,
