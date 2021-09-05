@@ -327,7 +327,7 @@ File.cpp(1))");
             metalMockObject.MetalMockIt(10, 10);
             //
             const string expectedExceptionMessage = String::ConcatStrings(R"(
-  Failed: ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedArg1, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature)
 Expected: 20
   Actual: 10
  Message: ")", expectedFunctionSignature, R"("
@@ -477,7 +477,7 @@ File.cpp(1))");
             metalMockObject.MetalMockIt(100, 100);
             //
             const string expectedExceptionMessage = String::ConcatStrings(R"(
-  Failed: ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex)
+  Failed: ARE_EQUAL(expectedArg1, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex)
 Expected: 10
   Actual: 100
  Message: ")", expectedFunctionSignature, R"( at i=9"
