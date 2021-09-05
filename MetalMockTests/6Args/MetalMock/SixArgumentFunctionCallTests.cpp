@@ -26,12 +26,12 @@ namespace MetalMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call6 sixArgumentFunctionCall;
-      ARE_EQUAL(DV1, sixArgumentFunctionCall.firstArgument.value);
-      ARE_EQUAL(DV2, sixArgumentFunctionCall.secondArgument.value);
-      ARE_EQUAL(DV3, sixArgumentFunctionCall.thirdArgument.value);
-      ARE_EQUAL(DV4, sixArgumentFunctionCall.fourthArgument.value);
-      ARE_EQUAL(DV5, sixArgumentFunctionCall.fifthArgument.value);
-      ARE_EQUAL(DV6, sixArgumentFunctionCall.sixthArgument.value);
+      ARE_EQUAL(DV1, sixArgumentFunctionCall.arg1.value);
+      ARE_EQUAL(DV2, sixArgumentFunctionCall.arg2.value);
+      ARE_EQUAL(DV3, sixArgumentFunctionCall.arg3.value);
+      ARE_EQUAL(DV4, sixArgumentFunctionCall.arg4.value);
+      ARE_EQUAL(DV5, sixArgumentFunctionCall.arg5.value);
+      ARE_EQUAL(DV6, sixArgumentFunctionCall.arg6.value);
    }
 
    TEST(Constructor_CopiesValuesToDecayTypeFields)
@@ -39,29 +39,29 @@ namespace MetalMock
       const SixArgumentFunctionCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&, const T<6>&>
          call(V1, V2, V3, V4, V5, V6);
       //
-      ARE_COPIES(V1, call.firstArgument.value);
-      ARE_COPIES(V2, call.secondArgument.value);
-      ARE_COPIES(V3, call.thirdArgument.value);
-      ARE_COPIES(V4, call.fourthArgument.value);
-      ARE_COPIES(V5, call.fifthArgument.value);
-      ARE_COPIES(V6, call.sixthArgument.value);
-      IS_TRUE((is_same<T<1>, decltype(call.firstArgument.value)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.secondArgument.value)>::value));
-      IS_TRUE((is_same<T<3>, decltype(call.thirdArgument.value)>::value));
-      IS_TRUE((is_same<T<4>, decltype(call.fourthArgument.value)>::value));
-      IS_TRUE((is_same<T<5>, decltype(call.fifthArgument.value)>::value));
-      IS_TRUE((is_same<T<6>, decltype(call.sixthArgument.value)>::value));
+      ARE_COPIES(V1, call.arg1.value);
+      ARE_COPIES(V2, call.arg2.value);
+      ARE_COPIES(V3, call.arg3.value);
+      ARE_COPIES(V4, call.arg4.value);
+      ARE_COPIES(V5, call.arg5.value);
+      ARE_COPIES(V6, call.arg6.value);
+      IS_TRUE((is_same<T<1>, decltype(call.arg1.value)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.arg2.value)>::value));
+      IS_TRUE((is_same<T<3>, decltype(call.arg3.value)>::value));
+      IS_TRUE((is_same<T<4>, decltype(call.arg4.value)>::value));
+      IS_TRUE((is_same<T<5>, decltype(call.arg5.value)>::value));
+      IS_TRUE((is_same<T<6>, decltype(call.arg6.value)>::value));
    }
 
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(Call6);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, firstArgument, V1);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, secondArgument, V2);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, thirdArgument, V3);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, fourthArgument, V4);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, fifthArgument, V5);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, sixthArgument, V6);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, arg1, V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, arg2, V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, arg3, V3);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, arg4, V4);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, arg5, V5);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call6, arg6, V6);
    }
 
    RUN_TESTS(SixArgumentFunctionCallTests)
@@ -82,12 +82,12 @@ namespace MetalMock
    {
       const CallRef6 callRef(V1, V2, V3, V4, V5, V6);
       //
-      ARE_SAME(V1, callRef.firstArgumentReference.value);
-      ARE_SAME(V2, callRef.secondArgumentReference.value);
-      ARE_SAME(V3, callRef.thirdArgumentReference.value);
-      ARE_SAME(V4, callRef.fourthArgumentReference.value);
-      ARE_SAME(V5, callRef.fifthArgumentReference.value);
-      ARE_SAME(V6, callRef.sixthArgumentReference.value);
+      ARE_SAME(V1, callRef.arg1Reference.value);
+      ARE_SAME(V2, callRef.arg2Reference.value);
+      ARE_SAME(V3, callRef.arg3Reference.value);
+      ARE_SAME(V4, callRef.arg4Reference.value);
+      ARE_SAME(V5, callRef.arg5Reference.value);
+      ARE_SAME(V6, callRef.arg6Reference.value);
    }
 
    TEST(CallConstructor_SetsReferencesToFiveArgumentFunctionCallArgs)
@@ -96,12 +96,12 @@ namespace MetalMock
       //
       const CallRef6 callRef(call);
       //
-      ARE_SAME(call.firstArgument.value, callRef.firstArgumentReference.value);
-      ARE_SAME(call.secondArgument.value, callRef.secondArgumentReference.value);
-      ARE_SAME(call.thirdArgument.value, callRef.thirdArgumentReference.value);
-      ARE_SAME(call.fourthArgument.value, callRef.fourthArgumentReference.value);
-      ARE_SAME(call.fifthArgument.value, callRef.fifthArgumentReference.value);
-      ARE_SAME(call.sixthArgument.value, callRef.sixthArgumentReference.value);
+      ARE_SAME(call.arg1.value, callRef.arg1Reference.value);
+      ARE_SAME(call.arg2.value, callRef.arg2Reference.value);
+      ARE_SAME(call.arg3.value, callRef.arg3Reference.value);
+      ARE_SAME(call.arg4.value, callRef.arg4Reference.value);
+      ARE_SAME(call.arg5.value, callRef.arg5Reference.value);
+      ARE_SAME(call.arg6.value, callRef.arg6Reference.value);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -134,22 +134,22 @@ namespace MetalMock
       const CallRef6 callRef(V1, V2, V3, V4, V5, V6);
 
       const CallRef6 callRef_arg1(VF1, V2, V3, V4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
       const CallRef6 callRef_arg2(V1, VF2, V3, V4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
       const CallRef6 callRef_arg3(V1, V2, VF3, V4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "thirdArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
       const CallRef6 callRef_arg4(V1, V2, V3, VF4, V5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "fourthArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
       const CallRef6 callRef_arg5(V1, V2, V3, V4, VF5, V6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "fifthArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
 
       const CallRef6 callRef_arg6(V1, V2, V3, V4, V5, VF6);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "sixthArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg6); }, "arg6");
    }
 
    RUN_TESTS(SixArgumentFunctionCallReferencesTests)

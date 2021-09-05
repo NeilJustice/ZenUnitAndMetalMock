@@ -274,11 +274,11 @@ File.cpp(1))");
    TEST(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqual_DoesNotThrowAnomaly)
    {
       IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      int firstArgument = 10;
-      int secondArgument = 10;
+      int arg1 = 10;
+      int arg2 = 10;
       const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
       {
-         firstArgument, secondArgument
+         arg1, arg2
       };
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 10 };
       //
@@ -341,11 +341,11 @@ File.cpp(1))");
    TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqualInSameOrder_DoesNotThrowAnomaly)
    {
       IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      int firstArgument = 10;
-      int secondArgument = 20;
+      int arg1 = 10;
+      int arg2 = 20;
       const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
       {
-         firstArgument, secondArgument
+         arg1, arg2
       };
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 20 };
       //
@@ -357,11 +357,11 @@ File.cpp(1))");
    TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqualInDifferentOrder_DoesNotThrowAnomaly)
    {
       IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      int firstArgument = 10;
-      int secondArgument = 20;
+      int arg1 = 10;
+      int arg2 = 20;
       const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
       {
-         firstArgument, secondArgument
+         arg1, arg2
       };
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 20, 10 };
       //

@@ -263,9 +263,9 @@ struct MetalMock_##FunctionName : public MetalMock::VoidTwoArgumentMetalMocker<A
       : MetalMock::VoidTwoArgumentMetalMocker<Arg1Type, Arg2Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, "void", metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constness Finalness \
+void FunctionName(Arg1Type arg1, Arg2Type arg2) Constness Finalness \
 { \
-   FunctionName##Mock.MetalMockIt(firstArgument, secondArgument); \
+   FunctionName##Mock.MetalMockIt(arg1, arg2); \
 }
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type)".
@@ -303,9 +303,9 @@ struct MetalMock_##FunctionName : public MetalMock::NonVoidTwoArgumentMetalMocke
       : MetalMock::NonVoidTwoArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2) Constness Finalness \
 { \
-   return FunctionName##Mock.MetalMockItAndReturnValue(firstArgument, secondArgument); \
+   return FunctionName##Mock.MetalMockItAndReturnValue(arg1, arg2); \
 }
 
 //
@@ -347,9 +347,9 @@ struct MetalMock_##FunctionName : public MetalMock::VoidThreeArgumentMetalMocker
       : MetalMock::VoidThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, "void", metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument) Constness Finalness \
+void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3) Constness Finalness \
 { \
-   FunctionName##Mock.MetalMockIt(firstArgument, secondArgument, thirdArgument); \
+   FunctionName##Mock.MetalMockIt(arg1, arg2, arg3); \
 }
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type)".
@@ -387,9 +387,9 @@ struct MetalMock_##FunctionName : public MetalMock::NonVoidThreeArgumentMetalMoc
       : MetalMock::NonVoidThreeArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3) Constness Finalness \
 { \
-   return FunctionName##Mock.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument); \
+   return FunctionName##Mock.MetalMockItAndReturnValue(arg1, arg2, arg3); \
 }
 
 //
@@ -431,9 +431,9 @@ struct MetalMock_##FunctionName : public MetalMock::VoidFourArgumentMetalMocker<
       : MetalMock::VoidFourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, "void", metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument) Constness Finalness \
+void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4) Constness Finalness \
 { \
-   FunctionName##Mock.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument); \
+   FunctionName##Mock.MetalMockIt(arg1, arg2, arg3, arg4); \
 }
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
@@ -471,9 +471,9 @@ struct MetalMock_##FunctionName : public MetalMock::NonVoidFourArgumentMetalMock
       : MetalMock::NonVoidFourArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4) Constness Finalness \
 { \
-   return FunctionName##Mock.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument); \
+   return FunctionName##Mock.MetalMockItAndReturnValue(arg1, arg2, arg3, arg4); \
 }
 
 //
@@ -515,9 +515,9 @@ struct MetalMock_##FunctionName : public MetalMock::VoidFiveArgumentMetalMocker<
       : MetalMock::VoidFiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, "void", metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument) Constness Finalness \
+void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5) Constness Finalness \
 { \
-   FunctionName##Mock.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument); \
+   FunctionName##Mock.MetalMockIt(arg1, arg2, arg3, arg4, arg5); \
 }
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
@@ -555,9 +555,9 @@ struct MetalMock_##FunctionName : public MetalMock::NonVoidFiveArgumentMetalMock
       : MetalMock::NonVoidFiveArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5) Constness Finalness \
 { \
-   return FunctionName##Mock.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument); \
+   return FunctionName##Mock.MetalMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5); \
 }
 
 //
@@ -599,9 +599,9 @@ struct MetalMock_##FunctionName : public MetalMock::VoidSixArgumentMetalMocker<A
       : MetalMock::VoidSixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, "void", metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument) Constness Finalness \
+void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6) Constness Finalness \
 { \
-   FunctionName##Mock.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument); \
+   FunctionName##Mock.MetalMockIt(arg1, arg2, arg3, arg4, arg5, arg6); \
 }
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
@@ -639,9 +639,9 @@ struct MetalMock_##FunctionName : public MetalMock::NonVoidSixArgumentMetalMocke
       : MetalMock::NonVoidSixArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6) Constness Finalness \
 { \
-   return FunctionName##Mock.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument); \
+   return FunctionName##Mock.MetalMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5, arg6); \
 }
 
 //
@@ -683,9 +683,9 @@ struct MetalMock_##FunctionName : public MetalMock::VoidSevenArgumentMetalMocker
       : MetalMock::VoidSevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, "void", metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-void FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument) Constness Finalness \
+void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7) Constness Finalness \
 { \
-   FunctionName##Mock.MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument); \
+   FunctionName##Mock.MetalMockIt(arg1, arg2, arg3, arg4, arg5, arg6, arg7); \
 }
 
 // Defines a MetalMock object named <VirtualFunctionName>Mock for mocking a virtual base class function with signature "virtual ReturnType VirtualFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
@@ -723,9 +723,9 @@ struct MetalMock_##FunctionName : public MetalMock::NonVoidSevenArgumentMetalMoc
       : MetalMock::NonVoidSevenArgumentMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(MetalMock::FunctionSignature::Function( \
          #Virtualness, #ReturnType, metalMockedClassName, #FunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")", #Constness)) {} \
 } Mutableness FunctionName##Mock = MetalMock_##FunctionName(this->MetalMockedClassName()); \
-ReturnType FunctionName(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument) Constness Finalness \
+ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7) Constness Finalness \
 { \
-   return FunctionName##Mock.MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument); \
+   return FunctionName##Mock.MetalMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5, arg6, arg7); \
 }
 
 //
@@ -1463,325 +1463,325 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    template<typename Arg1Type, typename Arg2Type>
    struct TwoArgumentFunctionCall
    {
-      ArgumentStorage<Arg1Type> firstArgument;
-      ArgumentStorage<Arg2Type> secondArgument;
+      ArgumentStorage<Arg1Type> arg1;
+      ArgumentStorage<Arg2Type> arg2;
       FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
 
       TwoArgumentFunctionCall() noexcept
-         : firstArgument()
-         , secondArgument()
+         : arg1()
+         , arg2()
          , functionCallSequenceNumberAndSignature() {}
 
-      TwoArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
-         : firstArgument(firstArgument)
-         , secondArgument(secondArgument)
+      TwoArgumentFunctionCall(const Arg1Type& arg1, const Arg2Type& arg2)
+         : arg1(arg1)
+         , arg2(arg2)
          , functionCallSequenceNumberAndSignature() {}
    };
 
    template<typename Arg1Type, typename Arg2Type>
    struct TwoArgumentFunctionCallReferences
    {
-      const ReferenceStorage<Arg1Type> firstArgumentReference;
-      const ReferenceStorage<Arg2Type> secondArgumentReference;
+      const ReferenceStorage<Arg1Type> arg1Reference;
+      const ReferenceStorage<Arg2Type> arg2Reference;
 
-      TwoArgumentFunctionCallReferences(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
-         : firstArgumentReference(firstArgument)
-         , secondArgumentReference(secondArgument) {}
+      TwoArgumentFunctionCallReferences(const Arg1Type& arg1, const Arg2Type& arg2)
+         : arg1Reference(arg1)
+         , arg2Reference(arg2) {}
 
       explicit TwoArgumentFunctionCallReferences(const TwoArgumentFunctionCall<Arg1Type, Arg2Type>& twoArgumentFunctionCall)
-         : firstArgumentReference(twoArgumentFunctionCall.firstArgument.value)
-         , secondArgumentReference(twoArgumentFunctionCall.secondArgument.value) {}
+         : arg1Reference(twoArgumentFunctionCall.arg1.value)
+         , arg2Reference(twoArgumentFunctionCall.arg2.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
    struct ThreeArgumentFunctionCall
    {
-      ArgumentStorage<Arg1Type> firstArgument;
-      ArgumentStorage<Arg2Type> secondArgument;
-      ArgumentStorage<Arg3Type> thirdArgument;
+      ArgumentStorage<Arg1Type> arg1;
+      ArgumentStorage<Arg2Type> arg2;
+      ArgumentStorage<Arg3Type> arg3;
       FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
 
       ThreeArgumentFunctionCall() noexcept
-         : firstArgument()
-         , secondArgument()
-         , thirdArgument()
+         : arg1()
+         , arg2()
+         , arg3()
          , functionCallSequenceNumberAndSignature() {}
 
-      ThreeArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
-         : firstArgument(firstArgument)
-         , secondArgument(secondArgument)
-         , thirdArgument(thirdArgument)
+      ThreeArgumentFunctionCall(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3)
+         : arg1(arg1)
+         , arg2(arg2)
+         , arg3(arg3)
          , functionCallSequenceNumberAndSignature() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
    struct ThreeArgumentFunctionCallReferences
    {
-      const ReferenceStorage<Arg1Type> firstArgumentReference;
-      const ReferenceStorage<Arg2Type> secondArgumentReference;
-      const ReferenceStorage<Arg3Type> thirdArgumentReference;
+      const ReferenceStorage<Arg1Type> arg1Reference;
+      const ReferenceStorage<Arg2Type> arg2Reference;
+      const ReferenceStorage<Arg3Type> arg3Reference;
 
-      ThreeArgumentFunctionCallReferences(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
-         : firstArgumentReference(firstArgument)
-         , secondArgumentReference(secondArgument)
-         , thirdArgumentReference(thirdArgument) {}
+      ThreeArgumentFunctionCallReferences(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3)
+         : arg1Reference(arg1)
+         , arg2Reference(arg2)
+         , arg3Reference(arg3) {}
 
       explicit ThreeArgumentFunctionCallReferences(const ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& threeArgumentFunctionCall)
-         : firstArgumentReference(threeArgumentFunctionCall.firstArgument.value)
-         , secondArgumentReference(threeArgumentFunctionCall.secondArgument.value)
-         , thirdArgumentReference(threeArgumentFunctionCall.thirdArgument.value) {}
+         : arg1Reference(threeArgumentFunctionCall.arg1.value)
+         , arg2Reference(threeArgumentFunctionCall.arg2.value)
+         , arg3Reference(threeArgumentFunctionCall.arg3.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
    struct FourArgumentFunctionCall
    {
-      ArgumentStorage<Arg1Type> firstArgument;
-      ArgumentStorage<Arg2Type> secondArgument;
-      ArgumentStorage<Arg3Type> thirdArgument;
-      ArgumentStorage<Arg4Type> fourthArgument;
+      ArgumentStorage<Arg1Type> arg1;
+      ArgumentStorage<Arg2Type> arg2;
+      ArgumentStorage<Arg3Type> arg3;
+      ArgumentStorage<Arg4Type> arg4;
       FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
 
       FourArgumentFunctionCall() noexcept
-         : firstArgument()
-         , secondArgument()
-         , thirdArgument()
-         , fourthArgument()
+         : arg1()
+         , arg2()
+         , arg3()
+         , arg4()
          , functionCallSequenceNumberAndSignature() {}
 
-      FourArgumentFunctionCall(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
-         : firstArgument(firstArgument)
-         , secondArgument(secondArgument)
-         , thirdArgument(thirdArgument)
-         , fourthArgument(fourthArgument)
+      FourArgumentFunctionCall(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3, const Arg4Type& arg4)
+         : arg1(arg1)
+         , arg2(arg2)
+         , arg3(arg3)
+         , arg4(arg4)
          , functionCallSequenceNumberAndSignature() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
    struct FourArgumentFunctionCallReference
    {
-      const ReferenceStorage<Arg1Type> firstArgumentReference;
-      const ReferenceStorage<Arg2Type> secondArgumentReference;
-      const ReferenceStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceStorage<Arg4Type> fourthArgumentReference;
+      const ReferenceStorage<Arg1Type> arg1Reference;
+      const ReferenceStorage<Arg2Type> arg2Reference;
+      const ReferenceStorage<Arg3Type> arg3Reference;
+      const ReferenceStorage<Arg4Type> arg4Reference;
 
-      FourArgumentFunctionCallReference(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument, const Arg4Type& fourthArgument)
-         : firstArgumentReference(firstArgument)
-         , secondArgumentReference(secondArgument)
-         , thirdArgumentReference(thirdArgument)
-         , fourthArgumentReference(fourthArgument) {}
+      FourArgumentFunctionCallReference(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3, const Arg4Type& arg4)
+         : arg1Reference(arg1)
+         , arg2Reference(arg2)
+         , arg3Reference(arg3)
+         , arg4Reference(arg4) {}
 
       explicit FourArgumentFunctionCallReference(const FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCall)
-         : firstArgumentReference(fourArgumentFunctionCall.firstArgument.value)
-         , secondArgumentReference(fourArgumentFunctionCall.secondArgument.value)
-         , thirdArgumentReference(fourArgumentFunctionCall.thirdArgument.value)
-         , fourthArgumentReference(fourArgumentFunctionCall.fourthArgument.value) {}
+         : arg1Reference(fourArgumentFunctionCall.arg1.value)
+         , arg2Reference(fourArgumentFunctionCall.arg2.value)
+         , arg3Reference(fourArgumentFunctionCall.arg3.value)
+         , arg4Reference(fourArgumentFunctionCall.arg4.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
    struct FiveArgumentFunctionCall
    {
-      ArgumentStorage<Arg1Type> firstArgument;
-      ArgumentStorage<Arg2Type> secondArgument;
-      ArgumentStorage<Arg3Type> thirdArgument;
-      ArgumentStorage<Arg4Type> fourthArgument;
-      ArgumentStorage<Arg5Type> fifthArgument;
+      ArgumentStorage<Arg1Type> arg1;
+      ArgumentStorage<Arg2Type> arg2;
+      ArgumentStorage<Arg3Type> arg3;
+      ArgumentStorage<Arg4Type> arg4;
+      ArgumentStorage<Arg5Type> arg5;
       FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
 
       FiveArgumentFunctionCall() noexcept
-         : firstArgument()
-         , secondArgument()
-         , thirdArgument()
-         , fourthArgument()
-         , fifthArgument()
+         : arg1()
+         , arg2()
+         , arg3()
+         , arg4()
+         , arg5()
          , functionCallSequenceNumberAndSignature() {}
 
       FiveArgumentFunctionCall(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument)
-         : firstArgument(firstArgument)
-         , secondArgument(secondArgument)
-         , thirdArgument(thirdArgument)
-         , fourthArgument(fourthArgument)
-         , fifthArgument(fifthArgument)
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5)
+         : arg1(arg1)
+         , arg2(arg2)
+         , arg3(arg3)
+         , arg4(arg4)
+         , arg5(arg5)
          , functionCallSequenceNumberAndSignature() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
    struct FiveArgumentFunctionCallReferences
    {
-      const ReferenceStorage<Arg1Type> firstArgumentReference;
-      const ReferenceStorage<Arg2Type> secondArgumentReference;
-      const ReferenceStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceStorage<Arg5Type> fifthArgumentReference;
+      const ReferenceStorage<Arg1Type> arg1Reference;
+      const ReferenceStorage<Arg2Type> arg2Reference;
+      const ReferenceStorage<Arg3Type> arg3Reference;
+      const ReferenceStorage<Arg4Type> arg4Reference;
+      const ReferenceStorage<Arg5Type> arg5Reference;
 
       FiveArgumentFunctionCallReferences(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument)
-         : firstArgumentReference(firstArgument)
-         , secondArgumentReference(secondArgument)
-         , thirdArgumentReference(thirdArgument)
-         , fourthArgumentReference(fourthArgument)
-         , fifthArgumentReference(fifthArgument) {}
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5)
+         : arg1Reference(arg1)
+         , arg2Reference(arg2)
+         , arg3Reference(arg3)
+         , arg4Reference(arg4)
+         , arg5Reference(arg5) {}
 
       explicit FiveArgumentFunctionCallReferences(const FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentFunctionCall)
-         : firstArgumentReference(fiveArgumentFunctionCall.firstArgument.value)
-         , secondArgumentReference(fiveArgumentFunctionCall.secondArgument.value)
-         , thirdArgumentReference(fiveArgumentFunctionCall.thirdArgument.value)
-         , fourthArgumentReference(fiveArgumentFunctionCall.fourthArgument.value)
-         , fifthArgumentReference(fiveArgumentFunctionCall.fifthArgument.value) {}
+         : arg1Reference(fiveArgumentFunctionCall.arg1.value)
+         , arg2Reference(fiveArgumentFunctionCall.arg2.value)
+         , arg3Reference(fiveArgumentFunctionCall.arg3.value)
+         , arg4Reference(fiveArgumentFunctionCall.arg4.value)
+         , arg5Reference(fiveArgumentFunctionCall.arg5.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
    struct SixArgumentFunctionCall
    {
-      ArgumentStorage<Arg1Type> firstArgument;
-      ArgumentStorage<Arg2Type> secondArgument;
-      ArgumentStorage<Arg3Type> thirdArgument;
-      ArgumentStorage<Arg4Type> fourthArgument;
-      ArgumentStorage<Arg5Type> fifthArgument;
-      ArgumentStorage<Arg6Type> sixthArgument;
+      ArgumentStorage<Arg1Type> arg1;
+      ArgumentStorage<Arg2Type> arg2;
+      ArgumentStorage<Arg3Type> arg3;
+      ArgumentStorage<Arg4Type> arg4;
+      ArgumentStorage<Arg5Type> arg5;
+      ArgumentStorage<Arg6Type> arg6;
       FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
 
       SixArgumentFunctionCall() noexcept
-         : firstArgument()
-         , secondArgument()
-         , thirdArgument()
-         , fourthArgument()
-         , fifthArgument()
-         , sixthArgument()
+         : arg1()
+         , arg2()
+         , arg3()
+         , arg4()
+         , arg5()
+         , arg6()
          , functionCallSequenceNumberAndSignature() {}
 
       SixArgumentFunctionCall(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument)
-         : firstArgument(firstArgument)
-         , secondArgument(secondArgument)
-         , thirdArgument(thirdArgument)
-         , fourthArgument(fourthArgument)
-         , fifthArgument(fifthArgument)
-         , sixthArgument(sixthArgument)
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5,
+         const Arg6Type& arg6)
+         : arg1(arg1)
+         , arg2(arg2)
+         , arg3(arg3)
+         , arg4(arg4)
+         , arg5(arg5)
+         , arg6(arg6)
          , functionCallSequenceNumberAndSignature() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
    struct SixArgumentFunctionCallReferences
    {
-      const ReferenceStorage<Arg1Type> firstArgumentReference;
-      const ReferenceStorage<Arg2Type> secondArgumentReference;
-      const ReferenceStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceStorage<Arg5Type> fifthArgumentReference;
-      const ReferenceStorage<Arg6Type> sixthArgumentReference;
+      const ReferenceStorage<Arg1Type> arg1Reference;
+      const ReferenceStorage<Arg2Type> arg2Reference;
+      const ReferenceStorage<Arg3Type> arg3Reference;
+      const ReferenceStorage<Arg4Type> arg4Reference;
+      const ReferenceStorage<Arg5Type> arg5Reference;
+      const ReferenceStorage<Arg6Type> arg6Reference;
 
       SixArgumentFunctionCallReferences(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument)
-         : firstArgumentReference(firstArgument)
-         , secondArgumentReference(secondArgument)
-         , thirdArgumentReference(thirdArgument)
-         , fourthArgumentReference(fourthArgument)
-         , fifthArgumentReference(fifthArgument)
-         , sixthArgumentReference(sixthArgument) {}
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5,
+         const Arg6Type& arg6)
+         : arg1Reference(arg1)
+         , arg2Reference(arg2)
+         , arg3Reference(arg3)
+         , arg4Reference(arg4)
+         , arg5Reference(arg5)
+         , arg6Reference(arg6) {}
 
       explicit SixArgumentFunctionCallReferences(const SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentFunctionCall)
-         : firstArgumentReference(sixArgumentFunctionCall.firstArgument.value)
-         , secondArgumentReference(sixArgumentFunctionCall.secondArgument.value)
-         , thirdArgumentReference(sixArgumentFunctionCall.thirdArgument.value)
-         , fourthArgumentReference(sixArgumentFunctionCall.fourthArgument.value)
-         , fifthArgumentReference(sixArgumentFunctionCall.fifthArgument.value)
-         , sixthArgumentReference(sixArgumentFunctionCall.sixthArgument.value) {}
+         : arg1Reference(sixArgumentFunctionCall.arg1.value)
+         , arg2Reference(sixArgumentFunctionCall.arg2.value)
+         , arg3Reference(sixArgumentFunctionCall.arg3.value)
+         , arg4Reference(sixArgumentFunctionCall.arg4.value)
+         , arg5Reference(sixArgumentFunctionCall.arg5.value)
+         , arg6Reference(sixArgumentFunctionCall.arg6.value) {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
    struct SevenArgumentFunctionCall
    {
-      ArgumentStorage<Arg1Type> firstArgument;
-      ArgumentStorage<Arg2Type> secondArgument;
-      ArgumentStorage<Arg3Type> thirdArgument;
-      ArgumentStorage<Arg4Type> fourthArgument;
-      ArgumentStorage<Arg5Type> fifthArgument;
-      ArgumentStorage<Arg6Type> sixthArgument;
-      ArgumentStorage<Arg7Type> seventhArgument;
+      ArgumentStorage<Arg1Type> arg1;
+      ArgumentStorage<Arg2Type> arg2;
+      ArgumentStorage<Arg3Type> arg3;
+      ArgumentStorage<Arg4Type> arg4;
+      ArgumentStorage<Arg5Type> arg5;
+      ArgumentStorage<Arg6Type> arg6;
+      ArgumentStorage<Arg7Type> arg7;
       FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
 
       SevenArgumentFunctionCall() noexcept
-         : firstArgument()
-         , secondArgument()
-         , thirdArgument()
-         , fourthArgument()
-         , fifthArgument()
-         , sixthArgument()
-         , seventhArgument()
+         : arg1()
+         , arg2()
+         , arg3()
+         , arg4()
+         , arg5()
+         , arg6()
+         , arg7()
          , functionCallSequenceNumberAndSignature() {}
 
       SevenArgumentFunctionCall(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument,
-         const Arg7Type& seventhArgument)
-         : firstArgument(firstArgument)
-         , secondArgument(secondArgument)
-         , thirdArgument(thirdArgument)
-         , fourthArgument(fourthArgument)
-         , fifthArgument(fifthArgument)
-         , sixthArgument(sixthArgument)
-         , seventhArgument(seventhArgument)
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5,
+         const Arg6Type& arg6,
+         const Arg7Type& arg7)
+         : arg1(arg1)
+         , arg2(arg2)
+         , arg3(arg3)
+         , arg4(arg4)
+         , arg5(arg5)
+         , arg6(arg6)
+         , arg7(arg7)
          , functionCallSequenceNumberAndSignature() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
    struct SevenArgumentFunctionCallReferences
    {
-      const ReferenceStorage<Arg1Type> firstArgumentReference;
-      const ReferenceStorage<Arg2Type> secondArgumentReference;
-      const ReferenceStorage<Arg3Type> thirdArgumentReference;
-      const ReferenceStorage<Arg4Type> fourthArgumentReference;
-      const ReferenceStorage<Arg5Type> fifthArgumentReference;
-      const ReferenceStorage<Arg6Type> sixthArgumentReference;
-      const ReferenceStorage<Arg7Type> seventhArgumentReference;
+      const ReferenceStorage<Arg1Type> arg1Reference;
+      const ReferenceStorage<Arg2Type> arg2Reference;
+      const ReferenceStorage<Arg3Type> arg3Reference;
+      const ReferenceStorage<Arg4Type> arg4Reference;
+      const ReferenceStorage<Arg5Type> arg5Reference;
+      const ReferenceStorage<Arg6Type> arg6Reference;
+      const ReferenceStorage<Arg7Type> arg7Reference;
 
       SevenArgumentFunctionCallReferences(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument,
-         const Arg7Type& seventhArgument)
-         : firstArgumentReference(firstArgument)
-         , secondArgumentReference(secondArgument)
-         , thirdArgumentReference(thirdArgument)
-         , fourthArgumentReference(fourthArgument)
-         , fifthArgumentReference(fifthArgument)
-         , sixthArgumentReference(sixthArgument)
-         , seventhArgumentReference(seventhArgument) {}
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5,
+         const Arg6Type& arg6,
+         const Arg7Type& arg7)
+         : arg1Reference(arg1)
+         , arg2Reference(arg2)
+         , arg3Reference(arg3)
+         , arg4Reference(arg4)
+         , arg5Reference(arg5)
+         , arg6Reference(arg6)
+         , arg7Reference(arg7) {}
 
       explicit SevenArgumentFunctionCallReferences(const SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentFunctionCall)
-         : firstArgumentReference(sevenArgumentFunctionCall.firstArgument.value)
-         , secondArgumentReference(sevenArgumentFunctionCall.secondArgument.value)
-         , thirdArgumentReference(sevenArgumentFunctionCall.thirdArgument.value)
-         , fourthArgumentReference(sevenArgumentFunctionCall.fourthArgument.value)
-         , fifthArgumentReference(sevenArgumentFunctionCall.fifthArgument.value)
-         , sixthArgumentReference(sevenArgumentFunctionCall.sixthArgument.value)
-         , seventhArgumentReference(sevenArgumentFunctionCall.seventhArgument.value) {}
+         : arg1Reference(sevenArgumentFunctionCall.arg1.value)
+         , arg2Reference(sevenArgumentFunctionCall.arg2.value)
+         , arg3Reference(sevenArgumentFunctionCall.arg3.value)
+         , arg4Reference(sevenArgumentFunctionCall.arg4.value)
+         , arg5Reference(sevenArgumentFunctionCall.arg5.value)
+         , arg6Reference(sevenArgumentFunctionCall.arg6.value)
+         , arg7Reference(sevenArgumentFunctionCall.arg7.value) {}
    };
 
    template<typename ArgType>
@@ -2080,13 +2080,13 @@ private:
       {
       }
 
-      void MetalMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument)
+      void MetalMockIt(const Arg1Type& arg1, const Arg2Type& arg2)
       {
-         this->MetalMockThrowIfNotExpected(firstArgument, secondArgument);
-         this->metalMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument);
+         this->MetalMockThrowIfNotExpected(arg1, arg2);
+         this->metalMockedFunctionCallHistory.emplace_back(arg1, arg2);
          if (this->baseVoidCallInsteadFunction)
          {
-            this->baseVoidCallInsteadFunction(firstArgument, secondArgument);
+            this->baseVoidCallInsteadFunction(arg1, arg2);
          }
          this->MetalMockThrowExceptionIfExceptionSet();
       }
@@ -2110,8 +2110,8 @@ private:
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].arg2.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
@@ -2134,8 +2134,8 @@ private:
          for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
@@ -2224,12 +2224,12 @@ private:
          TwoArgumentMetalMocker<Arg1Type, Arg2Type>::wasAsserted = true;
       }
 
-      FunctionReturnType MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument)
+      FunctionReturnType MetalMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2)
       {
-         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::MetalMockIt(firstArgument, secondArgument);
+         TwoArgumentMetalMocker<Arg1Type, Arg2Type>::MetalMockIt(arg1, arg2);
          if (this->derivedNonVoidCallInsteadFunction)
          {
-            const FunctionReturnType& returnValue = this->derivedNonVoidCallInsteadFunction(firstArgument, secondArgument);
+            const FunctionReturnType& returnValue = this->derivedNonVoidCallInsteadFunction(arg1, arg2);
             return returnValue;
          }
          const FunctionReturnType& returnValue = ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
@@ -2248,9 +2248,9 @@ private:
 
       static FunctionReturnType MetalMockItFunctionPointer(
          NonVoidTwoArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument)
+         Arg1Type arg1, Arg2Type arg2)
       {
-         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument);
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(arg1, arg2);
          return returnValue;
       }
    };
@@ -2287,9 +2287,9 @@ private:
       }
 
       static void MetalMockItFunctionPointer(
-         VoidTwoArgFunctionPointerMetalMocker<Arg1Type, Arg2Type>* functionMocker, Arg1Type firstArgument, Arg2Type secondArgument)
+         VoidTwoArgFunctionPointerMetalMocker<Arg1Type, Arg2Type>* functionMocker, Arg1Type arg1, Arg2Type arg2)
       {
-         functionMocker->MetalMockIt(firstArgument, secondArgument);
+         functionMocker->MetalMockIt(arg1, arg2);
       }
    };
 
@@ -2316,10 +2316,10 @@ private:
 
       virtual ~ThreeArgumentMetalMocker() = default;
 
-      virtual void MetalMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument)
+      virtual void MetalMockIt(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3)
       {
-         this->MetalMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
-         this->metalMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
+         this->MetalMockThrowIfNotExpected(arg1, arg2, arg3);
+         this->metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3);
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
@@ -2331,9 +2331,9 @@ private:
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].arg2.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].arg3.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
@@ -2357,9 +2357,9 @@ private:
          for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].arg3.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
@@ -2433,12 +2433,12 @@ private:
          ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasAsserted = true;
       }
 
-      FunctionReturnType MetalMockItAndReturnValue(Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
+      FunctionReturnType MetalMockItAndReturnValue(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3)
       {
-         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::MetalMockIt(firstArgument, secondArgument, thirdArgument);
+         ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::MetalMockIt(arg1, arg2, arg3);
          if (this->derivedNonVoidCallInsteadFunction)
          {
-            const FunctionReturnType& returnValue = this->derivedNonVoidCallInsteadFunction(firstArgument, secondArgument, thirdArgument);
+            const FunctionReturnType& returnValue = this->derivedNonVoidCallInsteadFunction(arg1, arg2, arg3);
             return returnValue;
          }
          const FunctionReturnType& returnValue = ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
@@ -2457,9 +2457,9 @@ private:
 
       static FunctionReturnType MetalMockItFunctionPointer(
          NonVoidThreeArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3)
       {
-         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument);
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(arg1, arg2, arg3);
          return returnValue;
       }
    };
@@ -2487,13 +2487,13 @@ private:
          ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>::wasAsserted = true;
       }
 
-      void MetalMockIt(const Arg1Type& firstArgument, const Arg2Type& secondArgument, const Arg3Type& thirdArgument) override
+      void MetalMockIt(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3) override
       {
-         this->MetalMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument);
-         this->metalMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument);
+         this->MetalMockThrowIfNotExpected(arg1, arg2, arg3);
+         this->metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3);
          if (this->callInsteadFunction)
          {
-            this->callInsteadFunction(firstArgument, secondArgument, thirdArgument);
+            this->callInsteadFunction(arg1, arg2, arg3);
          }
          this->MetalMockThrowExceptionIfExceptionSet();
       }
@@ -2510,9 +2510,9 @@ private:
 
       static void MetalMockItFunctionPointer(
          VoidThreeArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3)
       {
-         functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument);
+         functionMocker->MetalMockIt(arg1, arg2, arg3);
       }
    };
 
@@ -2539,13 +2539,13 @@ private:
       }
 
       void MetalMockIt(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument)
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4)
       {
-         this->MetalMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument);
-         metalMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument);
+         this->MetalMockThrowIfNotExpected(arg1, arg2, arg3, arg4);
+         metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3, arg4);
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
@@ -2558,10 +2558,10 @@ private:
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].arg2.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].arg3.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].arg4.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
@@ -2586,10 +2586,10 @@ private:
          for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].arg3.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].arg4.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
@@ -2693,9 +2693,9 @@ private:
 
       static FunctionReturnType MetalMockItFunctionPointer(
          NonVoidFourArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
       {
-         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument);
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(arg1, arg2, arg3, arg4);
          return returnValue;
       }
    };
@@ -2726,9 +2726,9 @@ private:
 
       static void MetalMockItFunctionPointer(
          VoidFourArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4)
       {
-         functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument);
+         functionMocker->MetalMockIt(arg1, arg2, arg3, arg4);
       }
    };
 
@@ -2756,14 +2756,14 @@ private:
       }
 
       void MetalMockIt(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument)
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5)
       {
-         this->MetalMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
-         metalMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         this->MetalMockThrowIfNotExpected(arg1, arg2, arg3, arg4, arg5);
+         metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3, arg4, arg5);
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
@@ -2777,11 +2777,11 @@ private:
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].arg2.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].arg3.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].arg4.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].arg5.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
@@ -2807,11 +2807,11 @@ private:
          for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].arg3.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].arg4.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].arg5.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
@@ -2915,9 +2915,9 @@ private:
 
       static FunctionReturnType MetalMockItFunctionPointer(
          NonVoidFiveArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)
       {
-         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5);
          return returnValue;
       }
    };
@@ -2948,9 +2948,9 @@ private:
 
       static void MetalMockItFunctionPointer(
          VoidFiveArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5)
       {
-         functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument);
+         functionMocker->MetalMockIt(arg1, arg2, arg3, arg4, arg5);
       }
    };
 
@@ -2979,15 +2979,15 @@ private:
       }
 
       void MetalMockIt(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument)
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5,
+         const Arg6Type& arg6)
       {
-         this->MetalMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
-         metalMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+         this->MetalMockThrowIfNotExpected(arg1, arg2, arg3, arg4, arg5, arg6);
+         metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6);
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
@@ -3002,12 +3002,12 @@ private:
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].sixthArgument.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].arg2.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].arg3.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].arg4.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].arg5.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].arg6.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
@@ -3034,12 +3034,12 @@ private:
          for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].arg3.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].arg4.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].arg5.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].arg6.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
@@ -3107,10 +3107,10 @@ private:
       }
 
       FunctionReturnType MetalMockItAndReturnValue(
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6)
       {
          SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, MetalMockExceptionThrower>::MetalMockIt(
-            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+            arg1, arg2, arg3, arg4, arg5, arg6);
          const FunctionReturnType& returnValue = ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
          return returnValue;
       }
@@ -3127,15 +3127,15 @@ private:
 
       static FunctionReturnType MetalMockItFunctionPointer(
          NonVoidSixArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>* functionMocker,
-         Arg1Type firstArgument,
-         Arg2Type secondArgument,
-         Arg3Type thirdArgument,
-         Arg4Type fourthArgument,
-         Arg5Type fifthArgument,
-         Arg6Type sixthArgument)
+         Arg1Type arg1,
+         Arg2Type arg2,
+         Arg3Type arg3,
+         Arg4Type arg4,
+         Arg5Type arg5,
+         Arg6Type arg6)
       {
          const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
-            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+            arg1, arg2, arg3, arg4, arg5, arg6);
          return returnValue;
       }
    };
@@ -3166,9 +3166,9 @@ private:
 
       static void MetalMockItFunctionPointer(
          VoidSixArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6)
       {
-         functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument);
+         functionMocker->MetalMockIt(arg1, arg2, arg3, arg4, arg5, arg6);
       }
    };
 
@@ -3198,16 +3198,16 @@ private:
       }
 
       void MetalMockIt(
-         const Arg1Type& firstArgument,
-         const Arg2Type& secondArgument,
-         const Arg3Type& thirdArgument,
-         const Arg4Type& fourthArgument,
-         const Arg5Type& fifthArgument,
-         const Arg6Type& sixthArgument,
-         const Arg7Type& seventhArgument)
+         const Arg1Type& arg1,
+         const Arg2Type& arg2,
+         const Arg3Type& arg3,
+         const Arg4Type& arg4,
+         const Arg5Type& arg5,
+         const Arg6Type& arg6,
+         const Arg7Type& arg7)
       {
-         this->MetalMockThrowIfNotExpected(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
-         metalMockedFunctionCallHistory.emplace_back(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+         this->MetalMockThrowIfNotExpected(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+         metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
@@ -3223,13 +3223,13 @@ private:
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].firstArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].secondArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].thirdArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].fourthArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].fifthArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].sixthArgument.value, this->metalMockedFunctionSignature);
-         ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[0].seventhArgument.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[0].arg2.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[0].arg3.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[0].arg4.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[0].arg5.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[0].arg6.value, this->metalMockedFunctionSignature);
+         ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[0].arg7.value, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
@@ -3257,13 +3257,13 @@ private:
          for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
             const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
-            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].firstArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].secondArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].thirdArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].fourthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].fifthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].sixthArgument.value, metalMockedFunctionSignatureAndCallIndex);
-            ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[i].seventhArgument.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFirstArgument, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSecondArgument, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedThirdArgument, this->metalMockedFunctionCallHistory[i].arg3.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFourthArgument, this->metalMockedFunctionCallHistory[i].arg4.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedFifthArgument, this->metalMockedFunctionCallHistory[i].arg5.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSixthArgument, this->metalMockedFunctionCallHistory[i].arg6.value, metalMockedFunctionSignatureAndCallIndex);
+            ARE_EQUAL(expectedSeventhArgument, this->metalMockedFunctionCallHistory[i].arg7.value, metalMockedFunctionSignatureAndCallIndex);
          }
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
@@ -3331,16 +3331,16 @@ private:
       }
 
       FunctionReturnType MetalMockItAndReturnValue(
-         Arg1Type firstArgument,
-         Arg2Type secondArgument,
-         Arg3Type thirdArgument,
-         Arg4Type fourthArgument,
-         Arg5Type fifthArgument,
-         Arg6Type sixthArgument,
-         Arg7Type seventhArgument)
+         Arg1Type arg1,
+         Arg2Type arg2,
+         Arg3Type arg3,
+         Arg4Type arg4,
+         Arg5Type arg5,
+         Arg6Type arg6,
+         Arg7Type arg7)
       {
          SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>::MetalMockIt(
-            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+            arg1, arg2, arg3, arg4, arg5, arg6, arg7);
          const FunctionReturnType& returnValue = ValueReturner<FunctionReturnType>::MetalMockNextReturnValue();
          return returnValue;
       }
@@ -3357,16 +3357,16 @@ private:
 
       static FunctionReturnType MetalMockItFunctionPointer(
          NonVoidSevenArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>* functionMocker,
-         Arg1Type firstArgument,
-         Arg2Type secondArgument,
-         Arg3Type thirdArgument,
-         Arg4Type fourthArgument,
-         Arg5Type fifthArgument,
-         Arg6Type sixthArgument,
-         Arg7Type seventhArgument)
+         Arg1Type arg1,
+         Arg2Type arg2,
+         Arg3Type arg3,
+         Arg4Type arg4,
+         Arg5Type arg5,
+         Arg6Type arg6,
+         Arg7Type arg7)
       {
          const FunctionReturnType& returnValue = functionMocker->MetalMockItAndReturnValue(
-            firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+            arg1, arg2, arg3, arg4, arg5, arg6, arg7);
          return returnValue;
       }
    };
@@ -3397,9 +3397,9 @@ private:
 
       static void MetalMockItFunctionPointer(
          VoidSevenArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>* functionMocker,
-         Arg1Type firstArgument, Arg2Type secondArgument, Arg3Type thirdArgument, Arg4Type fourthArgument, Arg5Type fifthArgument, Arg6Type sixthArgument, Arg7Type seventhArgument)
+         Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Arg5Type arg5, Arg6Type arg6, Arg7Type arg7)
       {
-         functionMocker->MetalMockIt(firstArgument, secondArgument, thirdArgument, fourthArgument, fifthArgument, sixthArgument, seventhArgument);
+         functionMocker->MetalMockIt(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
       }
    };
 
@@ -3485,8 +3485,8 @@ namespace ZenUnit
          const MetalMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
          const MetalMock::TwoArgumentFunctionCall<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedTwoArgumentFunctionCall.firstArgument.value, actualTwoArgumentFunctionCall.firstArgument.value);
-         ARE_EQUAL(expectedTwoArgumentFunctionCall.secondArgument.value, actualTwoArgumentFunctionCall.secondArgument.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.arg1.value, actualTwoArgumentFunctionCall.arg1.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.arg2.value, actualTwoArgumentFunctionCall.arg2.value);
       }
    };
 
@@ -3498,8 +3498,8 @@ namespace ZenUnit
          const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCall,
          const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedTwoArgumentFunctionCall.firstArgumentReference.value, actualTwoArgumentFunctionCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedTwoArgumentFunctionCall.secondArgumentReference.value, actualTwoArgumentFunctionCall.secondArgumentReference.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.arg1Reference.value, actualTwoArgumentFunctionCall.arg1Reference.value);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall.arg2Reference.value, actualTwoArgumentFunctionCall.arg2Reference.value);
       }
    };
 
@@ -3511,9 +3511,9 @@ namespace ZenUnit
          const MetalMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCall,
          const MetalMock::ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedThreeArgumentFunctionCall.firstArgument.value, actualThreeArgumentFunctionCall.firstArgument.value);
-         ARE_EQUAL(expectedThreeArgumentFunctionCall.secondArgument.value, actualThreeArgumentFunctionCall.secondArgument.value);
-         ARE_EQUAL(expectedThreeArgumentFunctionCall.thirdArgument.value, actualThreeArgumentFunctionCall.thirdArgument.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.arg1.value, actualThreeArgumentFunctionCall.arg1.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.arg2.value, actualThreeArgumentFunctionCall.arg2.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.arg3.value, actualThreeArgumentFunctionCall.arg3.value);
       }
    };
 
@@ -3525,9 +3525,9 @@ namespace ZenUnit
          const MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCall,
          const MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedThreeArgumentFunctionCall.firstArgumentReference.value, actualThreeArgumentFunctionCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedThreeArgumentFunctionCall.secondArgumentReference.value, actualThreeArgumentFunctionCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedThreeArgumentFunctionCall.thirdArgumentReference.value, actualThreeArgumentFunctionCall.thirdArgumentReference.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.arg1Reference.value, actualThreeArgumentFunctionCall.arg1Reference.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.arg2Reference.value, actualThreeArgumentFunctionCall.arg2Reference.value);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall.arg3Reference.value, actualThreeArgumentFunctionCall.arg3Reference.value);
       }
    };
 
@@ -3539,10 +3539,10 @@ namespace ZenUnit
          const MetalMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
          const MetalMock::FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFourArgumentFunctionCall.firstArgument.value, actualFourArgumentFunctionCall.firstArgument.value);
-         ARE_EQUAL(expectedFourArgumentFunctionCall.secondArgument.value, actualFourArgumentFunctionCall.secondArgument.value);
-         ARE_EQUAL(expectedFourArgumentFunctionCall.thirdArgument.value, actualFourArgumentFunctionCall.thirdArgument.value);
-         ARE_EQUAL(expectedFourArgumentFunctionCall.fourthArgument.value, actualFourArgumentFunctionCall.fourthArgument.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg1.value, actualFourArgumentFunctionCall.arg1.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg2.value, actualFourArgumentFunctionCall.arg2.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg3.value, actualFourArgumentFunctionCall.arg3.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg4.value, actualFourArgumentFunctionCall.arg4.value);
       }
    };
 
@@ -3554,10 +3554,10 @@ namespace ZenUnit
          const MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCall,
          const MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFourArgumentFunctionCall.firstArgumentReference.value, actualFourArgumentFunctionCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedFourArgumentFunctionCall.secondArgumentReference.value, actualFourArgumentFunctionCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedFourArgumentFunctionCall.thirdArgumentReference.value, actualFourArgumentFunctionCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedFourArgumentFunctionCall.fourthArgumentReference.value, actualFourArgumentFunctionCall.fourthArgumentReference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg1Reference.value, actualFourArgumentFunctionCall.arg1Reference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg2Reference.value, actualFourArgumentFunctionCall.arg2Reference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg3Reference.value, actualFourArgumentFunctionCall.arg3Reference.value);
+         ARE_EQUAL(expectedFourArgumentFunctionCall.arg4Reference.value, actualFourArgumentFunctionCall.arg4Reference.value);
       }
    };
 
@@ -3569,11 +3569,11 @@ namespace ZenUnit
          const MetalMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCall,
          const MetalMock::FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.firstArgument.value, actualFiveArgumentFunctionCall.firstArgument.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.secondArgument.value, actualFiveArgumentFunctionCall.secondArgument.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.thirdArgument.value, actualFiveArgumentFunctionCall.thirdArgument.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.fourthArgument.value, actualFiveArgumentFunctionCall.fourthArgument.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.fifthArgument.value, actualFiveArgumentFunctionCall.fifthArgument.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg1.value, actualFiveArgumentFunctionCall.arg1.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg2.value, actualFiveArgumentFunctionCall.arg2.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg3.value, actualFiveArgumentFunctionCall.arg3.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg4.value, actualFiveArgumentFunctionCall.arg4.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg5.value, actualFiveArgumentFunctionCall.arg5.value);
       }
    };
 
@@ -3585,11 +3585,11 @@ namespace ZenUnit
          const MetalMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCall,
          const MetalMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.firstArgumentReference.value, actualFiveArgumentFunctionCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.secondArgumentReference.value, actualFiveArgumentFunctionCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.thirdArgumentReference.value, actualFiveArgumentFunctionCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.fourthArgumentReference.value, actualFiveArgumentFunctionCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedFiveArgumentFunctionCall.fifthArgumentReference.value, actualFiveArgumentFunctionCall.fifthArgumentReference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg1Reference.value, actualFiveArgumentFunctionCall.arg1Reference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg2Reference.value, actualFiveArgumentFunctionCall.arg2Reference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg3Reference.value, actualFiveArgumentFunctionCall.arg3Reference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg4Reference.value, actualFiveArgumentFunctionCall.arg4Reference.value);
+         ARE_EQUAL(expectedFiveArgumentFunctionCall.arg5Reference.value, actualFiveArgumentFunctionCall.arg5Reference.value);
       }
    };
 
@@ -3601,12 +3601,12 @@ namespace ZenUnit
          const MetalMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCall,
          const MetalMock::SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSixArgumentFunctionCall.firstArgument.value, actualSixArgumentFunctionCall.firstArgument.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.secondArgument.value, actualSixArgumentFunctionCall.secondArgument.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.thirdArgument.value, actualSixArgumentFunctionCall.thirdArgument.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.fourthArgument.value, actualSixArgumentFunctionCall.fourthArgument.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.fifthArgument.value, actualSixArgumentFunctionCall.fifthArgument.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.sixthArgument.value, actualSixArgumentFunctionCall.sixthArgument.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg1.value, actualSixArgumentFunctionCall.arg1.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg2.value, actualSixArgumentFunctionCall.arg2.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg3.value, actualSixArgumentFunctionCall.arg3.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg4.value, actualSixArgumentFunctionCall.arg4.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg5.value, actualSixArgumentFunctionCall.arg5.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg6.value, actualSixArgumentFunctionCall.arg6.value);
       }
    };
 
@@ -3618,12 +3618,12 @@ namespace ZenUnit
          const MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCall,
          const MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSixArgumentFunctionCall.firstArgumentReference.value, actualSixArgumentFunctionCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.secondArgumentReference.value, actualSixArgumentFunctionCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.thirdArgumentReference.value, actualSixArgumentFunctionCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.fourthArgumentReference.value, actualSixArgumentFunctionCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.fifthArgumentReference.value, actualSixArgumentFunctionCall.fifthArgumentReference.value);
-         ARE_EQUAL(expectedSixArgumentFunctionCall.sixthArgumentReference.value, actualSixArgumentFunctionCall.sixthArgumentReference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg1Reference.value, actualSixArgumentFunctionCall.arg1Reference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg2Reference.value, actualSixArgumentFunctionCall.arg2Reference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg3Reference.value, actualSixArgumentFunctionCall.arg3Reference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg4Reference.value, actualSixArgumentFunctionCall.arg4Reference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg5Reference.value, actualSixArgumentFunctionCall.arg5Reference.value);
+         ARE_EQUAL(expectedSixArgumentFunctionCall.arg6Reference.value, actualSixArgumentFunctionCall.arg6Reference.value);
       }
    };
 
@@ -3635,13 +3635,13 @@ namespace ZenUnit
          const MetalMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCall,
          const MetalMock::SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.firstArgument.value, actualSevenArgumentFunctionCall.firstArgument.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.secondArgument.value, actualSevenArgumentFunctionCall.secondArgument.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.thirdArgument.value, actualSevenArgumentFunctionCall.thirdArgument.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.fourthArgument.value, actualSevenArgumentFunctionCall.fourthArgument.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.fifthArgument.value, actualSevenArgumentFunctionCall.fifthArgument.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.sixthArgument.value, actualSevenArgumentFunctionCall.sixthArgument.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.seventhArgument.value, actualSevenArgumentFunctionCall.seventhArgument.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg1.value, actualSevenArgumentFunctionCall.arg1.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg2.value, actualSevenArgumentFunctionCall.arg2.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg3.value, actualSevenArgumentFunctionCall.arg3.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg4.value, actualSevenArgumentFunctionCall.arg4.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg5.value, actualSevenArgumentFunctionCall.arg5.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg6.value, actualSevenArgumentFunctionCall.arg6.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg7.value, actualSevenArgumentFunctionCall.arg7.value);
       }
    };
 
@@ -3653,13 +3653,13 @@ namespace ZenUnit
          const MetalMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCall,
          const MetalMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCall)
       {
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.firstArgumentReference.value, actualSevenArgumentFunctionCall.firstArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.secondArgumentReference.value, actualSevenArgumentFunctionCall.secondArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.thirdArgumentReference.value, actualSevenArgumentFunctionCall.thirdArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.fourthArgumentReference.value, actualSevenArgumentFunctionCall.fourthArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.fifthArgumentReference.value, actualSevenArgumentFunctionCall.fifthArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.sixthArgumentReference.value, actualSevenArgumentFunctionCall.sixthArgumentReference.value);
-         ARE_EQUAL(expectedSevenArgumentFunctionCall.seventhArgumentReference.value, actualSevenArgumentFunctionCall.seventhArgumentReference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg1Reference.value, actualSevenArgumentFunctionCall.arg1Reference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg2Reference.value, actualSevenArgumentFunctionCall.arg2Reference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg3Reference.value, actualSevenArgumentFunctionCall.arg3Reference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg4Reference.value, actualSevenArgumentFunctionCall.arg4Reference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg5Reference.value, actualSevenArgumentFunctionCall.arg5Reference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg6Reference.value, actualSevenArgumentFunctionCall.arg6Reference.value);
+         ARE_EQUAL(expectedSevenArgumentFunctionCall.arg7Reference.value, actualSevenArgumentFunctionCall.arg7Reference.value);
       }
    };
 
@@ -3681,7 +3681,7 @@ namespace ZenUnit
       static void Print(std::ostream& os, const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& twoArgumentFunctionCallRef)
       {
          // One line because when line-breaked, Codecov.io incorrectly reports this line as uncovered
-         os << "MetalMock::TwoArgumentFunctionCall:\n" "Argument1: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.firstArgumentReference.value) << '\n' << "Argument2: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.secondArgumentReference.value);
+         os << "MetalMock::TwoArgumentFunctionCall:\n" "Argument1: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.arg1Reference.value) << '\n' << "Argument2: " << ZenUnit::ToStringer::ToString(twoArgumentFunctionCallRef.arg2Reference.value);
       }
    };
 
@@ -3692,9 +3692,9 @@ namespace ZenUnit
       static void Print(std::ostream& os, const MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& threeArgumentFunctionCallRef)
       {
          os << "MetalMock::ThreeArgumentFunctionCall:\n"
-               "Argument1: " << ZenUnit::ToStringer::ToString(threeArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
-               "Argument2: " << ZenUnit::ToStringer::ToString(threeArgumentFunctionCallRef.secondArgumentReference.value) << '\n' <<
-               "Argument3: " << ZenUnit::ToStringer::ToString(threeArgumentFunctionCallRef.thirdArgumentReference.value);
+               "Argument1: " << ZenUnit::ToStringer::ToString(threeArgumentFunctionCallRef.arg1Reference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(threeArgumentFunctionCallRef.arg2Reference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(threeArgumentFunctionCallRef.arg3Reference.value);
       }
    };
 
@@ -3705,10 +3705,10 @@ namespace ZenUnit
       static void Print(std::ostream& os, const MetalMock::FourArgumentFunctionCallReference<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& fourArgumentFunctionCallRef)
       {
          os << "MetalMock::FourArgumentFunctionCall:\n"
-               "Argument1: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
-               "Argument2: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.secondArgumentReference.value) << '\n' <<
-               "Argument3: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.thirdArgumentReference.value) << '\n' <<
-               "Argument4: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.fourthArgumentReference.value);
+               "Argument1: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.arg1Reference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.arg2Reference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.arg3Reference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(fourArgumentFunctionCallRef.arg4Reference.value);
       }
    };
 
@@ -3719,11 +3719,11 @@ namespace ZenUnit
       static void Print(std::ostream& os, const MetalMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& fiveArgumentFunctionCallRef)
       {
          os << "MetalMock::FiveArgumentFunctionCall:\n"
-               "Argument1: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
-               "Argument2: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.secondArgumentReference.value) << '\n' <<
-               "Argument3: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.thirdArgumentReference.value) << '\n' <<
-               "Argument4: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.fourthArgumentReference.value) << '\n' <<
-               "Argument5: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.fifthArgumentReference.value);
+               "Argument1: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.arg1Reference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.arg2Reference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.arg3Reference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.arg4Reference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(fiveArgumentFunctionCallRef.arg5Reference.value);
       }
    };
 
@@ -3734,12 +3734,12 @@ namespace ZenUnit
       static void Print(std::ostream& os, const MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& sixArgumentFunctionCallRef)
       {
          os << "MetalMock::SixArgumentFunctionCall:\n"
-               "Argument1: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
-               "Argument2: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.secondArgumentReference.value) << '\n' <<
-               "Argument3: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.thirdArgumentReference.value) << '\n' <<
-               "Argument4: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.fourthArgumentReference.value) << '\n' <<
-               "Argument5: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.fifthArgumentReference.value) << '\n' <<
-               "Argument6: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.sixthArgumentReference.value);
+               "Argument1: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.arg1Reference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.arg2Reference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.arg3Reference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.arg4Reference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.arg5Reference.value) << '\n' <<
+               "Argument6: " << ZenUnit::ToStringer::ToString(sixArgumentFunctionCallRef.arg6Reference.value);
       }
    };
 
@@ -3750,13 +3750,13 @@ namespace ZenUnit
       static void Print(std::ostream& os, const MetalMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& sevenArgumentFunctionCallRef)
       {
          os << "MetalMock::SevenArgumentFunctionCall:\n"
-               "Argument1: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.firstArgumentReference.value) << '\n' <<
-               "Argument2: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.secondArgumentReference.value) << '\n' <<
-               "Argument3: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.thirdArgumentReference.value) << '\n' <<
-               "Argument4: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.fourthArgumentReference.value) << '\n' <<
-               "Argument5: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.fifthArgumentReference.value) << '\n' <<
-               "Argument6: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.sixthArgumentReference.value) << '\n' <<
-               "Argument7: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.seventhArgumentReference.value);
+               "Argument1: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.arg1Reference.value) << '\n' <<
+               "Argument2: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.arg2Reference.value) << '\n' <<
+               "Argument3: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.arg3Reference.value) << '\n' <<
+               "Argument4: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.arg4Reference.value) << '\n' <<
+               "Argument5: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.arg5Reference.value) << '\n' <<
+               "Argument6: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.arg6Reference.value) << '\n' <<
+               "Argument7: " << ZenUnit::ToStringer::ToString(sevenArgumentFunctionCallRef.arg7Reference.value);
       }
    };
 }

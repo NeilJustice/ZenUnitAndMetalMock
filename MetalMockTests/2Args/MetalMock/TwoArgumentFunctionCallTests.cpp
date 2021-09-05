@@ -18,25 +18,25 @@ namespace MetalMock
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call2 twoArgumentFunctionCall;
-      ARE_EQUAL(DV1, twoArgumentFunctionCall.firstArgument.value);
-      ARE_EQUAL(DV2, twoArgumentFunctionCall.secondArgument.value);
+      ARE_EQUAL(DV1, twoArgumentFunctionCall.arg1.value);
+      ARE_EQUAL(DV2, twoArgumentFunctionCall.arg2.value);
    }
 
    TEST(Constructor_CopiesArgsToDecayedTypeArgFields)
    {
       const TwoArgumentFunctionCall<const T<1>&, const T<2>&> call(V1, V2);
       //
-      ARE_COPIES(V1, call.firstArgument.value);
-      ARE_COPIES(V2, call.secondArgument.value);
-      IS_TRUE((is_same<T<1>, decltype(call.firstArgument.value)>::value));
-      IS_TRUE((is_same<T<2>, decltype(call.secondArgument.value)>::value));
+      ARE_COPIES(V1, call.arg1.value);
+      ARE_COPIES(V2, call.arg2.value);
+      IS_TRUE((is_same<T<1>, decltype(call.arg1.value)>::value));
+      IS_TRUE((is_same<T<2>, decltype(call.arg2.value)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(Call2);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call2, firstArgument, V1);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call2, secondArgument, V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call2, arg1, V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call2, arg2, V2);
    }
 
    RUN_TESTS(TwoArgumentFunctionCallTests)
@@ -57,8 +57,8 @@ namespace MetalMock
    {
       const CallRef2 callRef(V1, V2);
       //
-      ARE_SAME(V1, callRef.firstArgumentReference.value);
-      ARE_SAME(V2, callRef.secondArgumentReference.value);
+      ARE_SAME(V1, callRef.arg1Reference.value);
+      ARE_SAME(V2, callRef.arg2Reference.value);
    }
 
    TEST(CallConstructor_SetsReferencesToTwoArgumentFunctionCallArgs)
@@ -67,8 +67,8 @@ namespace MetalMock
       //
       const CallRef2 callRef(twoArgumentFunctionCall);
       //
-      ARE_SAME(twoArgumentFunctionCall.firstArgument.value, callRef.firstArgumentReference.value);
-      ARE_SAME(twoArgumentFunctionCall.secondArgument.value, callRef.secondArgumentReference.value);
+      ARE_SAME(twoArgumentFunctionCall.arg1.value, callRef.arg1Reference.value);
+      ARE_SAME(twoArgumentFunctionCall.arg2.value, callRef.arg2Reference.value);
    }
 
    TEST(ZenUnitPrinterPrint_WritesToStringeredArgs)
@@ -93,10 +93,10 @@ namespace MetalMock
       const CallRef2 callRef(V1, V2);
 
       const CallRef2 callRef_arg1(VF1, V2);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "firstArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
       const CallRef2 callRef_arg2(V1, VF2);
-      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "secondArgument");
+      AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
    }
 
    RUN_TESTS(TwoArgumentFunctionCallRefTests)
