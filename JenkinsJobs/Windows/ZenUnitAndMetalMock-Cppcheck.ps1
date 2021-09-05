@@ -29,6 +29,7 @@ cppcheck.exe `
    -DMETALMOCK_VOID0_FREE `
    -DMETALMOCK_VOID1_FREE `
    -DMETALMOCK_VOID2_FREE `
+   -DMETALMOCK_VOID3_FREE `
    -D_WIN32 `
    -I . `
    -j 48 `

@@ -1184,8 +1184,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       friend class ZeroArgumentMetalMockerTests;
       template<
          typename MetalMockObjectType,
-         typename FreeMockType,
-         typename StaticMockType>
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
       friend class MetalMock0ArgsTester;
    private:
       std::vector<FunctionCallSequenceNumberAndSignature> metalMockedFunctionCallHistory;
@@ -1809,8 +1809,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       friend class OneArgumentMetalMockerTests;
       template<
          typename MetalMockObjectType,
-         typename FreeMockType,
-         typename StaticMockType>
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
       friend class MetalMock1ArgTester;
    private:
       std::vector<OneArgumentFunctionCall<ArgType>> metalMockedFunctionCallHistory;
@@ -2276,6 +2276,11 @@ private:
       typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class ThreeArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
    {
+      template<
+         typename MetalMockObjectType,
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
+      friend class MetalMock3ArgsTester;
       friend class ThreeArgumentMetalMockerTests;
    public:
       std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>> metalMockedFunctionCallHistory;
