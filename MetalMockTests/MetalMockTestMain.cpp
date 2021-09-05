@@ -35,27 +35,9 @@ EVIDENCE
 TEST(Test)
 {
    AMock amock;
-
-   //amock.ZeroArgFunctionAMock.Expect();
-   //amock.ZeroArgFunctionBMock.Expect();
-
-   //amock.OneArgFunctionAMock.Expect();
-   //amock.OneArgFunctionBMock.Expect();
-   //
-   //amock.ZeroArgFunctionA();
-   //amock.ZeroArgFunctionB();
-
-   //amock.OneArgFunctionA(10);
-   //amock.OneArgFunctionB(0);
-   //amock.OneArgFunctionA(20);
-   //
-   //amock.ZeroArgFunctionBMock.CalledOnce().Then(
-   //amock.ZeroArgFunctionAMock.CalledOnce());
-
-   //amock.OneArgFunctionAMock.CalledNTimes(2);
-   //amock.OneArgFunctionAMock.CalledWith(10).Then(
-   //amock.OneArgFunctionBMock.CalledOnceWith(0)).Then(
-   //amock.OneArgFunctionAMock.CalledWith(20));
+   amock.ZeroArgFunctionAMock.Expect();
+   amock.ZeroArgFunctionA();
+   amock.ZeroArgFunctionAMock.CalledOnce();
 }
 
 RUN_TESTS(ZZTests)
