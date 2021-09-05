@@ -774,7 +774,6 @@ namespace MetalMock
       std::string metalMockedFunctionSignature;
 
       FunctionCallSequenceNumberAndSignature() : functionCallSequenceNumber(_metalMockedFunctionCallSequenceNumberAndSignature++) {}
-      FunctionCallSequenceNumberAndSignature(std::string_view metalMockedFunctionSignature) : functionCallSequenceNumber(_metalMockedFunctionCallSequenceNumberAndSignature++), metalMockedFunctionSignature(metalMockedFunctionSignature) {}
 
       FunctionCallSequenceNumberAndSignature Then(FunctionCallSequenceNumberAndSignature expectedNextFunctionCallSequenceNumberAndSignature) const
       {
