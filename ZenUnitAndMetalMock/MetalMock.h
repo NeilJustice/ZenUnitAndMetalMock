@@ -2293,6 +2293,23 @@ private:
       }
    };
 
+   template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
+   bool operator==(
+      const MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCallReference,
+      const MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCallReference)
+   {
+      try
+      {
+         ZenUnit::Equalizer<MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>::AssertEqual(
+            expectedThreeArgumentFunctionCallReference, actualThreeArgumentFunctionCallReference);
+      }
+      catch (const ZenUnit::Anomaly&)
+      {
+         return false;
+      }
+      return true;
+   }
+
    template<
       typename Arg1Type,
       typename Arg2Type,
@@ -2321,6 +2338,18 @@ private:
          this->MetalMockThrowIfNotExpected(arg1, arg2, arg3);
          this->metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3);
          this->MetalMockThrowExceptionIfExceptionSet();
+      }
+
+      FunctionCallSequenceNumberAndSignature CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2, const Arg3Type& expectedArg3)
+      {
+         this->MetalMockSetAsserted();
+         const ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type> expectedThreeArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3);
+         const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentFunctionCalls =
+            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>,
+               ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>(this->metalMockedFunctionCallHistory);
+         CONTAINS_ELEMENT(expectedThreeArgumentFunctionCall, actualThreeArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
       }
 
       FunctionCallSequenceNumberAndSignature CalledOnceWith(
