@@ -30,6 +30,9 @@ namespace MetalMock
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    AFACT(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
+   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    FACTS(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
    AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
@@ -105,6 +108,21 @@ namespace MetalMock
    TEST(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
    {
       _metalMock1ArgTester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
+   }
+
+   TEST(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   {
+      _metalMock1ArgTester->CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException();
+   }
+
+   TEST(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   {
+      _metalMock1ArgTester->CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
+   }
+
+   TEST(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   {
+      _metalMock1ArgTester->CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
    }
 
    TEST1X1(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly,

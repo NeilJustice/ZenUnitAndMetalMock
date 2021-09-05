@@ -1831,6 +1831,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
+      FunctionCallSequenceNumberAndSignature CalledWith(const ArgType& expectedArgument)
+      {
+         this->MetalMockSetAsserted();
+         const OneArgumentFunctionCallReference<ArgType> expectedOneArgumentFunctionCall(expectedArgument);
+         const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls =
+            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
+               OneArgumentFunctionCallReference<ArgType>,
+               OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
+         CONTAINS_ELEMENT(expectedOneArgumentFunctionCall, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         return ZerothFunctionCallSequenceNumberAndSignature();
+      }
+
       FunctionCallSequenceNumberAndSignature CalledOnceWith(const ArgType& expectedArgument)
       {
          this->MetalMockSetAsserted();
