@@ -7,7 +7,7 @@ EVIDENCE
 TEST(DefaultConstructor_SetsFunctionCallSequenceNumberToDefault)
 {
    const MetalMock::ZeroArgumentFunctionCall zeroArgumentFunctionCall{};
-   ARE_NOT_EQUAL(0, zeroArgumentFunctionCall.functionCallSequenceNumber.value);
+   ARE_NOT_EQUAL(0, zeroArgumentFunctionCall.functionCallSequenceNumber.sequenceNumber);
    IS_NULLPTR(zeroArgumentFunctionCall.functionCallSequenceNumber.metalMockedFunctionSignature);
 }
 

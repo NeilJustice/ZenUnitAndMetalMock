@@ -796,23 +796,24 @@ namespace MetalMock
 
    struct FunctionCallSequenceNumber
    {
-      unsigned long long value;
+      unsigned long long sequenceNumber;
       const std::string* metalMockedFunctionSignature;
 
       FunctionCallSequenceNumber()
-         : value(_globalMetalMockedFunctionCallSequenceNumber++)
+         : sequenceNumber(_globalMetalMockedFunctionCallSequenceNumber++)
          , metalMockedFunctionSignature(nullptr)
       {
       }
 
-      FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumber) const
+      FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumberObject) const
       {
-         const std::string incorrectMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings("Unexpected MetalMocked function call ordering:\n",
+         const std::string unexpectedtMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings("Unexpected MetalMocked function call ordering:\n",
             "Expected function called first: ", *metalMockedFunctionSignature, "\n",
-            "  Actual function called first: ", *expectedNextFunctionCallSequenceNumber.metalMockedFunctionSignature);
-         const unsigned long long expectedFirstFunctionCallSequenceNumber = this->value;
-         IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber.value, incorrectMetalMockedFunctionOrderErrorMessage);
-         return expectedNextFunctionCallSequenceNumber;
+            "  Actual function called first: ", *expectedNextFunctionCallSequenceNumberObject.metalMockedFunctionSignature);
+         const unsigned long long expectedFirstFunctionCallSequenceNumber = this->sequenceNumber;
+         const unsigned long long expectedNextFunctionCallSequenceNumber = expectedNextFunctionCallSequenceNumberObject.sequenceNumber;
+         IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage);
+         return expectedNextFunctionCallSequenceNumberObject;
       }
    };
 
@@ -3638,7 +3639,7 @@ namespace ZenUnit
          const MetalMock::FunctionCallSequenceNumber& expectedFunctionCallSequenceNumber,
          const MetalMock::FunctionCallSequenceNumber& actualFunctionCallSequenceNumber)
       {
-         ARE_EQUAL(expectedFunctionCallSequenceNumber.value, actualFunctionCallSequenceNumber.value);
+         ARE_EQUAL(expectedFunctionCallSequenceNumber.sequenceNumber, actualFunctionCallSequenceNumber.sequenceNumber);
       }
    };
 
