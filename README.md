@@ -29,7 +29,7 @@ TEST3X3(Add_ReturnsSumOfArguments,
 }
 ```
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for specifying function return values, requesting exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for specifying function return values, requesting specific exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free.
 
 MetalMock is a "double strict" mocking framework so as to be useful for rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
 
