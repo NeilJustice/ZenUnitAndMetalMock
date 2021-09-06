@@ -766,26 +766,27 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type ar
 
 namespace MetalMock
 {
-   inline std::atomic<unsigned long long> _metalMockedFunctionCallSequenceNumberAndSignature;
+   inline std::atomic<unsigned long long> _globalMetalMockedFunctionCallSequenceNumber;
 
-   struct FunctionCallSequenceNumberAndSignature
+   struct FunctionCallSequenceNumber
    {
-      unsigned long long functionCallSequenceNumber;
+      unsigned long long value;
       const std::string* metalMockedFunctionSignature;
 
-      FunctionCallSequenceNumberAndSignature()
-         : functionCallSequenceNumber(_metalMockedFunctionCallSequenceNumberAndSignature++)
+      FunctionCallSequenceNumber()
+         : value(_globalMetalMockedFunctionCallSequenceNumber++)
          , metalMockedFunctionSignature(nullptr)
       {
       }
 
-      FunctionCallSequenceNumberAndSignature Then(FunctionCallSequenceNumberAndSignature expectedNextFunctionCallSequenceNumberAndSignature) const
+      FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumber) const
       {
          const std::string incorrectMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings("Unexpected MetalMocked function call ordering:\n",
-            "  Actual function called first: ", *expectedNextFunctionCallSequenceNumberAndSignature.metalMockedFunctionSignature, "\n",
+            "  Actual function called first: ", *expectedNextFunctionCallSequenceNumber.metalMockedFunctionSignature, "\n",
             "Expected function called first: ", *metalMockedFunctionSignature);
-         IS_LESS_THAN(functionCallSequenceNumber, expectedNextFunctionCallSequenceNumberAndSignature.functionCallSequenceNumber, incorrectMetalMockedFunctionOrderErrorMessage);
-         return expectedNextFunctionCallSequenceNumberAndSignature;
+         const unsigned long long expectedFirstFunctionCallSequenceNumber = this->value;
+         IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber.value, incorrectMetalMockedFunctionOrderErrorMessage);
+         return expectedNextFunctionCallSequenceNumber;
       }
    };
 
@@ -1160,8 +1161,8 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
          return metalMockFunctionCallReferences;
       }
 
-      FunctionCallSequenceNumberAndSignature NextFunctionCallSequenceNumberAndSignature_ZeroArg(
-         std::vector<FunctionCallSequenceNumberAndSignature>& metalMockedFunctionCallHistory)
+      template<typename MetalMockFunctionCallType>
+      FunctionCallSequenceNumber NextFunctionCallSequenceNumber(std::vector<MetalMockFunctionCallType>& metalMockedFunctionCallHistory)
       {
          const size_t functionCallAssertionIndex = this->_functionCallAssertionIndex++;
          const size_t metalMockedFunctionCallCount = metalMockedFunctionCallHistory.size();
@@ -1169,23 +1170,9 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
          {
             throw FunctionAssertedOneMoreTimeThanItWasCalledException(this->metalMockedFunctionSignature, metalMockedFunctionCallCount);
          }
-         FunctionCallSequenceNumberAndSignature& nextFunctionCallSequenceNumber = metalMockedFunctionCallHistory[functionCallAssertionIndex];
-         nextFunctionCallSequenceNumber.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
-         return nextFunctionCallSequenceNumber;
-      }
-
-      template<typename MetalMockCallHistoryType>
-      FunctionCallSequenceNumberAndSignature NextFunctionCallSequenceNumber(std::vector<MetalMockCallHistoryType>& metalMockedFunctionCallHistory)
-      {
-         const size_t functionCallAssertionIndex = this->_functionCallAssertionIndex++;
-         const size_t metalMockedFunctionCallCount = metalMockedFunctionCallHistory.size();
-         if (functionCallAssertionIndex == metalMockedFunctionCallCount)
-         {
-            throw FunctionAssertedOneMoreTimeThanItWasCalledException(this->metalMockedFunctionSignature, metalMockedFunctionCallCount);
-         }
-         MetalMockCallHistoryType& nextFunctionCallSequenceNumber = metalMockedFunctionCallHistory[functionCallAssertionIndex];
-         nextFunctionCallSequenceNumber.functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
-         return nextFunctionCallSequenceNumber.functionCallSequenceNumberAndSignature;
+         MetalMockFunctionCallType& nextFunctionCallSequenceNumber = metalMockedFunctionCallHistory[functionCallAssertionIndex];
+         nextFunctionCallSequenceNumber.functionCallSequenceNumber.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
+         return nextFunctionCallSequenceNumber.functionCallSequenceNumber;
       }
    private:
       void MetalMockExitIfExpectedButNotAsserted() const
@@ -1235,7 +1222,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       }
    };
 
-   class ZeroArgumentMetalMockerTests;
+   struct ZeroArgumentFunctionCall
+   {
+      FunctionCallSequenceNumber functionCallSequenceNumber;
+
+      ZeroArgumentFunctionCall() noexcept
+         : functionCallSequenceNumber() {}
+   };
 
    template<typename MockableExceptionThrowerType = MetalMockExceptionThrower>
    class ZeroArgumentMetalMocker : public MetalMocker<MockableExceptionThrowerType>
@@ -1247,7 +1240,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       friend class MetalMock0ArgsTester;
       friend class ZeroArgumentMetalMockerTests;
    private:
-      std::vector<FunctionCallSequenceNumberAndSignature> metalMockedFunctionCallHistory;
+      std::vector<ZeroArgumentFunctionCall> metalMockedFunctionCallHistory;
    protected:
       std::function<void()> callInsteadFunction;
    public:
@@ -1281,19 +1274,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
       }
 
-      FunctionCallSequenceNumberAndSignature Called()
+      FunctionCallSequenceNumber Called()
       {
          this->MetalMockSetAsserted();
          IS_NOT_EMPTY(this->metalMockedFunctionCallHistory, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumberAndSignature_ZeroArg(this->metalMockedFunctionCallHistory);
+         return this->NextFunctionCallSequenceNumber(this->metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnce()
+      FunctionCallSequenceNumber CalledOnce()
       {
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumberAndSignature_ZeroArg(this->metalMockedFunctionCallHistory);
+         return this->NextFunctionCallSequenceNumber(this->metalMockedFunctionCallHistory);
       }
    };
 
@@ -1496,15 +1489,15 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    struct OneArgumentFunctionCall
    {
       ArgumentStorage<Arg1Type> argument;
-      FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       OneArgumentFunctionCall() noexcept
          : argument()
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
 
       OneArgumentFunctionCall(const Arg1Type& argument)
          : argument(argument)
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
    };
 
    template<typename ArgType>
@@ -1524,17 +1517,17 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    {
       ArgumentStorage<Arg1Type> arg1;
       ArgumentStorage<Arg2Type> arg2;
-      FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       TwoArgumentFunctionCall() noexcept
          : arg1()
          , arg2()
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
 
       TwoArgumentFunctionCall(const Arg1Type& arg1, const Arg2Type& arg2)
          : arg1(arg1)
          , arg2(arg2)
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type>
@@ -1558,19 +1551,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg1Type> arg1;
       ArgumentStorage<Arg2Type> arg2;
       ArgumentStorage<Arg3Type> arg3;
-      FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       ThreeArgumentFunctionCall() noexcept
          : arg1()
          , arg2()
          , arg3()
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
 
       ThreeArgumentFunctionCall(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3)
          : arg1(arg1)
          , arg2(arg2)
          , arg3(arg3)
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
@@ -1598,21 +1591,21 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg2Type> arg2;
       ArgumentStorage<Arg3Type> arg3;
       ArgumentStorage<Arg4Type> arg4;
-      FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       FourArgumentFunctionCall() noexcept
          : arg1()
          , arg2()
          , arg3()
          , arg4()
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
 
       FourArgumentFunctionCall(const Arg1Type& arg1, const Arg2Type& arg2, const Arg3Type& arg3, const Arg4Type& arg4)
          : arg1(arg1)
          , arg2(arg2)
          , arg3(arg3)
          , arg4(arg4)
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
@@ -1644,7 +1637,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg3Type> arg3;
       ArgumentStorage<Arg4Type> arg4;
       ArgumentStorage<Arg5Type> arg5;
-      FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       FiveArgumentFunctionCall() noexcept
          : arg1()
@@ -1652,7 +1645,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , arg3()
          , arg4()
          , arg5()
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
 
       FiveArgumentFunctionCall(
          const Arg1Type& arg1,
@@ -1665,7 +1658,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , arg3(arg3)
          , arg4(arg4)
          , arg5(arg5)
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
@@ -1706,7 +1699,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg4Type> arg4;
       ArgumentStorage<Arg5Type> arg5;
       ArgumentStorage<Arg6Type> arg6;
-      FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       SixArgumentFunctionCall() noexcept
          : arg1()
@@ -1715,7 +1708,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , arg4()
          , arg5()
          , arg6()
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
 
       SixArgumentFunctionCall(
          const Arg1Type& arg1,
@@ -1730,7 +1723,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , arg4(arg4)
          , arg5(arg5)
          , arg6(arg6)
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
@@ -1776,7 +1769,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       ArgumentStorage<Arg5Type> arg5;
       ArgumentStorage<Arg6Type> arg6;
       ArgumentStorage<Arg7Type> arg7;
-      FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature;
+      FunctionCallSequenceNumber functionCallSequenceNumber;
 
       SevenArgumentFunctionCall() noexcept
          : arg1()
@@ -1786,7 +1779,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , arg5()
          , arg6()
          , arg7()
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
 
       SevenArgumentFunctionCall(
          const Arg1Type& arg1,
@@ -1803,7 +1796,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          , arg5(arg5)
          , arg6(arg6)
          , arg7(arg7)
-         , functionCallSequenceNumberAndSignature() {}
+         , functionCallSequenceNumber() {}
    };
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
@@ -1890,7 +1883,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledWith(const ArgType& expectedArgument)
+      FunctionCallSequenceNumber CalledWith(const ArgType& expectedArgument)
       {
          this->MetalMockSetAsserted();
          const OneArgumentFunctionCallReference<ArgType> expectedOneArgumentFunctionCall(expectedArgument);
@@ -1902,7 +1895,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnceWith(const ArgType& expectedArgument)
+      FunctionCallSequenceNumber CalledOnceWith(const ArgType& expectedArgument)
       {
          this->MetalMockSetAsserted();
          constexpr size_t expectedNumberOfFunctionCalls = 1;
@@ -1932,7 +1925,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          }
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollows(
+      FunctionCallSequenceNumber CalledAsFollows(
          const std::vector<OneArgumentFunctionCallReference<ArgType>>& expectedOneArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentFunctionCalls.size());
@@ -1945,7 +1938,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollowsInAnyOrder(
+      FunctionCallSequenceNumber CalledAsFollowsInAnyOrder(
          const std::vector<OneArgumentFunctionCallReference<ArgType>>& expectedOneArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentFunctionCalls.size());
@@ -2142,7 +2135,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2)
+      FunctionCallSequenceNumber CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2)
       {
          this->MetalMockSetAsserted();
          const TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type> expectedTwoArgumentFunctionCall(expectedArg1, expectedArg2);
@@ -2154,7 +2147,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnceWith(
+      FunctionCallSequenceNumber CalledOnceWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2)
       {
@@ -2189,7 +2182,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          }
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollows(
+      FunctionCallSequenceNumber CalledAsFollows(
          const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>& expectedTwoArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentFunctionCalls.size());
@@ -2202,7 +2195,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollowsInAnyOrder(
+      FunctionCallSequenceNumber CalledAsFollowsInAnyOrder(
          const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>& expectedTwoArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentFunctionCalls.size());
@@ -2383,7 +2376,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2, const Arg3Type& expectedArg3)
+      FunctionCallSequenceNumber CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2, const Arg3Type& expectedArg3)
       {
          this->MetalMockSetAsserted();
          const ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type> expectedThreeArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3);
@@ -2395,7 +2388,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnceWith(
+      FunctionCallSequenceNumber CalledOnceWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3)
@@ -2434,7 +2427,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          }
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollows(
+      FunctionCallSequenceNumber CalledAsFollows(
          const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentFunctionCalls.size());
@@ -2630,7 +2623,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledWith(
+      FunctionCallSequenceNumber CalledWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -2646,7 +2639,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnceWith(
+      FunctionCallSequenceNumber CalledOnceWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -2689,7 +2682,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          }
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollows(
+      FunctionCallSequenceNumber CalledAsFollows(
          const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentFunctionCalls.size());
@@ -2873,7 +2866,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledWith(
+      FunctionCallSequenceNumber CalledWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -2890,7 +2883,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnceWith(
+      FunctionCallSequenceNumber CalledOnceWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -2937,7 +2930,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          }
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollows(
+      FunctionCallSequenceNumber CalledAsFollows(
          const std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& expectedFiveArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentFunctionCalls.size());
@@ -3123,7 +3116,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledWith(
+      FunctionCallSequenceNumber CalledWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -3141,7 +3134,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnceWith(
+      FunctionCallSequenceNumber CalledOnceWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -3192,7 +3185,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          }
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollows(
+      FunctionCallSequenceNumber CalledAsFollows(
          const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentFunctionCalls.size());
@@ -3370,7 +3363,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumberAndSignature CalledWith(
+      FunctionCallSequenceNumber CalledWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -3389,7 +3382,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
-      FunctionCallSequenceNumberAndSignature CalledOnceWith(
+      FunctionCallSequenceNumber CalledOnceWith(
          const Arg1Type& expectedArg1,
          const Arg2Type& expectedArg2,
          const Arg3Type& expectedArg3,
@@ -3444,7 +3437,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          }
       }
 
-      FunctionCallSequenceNumberAndSignature CalledAsFollows(
+      FunctionCallSequenceNumber CalledAsFollows(
          const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentFunctionCalls)
       {
          this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentFunctionCalls.size());
@@ -3612,14 +3605,14 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 namespace ZenUnit
 {
    template<>
-   class Equalizer<MetalMock::FunctionCallSequenceNumberAndSignature>
+   class Equalizer<MetalMock::FunctionCallSequenceNumber>
    {
    public:
       static void AssertEqual(
-         const MetalMock::FunctionCallSequenceNumberAndSignature& expectedFunctionCallSequenceNumberAndSignature,
-         const MetalMock::FunctionCallSequenceNumberAndSignature& actualFunctionCallSequenceNumberAndSignature)
+         const MetalMock::FunctionCallSequenceNumber& expectedFunctionCallSequenceNumber,
+         const MetalMock::FunctionCallSequenceNumber& actualFunctionCallSequenceNumber)
       {
-         ARE_EQUAL(expectedFunctionCallSequenceNumberAndSignature.functionCallSequenceNumber, actualFunctionCallSequenceNumberAndSignature.functionCallSequenceNumber);
+         ARE_EQUAL(expectedFunctionCallSequenceNumber.value, actualFunctionCallSequenceNumber.value);
       }
    };
 
