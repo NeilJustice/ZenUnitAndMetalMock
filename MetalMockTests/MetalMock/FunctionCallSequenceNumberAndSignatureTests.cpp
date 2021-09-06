@@ -8,10 +8,10 @@ EVIDENCE
 
 TEST(DefaultConstructor_SetsFunctionCallSequenceNumberAndSignatureToNextMetalMockedFunctionCallSequenceNumberAndSignature)
 {
-   MetalMock::FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature{};
+   const MetalMock::FunctionCallSequenceNumberAndSignature functionCallSequenceNumberAndSignature{};
    //
    ARE_EQUAL(MetalMock::_metalMockedFunctionCallSequenceNumberAndSignature - 1, functionCallSequenceNumberAndSignature.functionCallSequenceNumber);
-   IS_EMPTY_STRING(functionCallSequenceNumberAndSignature.metalMockedFunctionSignature);
+   IS_NULLPTR(functionCallSequenceNumberAndSignature.metalMockedFunctionSignature);
 }
 
 TEST(AssertEqual_FunctionCallSequenceNumberAndSignatureValuesAreNotEqual_ThrowsAnomaly)

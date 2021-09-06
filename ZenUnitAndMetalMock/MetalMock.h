@@ -771,15 +771,19 @@ namespace MetalMock
    struct FunctionCallSequenceNumberAndSignature
    {
       unsigned long long functionCallSequenceNumber;
-      std::string metalMockedFunctionSignature;
+      const std::string* metalMockedFunctionSignature;
 
-      FunctionCallSequenceNumberAndSignature() : functionCallSequenceNumber(_metalMockedFunctionCallSequenceNumberAndSignature++) {}
+      FunctionCallSequenceNumberAndSignature()
+         : functionCallSequenceNumber(_metalMockedFunctionCallSequenceNumberAndSignature++)
+         , metalMockedFunctionSignature(nullptr)
+      {
+      }
 
       FunctionCallSequenceNumberAndSignature Then(FunctionCallSequenceNumberAndSignature expectedNextFunctionCallSequenceNumberAndSignature) const
       {
          const std::string incorrectMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings("Unexpected MetalMocked function call ordering:\n",
-            "  Actual function called first: ", expectedNextFunctionCallSequenceNumberAndSignature.metalMockedFunctionSignature, "\n",
-            "Expected function called first: ", metalMockedFunctionSignature);
+            "  Actual function called first: ", *expectedNextFunctionCallSequenceNumberAndSignature.metalMockedFunctionSignature, "\n",
+            "Expected function called first: ", *metalMockedFunctionSignature);
          IS_LESS_THAN(functionCallSequenceNumber, expectedNextFunctionCallSequenceNumberAndSignature.functionCallSequenceNumber, incorrectMetalMockedFunctionOrderErrorMessage);
          return expectedNextFunctionCallSequenceNumberAndSignature;
       }
@@ -1159,14 +1163,14 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       FunctionCallSequenceNumberAndSignature NextFunctionCallSequenceNumberAndSignature(
          std::vector<FunctionCallSequenceNumberAndSignature>& metalMockedFunctionCallHistory)
       {
-         const size_t functionCallAssertionIndex = _functionCallAssertionIndex++;
+         const size_t functionCallAssertionIndex = this->_functionCallAssertionIndex++;
          const size_t metalMockedFunctionCallCount = metalMockedFunctionCallHistory.size();
          if (functionCallAssertionIndex == metalMockedFunctionCallCount)
          {
-            throw FunctionAssertedOneMoreTimeThanItWasCalledException(metalMockedFunctionSignature, metalMockedFunctionCallCount);
+            throw FunctionAssertedOneMoreTimeThanItWasCalledException(this->metalMockedFunctionSignature, metalMockedFunctionCallCount);
          }
          FunctionCallSequenceNumberAndSignature& nextFunctionCallSequenceNumber = metalMockedFunctionCallHistory[functionCallAssertionIndex];
-         nextFunctionCallSequenceNumber.metalMockedFunctionSignature = metalMockedFunctionSignature;
+         nextFunctionCallSequenceNumber.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return nextFunctionCallSequenceNumber;
       }
    private:
@@ -1941,10 +1945,10 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
-private:
+   private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature;
       }
    };
@@ -2209,7 +2213,7 @@ private:
    private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature;
       }
    };
@@ -2444,10 +2448,10 @@ private:
          VECTORS_ARE_EQUAL(expectedThreeArgumentFunctionCalls, actualThreeArgumentFunctionCalls, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
-private:
+   private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature;
       }
    };
@@ -2709,10 +2713,10 @@ private:
          VECTORS_ARE_EQUAL(expectedFourArgumentFunctionCalls, actualFourArgumentFunctionCalls, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
-private:
+   private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature;
       }
    };
@@ -2965,10 +2969,10 @@ private:
          VECTORS_ARE_EQUAL(expectedFiveArgumentFunctionCalls, actualFiveArgumentFunctionCalls, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
-private:
+   private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature;
       }
    };
@@ -3228,10 +3232,10 @@ private:
          VECTORS_ARE_EQUAL(expectedSixArgumentFunctionCalls, actualSixArgumentFunctionCalls, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
-private:
+   private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature;
       }
    };
@@ -3488,10 +3492,10 @@ private:
          VECTORS_ARE_EQUAL(expectedSevenArgumentFunctionCalls, actualSevenArgumentFunctionCalls, this->metalMockedFunctionSignature);
          return ZerothFunctionCallSequenceNumberAndSignature();
       }
-private:
+   private:
       FunctionCallSequenceNumberAndSignature ZerothFunctionCallSequenceNumberAndSignature()
       {
-         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = this->metalMockedFunctionSignature;
+         this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature.metalMockedFunctionSignature = &this->metalMockedFunctionSignature;
          return this->metalMockedFunctionCallHistory[0].functionCallSequenceNumberAndSignature;
       }
    };
