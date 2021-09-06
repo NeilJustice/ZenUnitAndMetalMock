@@ -13,7 +13,7 @@ ZenUnit is a C++ single-header unit testing framework designed for assertion exa
 
 ZenUnit's key feature is its convenient variadic syntax for writing value-parameterized unit tests.
 
-Here is the ZenUnit syntax for defining three independent test cases for the Calculator::Add(int x, int y) function:
+Here is the ZenUnit syntax for defining three independent test cases for the `Calculator::Add(int x, int y)` function:
 
 ```cpp
 #include "ZenUnitAndMetalMock/ZenUnit.h"
