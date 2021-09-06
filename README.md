@@ -29,13 +29,13 @@ TEST3X3(Add_ReturnsSumOfArguments,
 }
 ```
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for specifying function return values, requesting specific exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for specifying function return values, requesting specific exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free functions.
 
-MetalMock is a "double strict" mocking framework so as to be useful for rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
+MetalMock is a so-called "double strict" mocking framework so as to be useful for extra-rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
 
 A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called.
 
-A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of extraneous function calls being present in a C++ program being unit tested with ZenUnit and MetalMock.
+A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of any extraneous function calls being present in a C++ program whose correctness is being confirmed at the unit level with ZenUnit and MetalMock.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
