@@ -4,14 +4,16 @@
 
 |Build Type|Build Status|
 |----------|------------|
-|GitHub Actions Debug and Release build - ubuntu-latest Clang 11.0.0 / GCC 9.3.0|[![ZenUnitAndMetalMock](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg)](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml)|
+|GitHub Actions Debug and Release build - ubuntu-latest Clang 11 / GCC 9|[![ZenUnitAndMetalMock](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg)](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml)|
 |AppVeyor Debug and Release build - Visual Studio 2019 x64|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a>|
 |Codecov.io code coverage for ZenUnitAndMetalMock's C++ and for ZenUnitDevOpsPython|[![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock)|
 |SonarCloud scan of ZenUnitDevOpsPython - the Python code which builds and tests ZenUnit and MetalMock|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_ZenUnitAndMetalMock&metric=alert_status)](https://sonarcloud.io/dashboard?id=NeilJustice_ZenUnitAndMetalMock)|
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
-ZenUnit's key feature is its convenient syntax for writing value-parameterized and type-parameterized unit tests:
+ZenUnit's key feature is its convenient variadic syntax for writing multiple value-parameterized unit tests.
+
+Here is the ZenUnit syntax for defining three independent test cases for the Calculator::Add(int x, int y) function:
 
 ```cpp
 #include "ZenUnitAndMetalMock/ZenUnit.h"
@@ -22,28 +24,12 @@ TEST3X3(Add_ReturnsSumOfArguments,
    1, 2, 3,
    4, 5, 9)
 {
-   const int sum = _calculator.Add(x, y);
+   const int sum = Calculator::Add(x, y);
    ARE_EQUAL(expectedSum, sum);
 }
 ```
 
-```cpp
-#include "ZenUnitAndMetalMock/ZenUnit.h"
-
-template<
-   template<typename...>
-   typename ContainerType, typename T>
-TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
-// ...
-// ZenUnit test class code
-// ...
-RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, int)
-THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, unsigned long long)
-THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
-THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
-```
-
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for setting function return values and asserting expected arguments for virtual functions, non-virtual / template functions, static functions, and free functions.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for specifying function return values, requesting exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free.
 
 MetalMock is a "double strict" mocking framework so as to be useful for rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
 
@@ -169,9 +155,9 @@ FACTS(FizzBuzz_EndNumberIsGreaterThan0_ReturnsFizzBuzzSequence)
 // EVIDENCE concludes the declaration of FACTS section and begins the presentation of EVIDENCE section
 EVIDENCE
 
-// In ZenUnit test names are by-design duplicated between the FACTS section and the EVIDENCE section.
+// In ZenUnit test names are by design duplicated between the FACTS section and the EVIDENCE section.
 // This carefully-considered design decision is to maximize long-term test code readability
-// by always presenting test names at the top of test files instead of scattered throughout test files.
+// by always presenting test names group together at the top of test files.
 
 // TEST1X1 defines a 1-by-1 value-parameterized test
 // which processes its typesafe variadic arguments list 1-by-1.
@@ -285,9 +271,9 @@ int main(int argc, char* argv[])
 
 ### How to unit test templated class PredicateCounter's CountWhere() function with ZenUnit's type-parameterized test syntax
 
-How can the correctness of this templated class `PredicateCounter` with its `CountWhere` function be confirmed across various types of `ContainerType` and `T`?
+How might the correctness of templated class `PredicateCounter` with function `CountWhere` be confirmed across various types of `ContainerType` and `T`?
 
-(`std::count_if` is of course the standard way of counting elements matching a given predicate. `class PredicateCounter` provides mockability by way of its `CountWhere` function being virtual.)
+(`std::count_if` is of course the standard way of counting elements matching a given predicate. `class PredicateCounter` provides MetalMockability by way of its `CountWhere` function being virtual.)
 
 ```cpp
 template<
@@ -484,8 +470,8 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 ### ZenUnit test-defining macros
 
-|Test Classes|Behavior|
-|------------|--------|
+|Test class macro|Behavior|
+|----------------|--------|
 |`TESTS(testClassName)`|Defines a non-templatized test class.|
 |`TEMPLATE_TESTS(testClassName, templateParameterNames...)`|Defines a templatized test class. Precede with template\<parameter-list\>.|
 |`AFACT(testName)`|Declares a non-value-parameterized test.|
@@ -1010,13 +996,13 @@ Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting t
 
 ### Linux Jenkins jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 34 with Clang 12.0.0 and GCC 11.1.1 to statically analyze and unit test ZenUnit and MetalMock:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Fedora 34:
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
 ### Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
-A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Windows 10 with Visual Studio 2019 to statically analyze and unit test ZenUnit and MetalMock:
+A Jenkins Blue Ocean build pipeline builds the following ZenUnit and MetalMock Jenkins jobs on Windows 10:
 
 ![Windows Jenkins Jobs](Screenshots/Windows/WindowsJenkinsJobs.png)
 
@@ -1053,15 +1039,15 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit features roadmap
 
-|Future ZenUnit feature|Implementation status as of 8/14/2021|
+|Future ZenUnit feature|Implementation status as of 9/5/2021|
 |----------------------|------------------------------------|
 |`--parallel` for parallel running of tests|Awaiting implementation|
 
 ### MetalMock features roadmap
 
-|Future MetalMock feature|Implementation status as of 8/14/2021|
+|Future MetalMock feature|Implementation status as of 9/5/2021|
 |------------------------|-------------------------------------|
-|Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness|Awaiting implementation|
+|Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness|In progress|
 
 ### Acknowledgments
 
