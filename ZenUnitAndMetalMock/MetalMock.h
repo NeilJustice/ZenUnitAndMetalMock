@@ -57,6 +57,32 @@ catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly) \
    throw ZenUnit::Anomaly::METALMOCKWrapped("METALMOCK("#MetalMockAssertStatement")", metalMockWrappedAnomaly, ZENUNIT_FILELINE); \
 }
 
+namespace MetalMock
+{
+   struct FunctionCallSequenceNumber;
+}
+
+template<typename MetalMockAssertionCall>
+inline MetalMock::FunctionCallSequenceNumber MetalMockThen(
+   MetalMockAssertionCall&& metalMockAssertStatement,
+   const char* metalMockAssertStatementText,
+   const ZenUnit::FilePathLineNumber& filePathLineNumber)
+{
+   try
+   {
+      MetalMock::FunctionCallSequenceNumber functionCallSequenceNumber = std::forward<MetalMockAssertionCall>(metalMockAssertStatement)();
+      return functionCallSequenceNumber;
+   }
+   catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly)
+   {
+      const std::string message = ZenUnit::String::ConcatStrings("METALMOCK(", metalMockAssertStatementText, ")");
+      throw ZenUnit::Anomaly::METALMOCKWrapped(message, metalMockWrappedAnomaly, filePathLineNumber);
+   }
+}
+
+// METALMOCK adds file path and line number information to potential MetalMock assertion failed error messages
+#define METALMOCKTHEN(MetalMockAssertStatement) MetalMockThen([&]{ return (MetalMockAssertStatement); }, #MetalMockAssertStatement, ZENUNIT_FILELINE)
+
 //
 // Macros For MetalMocking 0-Argument Functions
 //

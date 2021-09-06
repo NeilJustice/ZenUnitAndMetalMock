@@ -35,9 +35,11 @@ EVIDENCE
 TEST(Test)
 {
    AMock amock;
-   amock.ZeroArgFunctionAMock.Expect();
-   amock.ZeroArgFunctionA();
-   amock.ZeroArgFunctionAMock.CalledOnce();
+   amock.OneArgFunctionAMock.Expect();
+   //
+   amock.OneArgFunctionA(2);
+   //
+   METALMOCKTHEN(amock.OneArgFunctionAMock.CalledOnceWith(2));
 }
 
 RUN_TESTS(ZZTests)
