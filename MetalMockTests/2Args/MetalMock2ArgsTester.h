@@ -145,22 +145,6 @@ namespace MetalMock
 " Message: \"" + expectedFunctionSignature + "\"\n"
 "File.cpp(1)\n"
 "File.cpp(1)");
-
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollowsInAnyOrder(
-            {
-               { 1, 1 },
-               { 2, 2 },
-               { 3, 3 }
-            }), Anomaly, "\n"
-"  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
-"Expected: expectedElements.size() == actualElements.size()\n"
-"  Actual: expectedElements.size() != actualElements.size()\n"
-" Because: ARE_EQUAL(expectedElements.size(), actualElements.size()) failed\n"
-"Expected: 3\n"
-"  Actual: 0\n"
-" Message: \"" + expectedFunctionSignature + "\"\n"
-"File.cpp(1)\n"
-"File.cpp(1)");
 #endif
          };
          test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
@@ -361,7 +345,7 @@ File.cpp(1))");
          test(_staticMockObject);
       }
 
-      void CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException()
+      void CalledNTimesWith_NIs0_ThrowsUnsupportedCalledZeroTimesException()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {

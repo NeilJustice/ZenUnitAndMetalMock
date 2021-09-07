@@ -16,11 +16,6 @@ namespace MetalMock
    AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
    AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreNotEqual_ThrowsAnomaly)
    AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqual_DoesNotThrowAnomaly)
-   AFACT(CalledAsFollowsInAnyOrder_ExpectedCallsSizeIs0_ThrowsUnsupportedCalledZeroTimesException_DoesNotSetAssertedToTrue)
-   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
-   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreNotEqual_ThrowsAnomaly)
-   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqualInSameOrder_DoesNotThrowAnomaly)
-   AFACT(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqualInDifferentOrder_DoesNotThrowAnomaly)
    EVIDENCE
 
    unique_ptr<OneArgumentMetalMocker<int, MetalMockExceptionThrowerMock>> _oneArgumentMetalMocker;
@@ -283,89 +278,6 @@ File.cpp(1))");
       _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 10 };
       //
       _oneArgumentMetalMocker->CalledAsFollows(expectedArgumentFunctionCalls);
-      //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollowsInAnyOrder_ExpectedCallsSizeIs0_ThrowsUnsupportedCalledZeroTimesException_DoesNotSetAssertedToTrue)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      //
-      const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(_metalMockedFunctionSignature);
-      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollowsInAnyOrder({}),
-         UnsupportedCalledZeroTimesException, expectedExceptionMessage);
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      const int zero = 0;
-      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ zero };
-      //
-      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
-      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedOneArgumentFunctionCalls), Anomaly, R"(
-  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)
-Expected: expectedElements.size() == actualElements.size()
-  Actual: expectedElements.size() != actualElements.size()
- Because: ARE_EQUAL(expectedElements.size(), actualElements.size()) failed
-Expected: 1
-  Actual: 0
- Message: ")" + _metalMockedFunctionSignature + R"("
-File.cpp(1)
-File.cpp(1))");
-      //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreNotEqual_ThrowsAnomaly)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      const int x = 10, y = 10;
-      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ x, y };
-      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 20 };
-      //
-      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
-      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedOneArgumentFunctionCalls), Anomaly, R"(
-  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)
-Expected:      To find ith actual element [MetalMock::OneArgumentFunctionCall:
-Argument: 20] in expectedElements (i=1)
-  Actual: Did not find ith actual element [MetalMock::OneArgumentFunctionCall:
-Argument: 20] in expectedElements (i=1)
- Message: ")" + _metalMockedFunctionSignature + R"("
-File.cpp(1))");
-      //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqualInSameOrder_DoesNotThrowAnomaly)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      int arg1 = 10;
-      int arg2 = 20;
-      const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
-      {
-         arg1, arg2
-      };
-      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 20 };
-      //
-      _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
-      //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollowsInAnyOrder_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqualInDifferentOrder_DoesNotThrowAnomaly)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      int arg1 = 10;
-      int arg2 = 20;
-      const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
-      {
-         arg1, arg2
-      };
-      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 20, 10 };
-      //
-      _oneArgumentMetalMocker->CalledAsFollowsInAnyOrder(expectedArgumentFunctionCalls);
       //
       IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
    }

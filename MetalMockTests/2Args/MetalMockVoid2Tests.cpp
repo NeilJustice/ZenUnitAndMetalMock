@@ -36,7 +36,7 @@ namespace MetalMock
    FACTS(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly)
    AFACT(CalledOnceWith_FunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
    AFACT(CalledOnceWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
-   AFACT(CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
+   AFACT(CalledNTimesWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
@@ -142,9 +142,9 @@ namespace MetalMock
       _metalMock2ArgsTester->CalledOnceWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException();
    }
 
-   TEST(CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
+   TEST(CalledNTimesWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    {
-      _metalMock2ArgsTester->CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException();
+      _metalMock2ArgsTester->CalledNTimesWith_NIs0_ThrowsUnsupportedCalledZeroTimesException();
    }
 
    TEST(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
