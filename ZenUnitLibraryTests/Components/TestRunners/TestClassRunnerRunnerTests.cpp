@@ -15,7 +15,7 @@ namespace ZenUnit
    AFACT(DefaultConstructor_NewsComponents)
    AFACT(NumberOfTestCases_ReturnsSumOfAllTestClassNumberOfTests)
    AFACT(AddTestClassRunner_EmplacesBackTestClassRunner_MakesNumberOfTestClassesToBeRunReturnAnIncreasingNumberAsMoreNonNoOpTestClassRunnersAreAdded)
-   AFACT(ApplyTestNameFiltersIfAny_TestNameFiltersAreEmpty_DoesNothing)
+   AFACT(ApplyTestNameFiltersIfAny_TestNameFiltersAreEmpty_DoesNotThrowException)
    AFACT(ApplyTestNameFiltersIfAny_TestNameFiltersNotEmpty_ResetsWithNoOpTestClassesThoseTestClassesThatMatchTestNameFilters)
    AFACT(ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyTestNameFilter_TestClassNameMatchesAtLeastOneTestNameFilter_DoesNotResetTestClassRunnerWithNoOp)
    AFACT(ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyTestNameFilter_TestClassNameDoesNotMatchAnyTestNameFilter_ResetsTestClassRunnerWithNoOp)
@@ -134,7 +134,7 @@ namespace ZenUnit
       ARE_EQUAL(2, _testClassRunnerRunner.NumberOfTestClassesToBeRun());
    }
 
-   TEST(ApplyTestNameFiltersIfAny_TestNameFiltersAreEmpty_DoesNothing)
+   TEST(ApplyTestNameFiltersIfAny_TestNameFiltersAreEmpty_DoesNotThrowException)
    {
       _testClassRunnerRunner.ApplyTestNameFiltersIfAny({});
    }

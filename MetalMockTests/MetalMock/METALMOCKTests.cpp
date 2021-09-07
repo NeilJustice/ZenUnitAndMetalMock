@@ -24,40 +24,41 @@ namespace MetalMock
 
    TEST(METALMOCKWrappedAssertionDoesNotThrow_NothingHappens)
    {
-      METALMOCKTestingClassMock mock;
-      mock.FunctionMock.Expect();
+      METALMOCKTestingClassMock classMock;
+      classMock.FunctionMock.Expect();
       const string message = ZenUnit::Random<string>();
       //
-      mock.Function(message);
+      classMock.Function(message);
       //
-      METALMOCK(mock.FunctionMock.CalledOnceWith(message));
+      METALMOCK(classMock.FunctionMock.CalledOnceWith(message));
    }
 
    TEST(METALMOCKWrappedAssertionThrows_RethrowsMETALMOCKWrappedAnomaly)
    {
-      METALMOCKTestingClassMock mock;
-      mock.FunctionMock.Expect();
-      mock.Function("message");
-      const string message = "Message";
-
+      METALMOCKTestingClassMock classMock;
+      classMock.FunctionMock.Expect();
+      //
+      classMock.Function("message");
+      //
+      const string expectedMessage = "mismatching_message";
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
-"  Failed: METALMOCK(mock.FunctionMock.CalledOnceWith(message))",
+"  Failed: METALMOCK(classMock.FunctionMock.CalledOnceWith(expectedMessage))",
 "Because of this ZenUnit::Anomaly:",
 "  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature)",
-"Expected: \"Message\"",
+"Expected: \"mismatching_message\"",
 "  Actual: \"message\"",
 " Message: \"virtual void METALMOCKTestingClass::Function(string_view) const\"",
 "File.cpp(1)",
 "File.cpp(1)");
       THROWS_EXCEPTION(
-         METALMOCK(mock.FunctionMock.CalledOnceWith(message)),
+         METALMOCK(classMock.FunctionMock.CalledOnceWith(expectedMessage)),
          Anomaly, expectedExceptionMessage);
    }
 
    TEST(METALMOCKTestingClass_Function_CodeCoverage)
    {
-      METALMOCKTestingClass metalmockTestingClass{};
-      metalmockTestingClass.Function(ZenUnit::Random<string>());
+      METALMOCKTestingClass classInstance{};
+      classInstance.Function(ZenUnit::Random<string>());
    }
 
    RUN_TESTS(METALMOCKTests)

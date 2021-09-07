@@ -4,7 +4,7 @@ namespace MetalMock
 {
    TESTS(MetalMockExceptionThrowerTests)
    AFACT(ThrowExceptionWhenCalled_CalledTwice_ThrowsLogicError)
-   AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
+   AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNotThrowException)
    AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviouslyCalled_ThrowsTheException_TestCaseRuntimeError)
    AFACT(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowPreviouslyCalled_ThrowsTheException_TestCaseLogicError)
    EVIDENCE
@@ -21,7 +21,7 @@ namespace MetalMock
          logic_error, "MetalMock::MetalMockExceptionThrower::ThrowExceptionWhenCalled<T>() called twice");
    }
 
-   TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNothing)
+   TEST(MetalMockThrowExceptionIfExceptionSet_ExpectAndThrowNotPreviouslyCalled_DoesNotThrowException)
    {
       _metalMockExceptionThrower.MetalMockThrowExceptionIfExceptionSet();
    }

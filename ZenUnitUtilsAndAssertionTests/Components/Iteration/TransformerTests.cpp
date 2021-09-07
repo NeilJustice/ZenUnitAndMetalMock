@@ -4,10 +4,10 @@ namespace ZenUnit
 {
    template<typename ElementType, typename TransformedElementType>
    TEMPLATE_TESTS(TransformerTests, ElementType, TransformedElementType)
-   AFACT(Transform_EmptyElements_DoesNothing)
+   AFACT(Transform_EmptyElements_DoesNotThrowException)
    AFACT(Transform_Size1Elements_CallsTransformerFunctionOnce_ReturnsTransformedElements)
    AFACT(Transform_Size2Elements_CallsTransformerFunctionTwice_ReturnsTransformedElements)
-   AFACT(RandomTransform_EmptyElements_DoesNothing)
+   AFACT(RandomTransform_EmptyElements_DoesNotThrowException)
    AFACT(RandomTransform_Size1Elements_CallsTransformerOnce_ReturnsTransformedElements)
    AFACT(RandomTransform_Size3Elements_CallsTransformerThreeTimesInRandomOrder_ReturnsTransformedElements)
    AFACT(ParallelTransform_ElementsEmpty_DoesNotCallTransformFunction_ReturnsEmptyVector)
@@ -23,7 +23,7 @@ namespace ZenUnit
       return transformedElement;
    }
 
-   TEST(Transform_EmptyElements_DoesNothing)
+   TEST(Transform_EmptyElements_DoesNotThrowException)
    {
       const vector<ElementType> emptyElements;
       //
@@ -51,7 +51,7 @@ namespace ZenUnit
       VECTORS_ARE_EQUAL(expectedTransformedElements, transformedElements);
    }
 
-   TEST(RandomTransform_EmptyElements_DoesNothing)
+   TEST(RandomTransform_EmptyElements_DoesNotThrowException)
    {
       vector<ElementType> emptyElements;
       //

@@ -21,10 +21,10 @@ namespace MetalMock
    AFACT(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSize0_ThrowsUnsupportedCalledZeroTimesException)
    FACTS(MetalMockThrowIfExpectedCallsSizeIsZero_ExpectedCallsSizeGreaterThan0_DoesNotThrowException)
    AFACT(MetalMockThrowExceptionIfExceptionSet_CallsExceptionThrowerMetalMockThrowIfExceptionSet)
-   FACTS(MetalMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing)
-   FACTS(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing)
+   FACTS(MetalMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNotThrowException)
+   FACTS(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNotThrowException)
    FACTS(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_MetalMockExceptionIsInFlightFalse_WritesError_Exits1)
-   AFACT(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_MetalMockExceptionIsInFlightTrue_DoesNothing)
+   AFACT(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_MetalMockExceptionIsInFlightTrue_DoesNotThrowException)
    EVIDENCE
 
    unique_ptr<MetalMocker<MetalMockExceptionThrowerMock>> _metalMocker;
@@ -151,7 +151,7 @@ namespace MetalMock
       METALMOCK(_metalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
    }
 
-   TEST2X2(MetalMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNothing,
+   TEST2X2(MetalMockExitIfExpectedButNotAsserted_ExpectedFalse_DoesNotThrowException,
       bool asserted, bool metalMockExceptionIsInFlight,
       false, false,
       true, false,
@@ -165,7 +165,7 @@ namespace MetalMock
       _metalMocker->MetalMockExitIfExpectedButNotAsserted();
    }
 
-   TEST1X1(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNothing,
+   TEST1X1(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedTrue_DoesNotThrowException,
       bool _metalMockExceptionIsInFlight,
       false,
       true)
@@ -201,7 +201,7 @@ namespace MetalMock
       _metalMocker->wasAsserted = true;
    }
 
-   TEST(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_MetalMockExceptionIsInFlightTrue_DoesNothing)
+   TEST(MetalMockExitIfExpectedButNotAsserted_ExpectedTrue_AssertedFalse_MetalMockExceptionIsInFlightTrue_DoesNotThrowException)
    {
       _metalMocker->wasExpected = true;
       _metalMocker->wasAsserted = false;

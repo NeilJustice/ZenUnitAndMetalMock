@@ -75,7 +75,7 @@ inline MetalMock::FunctionCallSequenceNumber MetalMockThen(
    }
    catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly)
    {
-      const std::string message = ZenUnit::String::ConcatStrings("METALMOCK(", metalMockAssertStatementText, ")");
+      const std::string message = ZenUnit::String::ConcatStrings("METALMOCKTHEN(", metalMockAssertStatementText, ")");
       throw ZenUnit::Anomaly::METALMOCKWrapped(message, metalMockWrappedAnomaly, filePathLineNumber);
    }
 }

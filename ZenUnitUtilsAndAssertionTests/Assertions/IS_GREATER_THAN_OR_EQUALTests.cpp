@@ -4,20 +4,20 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(IS_GREATER_THAN_OR_EQUALTests, T)
-   AFACT(IS_GREATER_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNothing)
-   AFACT(IS_GREATER_THAN_OR_EQUAL_ValueIsGreaterThanComparisonValue_DoesNothing)
+   AFACT(IS_GREATER_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNotThrowException)
+   AFACT(IS_GREATER_THAN_OR_EQUAL_ValueIsGreaterThanComparisonValue_DoesNotThrowException)
    AFACT(IS_GREATER_THAN_OR_EQUAL_ValueIsLessThanComparisonValue_ThrowsAnomaly)
    AFACT(IS_GREATER_THAN_OR_EQUAL_ValueIsLessThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
-   TEST(IS_GREATER_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNothing)
+   TEST(IS_GREATER_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNotThrowException)
    {
       const T comparisonValue = ZenUnit::Random<T>();
       const T value = comparisonValue;
       IS_GREATER_THAN_OR_EQUAL(value, comparisonValue);
    }
 
-   TEST(IS_GREATER_THAN_OR_EQUAL_ValueIsGreaterThanComparisonValue_DoesNothing)
+   TEST(IS_GREATER_THAN_OR_EQUAL_ValueIsGreaterThanComparisonValue_DoesNotThrowException)
    {
       const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
       const T value = ZenUnit::RandomGreaterThan<T>(comparisonValue);

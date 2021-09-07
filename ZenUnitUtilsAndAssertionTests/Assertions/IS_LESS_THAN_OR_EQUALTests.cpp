@@ -4,20 +4,20 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(IS_LESS_THAN_OR_EQUALTests, T)
-   AFACT(IS_LESS_THAN_OR_EQUAL_ValueIsLessThanComparisonValue_DoesNothing)
-   AFACT(IS_LESS_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNothing)
+   AFACT(IS_LESS_THAN_OR_EQUAL_ValueIsLessThanComparisonValue_DoesNotThrowException)
+   AFACT(IS_LESS_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNotThrowException)
    AFACT(IS_LESS_THAN_OR_EQUAL_ValueIsGreaterThanComparisonValue_ThrowsAnomaly)
    AFACT(IS_LESS_THAN_OR_EQUAL_ValueIsGreaterThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
-   TEST(IS_LESS_THAN_OR_EQUAL_ValueIsLessThanComparisonValue_DoesNothing)
+   TEST(IS_LESS_THAN_OR_EQUAL_ValueIsLessThanComparisonValue_DoesNotThrowException)
    {
       const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       IS_LESS_THAN_OR_EQUAL(value, comparisonValue);
    }
 
-   TEST(IS_LESS_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNothing)
+   TEST(IS_LESS_THAN_OR_EQUAL_ValueIsEqualToComparisonValue_DoesNotThrowException)
    {
       const T comparisonValue = ZenUnit::Random<T>();
       const T value = comparisonValue;

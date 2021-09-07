@@ -10,7 +10,7 @@ namespace ZenUnit
    AFACT(WriteLine_CallsWriteLineWithWhite)
    FACTS(WriteLineColor_WritesMessageInSpecifiedColorThenNewLine)
    FACTS(WriteLineAndExit_CallsWriteLineAndExit)
-   AFACT(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNothing)
+   AFACT(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNotThrowException)
    AFACT(WriteNewLineIfValuesAreNotEqual_ValuesAreNotEqual_WritesNewLine)
    AFACT(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
    FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
@@ -130,7 +130,7 @@ namespace ZenUnit
       METALMOCK(_call_exitMock.CalledOnceWith(exitCode));
    }
 
-   TEST(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNothing)
+   TEST(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNotThrowException)
    {
       const size_t value1 = ZenUnit::Random<size_t>();
       const size_t value2 = value1;

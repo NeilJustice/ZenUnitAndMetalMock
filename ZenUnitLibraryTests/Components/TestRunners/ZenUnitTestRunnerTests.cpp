@@ -34,9 +34,9 @@ namespace ZenUnit
    AFACT(PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines_RunsTestsAndPrintsResults_Returns0IfAllTestsPassedOtherwiseReturns1)
    AFACT(RunTestClasses_CallsRunTestClassesOnTestClassRunnerRunner_CallsTestRunResultSetsTestClassResults)
    AFACT(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsFalse_SetsGlobalZenUnitModeRandomSeedToSecondsSince1970)
-   AFACT(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsTrue_DoesNothing)
-   AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
-   AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   AFACT(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsTrue_DoesNotThrowException)
+   AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNotThrowException_ReturnsFalse)
+   AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNotThrowException_ReturnsTrue)
    AFACT(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrueHavePausedFalse_WritesMessageAndWaitsForAnyKey_ReturnsTrue)
    EVIDENCE
 
@@ -296,18 +296,18 @@ namespace ZenUnit
       ARE_EQUAL(secondSince1970, globalZenUnitMode.randomSeed);
    }
 
-   TEST(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsTrue_DoesNothing)
+   TEST(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsTrue_DoesNotThrowException)
    {
       _zenUnitTestRunner.SetNextGlobalZenUnitModeRandomSeed(true);
    }
 
-   TEST(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNothing_ReturnsFalse)
+   TEST(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeFalse_DoesNotThrowException_ReturnsFalse)
    {
       const bool newValueForHavePaused = _zenUnitTestRunner.WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(false, ZenUnit::Random<bool>());
       IS_FALSE(newValueForHavePaused);
    }
 
-   TEST(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNothing_ReturnsTrue)
+   TEST(WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused_PauseModeTrue_HavePausedTrue_DoesNotThrowException_ReturnsTrue)
    {
       const bool newValueForHavePaused = _zenUnitTestRunner.WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(true, true);
       IS_TRUE(newValueForHavePaused);

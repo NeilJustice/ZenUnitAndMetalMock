@@ -14,8 +14,8 @@ namespace ZenUnit
    FACTS(BaseRunTest_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
    FACTS(BaseRunTest_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
    AFACT(BaseRunTest_AllTestPhasesSucceed_ReturnsExpectedTestResult)
-   AFACT(WritePostTestNameMessage_DoesNothing)
-   AFACT(PrintPostTestCompletionMessage_DoesNothing)
+   AFACT(WritePostTestNameMessage_DoesNotThrowException)
+   AFACT(PrintPostTestCompletionMessage_DoesNotThrowException)
    AFACT(StaticCallNewTestClass_CallsNewTestClass)
    AFACT(StaticCallStartup_CallsStartup)
    AFACT(StaticTestBody_CallsTestBody)
@@ -56,13 +56,13 @@ namespace ZenUnit
       ARE_EQUAL(test._protected_fileLine.ToString(), test.FilePathLineNumberString());
    }
 
-   TEST(WritePostTestNameMessage_DoesNothing)
+   TEST(WritePostTestNameMessage_DoesNotThrowException)
    {
       _test->WritePostTestNameMessage(nullptr);
       _test->WritePostTestNameMessage(nullptr);
    }
 
-   TEST(PrintPostTestCompletionMessage_DoesNothing)
+   TEST(PrintPostTestCompletionMessage_DoesNotThrowException)
    {
       TestResultMock testResultMock;
       _test->WritePostTestCompletionMessage(nullptr, testResultMock);

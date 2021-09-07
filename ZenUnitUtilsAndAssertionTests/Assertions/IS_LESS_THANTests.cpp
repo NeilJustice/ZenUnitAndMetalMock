@@ -4,13 +4,13 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(IS_LESS_THANTests, T)
-   AFACT(IS_LESS_THAN_ValueIsLessThanComparisonValue_DoesNothing)
+   AFACT(IS_LESS_THAN_ValueIsLessThanComparisonValue_DoesNotThrowException)
    AFACT(IS_LESS_THAN_ValueIsEqualToComparisonValue_ThrowsAnomaly)
    AFACT(IS_LESS_THAN_ValueIsGreaterThanComparisonValue_ThrowsAnomaly)
    AFACT(IS_LESS_THAN_ValueIsGreaterThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    EVIDENCE
 
-   TEST(IS_LESS_THAN_ValueIsLessThanComparisonValue_DoesNothing)
+   TEST(IS_LESS_THAN_ValueIsLessThanComparisonValue_DoesNotThrowException)
    {
       const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);

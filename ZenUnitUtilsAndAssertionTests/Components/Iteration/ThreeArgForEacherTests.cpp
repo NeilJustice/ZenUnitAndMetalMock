@@ -3,7 +3,7 @@
 namespace ZenUnit
 {
    TESTS(ThreeArgForEacherTests)
-   AFACT(ThreeArgForEach_EmptyCollection_DoesNothing)
+   AFACT(ThreeArgForEach_EmptyCollection_DoesNotThrowException)
    AFACT(ThreeArgForEach_OneItemCollection_CallsFuncOnItemOnce)
    AFACT(ThreeArgForEach_TwoItemCollection_CallsFuncOnItemTwice)
    EVIDENCE
@@ -23,7 +23,7 @@ namespace ZenUnit
       return std::bind(&ThreeArgForEacherTests::Func, this, placeholders::_1, placeholders::_2, placeholders::_3);
    }
 
-   TEST(ThreeArgForEach_EmptyCollection_DoesNothing)
+   TEST(ThreeArgForEach_EmptyCollection_DoesNotThrowException)
    {
       const vector<int> emptyVector;
       //

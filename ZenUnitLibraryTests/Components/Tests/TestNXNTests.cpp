@@ -21,7 +21,7 @@ namespace ZenUnit
    AFACT(RunTestCaseIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCase)
    AFACT(RunTestCase_1X1_DoesSo)
    AFACT(RunTestCase_2X2_DoesSo)
-   AFACT(Exit1IfInvalidTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
+   AFACT(Exit1IfInvalidTestCaseNumberSpecified_NonEmptyTestResults_DoesNotThrowException)
    AFACT(Exit1IfInvalidTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
    AFACT(ShouldRunTestCase_TestNameFiltersAreEmpty_ReturnsTrue)
    FACTS(ShouldRunTestCase_TestNameFiltersAreNonEmpty_ReturnsTrueIfAnyTestNameFilterMatchesTestClassNameTestNameTestCaseNumber)
@@ -29,7 +29,7 @@ namespace ZenUnit
    AFACT(NewTestClass_NewsTestClass)
    AFACT(Startup_CallsTestClassStartup)
    AFACT(TestBody_CallsRunNXNTestCase)
-   AFACT(RunNXNTestCase_DoesNothing)
+   AFACT(RunNXNTestCase_DoesNotThrowException)
    AFACT(Cleanup_CallsCleanup)
    AFACT(DeleteTestClass_DeletesTestClass)
    FACTS(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow)
@@ -345,7 +345,7 @@ namespace ZenUnit
       VECTORS_ARE_EQUAL(expectedResulingTestResults, test2X2SelfMocked._testResults);
    }
 
-   TEST(Exit1IfInvalidTestCaseNumberSpecified_NonEmptyTestResults_DoesNothing)
+   TEST(Exit1IfInvalidTestCaseNumberSpecified_NonEmptyTestResults_DoesNotThrowException)
    {
       _testNXN->_testResults.resize(1);
       _testNXN->Exit1IfInvalidTestCaseNumberSpecified();
@@ -461,7 +461,7 @@ namespace ZenUnit
          testNXN_RunNXNTestCaseMocked._testClass.get(), expectedTestCaseArgsIndex));
    }
 
-   TEST(RunNXNTestCase_DoesNothing)
+   TEST(RunNXNTestCase_DoesNotThrowException)
    {
       _testNXN->RunNXNTestCase(nullptr, 0);
    }

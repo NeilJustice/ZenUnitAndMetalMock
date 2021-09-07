@@ -5,7 +5,7 @@ namespace MetalMock
    template<typename ExceptionType>
    TEMPLATE_TESTS(TemplatedExceptionThrowerTests, ExceptionType)
    AFACT(New_ReturnsNewTemplatedExceptionThrowerWithExceptionToBeThrownCreatedFromExceptionArgs)
-   AFACT(ThrowException_ExceptionToBeThrownIsNullptr_DoesNothing)
+   AFACT(ThrowException_ExceptionToBeThrownIsNullptr_DoesNotThrowException)
    AFACT(ThrowException_ExceptionToBeThrownIsNotNullptr_ThrowsTheException)
    EVIDENCE
 
@@ -18,7 +18,7 @@ namespace MetalMock
       THROWS_EXCEPTION(exceptionThrower->ThrowException(), ExceptionType, _exceptionMessage);
    }
 
-   TEST(ThrowException_ExceptionToBeThrownIsNullptr_DoesNothing)
+   TEST(ThrowException_ExceptionToBeThrownIsNullptr_DoesNotThrowException)
    {
       _templatedExceptionThrower.ThrowException();
    }
