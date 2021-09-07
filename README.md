@@ -67,7 +67,8 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
      * [Syntax for MetalMocking non-virtual functions](#syntax-for-metalmocking-non-virtual-functions)
      * [Syntax for MetalMocking static functions](#syntax-for-metalmocking-static-functions)
      * [Syntax for MetalMocking free functions](#syntax-for-metalmocking-free-functions)
-   * [Mutation coverage can be maximized by testing with random values](#mutation-coverage-can-be-maximized-by-testing-with-random-values)
+     * [Syntax for asserting the expected ordering of MetalMocked function calls](#syntax-for-asserting-the-expected-ordering-of-metalmocked-function-calls)
+   * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
    * [Linux Jenkins Jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-scan-zenunit-and-metalmocks-cicd-python-code)
@@ -861,9 +862,81 @@ TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 RUN_TESTS(FreeFunctionMockingTests)
 ```
 
-### Mutation coverage can be maximized by testing with random values
+### Syntax for asserting the expected ordering of MetalMocked function calls
 
-ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), the next frontier in software quality metrics beyond code coverage.
+Which function should be called first: `UploadData()` or `Connect()`?
+
+MetalMock provides the `METALMOCKTHEN` macro for confirming the expected ordering of MetalMocked function calls, for example `Connect()` followed by `UploadData()`.
+
+Ordered function call assertions example code:
+
+```cpp
+class NetworkClient
+{
+public:
+   virtual ~NetworkClient() = default;
+   virtual void Connect() const {}
+   virtual void UploadData() const {}
+};
+
+class NetworkClientMock : public Metal::Mock<NetworkClient>
+{
+public:
+   METALMOCK_VOID0_CONST(Connect)
+   METALMOCK_VOID0_CONST(UploadData)
+};
+
+class BusinessLogic
+{
+   friend class BusinessLogicTests;
+private:
+   std::unique_ptr<const NetworkClient> _networkClient;
+public:
+   BusinessLogic()
+      : _networkClient(std::make_unique<NetworkClient>())
+   {
+   }
+
+   void Run()
+   {
+      _networkClient->Connect();
+      _networkClient->UploadData();
+   }
+};
+
+TESTS(BusinessLogicTests)
+AFACT(Run_Connects_UploadsData_Disconnects)
+EVIDENCE
+
+BusinessLogic _businessLogic;
+NetworkClientMock* _networkClientMock = nullptr;
+
+STARTUP
+{
+   _businessLogic._networkClient.reset(_networkClientMock = new NetworkClientMock);
+}
+
+TEST(Run_Connects_UploadsData_Disconnects)
+{
+   _networkClientMock->ConnectMock.Expect();
+   _networkClientMock->UploadDataMock.Expect();
+   //
+   _businessLogic.Run();
+   //
+   METALMOCKTHEN(_networkClientMock->ConnectMock.CalledOnce()).Then(
+   METALMOCKTHEN(_networkClientMock->UploadDataMock.CalledOnce()));
+}
+
+RUN_TESTS(BusinessLogicTests)
+```
+
+When there is an unexpected ordering of MetalMocked function calls in the program under test, for example `UploadData()` called before `Connect()`, the following error message is reported:
+
+
+
+### Maximizing mutation coverage by testing with random values
+
+ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), a test metric I consider to be the next frontier in software quality measurement beyond code coverage.
 
 Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the mid-2020s during CI/CD time by running the exceptionally-promising LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
