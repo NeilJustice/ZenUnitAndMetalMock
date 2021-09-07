@@ -100,41 +100,7 @@ namespace ZenUnit
       unsigned maxTestMilliseconds = 0;
 
       static inline const std::string CommandLineUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Version) + R"(
-https://github.com/NeilJustice/ZenUnitAndMetalMock
 Usage: <ZenUnitTestsBinaryName> [Options...]
-
-Testing Utility Options:
-
---pause-before
-   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
---pause-after
-   Wait for any key after running tests.
---always-exit-0
-   Always exit with code 0.
---help
-   Print this command line usage message.
---version
-   Print the ZenUnit version number.
-
-Testing Performance Options:
-
---max-test-milliseconds=<N>
-   Fail the test run after running all tests if any test took longer than N milliseconds to complete.
-
-Testing Filtration Options:
-
---run=<TestClassName>[::TestName][/TestCaseNumber][,...]
-   Run only specified case-insensitive test classes, tests, and/or test case numbers.
-   Add a ':' character to the end of a test class name or test name to indicate test-name-starts-with.
- Example 1: --run=APITests
-   Run only test class APITests.
- Example 2: --run=APITests::FunctionUnderTest:
-   Run only tests in APITests that start with "FunctionUnderTest".
- Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
-   Run only the third test case of the value-parameterized test named
-   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
---fail-fast
-   Call exit(1) if a test fails.
 
 Testing Rigorousness Options:
 
@@ -150,6 +116,39 @@ Testing Rigorousness Options:
    The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
 --exit-1-if-tests-skipped
    After having run all tests, exit with code 1 if any tests were skipped.
+
+Testing Performance Options:
+
+--max-test-milliseconds=<N>
+   Fail the test run after running all tests if any test took longer than N milliseconds to complete.
+
+Testing Filtration Options:
+
+--run=<TestClassName>[::TestName][/TestCaseNumber][,...]
+   Run only specified case-insensitive test classes, tests, and/or test case numbers.
+   Add a ':' character to the end of a test class name or test name to indicate name-starts-with.
+ Example 1: --run=APITests
+   Run only test class APITests.
+ Example 2: --run=APITests::FunctionUnderTest:
+   Run only tests in APITests that start with "FunctionUnderTest".
+ Example 3: --run=APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue/3
+   Run only the third test case of the value-parameterized test named
+   APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
+--fail-fast
+   Call exit(1) if a test fails.
+
+Testing Utility Options:
+
+--pause-before
+   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
+--pause-after
+   Wait for any key after running tests.
+--always-exit-0
+   Always exit with code 0.
+--help
+   Print this command line usage message.
+--version
+   Print the ZenUnit version number.
 
 Example ZenUnit command line arguments:
 

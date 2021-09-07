@@ -80,22 +80,24 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
 
 ### ZenUnit command line usage
 
-```prolog
+```
 C++ Unit Testing Framework ZenUnit v0.11.0
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
-Testing Utility Options:
+Testing Rigorousness Options:
 
---pause-before
-   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
---pause-after
-   Wait for any key after running tests.
---always-exit-0
-   Always exit with code 0.
---help
-   Print this command line usage message.
---version
-   Print the ZenUnit version number.
+--test-runs=<N>
+   Repeat N times the running of all tests.
+   Specify -1 to repeat forever the running of all tests.
+--random
+   Run test classes, tests, and value-parameterized test cases in a random order.
+--random-seed=<S>
+   Sets the random seed to unsigned integer S which sets the test ordering for --random and
+   sets the sequence of values returned by the ZenUnit::Random<T>
+   family of random-value-generating functions.
+   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
+--exit-1-if-tests-skipped
+   After having run all tests, exit with code 1 if any tests were skipped.
 
 Testing Performance Options:
 
@@ -117,20 +119,18 @@ Testing Filtration Options:
 --fail-fast
    Call exit(1) if a test fails.
 
-Testing Rigorousness Options:
+Testing Utility Options:
 
---test-runs=<N>
-   Repeat N times the running of all tests.
-   Specify -1 to repeat forever the running of all tests.
---random
-   Run test classes, tests, and value-parameterized test cases in a random order.
---random-seed=<S>
-   Sets the random seed to unsigned integer S which sets the test ordering for --random and
-   sets the sequence of values returned by the ZenUnit::Random<T>
-   family of random-value-generating functions.
-   The default random seed is the number of seconds since 1970-01-01 00:00:00 UTC.
---exit-1-if-tests-skipped
-   After having run all tests, exit with code 1 if any tests were skipped.
+--pause-before
+   Wait for any key before running tests to allow for attaching a debugger or performance profiler.
+--pause-after
+   Wait for any key after running tests.
+--always-exit-0
+   Always exit with code 0.
+--help
+   Print this command line usage message.
+--version
+   Print the ZenUnit version number.
 
 Example ZenUnit command line arguments:
 
