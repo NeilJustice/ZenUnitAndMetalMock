@@ -807,12 +807,16 @@ namespace MetalMock
 
       FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumberObject) const
       {
-         const std::string unexpectedtMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings("Unexpected MetalMocked function call ordering:\n",
-            "Expected function called first: ", *metalMockedFunctionSignature, "\n",
-            "  Actual function called first: ", *expectedNextFunctionCallSequenceNumberObject.metalMockedFunctionSignature);
          const unsigned long long expectedFirstFunctionCallSequenceNumber = this->sequenceNumber;
          const unsigned long long expectedNextFunctionCallSequenceNumber = expectedNextFunctionCallSequenceNumberObject.sequenceNumber;
-         IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage);
+         if (expectedFirstFunctionCallSequenceNumber >= expectedNextFunctionCallSequenceNumber)
+         {
+            const std::string unexpectedtMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings(
+               "Unexpected MetalMocked function call ordering:\n",
+               "Expected function called first: ", *metalMockedFunctionSignature, "\n",
+               "  Actual function called first: ", *expectedNextFunctionCallSequenceNumberObject.metalMockedFunctionSignature);
+            IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage);
+         }
          return expectedNextFunctionCallSequenceNumberObject;
       }
    };
