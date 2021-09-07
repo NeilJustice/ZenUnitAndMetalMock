@@ -31,7 +31,9 @@ namespace MetalMock
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
    AFACT(Called_FunctionCalledOneOrMoreTimes_DoesNotThrowException)
    AFACT(Called_FunctionNotCalled_ThrowsAnomaly)
-   AFACT(CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException)
+   AFACT(Called_FunctionCalledOnce_CalledCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
+   AFACT(CalledOnce_FunctionCalledOnce_DoesNotThrowException)
+   AFACT(CalledOnce_FunctionCalledOnce_CalledOnceCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsAnomaly)
@@ -101,9 +103,19 @@ namespace MetalMock
       _metalMock0ArgsTester->Called_FunctionNotCalled_ThrowsAnomaly();
    }
 
-   TEST(CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException)
+   TEST(Called_FunctionCalledOnce_CalledCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
    {
-      _metalMock0ArgsTester->CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException();
+      _metalMock0ArgsTester->Called_FunctionCalledOnce_CalledCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException();
+   }
+
+   TEST(CalledOnce_FunctionCalledOnce_DoesNotThrowException)
+   {
+      _metalMock0ArgsTester->CalledOnce_FunctionCalledOnce_DoesNotThrowException();
+   }
+
+   TEST(CalledOnce_FunctionCalledOnce_CalledOnceCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
+   {
+      _metalMock0ArgsTester->CalledOnce_FunctionCalledOnce_CalledOnceCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException();
    }
 
    TEST(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)

@@ -203,7 +203,29 @@ namespace MetalMock
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledOnce_ExpectedFunctionCalledOnce_DoesNotThrowException()
+      void Called_FunctionCalledOnce_CalledCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException()
+      {
+         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            //
+            metalMockObject.MetalMockIt();
+            //
+            metalMockObject.Called();
+            const string expectedExceptionMessage = String::ConcatStrings(
+               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            THROWS_EXCEPTION(metalMockObject.Called(),
+               MetalMock::FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
+      }
+
+      void CalledOnce_FunctionCalledOnce_DoesNotThrowException()
       {
          const auto test = [](auto& metalMockObject)
          {
@@ -219,6 +241,28 @@ namespace MetalMock
          test(_metalMockObject.NonVirtualFunctionConstMock);
          test(_freeFunctionMockObject);
          test(_staticMockObject);
+      }
+
+      void CalledOnce_FunctionCalledOnce_CalledOnceCalledTwice_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException()
+      {
+         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            //
+            metalMockObject.MetalMockIt();
+            //
+            metalMockObject.CalledOnce();
+            const string expectedExceptionMessage = String::ConcatStrings(
+               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            THROWS_EXCEPTION(metalMockObject.CalledOnce(),
+               MetalMock::FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
       }
 
       void CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException()
