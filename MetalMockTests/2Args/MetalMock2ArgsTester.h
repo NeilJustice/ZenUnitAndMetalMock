@@ -277,6 +277,30 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
+      void CalledWith_CalledTwice_ThrowsException()
+      {
+         const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            const int arg1 = ZenUnit::Random<int>();
+            const int arg2 = ZenUnit::Random<int>();
+            //
+            metalMockObject.MetalMockIt(arg1, arg2);
+            //
+            metalMockObject.CalledWith(arg1, arg2);
+            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
+               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            THROWS_EXCEPTION(metalMockObject.CalledWith(arg1, arg2),
+               FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
+      }
+
       void CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(size_t numberOfFunctionCalls)
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
@@ -343,6 +367,30 @@ File.cpp(1))");
          test(_metalMockObject.NonVirtualFunctionConstMock);
          test(_freeFunctionMockObject);
          test(_staticMockObject);
+      }
+
+      void CalledOnceWith_CalledTwice_ThrowsException()
+      {
+         const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            const int arg1 = ZenUnit::Random<int>();
+            const int arg2 = ZenUnit::Random<int>();
+            //
+            metalMockObject.MetalMockIt(arg1, arg2);
+            //
+            metalMockObject.CalledOnceWith(arg1, arg2);
+            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
+               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            THROWS_EXCEPTION(metalMockObject.CalledOnceWith(arg1, arg2),
+               FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
       }
 
       void CalledNTimesWith_NIs0_ThrowsUnsupportedCalledZeroTimesException()
@@ -640,6 +688,35 @@ File.cpp(1))");
          test(_metalMockObject.NonVirtualFunctionConstMock);
          test(_freeFunctionMockObject);
          test(_staticMockObject);
+      }
+
+      void CalledAsFollows_CalledTwice_ThrowsException()
+      {
+         const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            const int arg1 = ZenUnit::Random<int>();
+            const int arg2 = ZenUnit::Random<int>();
+            //
+            metalMockObject.MetalMockIt(arg1, arg2);
+            //
+            metalMockObject.CalledAsFollows(
+            {
+               { arg1, arg2 }
+            });
+            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
+               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(
+            {
+               { arg1, arg2 }
+            }), FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
       }
    };
 }
