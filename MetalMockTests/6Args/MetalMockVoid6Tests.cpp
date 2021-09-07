@@ -30,9 +30,9 @@ namespace MetalMock
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
-   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
-   AFACT(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
-   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   AFACT(CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
@@ -94,19 +94,19 @@ namespace MetalMock
       _metalMock6ArgsTester->CalledNTimes_FunctionNotCalledNTimes_ThrowsException();
    }
 
-   TEST(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   TEST(CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    {
-      _metalMock6ArgsTester->CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException();
+      _metalMock6ArgsTester->CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException();
    }
 
-   TEST(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   TEST(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
    {
-      _metalMock6ArgsTester->CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
+      _metalMock6ArgsTester->CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
    }
 
-   TEST(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   TEST(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    {
-      _metalMock6ArgsTester->CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
+      _metalMock6ArgsTester->CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
    }
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)

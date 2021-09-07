@@ -30,12 +30,12 @@ namespace MetalMock
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    AFACT(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
-   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
-   AFACT(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
-   AFACT(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   AFACT(CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    FACTS(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly)
-   AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
-   AFACT(CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   AFACT(CalledOnceWith_FunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
+   AFACT(CalledOnceWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    AFACT(CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
@@ -110,19 +110,19 @@ namespace MetalMock
       _metalMock1ArgTester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
    }
 
-   TEST(CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   TEST(CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    {
-      _metalMock1ArgTester->CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException();
+      _metalMock1ArgTester->CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException();
    }
 
-   TEST(CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   TEST(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
    {
-      _metalMock1ArgTester->CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
+      _metalMock1ArgTester->CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
    }
 
-   TEST(CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   TEST(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    {
-      _metalMock1ArgTester->CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
+      _metalMock1ArgTester->CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
    }
 
    TEST1X1(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly,
@@ -134,14 +134,14 @@ namespace MetalMock
       _metalMock1ArgTester->CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly(n);
    }
 
-   TEST(CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
+   TEST(CalledOnceWith_FunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
    {
-      _metalMock1ArgTester->CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly();
+      _metalMock1ArgTester->CalledOnceWith_FunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly();
    }
 
-   TEST(CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   TEST(CalledOnceWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    {
-      _metalMock1ArgTester->CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException();
+      _metalMock1ArgTester->CalledOnceWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException();
    }
 
    TEST(CalledAsFollowsWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)

@@ -228,7 +228,7 @@ namespace MetalMock
          assertAfterSecondCall(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException()
+      void CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException()
       {
          const auto test = [](auto& metalMockObject)
          {
@@ -246,7 +246,7 @@ namespace MetalMock
          test(_staticMockObject);
       }
 
-      void CalledWith_ExpectedFunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException()
+      void CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException()
       {
          const auto test = [](auto& metalMockObject)
          {
@@ -266,7 +266,7 @@ namespace MetalMock
          test(_staticMockObject);
       }
 
-      void CalledWith_ExpectedFunctionCalledOnceWithMismatchingArg_ThrowsAnomaly()
+      void CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -318,7 +318,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledOnceWith_ExpectedFunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly()
+      void CalledOnceWith_FunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -343,7 +343,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledOnceWith_ExpectedFunctionCalledOnceWithMatchingArg_DoesNotThrowException()
+      void CalledOnceWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException()
       {
          const auto test = [](auto& metalMockObject)
          {
