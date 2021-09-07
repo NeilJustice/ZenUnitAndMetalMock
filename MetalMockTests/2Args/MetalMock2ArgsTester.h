@@ -288,8 +288,7 @@ File.cpp(1))");
             metalMockObject.MetalMockIt(arg1, arg2);
             //
             metalMockObject.CalledWith(arg1, arg2);
-            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
-               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
             THROWS_EXCEPTION(metalMockObject.CalledWith(arg1, arg2),
                FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
          };
@@ -380,8 +379,7 @@ File.cpp(1))");
             metalMockObject.MetalMockIt(arg1, arg2);
             //
             metalMockObject.CalledOnceWith(arg1, arg2);
-            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
-               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
             THROWS_EXCEPTION(metalMockObject.CalledOnceWith(arg1, arg2),
                FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
          };
@@ -704,8 +702,7 @@ File.cpp(1))");
             {
                { arg1, arg2 }
             });
-            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
-               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
             THROWS_EXCEPTION(metalMockObject.CalledAsFollows(
             {
                { arg1, arg2 }

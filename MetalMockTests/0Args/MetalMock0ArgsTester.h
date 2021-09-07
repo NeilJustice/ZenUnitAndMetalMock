@@ -212,8 +212,7 @@ namespace MetalMock
             metalMockObject.MetalMockIt();
             //
             metalMockObject.Called();
-            const string expectedExceptionMessage = String::ConcatStrings(
-               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
             THROWS_EXCEPTION(metalMockObject.Called(),
                MetalMock::FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
          };
@@ -252,8 +251,7 @@ namespace MetalMock
             metalMockObject.MetalMockIt();
             //
             metalMockObject.CalledOnce();
-            const string expectedExceptionMessage = String::ConcatStrings(
-               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
             THROWS_EXCEPTION(metalMockObject.CalledOnce(),
                MetalMock::FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
          };

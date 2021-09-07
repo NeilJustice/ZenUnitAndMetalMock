@@ -285,8 +285,7 @@ File.cpp(1))");
             metalMockObject.MetalMockIt(arg);
             //
             metalMockObject.CalledWith(arg);
-            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
-               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
             THROWS_EXCEPTION(metalMockObject.CalledWith(arg),
                FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
          };
@@ -690,8 +689,7 @@ File.cpp(1))");
                argument
             });
             //
-            const string expectedExceptionMessage = ZenUnit::String::ConcatStrings(
-               "MetalMocked function \"", expectedFunctionSignature, "\" was asserted one more time than it was called. MetalMocked function call count = 1");
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
             THROWS_EXCEPTION(metalMockObject.CalledAsFollows(
             {
                argument
