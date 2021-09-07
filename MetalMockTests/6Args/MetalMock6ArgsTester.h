@@ -190,5 +190,91 @@ File.cpp(1))");
          test(_freeFunctionMockObject, _freeFunctionSignature);
          test(_staticMockObject, _staticFunctionSignature);
       }
+
+      void CalledWith_CalledTwice_ThrowsException()
+      {
+         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            const int arg1 = ZenUnit::Random<int>();
+            const int arg2 = ZenUnit::Random<int>();
+            const int arg3 = ZenUnit::Random<int>();
+            const int arg4 = ZenUnit::Random<int>();
+            const int arg5 = ZenUnit::Random<int>();
+            const int arg6 = ZenUnit::Random<int>();
+            //
+            metalMockObject.MetalMockIt(arg1, arg2, arg3, arg4, arg5, arg6);
+            //
+            metalMockObject.CalledWith(arg1, arg2, arg3, arg4, arg5, arg6);
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
+            THROWS_EXCEPTION(metalMockObject.CalledWith(arg1, arg2, arg3, arg4, arg5, arg6),
+               FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
+      }
+
+      void CalledOnceWith_CalledTwice_ThrowsException()
+      {
+         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            const int arg1 = ZenUnit::Random<int>();
+            const int arg2 = ZenUnit::Random<int>();
+            const int arg3 = ZenUnit::Random<int>();
+            const int arg4 = ZenUnit::Random<int>();
+            const int arg5 = ZenUnit::Random<int>();
+            const int arg6 = ZenUnit::Random<int>();
+            //
+            metalMockObject.MetalMockIt(arg1, arg2, arg3, arg4, arg5, arg6);
+            //
+            metalMockObject.CalledOnceWith(arg1, arg2, arg3, arg4, arg5, arg6);
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
+            THROWS_EXCEPTION(metalMockObject.CalledOnceWith(arg1, arg2, arg3, arg4, arg5, arg6),
+               FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
+      }
+
+      void CalledAsFollows_CalledTwice_ThrowsException()
+      {
+         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
+         {
+            metalMockObject.wasExpected = true;
+            const int arg1 = ZenUnit::Random<int>();
+            const int arg2 = ZenUnit::Random<int>();
+            const int arg3 = ZenUnit::Random<int>();
+            const int arg4 = ZenUnit::Random<int>();
+            const int arg5 = ZenUnit::Random<int>();
+            const int arg6 = ZenUnit::Random<int>();
+            //
+            metalMockObject.MetalMockIt(arg1, arg2, arg3, arg4, arg5, arg6);
+            //
+            metalMockObject.CalledAsFollows(
+            {
+               { arg1, arg2, arg3, arg4, arg5, arg6 }
+            });
+            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
+            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(
+            {
+               { arg1, arg2, arg3, arg4, arg5, arg6 }
+            }), FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
+         };
+         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
+         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
+         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
+         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
+         test(_freeFunctionMockObject, _freeFunctionSignature);
+         test(_staticMockObject, _staticFunctionSignature);
+      }
    };
 }

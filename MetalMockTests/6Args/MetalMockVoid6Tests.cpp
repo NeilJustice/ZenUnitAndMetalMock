@@ -35,6 +35,9 @@ namespace MetalMock
    AFACT(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
+   AFACT(CalledWith_CalledTwice_ThrowsException)
+   AFACT(CalledOnceWith_CalledTwice_ThrowsException)
+   AFACT(CalledAsFollows_CalledTwice_ThrowsException)
    EVIDENCE
 
    Void6ArgsFunctionsMock _void6ArgsFunctionsMock;
@@ -135,6 +138,21 @@ namespace MetalMock
       void6ArgsFunctions.NonVirtualFunctionConst(0, 0, 0, 0, 0, 0);
       FreeVoid6ArgsFunction(0, 0, 0, 0, 0, 0);
       MetalMock::Void6ArgsFunctions::StaticVoid6ArgsFunction(0, 0, 0, 0, 0, 0);
+   }
+
+   TEST(CalledWith_CalledTwice_ThrowsException)
+   {
+      _metalMock6ArgsTester->CalledWith_CalledTwice_ThrowsException();
+   }
+
+   TEST(CalledOnceWith_CalledTwice_ThrowsException)
+   {
+      _metalMock6ArgsTester->CalledOnceWith_CalledTwice_ThrowsException();
+   }
+
+   TEST(CalledAsFollows_CalledTwice_ThrowsException)
+   {
+      _metalMock6ArgsTester->CalledAsFollows_CalledTwice_ThrowsException();
    }
 
    RUN_TESTS(MetalMockVoid6Tests)
