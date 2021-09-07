@@ -46,8 +46,7 @@ namespace ZenUnit
       _argsParser._call_String_ToInt = BIND_1ARG_METALMOCK_OBJECT(ToIntMock);
       _argsParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
       // Function Callers
-      _argsParser._caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser.reset(
-         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = new NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>);
+      _argsParser._caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser.reset(_caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = new NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>);
       // Constant Components
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
@@ -185,8 +184,7 @@ namespace ZenUnit
 
    TEST(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    {
-      const unsigned randomSeed =
-         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock->CallConstMemberFunctionMock.ReturnRandom();
+      const unsigned randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock->CallConstMemberFunctionMock.ReturnRandom();
 
       const vector<TestNameFilter> testNameFilters = { Random<TestNameFilter>() };
       _testNameFilterStringParserMock->ParseTestNameFilterStringsMock.Return(testNameFilters);

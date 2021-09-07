@@ -159,17 +159,14 @@ namespace ZenUnit
       METALMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
       _consoleColorer._call_GetStdHandle = BIND_1ARG_METALMOCK_OBJECT(GetStdHandleMock);
       _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_METALMOCK_OBJECT(SetConsoleTextAttributeMock);
-
       const HANDLE getStdHandleReturnValue = reinterpret_cast<HANDLE>(1);
       GetStdHandleMock.Return(getStdHandleReturnValue);
-
       SetConsoleTextAttributeMock.Return(TRUE);
       //
       _consoleColorer.SetTextColor(color);
       //
       METALMOCK(GetStdHandleMock.CalledOnceWith(STD_OUTPUT_HANDLE));
-      METALMOCK(SetConsoleTextAttributeMock.CalledOnceWith(
-         getStdHandleReturnValue, static_cast<WORD>(expectedWindowsColorSet)));
+      METALMOCK(SetConsoleTextAttributeMock.CalledOnceWith(getStdHandleReturnValue, static_cast<WORD>(expectedWindowsColorSet)));
    }
 #endif
 

@@ -19,8 +19,7 @@ namespace ZenUnit
 
    STARTUP
    {
-      _testNameFilterStringParser._memberFunctionTransformer.reset(
-         _memberFunctionTransformerMock = new MemberFunctionTransformerMock<TestNameFilterStringParser, string, TestNameFilter>);
+      _testNameFilterStringParser._memberFunctionTransformer.reset(_memberFunctionTransformerMock = new MemberFunctionTransformerMock<TestNameFilterStringParser, string, TestNameFilter>);
       _testNameFilterStringParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
    }
 

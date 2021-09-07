@@ -87,8 +87,8 @@ namespace ZenUnit
       //
       _console.WriteColor(_message, color);
       //
-      METALMOCK(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
-      METALMOCK(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
+      METALMOCKTHEN(_consoleColorerMock->SetColorMock.CalledOnceWith(color)).Then(
+      METALMOCKTHEN(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue)));
    }
 
    TEST(WriteLine_CallsWriteLineWithWhite)
@@ -114,8 +114,8 @@ namespace ZenUnit
       //
       _console.WriteLineColor(_message, color);
       //
-      METALMOCK(_consoleColorerMock->SetColorMock.CalledOnceWith(color));
-      METALMOCK(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue));
+      METALMOCKTHEN(_consoleColorerMock->SetColorMock.CalledOnceWith(color)).Then(
+      METALMOCKTHEN(_consoleColorerMock->UnsetColorMock.CalledOnceWith(setColorReturnValue)));
    }
 
    TEST1X1(WriteLineAndExit_CallsWriteLineAndExit,
@@ -216,8 +216,8 @@ namespace ZenUnit
       }
       if (expectPressAnyKeyAndGetChar)
       {
-         METALMOCK(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith("Press enter to continue...", Color::White));
-         METALMOCK(_consoleSelfMocked.WaitForEnterKeyMock.CalledOnce());
+         METALMOCKTHEN(_consoleSelfMocked.WriteLineColorMock.CalledOnceWith("Press enter to continue...", Color::White)).Then(
+         METALMOCKTHEN(_consoleSelfMocked.WaitForEnterKeyMock.CalledOnce()));
       }
    }
 
