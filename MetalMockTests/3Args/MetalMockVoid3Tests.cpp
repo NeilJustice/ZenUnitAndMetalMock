@@ -33,6 +33,9 @@ namespace MetalMock
    AFACT(CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    AFACT(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
    AFACT(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   AFACT(CalledWith_CalledTwice_ThrowsException)
+   AFACT(CalledOnceWith_CalledTwice_ThrowsException)
+   AFACT(CalledAsFollows_CalledTwice_ThrowsException)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
@@ -107,6 +110,21 @@ namespace MetalMock
    TEST(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
    {
       _metalMock3ArgsTester->CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
+   }
+
+   TEST(CalledWith_CalledTwice_ThrowsException)
+   {
+      _metalMock3ArgsTester->CalledWith_CalledTwice_ThrowsException();
+   }
+
+   TEST(CalledOnceWith_CalledTwice_ThrowsException)
+   {
+      _metalMock3ArgsTester->CalledOnceWith_CalledTwice_ThrowsException();
+   }
+
+   TEST(CalledAsFollows_CalledTwice_ThrowsException)
+   {
+      _metalMock3ArgsTester->CalledAsFollows_CalledTwice_ThrowsException();
    }
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
