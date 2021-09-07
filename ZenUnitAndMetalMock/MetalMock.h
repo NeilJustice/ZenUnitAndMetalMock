@@ -59,7 +59,34 @@ catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly) \
 
 namespace MetalMock
 {
-   struct FunctionCallSequenceNumber;
+   inline std::atomic<unsigned long long> _globalMetalMockedFunctionCallSequenceNumber;
+
+   struct FunctionCallSequenceNumber
+   {
+      unsigned long long sequenceNumber;
+      const std::string* metalMockedFunctionSignature;
+
+      FunctionCallSequenceNumber()
+         : sequenceNumber(_globalMetalMockedFunctionCallSequenceNumber++)
+         , metalMockedFunctionSignature(nullptr)
+      {
+      }
+
+      FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumberObject) const
+      {
+         const unsigned long long expectedFirstFunctionCallSequenceNumber = this->sequenceNumber;
+         const unsigned long long expectedNextFunctionCallSequenceNumber = expectedNextFunctionCallSequenceNumberObject.sequenceNumber;
+         if (expectedFirstFunctionCallSequenceNumber >= expectedNextFunctionCallSequenceNumber)
+         {
+            const std::string unexpectedtMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings(
+               "Unexpected MetalMocked function call ordering:\n",
+               "Expected function called first: ", *metalMockedFunctionSignature, "\n",
+               "  Actual function called first: ", *expectedNextFunctionCallSequenceNumberObject.metalMockedFunctionSignature);
+            IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage);
+         }
+         return expectedNextFunctionCallSequenceNumberObject;
+      }
+   };
 }
 
 template<typename MetalMockAssertionCall>
@@ -792,35 +819,6 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type ar
 
 namespace MetalMock
 {
-   inline std::atomic<unsigned long long> _globalMetalMockedFunctionCallSequenceNumber;
-
-   struct FunctionCallSequenceNumber
-   {
-      unsigned long long sequenceNumber;
-      const std::string* metalMockedFunctionSignature;
-
-      FunctionCallSequenceNumber()
-         : sequenceNumber(_globalMetalMockedFunctionCallSequenceNumber++)
-         , metalMockedFunctionSignature(nullptr)
-      {
-      }
-
-      FunctionCallSequenceNumber Then(FunctionCallSequenceNumber expectedNextFunctionCallSequenceNumberObject) const
-      {
-         const unsigned long long expectedFirstFunctionCallSequenceNumber = this->sequenceNumber;
-         const unsigned long long expectedNextFunctionCallSequenceNumber = expectedNextFunctionCallSequenceNumberObject.sequenceNumber;
-         if (expectedFirstFunctionCallSequenceNumber >= expectedNextFunctionCallSequenceNumber)
-         {
-            const std::string unexpectedtMetalMockedFunctionOrderErrorMessage = ZenUnit::String::ConcatStrings(
-               "Unexpected MetalMocked function call ordering:\n",
-               "Expected function called first: ", *metalMockedFunctionSignature, "\n",
-               "  Actual function called first: ", *expectedNextFunctionCallSequenceNumberObject.metalMockedFunctionSignature);
-            IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage);
-         }
-         return expectedNextFunctionCallSequenceNumberObject;
-      }
-   };
-
    class UnexpectedCallException : public ZenUnit::MetalMockException
    {
    private:
