@@ -63,11 +63,11 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
      * [void free functions](#void-free-functions)
      * [non-void free functions](#non-void-free-functions)
    * [MetalMock use cases](#metalmock-use-cases)
-     * [Syntax for MetalMocking virtual functions](#syntax-for-metalmocking-virtual-functions)
-     * [Syntax for MetalMocking non-virtual functions](#syntax-for-metalmocking-non-virtual-functions)
-     * [Syntax for MetalMocking static functions](#syntax-for-metalmocking-static-functions)
-     * [Syntax for MetalMocking free functions](#syntax-for-metalmocking-free-functions)
-     * [Syntax for asserting the expected ordering of MetalMocked function calls](#syntax-for-asserting-the-expected-ordering-of-metalmocked-function-calls)
+     * [MetalMocking virtual functions](#metalmocking-virtual-functions)
+     * [MetalMocking non-virtual functions](#metalmocking-non-virtual-functions)
+     * [MetalMocking static functions](#metalmocking-static-functions)
+     * [MetalMocking free functions](#metalmocking-free-functions)
+     * [Asserting the expected order of MetalMocked function calls](#asserting-the-expected-order-of-metalmocked-function-calls)
    * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
@@ -588,7 +588,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 ### MetalMock use cases
 
-#### Syntax for MetalMocking virtual functions
+#### MetalMocking virtual functions
 
 ```cpp
 // Component to be MetalMocked
@@ -663,7 +663,7 @@ TEST(Act_CallsComponentBVirtualFunctions)
 RUN_TESTS(ComponentATests)
 ```
 
-#### Syntax for MetalMocking non-virtual functions
+#### MetalMocking non-virtual functions
 
 ```cpp
 class KernelBypassNetwork
@@ -714,7 +714,7 @@ TEST(SendOrder_CallsNetworkSendWhichReturns123_Returns)
 RUN_TESTS(OrderSenderTests)\
 ```
 
-#### Syntax for MetalMocking static functions
+#### MetalMocking static functions
 
 ```cpp
 class StaticFunctions
@@ -800,7 +800,7 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
 RUN_TESTS(StaticFunctionMockingExampleTests)
 ```
 
-#### Syntax for MetalMocking free functions
+#### MetalMocking free functions
 
 ```cpp
 // Global free function to be MetalMocked
@@ -862,7 +862,7 @@ TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 RUN_TESTS(FreeFunctionMockingTests)
 ```
 
-### Syntax for asserting the expected ordering of MetalMocked function calls
+### Asserting the expected order of MetalMocked function calls
 
 Which function should be called first: `UploadData()` or `Connect()`?
 
@@ -888,7 +888,7 @@ public:
 
 class BusinessLogic
 {
-   friend class BusinessLogicTests;
+   friend class OrderedFunctionCallAssertionsTests;
 private:
    std::unique_ptr<const NetworkClient> _networkClient;
 public:
@@ -899,13 +899,13 @@ public:
 
    void Run()
    {
-      _networkClient->Connect();
       _networkClient->UploadData();
+      _networkClient->Connect();
    }
 };
 
-TESTS(BusinessLogicTests)
-AFACT(Run_Connects_UploadsData_Disconnects)
+TESTS(OrderedFunctionCallAssertionsTests)
+AFACT(Run_ConnectsThenUploadsData)
 EVIDENCE
 
 BusinessLogic _businessLogic;
@@ -916,7 +916,7 @@ STARTUP
    _businessLogic._networkClient.reset(_networkClientMock = new NetworkClientMock);
 }
 
-TEST(Run_Connects_UploadsData_Disconnects)
+TEST(Run_ConnectsThenUploadsData)
 {
    _networkClientMock->ConnectMock.Expect();
    _networkClientMock->UploadDataMock.Expect();
@@ -927,12 +927,11 @@ TEST(Run_Connects_UploadsData_Disconnects)
    METALMOCKTHEN(_networkClientMock->UploadDataMock.CalledOnce()));
 }
 
-RUN_TESTS(BusinessLogicTests)
+RUN_TESTS(OrderedFunctionCallAssertionsTests)
 ```
+When there is an unexpected ordering of MetalMocked function calls, for example `UploadData()` called before `Connect()`, the following error message is reported by ZenUnit:
 
-When there is an unexpected ordering of MetalMocked function calls in the program under test, for example `UploadData()` called before `Connect()`, the following error message is reported:
-
-
+![Unexpected MetalMocked function call ordering](Screenshots/UnexpectedMetalMockedFunctionCallOrdering.png)
 
 ### Maximizing mutation coverage by testing with random values
 

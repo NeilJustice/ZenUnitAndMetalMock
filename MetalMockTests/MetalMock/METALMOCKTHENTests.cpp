@@ -74,7 +74,7 @@ namespace MetalMock
       _classMock.FunctionB(messageB);
       //
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
-"  Failed: IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage)",
+"  Failed: IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedFunctionCallOrderingErrorMessage)",
 "Expected: " + to_string(expectedSequenceNumberB),
 "  Actual: " + to_string(expectedSequenceNumberA),
 " Message: \"Unexpected MetalMocked function call ordering:",

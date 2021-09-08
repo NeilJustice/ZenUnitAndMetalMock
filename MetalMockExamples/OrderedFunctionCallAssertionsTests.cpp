@@ -17,7 +17,7 @@ public:
 
 class BusinessLogic
 {
-   friend class BusinessLogicTests;
+   friend class OrderedFunctionCallAssertionsTests;
 private:
    std::unique_ptr<const NetworkClient> _networkClient;
 public:
@@ -33,8 +33,8 @@ public:
    }
 };
 
-TESTS(BusinessLogicTests)
-AFACT(Run_Connects_UploadsData_Disconnects)
+TESTS(OrderedFunctionCallAssertionsTests)
+AFACT(Run_ConnectsThenUploadsData)
 EVIDENCE
 
 BusinessLogic _businessLogic;
@@ -45,7 +45,7 @@ STARTUP
    _businessLogic._networkClient.reset(_networkClientMock = new NetworkClientMock);
 }
 
-TEST(Run_Connects_UploadsData_Disconnects)
+TEST(Run_ConnectsThenUploadsData)
 {
    _networkClientMock->ConnectMock.Expect();
    _networkClientMock->UploadDataMock.Expect();
@@ -56,4 +56,4 @@ TEST(Run_Connects_UploadsData_Disconnects)
    METALMOCKTHEN(_networkClientMock->UploadDataMock.CalledOnce()));
 }
 
-RUN_TESTS(BusinessLogicTests)
+RUN_TESTS(OrderedFunctionCallAssertionsTests)

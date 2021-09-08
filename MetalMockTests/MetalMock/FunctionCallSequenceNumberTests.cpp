@@ -59,7 +59,7 @@ TEST(Then_NextFunctionCallSequenceNumberIsLessThanPreviousFunctionCallSequenceNu
    //
    THROWS_EXCEPTION(previousFunctionCallSequenceNumber.Then(nextFunctionCallSequenceNumber),
       Anomaly, R"(
-  Failed: IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage)
+  Failed: IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedFunctionCallOrderingErrorMessage)
 Expected: )" + to_string(previousFunctionCallSequenceNumber.sequenceNumber) + R"(
   Actual: )" + to_string(nextFunctionCallSequenceNumber.sequenceNumber) + R"(
  Message: "Unexpected MetalMocked function call ordering:
@@ -82,7 +82,7 @@ TEST(Then_NextFunctionCallSequenceNumberIsEqualToPreviousFunctionCallSequenceNum
    //
    THROWS_EXCEPTION(previousFunctionCallSequenceNumber.Then(nextFunctionCallSequenceNumber),
       Anomaly, R"(
-  Failed: IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedtMetalMockedFunctionOrderErrorMessage)
+  Failed: IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedFunctionCallOrderingErrorMessage)
 Expected: )" + to_string(previousFunctionCallSequenceNumber.sequenceNumber) + R"(
   Actual: )" + to_string(nextFunctionCallSequenceNumber.sequenceNumber) + R"(
  Message: "Unexpected MetalMocked function call ordering:
