@@ -81,7 +81,7 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
 
 ### ZenUnit command line usage
 
-```
+```ini
 C++ Unit Testing Framework ZenUnit v0.11.0
 Usage: <ZenUnitTestsBinaryName> [Options...]
 
