@@ -98,7 +98,7 @@ class BuildZenUnitTests(unittest.TestCase):
             BuildAndTestZenUnitAndMetalMock.windows_cmake_build(self.cmakeGenerator, self.cmakeBuildType, cmakeDefinitions)
             #
             CMake.generate.assert_called_once_with('.', self.cmakeGenerator, self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
-            expectedCMakeBuildCommand = 'cmake.exe --build . --config {0}'.format(self.cmakeBuildType)
+            expectedCMakeBuildCommand = f'cmake.exe --build . --config {self.cmakeBuildType}'
             Process.fail_fast_run.assert_called_once_with(expectedCMakeBuildCommand)
       testcase('', '')
       testcase('-DOptionA=ON', '-DOptionA=ON')
