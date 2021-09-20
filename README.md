@@ -1059,15 +1059,10 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit features roadmap
 
-|Future ZenUnit feature|Implementation status as of 9/5/2021|
-|----------------------|------------------------------------|
-|`--parallel` for parallel running of tests|Awaiting implementation|
-
-### MetalMock features roadmap
-
-|Future MetalMock feature|Implementation status as of 9/5/2021|
-|------------------------|-------------------------------------|
-|Ordered function call assertions because the ordering of function calls is of course fundamental to program correctness|In progress|
+|Future ZenUnit feature|Implementation status as of 9/19/2021|
+|----------------------|-------------------------------------|
+|Floating point assertions based on units in the last place|Awaiting implementation|
+|`--parallel`|Awaiting implementation|
 
 ### Acknowledgments
 
