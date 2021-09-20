@@ -1,4 +1,4 @@
-// C++ Unit Testing Framework ZenUnit v0.11.0
+// C++ Unit Testing Framework ZenUnit v1.0.0
 // https://github.com/NeilJustice/ZenUnitAndMetalMock
 // MIT License
 
@@ -6,7 +6,7 @@
 
 namespace ZenUnit
 {
-   inline const char* const Version = "v0.11.0";
+   inline const char* const Version = "v1.0.0";
 }
 
 #include <array>

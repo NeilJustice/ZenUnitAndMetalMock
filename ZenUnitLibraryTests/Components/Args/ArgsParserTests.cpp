@@ -131,7 +131,7 @@ namespace ZenUnit
       //
       THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
       //
-      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("v0.11.0", 0));
+      METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("v1.0.0", 0));
    }
 
    TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
