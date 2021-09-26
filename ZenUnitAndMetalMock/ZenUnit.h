@@ -135,7 +135,7 @@ Testing Filtration Options:
    Run only the third test case of the value-parameterized test named
    APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
 --fail-fast
-   Call exit(1) if a test fails.
+   Call quick_exit(1) if a test fails.
 
 Testing Utility Options:
 
@@ -896,7 +896,7 @@ namespace ZenUnit
          "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n", // LCOV_EXCL_LINE
          filePathLineNumber.filePath, "(", filePathLineNumber.lineNumber, ")"); // LCOV_EXCL_LINE
       std::cout << assertTrueFailedErrorMessage << '\n'; // LCOV_EXCL_LINE
-      exit(1); // LCOV_EXCL_LINE
+      quick_exit(1); // LCOV_EXCL_LINE
    }
 
    inline void AssertTrue(bool predicateResult, const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName)
@@ -1140,7 +1140,7 @@ namespace ZenUnit
       friend class ConsoleTests;
    private:
       // Function Pointers
-      std::function<void(int)> _call_exit;
+      std::function<void(int)> _call_quick_exit;
       std::function<int()> _call_GetCharFromStandardInput;
 #if defined _WIN32
       std::function<int()> _call_IsDebuggerPresent;
@@ -1150,7 +1150,7 @@ namespace ZenUnit
    public:
       Console() noexcept
          // Function Pointers
-         : _call_exit(::exit)
+         : _call_quick_exit(::quick_exit)
          , _call_GetCharFromStandardInput(GetCharFromStandardInput)
 #if defined _WIN32
          , _call_IsDebuggerPresent(::IsDebuggerPresent)
@@ -1213,7 +1213,7 @@ namespace ZenUnit
       virtual void WriteLineAndExit(std::string_view message, int exitCode) const
       {
          std::cout << message << '\n';
-         _call_exit(exitCode);
+         _call_quick_exit(exitCode);
       }
 
       virtual void WriteStringsCommaSeparated(
@@ -5639,7 +5639,7 @@ Fatal Windows C++ Runtime Assertion
          const std::string randomSeedLine = "[ZenUnit] RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed);
          console.WriteLine(randomSeedLine);
          console.WriteLine("[ZenUnit]   ExitCode: 1");
-         exit(1);
+         quick_exit(1);
       }
 #endif
 
@@ -6400,10 +6400,10 @@ Fatal Windows C++ Runtime Assertion
    {
       friend class ExitCallerTests;
    private:
-      std::function<void(int)> _call_exit;
+      std::function<void(int)> _call_quick_exit;
    public:
       ExitCaller()
-         : _call_exit(::exit)
+         : _call_quick_exit(::quick_exit)
       {
       }
 
@@ -6415,7 +6415,7 @@ Fatal Windows C++ Runtime Assertion
 
       virtual void CallExit(int exitCode) const
       {
-         _call_exit(exitCode);
+         _call_quick_exit(exitCode);
       }
 
       virtual ~ExitCaller() = default;
@@ -6560,7 +6560,7 @@ Fatal Windows C++ Runtime Assertion
       friend class TestNXNTests;
    private:
       // Function Pointers
-      std::function<void(int)> _call_exit;
+      std::function<void(int)> _call_quick_exit;
       std::function<std::shared_ptr<ITestCaseNumberGenerator>(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
       std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
       std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
@@ -6581,7 +6581,7 @@ Fatal Windows C++ Runtime Assertion
       TestNXN(const char* testClassName, const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
          // Function Pointers
-         , _call_exit(::exit)
+         , _call_quick_exit(::quick_exit)
          , _call_ITestCaseNumberGeneratorFactoryNew(ITestCaseNumberGenerator::FactoryNew)
          , _call_String_SplitOnNonQuotedCommas(String::SplitOnNonQuotedCommas)
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
@@ -6683,7 +6683,7 @@ Fatal Windows C++ Runtime Assertion
          {
             const std::string errorMessage = "\nError: Invalid test case number specified in --run filter. Exiting with code 1.";
             _console->WriteLine(errorMessage);
-            _call_exit(1);
+            _call_quick_exit(1);
          }
       }
 

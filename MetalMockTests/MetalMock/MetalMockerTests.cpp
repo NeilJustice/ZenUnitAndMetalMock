@@ -28,22 +28,22 @@ namespace MetalMock
    EVIDENCE
 
    unique_ptr<MetalMocker<MetalMockExceptionThrowerMock>> _metalMocker;
-   METALMOCK_VOID1_FREE(exit, int)
-   METALMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
+   METALMOCK_VOID1_FREE(_call_quick_exit, int)
+   METALMOCK_NONVOID0_STATIC(const ZenUnit::ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, _call_GetZenUnitArgs)
    const string ExpectedMetalMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 
    STARTUP
    {
       _metalMocker = make_unique<MetalMocker<MetalMockExceptionThrowerMock>>(ExpectedMetalMockedFunctionSignature);
-      _metalMocker->_call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
-      _metalMocker->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      _metalMocker->_call_quick_exit = BIND_1ARG_METALMOCK_OBJECT(_call_quick_exitMock);
+      _metalMocker->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_GetZenUnitArgsMock);
    }
 
    TEST(OneArgConstructor_SetsFields)
    {
       const MetalMocker<MetalMockExceptionThrower> metalMocker(ExpectedMetalMockedFunctionSignature);
       //
-      STD_FUNCTION_TARGETS(exit, metalMocker._call_exit);
+      STD_FUNCTION_TARGETS(quick_exit, metalMocker._call_quick_exit);
       STD_FUNCTION_TARGETS(ZenUnit::ZenUnitTestRunner::GetZenUnitArgs, metalMocker._call_ZenUnitTestRunner_GetZenUnitArgs);
       ARE_EQUAL(ExpectedMetalMockedFunctionSignature, metalMocker.metalMockedFunctionSignature);
       IS_FALSE(metalMocker.wasExpected);
@@ -188,16 +188,16 @@ namespace MetalMock
 
       ZenUnit::ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.alwaysExit0 = alwaysExit0;
-      GetZenUnitArgsMock.Return(zenUnitArgs);
-      exitMock.Expect();
+      _call_GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_quick_exitMock.Expect();
 
       cout << "\n\n<MetalMock Error Message Testing>";
       //
       _metalMocker->MetalMockExitIfExpectedButNotAsserted();
       //
       cout << "</MetalMock Error Message Testing>\n\n";
-      METALMOCK(GetZenUnitArgsMock.CalledOnce());
-      METALMOCK(exitMock.CalledOnceWith(expectedExitCode));
+      METALMOCK(_call_GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_quick_exitMock.CalledOnceWith(expectedExitCode));
       _metalMocker->wasAsserted = true;
    }
 

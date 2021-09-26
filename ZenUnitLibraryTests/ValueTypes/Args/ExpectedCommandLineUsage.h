@@ -36,7 +36,7 @@ Testing Filtration Options:
    Run only the third test case of the value-parameterized test named
    APITests::FunctionUnderTest_ArgumentsUnderTest_ExpectedReturnValue
 --fail-fast
-   Call exit(1) if a test fails.
+   Call quick_exit(1) if a test fails.
 
 Testing Utility Options:
 

@@ -38,8 +38,8 @@ namespace ZenUnit
 
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    // Function Pointers
-   METALMOCK_VOID1_FREE(exit, int)
-   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetZenUnitArgs)
+   METALMOCK_VOID1_FREE(_call_quick_exit, int)
+   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, _call_GetZenUnitArgs)
    using CallerOfTestNameFilterMatchesTestCaseMockType = ThreeArgAnyerMock<
       std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
    // Function Callers
@@ -55,8 +55,8 @@ namespace ZenUnit
    {
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       // Function Pointers
-      _testNXN->_call_exit = BIND_1ARG_METALMOCK_OBJECT(exitMock);
-      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetZenUnitArgsMock);
+      _testNXN->_call_quick_exit = BIND_1ARG_METALMOCK_OBJECT(_call_quick_exitMock);
+      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_GetZenUnitArgsMock);
       // Function Callers
       _testNXN->_callerOfTestNameFilterMatchesTestCase.reset(_callerOfTestNameFilterMatchesTestCaseMock = new CallerOfTestNameFilterMatchesTestCaseMockType);
       // Constant Components
@@ -69,7 +69,7 @@ namespace ZenUnit
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0, 0, 0);
 
       // Function Pointers
-      STD_FUNCTION_TARGETS(::exit, test2X2._call_exit);
+      STD_FUNCTION_TARGETS(::quick_exit, test2X2._call_quick_exit);
       STD_FUNCTION_TARGETS(ITestCaseNumberGenerator::FactoryNew, test2X2._call_ITestCaseNumberGeneratorFactoryNew);
       STD_FUNCTION_TARGETS(String::SplitOnNonQuotedCommas, test2X2._call_String_SplitOnNonQuotedCommas);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, test2X2._call_ZenUnitTestRunner_GetZenUnitArgs);
@@ -354,14 +354,14 @@ namespace ZenUnit
    TEST(Exit1IfInvalidTestCaseNumberSpecified_EmptyTestResults_WritesErrorMessage_Exits1)
    {
       _consoleMock->WriteLineMock.Expect();
-      exitMock.Expect();
+      _call_quick_exitMock.Expect();
       IS_EMPTY(_testNXN->_testResults);
       //
       _testNXN->Exit1IfInvalidTestCaseNumberSpecified();
       //
       const std::string expectedErrorMessage = "\nError: Invalid test case number specified in --run filter. Exiting with code 1.";
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      METALMOCK(exitMock.CalledOnceWith(1));
+      METALMOCK(_call_quick_exitMock.CalledOnceWith(1));
    }
 
    TEST(ShouldRunTestCase_TestNameFiltersAreEmpty_ReturnsTrue)

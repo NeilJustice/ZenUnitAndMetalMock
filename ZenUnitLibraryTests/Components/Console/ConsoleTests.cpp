@@ -23,7 +23,7 @@ namespace ZenUnit
 
    Console _console;
    // Function Pointers
-   METALMOCK_VOID1_FREE(_call_exit, int)
+   METALMOCK_VOID1_FREE(_call_quick_exit, int)
    METALMOCK_NONVOID0_FREE(int, _call_GetCharFromStandardInput)
 #if defined _WIN32
    METALMOCK_NONVOID0_FREE(int, _call_IsDebuggerPresent)
@@ -46,7 +46,7 @@ namespace ZenUnit
    STARTUP
    {
       // Function Pointers
-      _console._call_exit = BIND_1ARG_METALMOCK_OBJECT(_call_exitMock);
+      _console._call_quick_exit = BIND_1ARG_METALMOCK_OBJECT(_call_quick_exitMock);
       _console._call_GetCharFromStandardInput = BIND_0ARG_METALMOCK_OBJECT(_call_GetCharFromStandardInputMock);
 #if defined _WIN32
       _console._call_IsDebuggerPresent = BIND_0ARG_METALMOCK_OBJECT(_call_IsDebuggerPresentMock);
@@ -59,7 +59,7 @@ namespace ZenUnit
    {
       Console console;
       // Function Pointers
-      STD_FUNCTION_TARGETS(::exit, console._call_exit);
+      STD_FUNCTION_TARGETS(::quick_exit, console._call_quick_exit);
       STD_FUNCTION_TARGETS(Console::GetCharFromStandardInput, console._call_GetCharFromStandardInput);
 #if defined _WIN32
       STD_FUNCTION_TARGETS(::IsDebuggerPresent, console._call_IsDebuggerPresent);
@@ -123,11 +123,11 @@ namespace ZenUnit
       0,
       1)
    {
-      _call_exitMock.Expect();
+      _call_quick_exitMock.Expect();
       //
       _console.WriteLineAndExit(_message, exitCode);
       //
-      METALMOCK(_call_exitMock.CalledOnceWith(exitCode));
+      METALMOCK(_call_quick_exitMock.CalledOnceWith(exitCode));
    }
 
    TEST(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNotThrowException)

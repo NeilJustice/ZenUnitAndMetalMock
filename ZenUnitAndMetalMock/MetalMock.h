@@ -1096,7 +1096,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       friend class MetalMockerTests;
    private:
       // Function Pointers
-      std::function<void(int)> _call_exit;
+      std::function<void(int)> _call_quick_exit;
       std::function<const ZenUnit::ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
       // Mutable Fields
       size_t _functionCallAssertionIndex = 0;
@@ -1117,7 +1117,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
 
       explicit MetalMocker(std::string_view metalMockedFunctionSignature)
          // Function Pointers
-         : _call_exit(::exit)
+         : _call_quick_exit(::quick_exit)
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnit::ZenUnitTestRunner::GetZenUnitArgs)
          // Constant Fields
          , metalMockedFunctionSignature(metalMockedFunctionSignature)
@@ -1246,7 +1246,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             console.WriteLine("   ExitCode: " + std::to_string(exitCode));
 
-            _call_exit(exitCode);
+            _call_quick_exit(exitCode);
          }
       }
    };
