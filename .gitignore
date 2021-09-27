@@ -15,7 +15,6 @@ htmlcov/
 
 # Linux
 covhtml/
-*.a
 *.dot
 *.gch
 *.gch*
@@ -32,7 +31,6 @@ callgrind.out.*
 callgrind_results.txt
 heaptrack.ZenUnitUtilsAndAssertionTests.*.zst
 rules.ninja
-Makefile
 
 # Windows
 .vs/
@@ -65,7 +63,6 @@ RelWithDebInfo/
 *.vcxproj
 *.vsp
 *.vspx
-debug.log
 install_manifest.txt
 
 # Cppcheck
@@ -89,6 +86,3 @@ install_manifest.txt
 *.s14
 Cppcheck/files.txt
 cppcheck_results.txt
-
-# SonarQube
-.scannerwork/
