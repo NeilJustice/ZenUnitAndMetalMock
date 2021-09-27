@@ -13,6 +13,7 @@ source_group("" FILES
    FizzBuzzTests.cpp
    SetTests.cpp
    STARTUPAndCLEANUPTests.cpp
+   TypeParameterizedTestClass.cpp
    ZenUnitExamplesTestsMain.cpp)
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
