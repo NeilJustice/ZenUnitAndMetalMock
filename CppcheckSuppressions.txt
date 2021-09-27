@@ -2,5 +2,6 @@ accessForwarded:*
 noExplicitConstructor:*
 preprocessorErrorDirective:*
 syntaxError:*
+unmatchedSuppression:*
 unusedFunction:*
 useStlAlgorithm:*
