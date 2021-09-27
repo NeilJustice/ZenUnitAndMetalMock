@@ -27,7 +27,6 @@ if(UNIX)
    endif()
 endif()
 
-set(ZenUnitIncludeDirectory "${CMAKE_SOURCE_DIR}/ZenUnit")
 if(UNIX)
    set(GoogleBenchmarkIncludeDirectory "/usr/local/include/GoogleBenchmark")
    set(GoogleBenchmarkLibraryPath "/usr/local/lib/GoogleBenchmark/libbenchmark${CMAKE_BUILD_TYPE}.a")
@@ -48,3 +47,5 @@ macro(IfMSVCAddPostBuildStepToRunTestsRandomly)
       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND $(TargetPath) --random)
    endif()
 endmacro()
+
+set(ZenUnitIncludeDirectory "${CMAKE_SOURCE_DIR}/ZenUnit")
