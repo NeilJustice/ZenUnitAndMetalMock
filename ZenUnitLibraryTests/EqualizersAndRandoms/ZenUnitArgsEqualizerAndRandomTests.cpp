@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
-#include "ZenUnitTestUtils/ZenUnitTestingRandomGeneratorMock.h"
+#include "ZenUnitTestUtils/MetalMock/ZenUnitTestingRandomGeneratorMock.h"
 
 namespace ZenUnit
 {

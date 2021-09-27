@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
-#include "ZenUnitTestUtils/ZenUnitTestingRandomGeneratorMock.h"
+#include "ZenUnitTestUtils/MetalMock/ZenUnitTestingRandomGeneratorMock.h"
 
 namespace ZenUnit
 {
@@ -57,7 +57,7 @@ namespace ZenUnit
       METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
       METALMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
       METALMOCK(zenUnitTestingRandomGeneratorMock.RandomFullTestNameMock.CalledOnce());
-      METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestPhaseResultMock.CalledNTimes(5));      
+      METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestPhaseResultMock.CalledNTimes(5));
       TestResult expectedRandomTestResult;
       expectedRandomTestResult.fullTestName = fullTestName;
       expectedRandomTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
