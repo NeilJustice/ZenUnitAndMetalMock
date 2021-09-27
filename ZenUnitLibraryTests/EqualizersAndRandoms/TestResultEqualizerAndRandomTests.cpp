@@ -35,7 +35,7 @@ namespace ZenUnit
 
       const TestOutcome testOutcome = static_cast<TestOutcome>(randomGeneratorMock.EnumMock.ReturnRandom());
 
-      const unsigned elapsedMicroseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
+      const unsigned elapsedMicroseconds = randomGeneratorMock.UnsignedMock.ReturnRandom();
 
       const size_t testCaseNumber = ZenUnit::Random<size_t>();
       const size_t totalTestCases = ZenUnit::Random<size_t>();
@@ -54,7 +54,7 @@ namespace ZenUnit
       const TestResult randomTestResult = TestableRandomTestResult(&randomGeneratorMock, &zenUnitTestingRandomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.EnumMock.CalledOnceWith(static_cast<int>(TestOutcome::MaxValue)));
-      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedMock.CalledOnce());
       METALMOCK(randomGeneratorMock.SizeTMock.CalledNTimes(2));
       METALMOCK(zenUnitTestingRandomGeneratorMock.RandomFullTestNameMock.CalledOnce());
       METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestPhaseResultMock.CalledNTimes(5));

@@ -20,12 +20,12 @@ namespace ZenUnit
    {
       ZenUnit::RandomGeneratorMock randomGeneratorMock;
       const char* const filePath = randomGeneratorMock.ConstCharPointerMock.ReturnRandom();
-      const unsigned lineNumber = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
+      const unsigned lineNumber = randomGeneratorMock.UnsignedMock.ReturnRandom();
       //
       const FilePathLineNumber randomFilePathLineNumber = TestableRandomFilePathLineNumber(&randomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.ConstCharPointerMock.CalledOnce());
-      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedMock.CalledOnce());
       FilePathLineNumber expectedRandomFilePathLineNumber;
       expectedRandomFilePathLineNumber.filePath = filePath;
       expectedRandomFilePathLineNumber.lineNumber = lineNumber;

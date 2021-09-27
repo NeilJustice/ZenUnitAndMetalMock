@@ -18,7 +18,7 @@ namespace ZenUnit
       TestPhaseResult randomTestPhaseResult;
       randomTestPhaseResult.testPhase = static_cast<TestPhase>(randomGenerator->Enum(static_cast<int>(TestPhase::MaxValue)));
       randomTestPhaseResult.testOutcome = static_cast<TestOutcome>(randomGenerator->Enum(static_cast<int>(TestOutcome::MaxValue)));
-      randomTestPhaseResult.elapsedMicroseconds = randomGenerator->UnsignedInt();
+      randomTestPhaseResult.elapsedMicroseconds = randomGenerator->Unsigned();
       randomTestPhaseResult.anomalyOrException = nullptr;
       return randomTestPhaseResult;
    }

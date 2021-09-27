@@ -32,7 +32,7 @@ namespace ZenUnit
       randomTestResult.destructorTestPhaseResult = zenUnitTestingRandomGenerator->RandomTestPhaseResult();
       randomTestResult.responsibleTestPhaseResultField = nullptr;
       randomTestResult.testOutcome = static_cast<TestOutcome>(randomGenerator->Enum(static_cast<int>(TestOutcome::MaxValue)));
-      randomTestResult.elapsedMicroseconds = randomGenerator->UnsignedInt();
+      randomTestResult.elapsedMicroseconds = randomGenerator->Unsigned();
       randomTestResult.testCaseNumber = randomGenerator->SizeT();
       randomTestResult.totalTestCases = randomGenerator->SizeT();
       return randomTestResult;

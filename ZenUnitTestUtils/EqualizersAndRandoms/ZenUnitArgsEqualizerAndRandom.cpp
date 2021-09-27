@@ -34,7 +34,7 @@ namespace ZenUnit
       randomZenUnitArgs.testRuns = randomGenerator->Int();
       randomZenUnitArgs.randomTestOrdering = randomGenerator->Bool();
       randomZenUnitArgs.globalRandomSeedSetByUser = randomGenerator->Bool();
-      randomZenUnitArgs.maxTestMilliseconds = randomGenerator->UnsignedInt();
+      randomZenUnitArgs.maxTestMilliseconds = randomGenerator->Unsigned();
       return randomZenUnitArgs;
    }
 

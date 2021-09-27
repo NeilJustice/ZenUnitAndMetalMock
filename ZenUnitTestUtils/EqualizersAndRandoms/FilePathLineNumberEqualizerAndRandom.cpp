@@ -14,7 +14,7 @@ namespace ZenUnit
    {
       FilePathLineNumber randomFilePathLineNumber;
       randomFilePathLineNumber.filePath = randomGenerator->ConstCharPointer();
-      randomFilePathLineNumber.lineNumber = randomGenerator->UnsignedInt();
+      randomFilePathLineNumber.lineNumber = randomGenerator->Unsigned();
       return randomFilePathLineNumber;
    }
 

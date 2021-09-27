@@ -49,14 +49,14 @@ namespace ZenUnit
 
       const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
 
-      const unsigned maxTestMilliseconds = randomGeneratorMock.UnsignedIntMock.ReturnRandom();
+      const unsigned maxTestMilliseconds = randomGeneratorMock.UnsignedMock.ReturnRandom();
       //
       const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(&randomGeneratorMock, &zenUnitTestingRandomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
       METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
       METALMOCK(randomGeneratorMock.IntMock.CalledOnce());
-      METALMOCK(randomGeneratorMock.UnsignedIntMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedMock.CalledOnce());
       METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestNameFiltersVectorMock.CalledOnce());
       ZenUnitArgs expectedRandomZenUnitArgs;
       expectedRandomZenUnitArgs.startDateTime = startDateTime;

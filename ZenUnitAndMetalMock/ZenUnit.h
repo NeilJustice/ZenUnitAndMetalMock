@@ -8300,10 +8300,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomIntBetween;
       }
 
-      virtual unsigned UnsignedInt() const
+      virtual unsigned Unsigned() const
       {
-         const unsigned int randomUnsignedInt = Random<unsigned int>();
-         return randomUnsignedInt;
+         const unsigned randomUnsigned = Random<unsigned>();
+         return randomUnsigned;
       }
 
       // Example Enum(int exclusiveEnumMaxValue) usage:
