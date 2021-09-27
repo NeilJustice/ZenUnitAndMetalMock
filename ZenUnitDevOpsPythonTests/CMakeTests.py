@@ -36,5 +36,6 @@ class CMakeTests(unittest.TestCase):
       testcase('Windows', '', 'cmake -G"Generator" -Ax64  CMakeListsFolderPath')
       testcase('Windows', '-DCMAKE_INSTALL_PREFIX=C:/', 'cmake -G"Generator" -Ax64 -DCMAKE_INSTALL_PREFIX=C:/ CMakeListsFolderPath')
 
+
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(CMakeTests, testNames)

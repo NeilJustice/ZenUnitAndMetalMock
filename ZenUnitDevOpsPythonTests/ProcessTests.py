@@ -283,5 +283,6 @@ class ProcessTests(unittest.TestCase):
       testcase('stdout', 'stdout', False)
       testcase('prefix stdout suffix', 'stdout', False)
 
+
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(ProcessTests, testNames)

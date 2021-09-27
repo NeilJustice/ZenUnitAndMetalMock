@@ -43,6 +43,7 @@ def windows_cmake_build(cmakeGenerator: str, cmakeBuildType: str, cmakeDefinitio
    cmakeBuildCommand = f'cmake.exe --build . --config {cmakeBuildType}'
    Process.fail_fast_run(cmakeBuildCommand)
 
+
 if __name__ == "__main__": # pragma nocover
    sys.exit(main())
 

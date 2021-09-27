@@ -104,5 +104,6 @@ class BuildZenUnitTests(unittest.TestCase):
       testcase('-DOptionA=ON', '-DOptionA=ON')
       testcase('-DOptionB=ON', '-DOptionB=ON')
 
+
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(BuildZenUnitTests, testNames)

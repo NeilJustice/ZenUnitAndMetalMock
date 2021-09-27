@@ -54,5 +54,6 @@ class FolderTests(unittest.TestCase):
       os.makedirs.assert_called_once_with(destFilePathDirName, exist_ok=True)
       shutil.copy.assert_called_once_with(sourceFilePath, destFilePath)
 
+
 if __name__ == '__main__': # pragma nocover
    UnitTester.run_tests(FolderTests, testNames)
