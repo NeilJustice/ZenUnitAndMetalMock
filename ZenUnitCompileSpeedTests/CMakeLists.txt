@@ -22,4 +22,3 @@ if(UNIX AND NOT APPLE)
      target_link_libraries(ZenUnitCompileSpeedTests CodeCovLibraryInterface)
    endif()
 endif()
-
