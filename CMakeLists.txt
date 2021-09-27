@@ -62,7 +62,7 @@ add_subdirectory(MetalMockTests)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo")
 
-# Allows for ZenUnit.h and MetalMock.h to be installed instantly without first having to build all the test projects
+# Allows ZenUnit.h and MetalMock.h to be installed instantly without first building the test projects
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 
 if(UNIX AND NOT APPLE)
