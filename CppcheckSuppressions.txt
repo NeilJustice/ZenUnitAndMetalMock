@@ -1,14 +1,6 @@
-danglingTemporaryLifetime:*
-noExplicitConstructor:*
-unmatchedSuppression:*
-useStlAlgorithm:*
-unusedFunction:*
-
-# Suppressions of issues only detected with the Linux version of Cppcheck
-preprocessorErrorDirective:/usr/include/c++/v1/__config:104
-selfInitialization:*
-templateRecursion:*
-
-# Suppressions of issues only detected with the Windows version of Cppcheck
 accessForwarded:*
+noExplicitConstructor:*
+preprocessorErrorDirective:*
 syntaxError:*
+unusedFunction:*
+useStlAlgorithm:*
