@@ -7,10 +7,11 @@ testNames = ['test_run_tests_RunsTestSuiteWithTextTestRunner']
 
 class UnitTesterTests(unittest.TestCase):
 
+   @staticmethod
    @patch('unittest.TextTestRunner', spec_set=True)
    @patch('builtins.map', spec_set=True)
    @patch('unittest.TestSuite', spec_set=True)
-   def test_run_tests_RunsTestSuiteWithTextTestRunner(self, _1, _2, _3):
+   def test_run_tests_RunsTestSuiteWithTextTestRunner(_1, _2, _3):
       textTestRunnerMock = Mock(spec=['run'])
       unittest.TextTestRunner.return_value = textTestRunnerMock
       map.return_value = sentinel.testCaseMapObject

@@ -33,11 +33,12 @@ class FolderTests(unittest.TestCase):
       testcase(False, False)
       testcase(True, True)
 
+   @staticmethod
    @patch('os.path.join', spec_set=True)
    @patch('os.path.dirname', spec_set=True)
    @patch('os.makedirs', spec_set=True)
    @patch('shutil.copy', spec_set=True)
-   def test_copy_file_to_folder_CreateDestFolderAndCopiesFile(self, _1, _2, _3, _4):
+   def test_copy_file_to_folder_CreateDestFolderAndCopiesFile(_1, _2, _3, _4):
       destFilePath = Random.string()
       os.path.join.return_value = destFilePath
 

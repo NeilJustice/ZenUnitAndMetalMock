@@ -2,7 +2,7 @@
 indent-string='   '
 
 [MASTER]
-disable=bad-continuation,invalid-name,line-too-long,missing-docstring,no-member,no-self-use,no-value-for-parameter,wrong-import-position,too-many-arguments
+disable=invalid-name,line-too-long,missing-docstring,no-member,no-value-for-parameter
 
 [REPORTS]
 reports=no
