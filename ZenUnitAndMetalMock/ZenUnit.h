@@ -2812,7 +2812,7 @@ namespace ZenUnit
    {
       const float difference = expectedFloat - actualFloat;
       const float absoluteDifference = std::abs(difference);
-      if (absoluteDifference >= 1e-7)
+      if (absoluteDifference >= 1e-5)
       {
          FLOATS_ARE_NEAR_ThrowAnomaly(
             expectedFloat, expectedFloatText,
