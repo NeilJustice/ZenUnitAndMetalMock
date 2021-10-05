@@ -1,5 +1,3 @@
-Set-PSDebug -Trace 1
-
 $env:PYTHONPATH="."
 python.exe ZenUnitDevOpsPython\BuildAndTestZenUnitAndMetalMock.py `
    --cmake-generator="Visual Studio 16 2019" `
@@ -14,7 +12,4 @@ VSDiagnostics.exe start 1 `
 if ($LastExitCode -ne 0) { exit $LastExitCode }
 
 sleep 20
-
 VSDiagnostics.exe stop 1 /output:JenkinsJobs\Windows\ZenUnitLibraryTests-Debug.diagsession
-
-Set-PSDebug -Trace 0
