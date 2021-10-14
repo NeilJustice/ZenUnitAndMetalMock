@@ -11,7 +11,7 @@ namespace MetalMock
 
    TESTS(ThreeArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
-   AFACT(Constructor_CopiesValuesToDecayTypeFields)
+   AFACT(ThreeArgConstructor_CopiesValuesToDecayTypeFields)
    AFACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
    EVIDENCE
 
@@ -25,7 +25,7 @@ namespace MetalMock
       ARE_EQUAL(DV3, threeArgumentFunctionCall.arg3.value);
    }
 
-   TEST(Constructor_CopiesValuesToDecayTypeFields)
+   TEST(ThreeArgConstructor_CopiesValuesToDecayTypeFields)
    {
       const ThreeArgumentFunctionCall<const T<1>&, const T<2>&, const T<3>&> call(V1, V2, V3);
       ARE_COPIES(V1, call.arg1.value);

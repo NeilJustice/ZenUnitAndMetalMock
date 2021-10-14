@@ -4,11 +4,11 @@
 namespace MetalMock
 {
    TESTS(TwoArgumentMetalMockerTests)
-   AFACT(Constructor_SetsFields)
+   AFACT(FunctionSignatureConstructor_SetsFields)
    AFACT(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    AFACT(MetalMockIt_ExpectedFalse_Throws)
    AFACT(MetalMockIt_ExpectedTrue_IncrementsNumberOfFunctionCalls_CallsMetalMockThrowIfExceptionSet)
-   AFACT(CallInstead_CallsSuppliedFunctionWhenMetalMockedFunctionIsCalled)
+   AFACT(CallInstead_CallsCallInsteadFunctionWhenMetalMockedFunctionIsCalled)
    EVIDENCE
 
    using MetalMockerType = TwoArgumentMetalMocker<int, int, MetalMockExceptionThrowerMock>;
@@ -26,7 +26,7 @@ namespace MetalMock
       _metalMocker->wasAsserted = true;
    }
 
-   TEST(Constructor_SetsFields)
+   TEST(FunctionSignatureConstructor_SetsFields)
    {
       const MetalMockerType mocker(_metalMockedFunctionSignature);
       //
@@ -71,7 +71,7 @@ namespace MetalMock
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
-   TEST(CallInstead_CallsSuppliedFunctionWhenMetalMockedFunctionIsCalled)
+   TEST(CallInstead_CallsCallInsteadFunctionWhenMetalMockedFunctionIsCalled)
    {
       VoidTwoArgumentMetalMocker<int, int> voidTwoArgumentMetalMocker(_metalMockedFunctionSignature);
 

@@ -7,7 +7,7 @@ namespace MetalMock
 
    TESTS(ArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesArg)
-   AFACT(Constructor_CopiesArgToDecayedTypeArgField)
+   AFACT(OneArgConstructor_CopiesArgToDecayedTypeArgField)
    AFACT(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    EVIDENCE
 
@@ -19,7 +19,7 @@ namespace MetalMock
       ARE_EQUAL(DV1, intArgumentFunctionCall.argument.value);
    }
 
-   TEST(Constructor_CopiesArgToDecayedTypeArgField)
+   TEST(OneArgConstructor_CopiesArgToDecayedTypeArgField)
    {
       const OneArgumentFunctionCall<const T<1>&> call(V1);
       //

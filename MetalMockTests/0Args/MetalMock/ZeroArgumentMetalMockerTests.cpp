@@ -11,7 +11,7 @@ namespace MetalMock
    FACTS(CalledOnce_SetsAssertedToTrue_FunctionWasCalledOnce_DoesNotThrowException)
    AFACT(CalledNTimes_NIsZero_ThrowsUnsupportedCalledZeroTimesException)
    FACTS(CalledNTimes_SetsAssertedTrue_FunctionWasCalledNTimes_DoesNotThrowException)
-   AFACT(CallInstead_SetsTheCallInsteadFunction_SetsWasAssertedToTrue_MetalMockItCallsTheInsteadFunctionOnceWhenCalled)
+   AFACT(CallInstead_CallsCallInsteadFunctionWhenMetalMockedFunctionIsCalled)
    EVIDENCE
 
    unique_ptr<ZeroArgumentMetalMocker<MetalMockExceptionThrowerMock>> _zeroArgumentMetalMocker;
@@ -136,7 +136,7 @@ File.cpp(1))");
       IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
    }
 
-   TEST(CallInstead_SetsTheCallInsteadFunction_SetsWasAssertedToTrue_MetalMockItCallsTheInsteadFunctionOnceWhenCalled)
+   TEST(CallInstead_CallsCallInsteadFunctionWhenMetalMockedFunctionIsCalled)
    {
       bool voidZeroArgFunctionWasCalled = false;
       const auto callInsteadFunction = [&]()

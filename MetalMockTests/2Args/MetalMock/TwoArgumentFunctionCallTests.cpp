@@ -9,7 +9,7 @@ namespace MetalMock
 
    TESTS(TwoArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
-   AFACT(Constructor_CopiesArgsToDecayedTypeArgFields)
+   AFACT(TwoArgConstructor_CopiesArgsToDecayedTypeArgFields)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
@@ -22,7 +22,7 @@ namespace MetalMock
       ARE_EQUAL(DV2, twoArgumentFunctionCall.arg2.value);
    }
 
-   TEST(Constructor_CopiesArgsToDecayedTypeArgFields)
+   TEST(TwoArgConstructor_CopiesArgsToDecayedTypeArgFields)
    {
       const TwoArgumentFunctionCall<const T<1>&, const T<2>&> call(V1, V2);
       //

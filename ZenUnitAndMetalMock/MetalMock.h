@@ -2607,12 +2607,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticFunctionMockObjectType>
       friend class MetalMock4ArgsTester;
       friend class FourArgumentMetalMockerTests;
-   public:
+   private:
+      std::function<void(Arg1Type, Arg2Type, Arg3Type, Arg4Type)> callInsteadFunction;
       std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> metalMockedFunctionCallHistory;
-
+   public:
       explicit FourArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
+      }
+
+      void CallInstead(const std::function<void(Arg1Type, Arg2Type, Arg3Type, Arg4Type)>& voidFourArgFunction)
+      {
+         this->callInsteadFunction = voidFourArgFunction;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasExpected = true;
+         FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>::wasAsserted = true;
       }
 
       void MetalMockIt(
@@ -2623,6 +2631,10 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
          this->MetalMockThrowIfNotExpected(arg1, arg2, arg3, arg4);
          metalMockedFunctionCallHistory.emplace_back(arg1, arg2, arg3, arg4);
+         if (this->callInsteadFunction)
+         {
+            this->callInsteadFunction(arg1, arg2, arg3, arg4);
+         }
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
