@@ -2607,6 +2607,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticFunctionMockObjectType>
       friend class MetalMock4ArgsTester;
       friend class FourArgumentMetalMockerTests;
+      friend class VoidFourArgumentMetalMockerTests;
    private:
       std::function<void(Arg1Type, Arg2Type, Arg3Type, Arg4Type)> callInsteadFunction;
       std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> metalMockedFunctionCallHistory;
