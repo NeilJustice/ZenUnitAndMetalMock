@@ -33,7 +33,7 @@ cppcheck \
    -I /usr/include/c++/v1 \
    -I ZenUnitTestUtils \
    -I . \
-   -j 48 \
+   -j 64 \
    --output-file=cppcheck_results.txt \
    --error-exitcode=1 \
    .
