@@ -554,37 +554,37 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 |MetalMock macro|
 |---------------|
-|`METALMOCK_VOID0_STATIC(NamespaceQualifiedClassName, StaticFunctionName, ...)`|
-|`METALMOCK_VOID1_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID0_STATIC_OR_FREE(NamespaceQualifiedClassName, StaticFunctionName, ...)`|
+|`METALMOCK_VOID1_STATIC_OR_FREE(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
 |Arities 2 through 6 elided for brevity|
-|`METALMOCK_VOID7_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID7_STATIC_OR_FREE(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
 #### non-void static functions
 
 |MetalMock macro|
 |---------------|
-|`METALMOCK_NONVOID0_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, ...)`|
-|`METALMOCK_NONVOID1_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID0_STATIC_OR_FREE(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, ...)`|
+|`METALMOCK_NONVOID1_STATIC_OR_FREE(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
 |Arities 2 through 6 elided for brevity|
-|`METALMOCK_NONVOID7_STATIC(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID7_STATIC_OR_FREE(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
 #### void free functions
 
 |MetalMock macro|
 |---------------|
-|`METALMOCK_VOID0_FREE(GlobalFreeFunctionName)`|
-|`METALMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID0_STATIC_OR_FREE(GlobalFreeFunctionName)`|
+|`METALMOCK_VOID1_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, ...)`|
 |Arities 2 through 6 elided for brevity|
-|`METALMOCK_VOID7_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID7_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
 #### non-void free functions
 
 |MetalMock macro|
 |---------------|
-|`METALMOCK_NONVOID0_FREE(ReturnType, GlobalFreeFunctionName)`|
-|`METALMOCK_NONVOID1_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID0_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName)`|
+|`METALMOCK_NONVOID1_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, ...)`|
 |Arities 2 through 6 elided for brevity|
-|`METALMOCK_NONVOID7_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID7_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
 ### MetalMock use cases
 
@@ -711,7 +711,7 @@ TEST(SendOrder_CallsNetworkSendWhichReturns123_Returns)
    METALMOCK(_orderSender._network.SendBytesMock.CalledOnceWith(123));
 }
 
-RUN_TESTS(OrderSenderTests)\
+RUN_TESTS(OrderSenderTests)
 ```
 
 #### MetalMocking static functions
@@ -738,13 +738,13 @@ class StaticFunctionMockingExample
    friend class StaticFunctionMockingExampleTests;
 private:
    // MetalMockable std::functions
-   std::function<void()> _call_VoidStaticFunction = StaticFunctions::VoidStaticFunction;
-   std::function<int(int)> _call_NonVoidStaticFunction = StaticFunctions::NonVoidStaticFunction;
+   std::function<void()> _call_Utilities_VoidStaticFunction = StaticFunctions::VoidStaticFunction;
+   std::function<int(int)> _call_Utilities_NonVoidStaticFunction = StaticFunctions::NonVoidStaticFunction;
 public:
    int FunctionUnderTest(int input)
    {
-      _call_VoidStaticFunction();
-      const int returnValue = _call_NonVoidStaticFunction(input);
+      _call_Utilities_VoidStaticFunction();
+      const int returnValue = _call_Utilities_NonVoidStaticFunction(input);
       return returnValue;
    }
 };
@@ -756,21 +756,21 @@ EVIDENCE
 
 StaticFunctionMockingExample _staticFunctionMockingExample;
 
-// Creates a MetalMock object named _call_VoidStaticFunctionMock
-METALMOCK_VOID0_STATIC(Utilities, _call_VoidStaticFunction)
+// Creates a MetalMock object named _call_Utilities_VoidStaticFunctionMock
+METALMOCK_VOID0_FREE(_call_Utilities_VoidStaticFunction)
 
-// Creates a MetalMock object named _call_NonVoidStaticFunctionMock
-METALMOCK_NONVOID1_STATIC(int, Utilities, _call_NonVoidStaticFunction, int)
+// Creates a MetalMock object named _call_Utilities_NonVoidStaticFunctionMock
+METALMOCK_NONVOID1_FREE(int, _call_Utilities_NonVoidStaticFunction, int)
 
 STARTUP
 {
    // Dependency injection of MetalMock objects
-   // by overwriting std::functions with std::bind'ed MetalMock objects
-   _staticFunctionMockingExample._call_VoidStaticFunction =
-      BIND_0ARG_METALMOCK_OBJECT(_call_VoidStaticFunctionMock);
+   // by overwriting std::functions with std::binded MetalMock objects
+   _staticFunctionMockingExample._call_Utilities_VoidStaticFunction =
+      BIND_0ARG_METALMOCK_OBJECT(_call_Utilities_VoidStaticFunctionMock);
 
-   _staticFunctionMockingExample._call_NonVoidStaticFunction =
-      BIND_1ARG_METALMOCK_OBJECT(_call_NonVoidStaticFunctionMock);
+   _staticFunctionMockingExample._call_Utilities_NonVoidStaticFunction =
+      BIND_1ARG_METALMOCK_OBJECT(_call_Utilities_NonVoidStaticFunctionMock);
 }
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
@@ -778,22 +778,22 @@ TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
    const StaticFunctionMockingExample staticFunctionMockingExample;
 
    STD_FUNCTION_TARGETS(StaticFunctions::VoidStaticFunction,
-      staticFunctionMockingExample._call_VoidStaticFunction);
+      staticFunctionMockingExample._call_Utilities_VoidStaticFunction);
 
    STD_FUNCTION_TARGETS(StaticFunctions::NonVoidStaticFunction,
-      staticFunctionMockingExample._call_NonVoidStaticFunction);
+      staticFunctionMockingExample._call_Utilities_NonVoidStaticFunction);
 }
 
 TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
 {
-   _call_VoidStaticFunctionMock.Expect();
-   const int nonVoidStaticFunctionReturnValue = _call_NonVoidStaticFunctionMock.ReturnRandom();
+   _call_Utilities_VoidStaticFunctionMock.Expect();
+   const int nonVoidStaticFunctionReturnValue = _call_Utilities_NonVoidStaticFunctionMock.ReturnRandom();
    const int input = ZenUnit::Random<int>();
    //
    const int returnValue = _staticFunctionMockingExample.FunctionUnderTest(input);
    //
-   METALMOCK(_call_VoidStaticFunctionMock.CalledOnce());
-   METALMOCK(_call_NonVoidStaticFunctionMock.CalledOnceWith(input));
+   METALMOCK(_call_Utilities_VoidStaticFunctionMock.CalledOnce());
+   METALMOCK(_call_Utilities_NonVoidStaticFunctionMock.CalledOnceWith(input));
    ARE_EQUAL(nonVoidStaticFunctionReturnValue, returnValue);
 }
 
@@ -827,19 +827,19 @@ public:
 TESTS(FreeFunctionMockingTests)
 AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 AFACT(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
+AFACT(GlobalFreeFunction_ReturnsValuePlus1)
 EVIDENCE
 
 MetalMockFreeFunctionMockingExample _metalMockFreeFunctionMockingExample;
 
-// Creates a MetalMock object named GlobalFreeFunctionMock for mocking a free function
-METALMOCK_NONVOID1_FREE(int, GlobalFreeFunction, int)
+// Creates a MetalMock object named _call_GlobalFreeFunctionMock for mocking a free function
+METALMOCK_NONVOID1_FREE(int, _call_GlobalFreeFunction, int)
 
 STARTUP
 {
    // Post-construction dependency injection of MetalMock objects
    // to overwrite std::functions with MetalMock objects
-   _metalMockFreeFunctionMockingExample._call_GlobalFreeFunction =
-      BIND_1ARG_METALMOCK_OBJECT(GlobalFreeFunctionMock);
+   _metalMockFreeFunctionMockingExample._call_GlobalFreeFunction = BIND_1ARG_METALMOCK_OBJECT(_call_GlobalFreeFunctionMock);
 }
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
@@ -850,13 +850,22 @@ TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 
 TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 {
-   const int globalFreeFunctionReturnValue = GlobalFreeFunctionMock.ReturnRandom();
+   const int globalFreeFunctionReturnValue = _call_GlobalFreeFunctionMock.ReturnRandom();
    const int input = ZenUnit::RandomBetween<int>(-3, 3);
    //
    const int returnValue = _metalMockFreeFunctionMockingExample.FunctionUnderTest(input);
    //
-   METALMOCK(GlobalFreeFunctionMock.CalledOnceWith(input));
+   METALMOCK(_call_GlobalFreeFunctionMock.CalledOnceWith(input));
    ARE_EQUAL(globalFreeFunctionReturnValue, returnValue);
+}
+
+TEST(GlobalFreeFunction_ReturnsValuePlus1)
+{
+   const int value = ZenUnit::RandomBetween<int>(-3, 3);
+   //
+   const int valuePlus1 = GlobalFreeFunction(value);
+   //
+   ARE_EQUAL(value + 1, valuePlus1);
 }
 
 RUN_TESTS(FreeFunctionMockingTests)

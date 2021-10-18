@@ -29,14 +29,14 @@ EVIDENCE
 
 MetalMockFreeFunctionMockingExample _metalMockFreeFunctionMockingExample;
 
-// Creates a MetalMock object named GlobalFreeFunctionMock for mocking a free function
-METALMOCK_NONVOID1_FREE(int, GlobalFreeFunction, int)
+// Creates a MetalMock object named _call_GlobalFreeFunctionMock for mocking a free function
+METALMOCK_NONVOID1_FREE(int, _call_GlobalFreeFunction, int)
 
 STARTUP
 {
    // Post-construction dependency injection of MetalMock objects
    // to overwrite std::functions with MetalMock objects
-   _metalMockFreeFunctionMockingExample._call_GlobalFreeFunction = BIND_1ARG_METALMOCK_OBJECT(GlobalFreeFunctionMock);
+   _metalMockFreeFunctionMockingExample._call_GlobalFreeFunction = BIND_1ARG_METALMOCK_OBJECT(_call_GlobalFreeFunctionMock);
 }
 
 TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
@@ -47,12 +47,12 @@ TEST(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 
 TEST(FunctionUnderTest_ReturnsSumOfReturnValuesFromCallingFreeFunctions)
 {
-   const int globalFreeFunctionReturnValue = GlobalFreeFunctionMock.ReturnRandom();
+   const int globalFreeFunctionReturnValue = _call_GlobalFreeFunctionMock.ReturnRandom();
    const int input = ZenUnit::RandomBetween<int>(-3, 3);
    //
    const int returnValue = _metalMockFreeFunctionMockingExample.FunctionUnderTest(input);
    //
-   METALMOCK(GlobalFreeFunctionMock.CalledOnceWith(input));
+   METALMOCK(_call_GlobalFreeFunctionMock.CalledOnceWith(input));
    ARE_EQUAL(globalFreeFunctionReturnValue, returnValue);
 }
 
