@@ -28,7 +28,7 @@ template<
    typename ContainerType, typename T>
 TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
 AFACT(CountWhere_ElementsAreEmpty_Returns0)
-AFACT(CountWhere_ElementsAreSize2_ElementDoNotMatch_Returns0)
+AFACT(CountWhere_ElementsAreSize2_BothElementDoNotMatch_Returns0)
 AFACT(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
 AFACT(CountWhere_ElementsAreSize4_TwoElementsMatchOutOf4_Returns2)
 EVIDENCE
@@ -61,7 +61,7 @@ TEST(CountWhere_ElementsAreEmpty_Returns0)
    ARE_EQUAL(0, numberOfMatchingElements);
 }
 
-TEST(CountWhere_ElementsAreSize2_ElementDoNotMatch_Returns0)
+TEST(CountWhere_ElementsAreSize2_BothElementDoNotMatch_Returns0)
 {
    const ContainerType<T> elements{ ZenUnit::Random<T>(), ZenUnit::Random<T>() };
    //
