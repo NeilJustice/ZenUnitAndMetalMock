@@ -11,13 +11,9 @@
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
-ZenUnit's key feature is its convenient variadic syntax for writing value-parameterized unit tests.
-
-Here is the ZenUnit syntax for defining three independent test cases for the `Calculator::Add(int x, int y)` function:
+ZenUnit's first key feature is its convenient syntax for writing value-parameterized unit tests by way typesafe variadic macro arguments:
 
 ```cpp
-#include "ZenUnitAndMetalMock/ZenUnit.h"
-
 TEST3X3(Add_ReturnsSumOfArguments,
    int x, int y, int expectedSum,
    0, 0, 0,
@@ -29,13 +25,35 @@ TEST3X3(Add_ReturnsSumOfArguments,
 }
 ```
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for specifying function return values, requesting specific exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free functions.
+The above `TEST3X3` syntax defines three independent test cases for function `Calculator::Add(int x, int y)`, with test values processed "three by three" for a total of three unit tests.
+
+ZenUnit's second key feature is its convenient syntax for writing type-parameterized unit tests:
+
+```cpp
+#include "ZenUnitAndMetalMock/ZenUnit.h"
+
+template<
+   template<typename...>
+   typename ContainerType, typename T>
+TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
+...
+... </ZenUnitTestCode>
+...
+RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, unsigned long long)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
+THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
+```
+
+The above `TEMPLATE_TESTS`/`RUN_TEMPLATE_TESTS`/`THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit test class whose unit tests are to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
+
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for setting function return values or exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free functions.
 
 MetalMock is a so-called "double strict" mocking framework so as to be useful for extra-rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
 
 A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called.
 
-A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of any extraneous function calls being present in a C++ program whose correctness is being confirmed at the unit level with ZenUnit and MetalMock.
+A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of any extraneous function calls being present in the C++ program under test.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
@@ -76,7 +94,6 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
    * [How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
    * [How to build and run ZenUnit and MetalMock unit tests on Windows and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
    * [ZenUnit features roadmap](#zenunit-features-roadmap)
-   * [MetalMock features roadmap](#metalmock-features-roadmap)
    * [Acknowledgments](#acknowledgments)
 
 ### ZenUnit command line usage
@@ -1064,10 +1081,10 @@ ZenUnit.h and MetalMock.h installed on Windows:
 
 ### ZenUnit features roadmap
 
-|Future ZenUnit feature|Implementation status as of 9/19/2021|
+|Future ZenUnit feature|Implementation status as of 11/3/2021|
 |----------------------|-------------------------------------|
 |Floating point assertions based on units in the last place|Awaiting implementation|
-|`--parallel`|Awaiting implementation|
+|`--parallel` for parallel running of test classes|Awaiting implementation|
 
 ### Acknowledgments
 
