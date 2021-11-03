@@ -3,6 +3,7 @@ missingReturn:*
 noExplicitConstructor:*
 preprocessorErrorDirective:*
 syntaxError:*
+uninitMemberVar:*
 unmatchedSuppression:*
 unusedFunction:*
 useStlAlgorithm:*
