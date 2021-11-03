@@ -6285,7 +6285,7 @@ Fatal Windows C++ Runtime Assertion
                _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(newableAndDeletableTestResult.elapsedMicroseconds);
             _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
-         return std::move(newableAndDeletableTestResult);
+         return newableAndDeletableTestResult;
       }
 
       void RunTest(const std::unique_ptr<Test>& test, TestClassResult* outTestClassResult) const
