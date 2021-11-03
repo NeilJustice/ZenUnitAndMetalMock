@@ -1,4 +1,5 @@
 accessForwarded:*
+missingReturn:*
 noExplicitConstructor:*
 preprocessorErrorDirective:*
 syntaxError:*
