@@ -36,9 +36,9 @@ template<
    template<typename...>
    typename ContainerType, typename T>
 TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
-...
-... </ZenUnitTestCode>
-...
+//
+// </ZenUnitTestCode>
+//
 RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, int)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, unsigned long long)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
