@@ -1,7 +1,9 @@
 accessForwarded:*
+danglingTemporaryLifetime:*
 missingReturn:*
 noExplicitConstructor:*
 preprocessorErrorDirective:*
+selfInitialization:*
 syntaxError:*
 uninitMemberVar:*
 unmatchedSuppression:*
