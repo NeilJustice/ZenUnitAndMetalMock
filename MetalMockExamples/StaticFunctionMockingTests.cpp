@@ -3,11 +3,11 @@
 class StaticFunctions
 {
 public:
-   static void VoidStaticFunction()
+   static void VoidStaticFunction() // LCOV_EXCL_LINE
    {
    }
 
-   static int NonVoidStaticFunction(int input)
+   static int NonVoidStaticFunction(int input) // LCOV_EXCL_LINE
    {
       const int inputPlus100 = input + 100;
       return inputPlus100;

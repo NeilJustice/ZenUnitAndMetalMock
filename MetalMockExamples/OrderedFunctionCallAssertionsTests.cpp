@@ -4,8 +4,8 @@ class NetworkClient
 {
 public:
    virtual ~NetworkClient() = default;
-   virtual void Connect() const {}
-   virtual void UploadData() const {}
+   virtual void Connect() const {} // LCOV_EXCL_LINE
+   virtual void UploadData() const {} // LCOV_EXCL_LINE
 };
 
 class NetworkClientMock : public Metal::Mock<NetworkClient>
