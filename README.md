@@ -1054,8 +1054,6 @@ Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting t
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 cd ZenUnitAndMetalMock && mkdir Debug && cd Debug
 CXX=clang++ cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug
-# Installs ZenUnit.h to /usr/local/include/ZenUnitAndMetalMock/ZenUnitAndMetalMock/ZenUnit.h
-# Installs MetalMock.h to /usr/local/include/ZenUnitAndMetalMock/ZenUnitAndMetalMock/MetalMock.h
 sudo cmake --build . --target install
 cd ..
 ./TestScripts/RunAllDebugTests.sh
@@ -1070,8 +1068,6 @@ ZenUnit.h and MetalMock.h installed on Linux:
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 cd ZenUnitAndMetalMock
 cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
-# Installs ZenUnit.h to C:\include\ZenUnitAndMetalMock\ZenUnit.h
-# Installs MetalMock.h to C:\include\ZenUnitAndMetalMock\MetalMock.h
 cmake --build . --target install
 ```
 
