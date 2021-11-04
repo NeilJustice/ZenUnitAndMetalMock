@@ -3,11 +3,11 @@
 class StaticFunctions
 {
 public:
-   static void VoidStaticFunction() // LCOV_EXCL_LINE
+   static void VoidStaticFunction()
    {
    }
 
-   static int NonVoidStaticFunction(int input) // LCOV_EXCL_LINE
+   static int NonVoidStaticFunction(int input)
    {
       const int inputPlus100 = input + 100;
       return inputPlus100;
@@ -35,6 +35,7 @@ public:
 TESTS(StaticFunctionMockingExampleTests)
 AFACT(DefaultConstructor_SetsFunctionsToExpectedFunctions)
 AFACT(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStaticFunction)
+AFACT(StaticFunctions_CodeCoverage)
 EVIDENCE
 
 StaticFunctionMockingExample _staticFunctionMockingExample;
@@ -78,6 +79,12 @@ TEST(FunctionUnderTest_CallsVoidStaticFunction_ReturnsResultOfCallingNonVoidStat
    METALMOCK(_call_Utilities_VoidStaticFunctionMock.CalledOnce());
    METALMOCK(_call_Utilities_NonVoidStaticFunctionMock.CalledOnceWith(input));
    ARE_EQUAL(nonVoidStaticFunctionReturnValue, returnValue);
+}
+
+TEST(StaticFunctions_CodeCoverage)
+{
+   StaticFunctions::VoidStaticFunction();
+   ARE_EQUAL(200, StaticFunctions::NonVoidStaticFunction(100));
 }
 
 RUN_TESTS(StaticFunctionMockingExampleTests)

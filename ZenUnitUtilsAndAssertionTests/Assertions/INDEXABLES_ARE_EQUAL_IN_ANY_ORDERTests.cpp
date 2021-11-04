@@ -4,16 +4,17 @@ template<
    template<typename...>
    typename IndexableType, typename T>
 TEMPLATE_TESTS(INDEXABLES_ARE_EQUAL_IN_ANY_ORDERTests, IndexableType, T)
-AFACT(ExpectedAndActualElementsAreBothEmpty_Returns)
+AFACT(ExpectedAndActualElementsAreBothEmpty_DoesNotThrowException)
 AFACT(ExpectedAndActualElementsHaveDifferentSizes_ThrowsAnomaly__TestCaseExpectedSize0ActualSize1)
 AFACT(ExpectedAndActualElementsHaveDifferentSizes_ThrowsAnomaly__TestCaseExpectedSize1ActualSize0)
-AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInTheSameOrder_Returns)
-AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInDifferentOrder_Returns)
+AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInTheSameOrder_DoesNotThrowException)
+AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInDifferentOrder_DoesNotThrowException)
 AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomaly__TestCase1stElementNotEqual)
 AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomaly__TestCase2ndElementNotEqual)
+AFACT(ExpectedAndActualElementsHaveTheSameSizes_AllExpectedElementsAreContainedInActualElements_ActualElementsContainsElementsNotContainedInExpectedElements_ThrowsAnomaly)
 EVIDENCE
 
-TEST(ExpectedAndActualElementsAreBothEmpty_Returns)
+TEST(ExpectedAndActualElementsAreBothEmpty_DoesNotThrowException)
 {
    const IndexableType<T> expectedEmptyElements;
    const IndexableType<T> actualEmptyElements;
@@ -52,7 +53,7 @@ File.cpp(1)
 File.cpp(1))");
 }
 
-TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInTheSameOrder_Returns)
+TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInTheSameOrder_DoesNotThrowException)
 {
    const T randomElement1 = ZenUnit::Random<T>();
    const T randomElement2 = ZenUnit::Random<T>();
@@ -61,7 +62,7 @@ TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInTheSameOrder
    INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualNonEmptyElements);
 }
 
-TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInDifferentOrder_Returns)
+TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInDifferentOrder_DoesNotThrowException)
 {
    const T randomElement1 = ZenUnit::Random<T>();
    const T randomElement2 = ZenUnit::Random<T>();
