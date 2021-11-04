@@ -1,3 +1,4 @@
+$numberOfLogicalProcessors = (Get-CimInstance -ClassName Win32_ComputerSystem).NumberOfLogicalProcessors
 cppcheck.exe `
    --cppcheck-build-dir=Cppcheck `
    --enable=all `
@@ -36,7 +37,7 @@ cppcheck.exe `
    -DMETALMOCK_VOID7_FREE `
    -D_WIN32 `
    -I . `
-   -j 64 `
+   -j $numberOfLogicalProcessors `
    --output-file=cppcheck_results.txt `
    --error-exitcode=1 `
    .
