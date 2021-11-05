@@ -17,8 +17,8 @@ namespace Metal
    // {
    // public:
    //    virtual ~Widget() = default;
-   //    virtual void Foo() {}
-   //    virtual int Add(int, int) { return 0; }
+   //    virtual void Foo() const {}
+   //    virtual int Add(int, int) const { return 0; }
    // };
    //
    // class WidgetMock : public Metal::Mock<Widget>
