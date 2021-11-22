@@ -3,10 +3,53 @@
 namespace ZenUnit
 {
    TESTS(DOUBLES_ARE_NEARTests)
+   AFACT(DoublesAreBothQuietNaN_DoesNothing)
+   AFACT(DoublesAreBothSignalingNaN_DoesNothing)
+   AFACT(OneDoubleIsQuietNaNAndOneDoubleIsSignalingNaN_DoesNothing)
+   AFACT(LeftDoubleIsQuietNaN_RightDoubleIsNotNaN_ThrowsAnomaly)
+   AFACT(LeftDoubleIsNotNaN_RightDoubleIsQuietNaN_ThrowsAnomaly)
    AFACT(DoublesAreExactlyEqual_DoesNotThrowException)
    AFACT(DoublesDifferenceIsLessThan1EMinus12_DoesNotThrowException)
    AFACT(DoublesDifferenceIsGreaterThanOrEqualTo1EMinus12_ThrowsAnomaly)
    EVIDENCE
+
+   TEST(DoublesAreBothQuietNaN_DoesNothing)
+   {
+      DOUBLES_ARE_NEAR(numeric_limits<double>::quiet_NaN(), numeric_limits<double>::quiet_NaN());
+   }
+
+   TEST(DoublesAreBothSignalingNaN_DoesNothing)
+   {
+      DOUBLES_ARE_NEAR(numeric_limits<double>::signaling_NaN(), numeric_limits<double>::signaling_NaN());
+   }
+
+   TEST(OneDoubleIsQuietNaNAndOneDoubleIsSignalingNaN_DoesNothing)
+   {
+      DOUBLES_ARE_NEAR(numeric_limits<double>::quiet_NaN(), numeric_limits<double>::signaling_NaN());
+      DOUBLES_ARE_NEAR(numeric_limits<double>::signaling_NaN(), numeric_limits<double>::quiet_NaN());
+   }
+
+   TEST(LeftDoubleIsQuietNaN_RightDoubleIsNotNaN_ThrowsAnomaly)
+   {
+      constexpr double d1 = numeric_limits<double>::quiet_NaN();
+      constexpr double d2 = 0.0;
+      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DOUBLES_ARE_NEAR(d1, d2)",
+"Expected: nan",
+"  Actual: 0",
+"File.cpp(1)"));
+   }
+
+   TEST(LeftDoubleIsNotNaN_RightDoubleIsQuietNaN_ThrowsAnomaly)
+   {
+      constexpr double d1 = 0.0;
+      constexpr double d2 = numeric_limits<double>::quiet_NaN();
+      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: DOUBLES_ARE_NEAR(d1, d2)",
+"Expected: 0",
+"  Actual: nan",
+"File.cpp(1)"));
+   }
 
    TEST(DoublesAreExactlyEqual_DoesNotThrowException)
    {

@@ -2860,6 +2860,26 @@ namespace ZenUnit
       double actualDouble, const char* actualDoubleText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
+      const bool expectedDoubleIsNaN = isnan(expectedDouble);
+      const bool actualDoubleIsNaN = isnan(actualDouble);
+      if (expectedDoubleIsNaN && actualDoubleIsNaN)
+      {
+         return;
+      }
+      if (expectedDoubleIsNaN && !actualDoubleIsNaN)
+      {
+         DOUBLES_ARE_NEAR_ThrowAnomaly(
+            expectedDouble, expectedDoubleText,
+            actualDouble, actualDoubleText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+      if (!expectedDoubleIsNaN && actualDoubleIsNaN)
+      {
+         DOUBLES_ARE_NEAR_ThrowAnomaly(
+            expectedDouble, expectedDoubleText,
+            actualDouble, actualDoubleText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
       const double difference = expectedDouble - actualDouble;
       const double absoluteDifference = std::abs(difference);
       if (absoluteDifference >= 1e-12)
