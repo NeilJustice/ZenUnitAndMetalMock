@@ -2808,6 +2808,26 @@ namespace ZenUnit
       float actualFloat, const char* actualFloatText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
+      const bool expectedFloatIsNaN = isnan(expectedFloat);
+      const bool actualFloatIsNaN = isnan(actualFloat);
+      if (expectedFloatIsNaN && actualFloatIsNaN)
+      {
+         return;
+      }
+      if (expectedFloatIsNaN && !actualFloatIsNaN)
+      {
+         FLOATS_ARE_NEAR_ThrowAnomaly(
+            expectedFloat, expectedFloatText,
+            actualFloat, actualFloatText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
+      if (!expectedFloatIsNaN && actualFloatIsNaN)
+      {
+         FLOATS_ARE_NEAR_ThrowAnomaly(
+            expectedFloat, expectedFloatText,
+            actualFloat, actualFloatText,
+            filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
+      }
       const float difference = expectedFloat - actualFloat;
       const float absoluteDifference = std::abs(difference);
       if (absoluteDifference >= 1e-5)
