@@ -55,7 +55,8 @@ STARTUP
 
 TEST(DefaultConstructor_NewsComponentB)
 {
-   DELETE_TO_ASSERT_NEWED(_componentA._componentB);
+   ComponentA componentA;
+   DELETE_TO_ASSERT_NEWED(componentA._componentB);
 }
 
 TEST(Act_CallsComponentBVirtualFunctions)
