@@ -28,6 +28,7 @@ namespace ZenUnit
 #include <cfloat> // FLT_MAX and DBL_MAX
 #include <climits> // ULLONG_MAX
 #include <cxxabi.h> // abi::__cxa_demangle()
+#include <math.h> // isnan()
 #include <pwd.h> // getpwuid()
 #include <string.h> // strcasecmp(), strcmp(), strlen(), strstr()
 #include <unistd.h> // isatty(), geteuid(), gethostname()
