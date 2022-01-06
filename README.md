@@ -93,7 +93,6 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
    * [Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-scan-zenunit-and-metalmocks-cicd-python-code)
    * [How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
    * [How to build and run ZenUnit and MetalMock unit tests on Windows and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
-   * [ZenUnit features roadmap](#zenunit-features-roadmap)
    * [Acknowledgments](#acknowledgments)
 
 ### ZenUnit command line usage
@@ -1075,13 +1074,6 @@ cmake --build . --target install
 ZenUnit.h and MetalMock.h installed on Windows:
 
 ![Installed ZenUnit.h and MetalMock.h on Windows](Screenshots/Windows/ZenUnitDotHAndMetalMockDotHOnWindows.png)
-
-### ZenUnit features roadmap
-
-|Future ZenUnit feature|Implementation status as of 11/3/2021|
-|----------------------|-------------------------------------|
-|Floating point assertions based on units in the last place|Awaiting implementation|
-|`--parallel` for parallel running of test classes|Awaiting implementation|
 
 ### Acknowledgments
 
