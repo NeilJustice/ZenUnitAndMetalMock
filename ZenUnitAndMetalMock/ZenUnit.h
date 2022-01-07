@@ -1359,7 +1359,7 @@ namespace ZenUnit
    {
    private:
       template<typename U>
-      static auto SFINAE(std::ostream& os, const U& value) -> decltype(ZenUnit::Printer<U>::Print(os, value));
+      static auto SFINAE(std::ostream& os, const U& value) -> decltype(Printer<U>::Print(os, value));
       template<typename U>
       static std::false_type SFINAE(...);
    public:
@@ -1484,7 +1484,7 @@ namespace ZenUnit
          std::ostringstream oss;
          if constexpr (has_ZenUnitPrinter<T>::value)
          {
-            ZenUnit::Printer<T>::Print(oss, value);
+            Printer<T>::Print(oss, value);
          }
          else if constexpr (std::is_same_v<T, std::nullptr_t>)
          {
@@ -2588,8 +2588,8 @@ namespace ZenUnit
          using DecayedNotExpectedType = typename std::decay<NotExpectedType>::type;
          using DecayedActualType = typename std::decay<ActualType>::type;
          std::conditional<std::is_same<DecayedNotExpectedType, DecayedActualType>::value,
-            ZenUnit::Equalizer<DecayedNotExpectedType>,
-            ZenUnit::TwoTypeEqualizer<DecayedNotExpectedType, DecayedActualType>>
+            Equalizer<DecayedNotExpectedType>,
+            TwoTypeEqualizer<DecayedNotExpectedType, DecayedActualType>>
             ::type::AssertEqual(notExpectedValue, actualValue);
       }
       catch (const EqualizerException&)
@@ -2980,7 +2980,7 @@ namespace ZenUnit
 
    NOINLINE inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
       const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
-      FilePathLineNumber filePathLineNumber, const ZenUnit::Anomaly& becauseAnomaly)
+      FilePathLineNumber filePathLineNumber, const Anomaly& becauseAnomaly)
    {
       const Anomaly anomaly("ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL", typeName, fieldName, arbitraryNonDefaultFieldValueText, "", becauseAnomaly,
          "N/A", "N/A", ExpectedActualFormat::Fields, filePathLineNumber);
@@ -3030,7 +3030,7 @@ namespace ZenUnit
       {
          ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject);
       }
-      catch (const ZenUnit::Anomaly& anomaly)
+      catch (const Anomaly& anomaly)
       {
          const char* const anomalyExceptionMessage = anomaly.what();
          try
@@ -3039,7 +3039,7 @@ namespace ZenUnit
             (actualZenUnitEqualizerTestObject.*fieldMemberPointer) = randomNonDefaultFieldValue;
             ARE_EQUAL(expectedZenUnitEqualizerTestObject, actualZenUnitEqualizerTestObject);
          }
-         catch (const ZenUnit::Anomaly& becauseAnomaly)
+         catch (const Anomaly& becauseAnomaly)
          {
             ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
                typeName, fieldName, randomNonDefaultFieldValueText, filePathLineNumber, becauseAnomaly);
@@ -3493,7 +3493,7 @@ namespace ZenUnit
       {
          ARE_EQUAL(defaultValueForType, value);
       }
-      catch (const ZenUnit::Anomaly&)
+      catch (const Anomaly&)
       {
          IS_DEFAULT_VALUE_ThrowAnomaly(value, valueText, defaultValueForType,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
@@ -3521,7 +3521,7 @@ namespace ZenUnit
       {
          ARE_EQUAL(defaultValueForType, value);
       }
-      catch (const ZenUnit::Anomaly&)
+      catch (const Anomaly&)
       {
          return;
       }
@@ -5805,7 +5805,7 @@ Fatal Windows C++ Runtime Assertion
 
       void FailFastDueToDotDotDotException(const ZenUnitArgs& zenUnitArgs, TestPhase testPhase) const
       {
-         ZenUnitTestRunner* const zenUnitTestRunner = ZenUnit::ZenUnitTestRunner::Instance();
+         ZenUnitTestRunner* const zenUnitTestRunner = ZenUnitTestRunner::Instance();
          const std::string testRunDurationInSeconds = _testRunStopwatchStopper->StopTestRunStopwatchAndGetElapsedSeconds(zenUnitTestRunner);
          _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
 
@@ -7192,9 +7192,9 @@ Fatal Windows C++ Runtime Assertion
    {
       friend class TestClassTests;
    private:
-      static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& GetTestNXNPmfTokenToTestMap()
+      static std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& GetTestNXNPmfTokenToTestMap()
       {
-         static std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>> testNXNPmfTokenToTestPointer;
+         static std::unordered_map<const PmfToken*, std::unique_ptr<Test>> testNXNPmfTokenToTestPointer;
          return testNXNPmfTokenToTestPointer;
       }
 
@@ -7203,7 +7203,7 @@ Fatal Windows C++ Runtime Assertion
          if (!DerivedTestClass::ZenUnit_allNXNTestsHaveBeenRegistered)
          {
             std::unique_ptr<Test> newTestNXNPointer = testCreatingFunction();
-            std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
+            std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
             const bool didEmplaceTestNXNPointer = testNXNPmfTokenToTestPointer.emplace(pmfToken, std::move(newTestNXNPointer)).second;
             ZENUNIT_ASSERT(didEmplaceTestNXNPointer);
          }
@@ -7218,10 +7218,10 @@ Fatal Windows C++ Runtime Assertion
          DerivedTestClass::ZenUnit_allNXNTestsHaveBeenRegistered = true;
       }
 
-      static const std::unique_ptr<ZenUnit::Test>* GetTestPointerForTestNXNPmfToken(
+      static const std::unique_ptr<Test>* GetTestPointerForTestNXNPmfToken(
          const PmfToken* pmfToken, const Console* console, const ZenUnitTestRunner* zenUnitTestRunner, const ExitCaller* exitCaller)
       {
-         const std::unordered_map<const ZenUnit::PmfToken*, std::unique_ptr<ZenUnit::Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
+         const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
          const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter = testNXNPmfTokenToTestPointer.find(pmfToken);
          if (findIter == testNXNPmfTokenToTestPointer.end())
          {
@@ -7258,7 +7258,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test1X1<DerivedTestClass, Arg1Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test1X1<DerivedTestClass, Arg1Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, test1X1Function, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7272,7 +7272,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test2X2<DerivedTestClass, Arg1Type, Arg2Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test2X2<DerivedTestClass, Arg1Type, Arg2Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7286,7 +7286,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test3X3<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test3X3<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7300,7 +7300,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test4X4<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test4X4<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7314,7 +7314,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test5X5<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test5X5<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7328,7 +7328,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test6X6<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test6X6<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7342,7 +7342,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test7X7<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test7X7<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7356,7 +7356,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test8X8<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test8X8<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...); });
       }
@@ -7369,7 +7369,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test9X9<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test9X9<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7383,7 +7383,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          return RegisterTestNXN(pmfToken, [&]
          {
-            return std::make_unique<ZenUnit::Test10X10<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TestCaseArgTypes...>>(
+            return std::make_unique<Test10X10<DerivedTestClass, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, Arg8Type, Arg9Type, Arg10Type, TestCaseArgTypes...>>(
                DerivedTestClass::ZenUnit_testClassName, testName, nxnTestFunction, testCaseArgsText,
                std::forward<TestCaseArgTypes>(testCaseArgs)...);
          });
@@ -7796,7 +7796,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       std::tuple<TupleTypes...> randomTuple;
       CallFunctionOnEachMutableTupleElement(randomTuple, [](auto tupleElementReferenceWrapper)
       {
-         tupleElementReferenceWrapper.get() = ZenUnit::Random<std::remove_reference_t<decltype(tupleElementReferenceWrapper.get())>>();
+         tupleElementReferenceWrapper.get() = Random<std::remove_reference_t<decltype(tupleElementReferenceWrapper.get())>>();
       }, GenerateIndexSequence<sizeof...(TupleTypes)>());
       return randomTuple;
    }
@@ -7830,7 +7830,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    std::array<T, Size> RandomStdArray()
    {
       std::array<T, Size> randomStdArray{};
-      std::generate_n(randomStdArray.begin(), Size, []() { return ZenUnit::Random<T>(); });
+      std::generate_n(randomStdArray.begin(), Size, []() { return Random<T>(); });
       return randomStdArray;
    }
 
@@ -7841,8 +7841,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       std::map<KeyType, ValueType> randomOrderedMap;
       for (size_t i = 0; i < numberOfIterations; ++i)
       {
-         KeyType randomKey = ZenUnit::Random<KeyType>();
-         ValueType randomValue = ZenUnit::Random<ValueType>();
+         KeyType randomKey = Random<KeyType>();
+         ValueType randomValue = Random<ValueType>();
          const auto emplaceResult = randomOrderedMap.emplace(std::move(randomKey), std::move(randomValue));
          const bool didEmplaceNewKeyIntoMap = emplaceResult.second;
          if (!didEmplaceNewKeyIntoMap)
@@ -7875,8 +7875,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       std::unordered_map<KeyType, ValueType> randomUnorderedMap;
       for (size_t i = 0; i < numberOfIterations; ++i)
       {
-         KeyType randomKey = ZenUnit::Random<KeyType>();
-         ValueType randomValue = ZenUnit::Random<ValueType>();
+         KeyType randomKey = Random<KeyType>();
+         ValueType randomValue = Random<ValueType>();
          const auto emplaceResult = randomUnorderedMap.emplace(std::move(randomKey), std::move(randomValue));
          const bool didEmplaceNewKeyIntoMap = emplaceResult.second;
          if (!didEmplaceNewKeyIntoMap)
@@ -8182,12 +8182,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline char RandomLetter()
    {
-      const bool randomBool = ZenUnit::Random<bool>();
+      const bool randomBool = Random<bool>();
       if (randomBool)
       {
          ZENUNIT_ASSERT(65 == static_cast<int>('A'));
          ZENUNIT_ASSERT(90 == static_cast<int>('Z'));
-         const int randomUppercaseLetterInt = ZenUnit::RandomBetween<int>(65, 90);
+         const int randomUppercaseLetterInt = RandomBetween<int>(65, 90);
          const char randomUppercaseLetter = static_cast<char>(randomUppercaseLetterInt);
          return randomUppercaseLetter;
       }
@@ -8195,7 +8195,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          ZENUNIT_ASSERT(97 == static_cast<int>('a'));
          ZENUNIT_ASSERT(122 == static_cast<int>('z'));
-         const int randomLowercaseLetterInt = ZenUnit::RandomBetween<int>(97, 122);
+         const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
          const char randomLowercaseLetter = static_cast<char>(randomLowercaseLetterInt);
          return randomLowercaseLetter;
       }
@@ -8203,12 +8203,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline wchar_t RandomWideLetter()
    {
-      const bool randomBool = ZenUnit::Random<bool>();
+      const bool randomBool = Random<bool>();
       if (randomBool)
       {
          ZENUNIT_ASSERT(65 == static_cast<int>(L'A'));
          ZENUNIT_ASSERT(90 == static_cast<int>(L'Z'));
-         const int randomUppercaseLetterInt = ZenUnit::RandomBetween<int>(65, 90);
+         const int randomUppercaseLetterInt = RandomBetween<int>(65, 90);
          const wchar_t randomUppercaseWideLetter = static_cast<wchar_t>(randomUppercaseLetterInt);
          return randomUppercaseWideLetter;
       }
@@ -8216,7 +8216,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          ZENUNIT_ASSERT(97 == static_cast<int>(L'a'));
          ZENUNIT_ASSERT(122 == static_cast<int>(L'z'));
-         const int randomLowercaseLetterInt = ZenUnit::RandomBetween<int>(97, 122);
+         const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
          const wchar_t randomLowercaseWideLetter = static_cast<wchar_t>(randomLowercaseLetterInt);
          return randomLowercaseWideLetter;
       }
@@ -8225,14 +8225,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    inline std::string RandomStringWithLength(size_t length)
    {
       std::string randomStringWithLength(length, 0);
-      std::generate(std::begin(randomStringWithLength), std::end(randomStringWithLength), []() { return ZenUnit::RandomLetter(); });
+      std::generate(std::begin(randomStringWithLength), std::end(randomStringWithLength), []() { return RandomLetter(); });
       return randomStringWithLength;
    }
 
    inline std::wstring RandomWideStringWithLength(size_t length)
    {
       std::wstring randomWideStringWithLength(length, 0);
-      std::generate(std::begin(randomWideStringWithLength), std::end(randomWideStringWithLength), []() { return ZenUnit::RandomWideLetter(); });
+      std::generate(std::begin(randomWideStringWithLength), std::end(randomWideStringWithLength), []() { return RandomWideLetter(); });
       return randomWideStringWithLength;
    }
 
@@ -8248,7 +8248,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       const std::string randomLeafFileOrFolderName = Random<std::string>();
       randomPathStringBuilder << randomLeafFileOrFolderName;
-      const bool hasFileExtension = ZenUnit::Random<bool>();
+      const bool hasFileExtension = Random<bool>();
       if (hasFileExtension)
       {
          randomPathStringBuilder << ".ext";
