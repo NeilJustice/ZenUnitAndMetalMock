@@ -12,14 +12,14 @@ namespace ZenUnit
 
    TEST(IS_LESS_THAN_ValueIsLessThanComparisonValue_DoesNotThrowException)
    {
-      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
+      const T comparisonValue = ZenUnit::RandomNotEqualTo<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       IS_LESS_THAN(value, comparisonValue);
    }
 
    TEST(IS_LESS_THAN_ValueIsEqualToComparisonValue_ThrowsAnomaly)
    {
-      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::min());
+      const T comparisonValue = ZenUnit::RandomNotEqualTo<T>(numeric_limits<T>::min());
       const T value = comparisonValue;
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
 "  Failed: IS_LESS_THAN(value, comparisonValue)",
@@ -31,7 +31,7 @@ namespace ZenUnit
 
    TEST(IS_LESS_THAN_ValueIsGreaterThanComparisonValue_ThrowsAnomaly)
    {
-      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
+      const T comparisonValue = ZenUnit::RandomNotEqualTo<T>(numeric_limits<T>::max());
       const T value = ZenUnit::RandomGreaterThan<T>(comparisonValue);
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
 "  Failed: IS_LESS_THAN(value, comparisonValue)",
@@ -43,7 +43,7 @@ namespace ZenUnit
 
    TEST(IS_LESS_THAN_ValueIsGreaterThanComparisonValue_ThrowsAnomaly__MessagesTestCase)
    {
-      const T comparisonValue = ZenUnit::RandomNotEqualToValue<T>(numeric_limits<T>::max());
+      const T comparisonValue = ZenUnit::RandomNotEqualTo<T>(numeric_limits<T>::max());
       const T value = ZenUnit::RandomGreaterThan<T>(comparisonValue);
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();

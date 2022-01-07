@@ -7740,7 +7740,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T RandomNotEqualToValue(const T& notEqualValue)
+   T RandomNotEqualTo(const T& notEqualValue)
    {
       T randomValue = Random<T>();
       while (randomValue == notEqualValue)

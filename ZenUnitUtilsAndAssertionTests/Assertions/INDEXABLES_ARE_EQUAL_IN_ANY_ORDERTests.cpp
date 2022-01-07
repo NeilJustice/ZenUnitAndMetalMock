@@ -74,7 +74,7 @@ TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInDifferentOrd
 TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomaly__TestCase1stElementNotEqual)
 {
    const T element1 = ZenUnit::Random<T>();
-   const T element2 = ZenUnit::RandomNotEqualToValue<T>(element1);
+   const T element2 = ZenUnit::RandomNotEqualTo<T>(element1);
    const IndexableType<T> expectedElements = { element1 };
    const IndexableType<T> actualElements = { element2 };
    THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements), ZenUnit::Anomaly,
@@ -88,7 +88,7 @@ File.cpp(1))");
 TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomaly__TestCase2ndElementNotEqual)
 {
    const T element1 = ZenUnit::Random<T>();
-   const T element2 = ZenUnit::RandomNotEqualToValue<T>(element1);
+   const T element2 = ZenUnit::RandomNotEqualTo<T>(element1);
    const IndexableType<T> expectedElements = { element1, element2 };
    const IndexableType<T> actualElements = { element1, element1 };
    THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements), ZenUnit::Anomaly,
@@ -102,7 +102,7 @@ File.cpp(1))");
 TEST(ExpectedAndActualElementsHaveTheSameSizes_AllExpectedElementsAreContainedInActualElements_ActualElementsContainsElementsNotContainedInExpectedElements_ThrowsAnomaly)
 {
    const T element1 = ZenUnit::Random<T>();
-   const T element2 = ZenUnit::RandomNotEqualToValue<T>(element1);
+   const T element2 = ZenUnit::RandomNotEqualTo<T>(element1);
    const IndexableType<T> expectedElements = { element1, element1 };
    const IndexableType<T> actualElements = { element1, element2 };
    THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements), ZenUnit::Anomaly,

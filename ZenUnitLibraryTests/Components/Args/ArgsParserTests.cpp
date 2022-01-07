@@ -352,7 +352,7 @@ namespace ZenUnit
 
    TEST(GetSecondsSince1970RandomSeedIfNotAlreadySetByUser_RandomSeedCommandLineArgumentIsNotUnsignedMaxValue_ReturnsRandomSeedPotentiallySetByUser)
    {
-      const unsigned randomSeedCommandLineArgument = ZenUnit::RandomNotEqualToValue<unsigned>(numeric_limits<unsigned>::max());
+      const unsigned randomSeedCommandLineArgument = ZenUnit::RandomNotEqualTo<unsigned>(numeric_limits<unsigned>::max());
       //
       const unsigned randomSeed = _argsParser.GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(randomSeedCommandLineArgument);
       //

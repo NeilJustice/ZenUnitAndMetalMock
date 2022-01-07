@@ -13,7 +13,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_TEST_SETUP(TestNameFilter);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testClassNamePattern, ZenUnit::Random<string>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testNamePattern, ZenUnit::Random<string>());
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testCaseNumber, ZenUnit::RandomNotEqualToValue<size_t>(numeric_limits<size_t>::max()));
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestNameFilter, testCaseNumber, ZenUnit::RandomNotEqualTo<size_t>(numeric_limits<size_t>::max()));
    }
 
    TEST(TestableRandomTestNameFilter_ReturnsTestNameFilterWithAllRandomFields)

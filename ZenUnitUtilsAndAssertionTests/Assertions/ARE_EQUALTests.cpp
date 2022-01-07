@@ -222,7 +222,7 @@ namespace ZenUnit
    TEST(ARE_EQUAL_int_unsigned_ExpectedIntIs0OrPositiveAndDoesNotEqualActualValue_ThrowsAnomaly)
    {
       const int expectedInt = ZenUnit::RandomBetween<int>(0, 123);
-      const unsigned actualUnsigned = ZenUnit::RandomNotEqualToValue<unsigned>(static_cast<unsigned>(expectedInt));
+      const unsigned actualUnsigned = ZenUnit::RandomNotEqualTo<unsigned>(static_cast<unsigned>(expectedInt));
       THROWS_EXCEPTION(ARE_EQUAL(expectedInt, actualUnsigned),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(expectedInt, actualUnsigned)",
@@ -251,7 +251,7 @@ namespace ZenUnit
    TEST(ARE_EQUAL_int_unsignedlonglong_ExpectedIntIs0OrPositiveAndDoesNotEqualActualValue_ThrowsAnomaly)
    {
       const int expectedInt = ZenUnit::RandomBetween<int>(0, 123);
-      const unsigned long long actualUnsignedLongLong = ZenUnit::RandomNotEqualToValue<unsigned long long>(static_cast<unsigned long long>(expectedInt));
+      const unsigned long long actualUnsignedLongLong = ZenUnit::RandomNotEqualTo<unsigned long long>(static_cast<unsigned long long>(expectedInt));
       THROWS_EXCEPTION(ARE_EQUAL(expectedInt, actualUnsignedLongLong),
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARE_EQUAL(expectedInt, actualUnsignedLongLong)",

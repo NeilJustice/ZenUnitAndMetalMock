@@ -28,7 +28,7 @@ namespace ZenUnit
       Struct expectedStruct;
       expectedStruct.intField = ZenUnit::Random<int>();
       Struct actualStruct;
-      actualStruct.intField = ZenUnit::RandomNotEqualToValue(expectedStruct.intField);
+      actualStruct.intField = ZenUnit::RandomNotEqualTo(expectedStruct.intField);
       THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expectedStruct, actualStruct, intField), Anomaly, TestUtil::NewlineConcat("",
          "  Failed: ARE_EQUAL(expectedStruct.intField, actualStruct.intField)",
          "Expected: " + to_string(expectedStruct.intField),
@@ -58,7 +58,7 @@ namespace ZenUnit
       Struct expected;
       expected.stringField = ZenUnit::Random<string>();
       Struct actual;
-      actual.stringField = ZenUnit::RandomNotEqualToValue(expected.stringField);
+      actual.stringField = ZenUnit::RandomNotEqualTo(expected.stringField);
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expected, actual, stringField, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",

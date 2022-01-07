@@ -142,7 +142,7 @@ namespace ZenUnit
    {
       _consoleSelfMocked.WriteNewLineMock.Expect();
       const size_t value1 = ZenUnit::Random<size_t>();
-      const size_t value2 = ZenUnit::RandomNotEqualToValue<size_t>(value1);
+      const size_t value2 = ZenUnit::RandomNotEqualTo<size_t>(value1);
       //
       _consoleSelfMocked.WriteNewLineIfValuesAreNotEqual(value1, value2);
       //

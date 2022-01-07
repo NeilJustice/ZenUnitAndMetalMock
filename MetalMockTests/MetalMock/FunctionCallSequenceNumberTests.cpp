@@ -23,7 +23,7 @@ TEST(EqualizerAssertEqual_FunctionCallSequenceNumberAndSignatureValuesAreNotEqua
    expectedFunctionCallSequenceNumber.sequenceNumber = ZenUnit::Random<unsigned long long>();
 
    MetalMock::FunctionCallSequenceNumber actualFunctionCallSequenceNumber{};
-   actualFunctionCallSequenceNumber.sequenceNumber = ZenUnit::RandomNotEqualToValue<unsigned long long>(expectedFunctionCallSequenceNumber.sequenceNumber);
+   actualFunctionCallSequenceNumber.sequenceNumber = ZenUnit::RandomNotEqualTo<unsigned long long>(expectedFunctionCallSequenceNumber.sequenceNumber);
 
    THROWS_EXCEPTION(ZenUnit::Equalizer<MetalMock::FunctionCallSequenceNumber>::AssertEqual(
       expectedFunctionCallSequenceNumber, actualFunctionCallSequenceNumber),

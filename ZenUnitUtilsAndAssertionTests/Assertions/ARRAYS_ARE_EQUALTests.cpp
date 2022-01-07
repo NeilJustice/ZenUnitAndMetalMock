@@ -31,7 +31,7 @@ namespace ZenUnit
    {
       const string typeName = *Type::GetName<T>();
       const T randomElement1 = ZenUnit::Random<T>();
-      const T randomElement2 = ZenUnit::RandomNotEqualToValue<T>(randomElement1);
+      const T randomElement2 = ZenUnit::RandomNotEqualTo<T>(randomElement1);
       const T expectedArray[1] { randomElement1 };
       const T actualArray[1] { randomElement2 };
       //
@@ -61,7 +61,7 @@ namespace ZenUnit
    {
       const string typeName = *Type::GetName<T>();
       const T randomElement1 = ZenUnit::Random<T>();
-      const T randomElement2 = ZenUnit::RandomNotEqualToValue<T>(randomElement1);
+      const T randomElement2 = ZenUnit::RandomNotEqualTo<T>(randomElement1);
       const T expectedArray[2] { randomElement1, randomElement1 };
       const T actualArray[2] { randomElement1, randomElement2 };
       //

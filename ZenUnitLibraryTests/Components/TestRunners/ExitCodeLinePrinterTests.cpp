@@ -53,7 +53,7 @@ namespace ZenUnit
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      const int zenUnitExitCode = ZenUnit::RandomNotEqualToValue<int>(0);
+      const int zenUnitExitCode = ZenUnit::RandomNotEqualTo<int>(0);
       //
       _exitCodeLinePrinter.PrintExitCodeLine(zenUnitExitCode, false);
       //
