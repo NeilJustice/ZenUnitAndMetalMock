@@ -1083,7 +1083,7 @@ MetalMockObject.ThrowExceptionWhenCalled<T>())");
       {
          if (_returnValues.empty())
          {
-            throw MetalMock::ReturnValueMustBeSpecifiedException(_metalMockedFunctionSignature);
+            throw ReturnValueMustBeSpecifiedException(_metalMockedFunctionSignature);
          }
          const DecayedFunctionReturnType& nextReturnValue =
             _returnValueIndex < _returnValues.size() ? _returnValues[_returnValueIndex++] : _returnValues.back();
@@ -1868,12 +1868,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
    template<typename ArgType>
    bool operator==(
-      const MetalMock::OneArgumentFunctionCallReference<ArgType>& expectedOneArgumentFunctionCallReference,
-      const MetalMock::OneArgumentFunctionCallReference<ArgType>& actualOneArgumentFunctionCallReference)
+      const OneArgumentFunctionCallReference<ArgType>& expectedOneArgumentFunctionCallReference,
+      const OneArgumentFunctionCallReference<ArgType>& actualOneArgumentFunctionCallReference)
    {
       try
       {
-         ZenUnit::Equalizer<MetalMock::OneArgumentFunctionCallReference<ArgType>>::AssertEqual(
+         ZenUnit::Equalizer<OneArgumentFunctionCallReference<ArgType>>::AssertEqual(
             expectedOneArgumentFunctionCallReference, actualOneArgumentFunctionCallReference);
       }
       catch (const ZenUnit::Anomaly&)
@@ -2104,12 +2104,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
    template<typename Arg1Type, typename Arg2Type>
    bool operator==(
-      const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCallReference,
-      const MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCallReference)
+      const TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& expectedTwoArgumentFunctionCallReference,
+      const TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& actualTwoArgumentFunctionCallReference)
    {
       try
       {
-         ZenUnit::Equalizer<MetalMock::TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>::AssertEqual(
+         ZenUnit::Equalizer<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>::AssertEqual(
             expectedTwoArgumentFunctionCallReference, actualTwoArgumentFunctionCallReference);
       }
       catch (const ZenUnit::Anomaly&)
@@ -2335,12 +2335,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type>
    bool operator==(
-      const MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCallReference,
-      const MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCallReference)
+      const ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& expectedThreeArgumentFunctionCallReference,
+      const ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& actualThreeArgumentFunctionCallReference)
    {
       try
       {
-         ZenUnit::Equalizer<MetalMock::ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>::AssertEqual(
+         ZenUnit::Equalizer<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>::AssertEqual(
             expectedThreeArgumentFunctionCallReference, actualThreeArgumentFunctionCallReference);
       }
       catch (const ZenUnit::Anomaly&)
@@ -2579,12 +2579,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
    bool operator==(
-      const MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCallReference,
-      const MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCallReference)
+      const FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& expectedFourArgumentFunctionCallReference,
+      const FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& actualFourArgumentFunctionCallReference)
    {
       try
       {
-         ZenUnit::Equalizer<MetalMock::FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>::AssertEqual(
+         ZenUnit::Equalizer<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>::AssertEqual(
             expectedFourArgumentFunctionCallReference, actualFourArgumentFunctionCallReference);
       }
       catch (const ZenUnit::Anomaly&)
@@ -2833,12 +2833,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
    bool operator==(
-      const MetalMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCallReference,
-      const MetalMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCallReference)
+      const FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& expectedFiveArgumentFunctionCallReference,
+      const FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>& actualFiveArgumentFunctionCallReference)
    {
       try
       {
-         ZenUnit::Equalizer<MetalMock::FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>::AssertEqual(
+         ZenUnit::Equalizer<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>::AssertEqual(
             expectedFiveArgumentFunctionCallReference, actualFiveArgumentFunctionCallReference);
       }
       catch (const ZenUnit::Anomaly&)
@@ -3081,12 +3081,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
    bool operator==(
-      const MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCallReference,
-      const MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCallReference)
+      const SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& expectedSixArgumentFunctionCallReference,
+      const SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& actualSixArgumentFunctionCallReference)
    {
       try
       {
-         ZenUnit::Equalizer<MetalMock::SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>::AssertEqual(
+         ZenUnit::Equalizer<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>::AssertEqual(
             expectedSixArgumentFunctionCallReference, actualSixArgumentFunctionCallReference);
       }
       catch (const ZenUnit::Anomaly&)
@@ -3326,12 +3326,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
 
    template<typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
    bool operator==(
-      const MetalMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCallReference,
-      const MetalMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCallReference)
+      const SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& expectedSevenArgumentFunctionCallReference,
+      const SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>& actualSevenArgumentFunctionCallReference)
    {
       try
       {
-         ZenUnit::Equalizer<MetalMock::SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>::AssertEqual(
+         ZenUnit::Equalizer<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>::AssertEqual(
             expectedSevenArgumentFunctionCallReference, actualSevenArgumentFunctionCallReference);
       }
       catch (const ZenUnit::Anomaly&)
