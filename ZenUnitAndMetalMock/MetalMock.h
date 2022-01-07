@@ -6,6 +6,7 @@
 #include "ZenUnitAndMetalMock/ZenUnit.h"
 #include <atomic>
 #include <deque>
+#include <span>
 
 namespace Metal
 {
