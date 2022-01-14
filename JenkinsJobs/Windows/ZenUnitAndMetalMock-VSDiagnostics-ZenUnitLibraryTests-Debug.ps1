@@ -1,5 +1,5 @@
 $env:PYTHONPATH="."
-python.exe ZenUnitDevOpsPython\BuildAndTestZenUnitAndMetalMock.py `
+python.exe -u ZenUnitDevOpsPython\BuildAndTestZenUnitAndMetalMock.py `
    --cmake-generator="Visual Studio 16 2019" `
    --cmake-build-type="Debug" `
    --cmake-definitions=""
@@ -13,3 +13,4 @@ if ($LastExitCode -ne 0) { exit $LastExitCode }
 
 sleep 20
 VSDiagnostics.exe stop 1 /output:JenkinsJobs\Windows\ZenUnitLibraryTests-Debug.diagsession
+exit $LastExitCode

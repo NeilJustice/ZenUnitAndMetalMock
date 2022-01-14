@@ -1,3 +1,3 @@
 $env:PYTHONPATH="."
-python.exe ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py
+python.exe -u ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py
 exit $LastExitCode
