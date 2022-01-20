@@ -17,14 +17,14 @@ jobs:
 
       - uses: actions/setup-python@v1
         with:
-          python-version: 3.9
+          python-version: '3.10'
 
       - uses: actions/cache@v2
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
           
-      - name: Install apt packages
+      - name: Install lld and ninja-build
         run: sudo apt-get install ninja-build
         
       - name: Install lcov if g++-10 Release
@@ -68,6 +68,9 @@ jobs:
           CXX: "/usr/bin/${{ matrix.cxx }}"
           PYTHONPATH: .
         if: ${{ matrix.cxx == 'g++-10' && matrix.cmake_build_type == 'Release' }}            
+
+      - name: Print .comment section of binary ZenUnitLibraryTests to confirm it was linked with LLD
+        run: readelf --string-dump .comment "${{matrix.cmake_build_type}}/ZenUnitLibraryTests/ZenUnitLibraryTests"
 
       - name: Install and run lcov 1.15 then upload to Codecov.io if g++-10 Release
         run: |
