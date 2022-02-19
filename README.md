@@ -1,6 +1,6 @@
 # 🧪 ZenUnit & MetalMock ⚗️
 
-[![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B20) ![MIT](https://img.shields.io/badge/license-MIT-green) ![GitHub last commit](https://img.shields.io/github/last-commit/NeilJustice/ZenUnitAndMetalMock)
+[![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B20) ![MIT](https://img.shields.io/badge/license-MIT-green)
 
 |Build Type|Build Status|
 |----------|------------|
