@@ -1067,7 +1067,7 @@ ZenUnit.h and MetalMock.h installed on Linux:
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
 cd ZenUnitAndMetalMock
-cmake . -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
+cmake . -G"Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 cmake --build . --target install
 ```
 

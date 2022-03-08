@@ -48,6 +48,6 @@ if __name__ == "__main__": # pragma nocover
    sys.exit(main())
 
 # Example command line arguments:
-# --cmake-generator="Visual Studio 16 2019" --cmake-build-type=Debug --cmake-definitions=""
+# --cmake-generator="Visual Studio 17 2022" --cmake-build-type=Debug --cmake-definitions=""
 # Working directory:
 # D:\Code\ZenUnitAndMetalMock
