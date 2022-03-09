@@ -2,6 +2,8 @@ accessForwarded:*
 danglingTemporaryLifetime:*
 missingReturn:*
 noExplicitConstructor:*
+nullPointer:*
+passedByValue:*
 preprocessorErrorDirective:*
 selfInitialization:*
 syntaxError:*
