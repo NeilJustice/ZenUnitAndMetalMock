@@ -1,7 +1,7 @@
 shallow_clone: true
 
 image:
-    - Visual Studio 2019
+    - Visual Studio 2022
 
 environment:
    matrix:
