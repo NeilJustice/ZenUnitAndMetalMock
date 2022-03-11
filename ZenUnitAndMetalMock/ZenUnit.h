@@ -7862,7 +7862,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename KeyType, typename ValueType>
-   std::map<KeyType, ValueType> RandomNonEmptyMap()
+   std::map<KeyType, ValueType> RandomNonEmptyOrderedMap()
    {
       const std::size_t randomOrderedMapSize = RandomBetween<size_t>(1, 3);
       return RandomOrderedMapWithSize<KeyType, ValueType>(randomOrderedMapSize);

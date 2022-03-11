@@ -6,7 +6,7 @@ namespace ZenUnit
    TEMPLATE_TESTS(RandomMapTests, KeyType, ValueType)
    FACTS(RandomOrderedMapWithSize_ReturnsAMapWithSpecifiedSize)
    AFACT(RandomOrderedMap_ReturnsAMapWithSizeBetween0And3)
-   AFACT(RandomNonEmptyMap_ReturnsAMapWithSizeBetween1And3)
+   AFACT(RandomNonEmptyOrderedMap_ReturnsAMapWithSizeBetween1And3)
    FACTS(RandomUnorderedMapWithSize_ReturnsAnUnorderedMapWithSpecifiedSize)
    AFACT(RandomUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween0And3)
    AFACT(RandomNonEmptyUnorderedMap_ReturnsAnUnorderedMapWithSizeBetween1And3)
@@ -28,9 +28,9 @@ namespace ZenUnit
       IS_TRUE(randomOrderedMap.size() <= 3);
    }
 
-   TEST(RandomNonEmptyMap_ReturnsAMapWithSizeBetween1And3)
+   TEST(RandomNonEmptyOrderedMap_ReturnsAMapWithSizeBetween1And3)
    {
-      const map<KeyType, ValueType> randomNonEmptyOrderedMap = ZenUnit::RandomNonEmptyMap<KeyType, ValueType>();
+      const map<KeyType, ValueType> randomNonEmptyOrderedMap = ZenUnit::RandomNonEmptyOrderedMap<KeyType, ValueType>();
       IS_TRUE(randomNonEmptyOrderedMap.size() >= 1 && randomNonEmptyOrderedMap.size() <= 3);
    }
 
