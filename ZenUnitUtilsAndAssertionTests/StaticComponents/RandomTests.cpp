@@ -1,21 +1,22 @@
 #include "pch.h"
 #include "ZenUnitUtilsAndAssertionTests/Assertions/REGEX_MATCHES.h"
-#include <numeric> // std::iota
 
 namespace ZenUnit
 {
    TESTS(RandomTests)
-   AFACT(Random_Enum_ReturnsRandomEnumBetween0AndEnumMaxValue)
-   AFACT(RandomNon0_Enum_ReturnsRandomEnumBetween1AndEnumMaxValue)
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
+   AFACT(Random_TIsEnum_ReturnsRandomEnumBetween0AndEnumMaxValue)
    AFACT(Random_TIsAPair_ReturnsRandomPair)
    AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
    AFACT(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
+   AFACT(RandomNon0_TIsEnum_ReturnsRandomEnumBetween1AndEnumMaxValue)
    AFACT(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)
    AFACT(RandomNon0NotEqualTo_NotEqualValueIs0_ThrowsInvalidArgument)
    AFACT(RandomNon0NotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualTo0AndNotEqualToTheExceptValue)
+   AFACT(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeOneValueTestCase)
+   AFACT(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeTwoValueTestCase)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
@@ -37,15 +38,29 @@ namespace ZenUnit
    FACTS(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue)
    EVIDENCE
 
-   TEST(Random_Enum_ReturnsRandomEnumBetween0AndEnumMaxValue)
+   enum struct EnumType
    {
-      enum class EnumType
-      {
-         ZeroValue,
-         OneValue,
-         TwoValue,
-         MaxValue
-      };
+      ZeroValue,
+      OneValue,
+      TwoValue,
+      MaxValue
+   };
+
+   TEST(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
+   {
+      Random<char>();
+      Random<unsigned char>();
+      Random<short>();
+      Random<unsigned short>();
+      Random<int>();
+      Random<unsigned int>();
+      Random<long long>();
+      Random<unsigned long long>();
+      Random<size_t>();
+   }
+
+   TEST(Random_TIsEnum_ReturnsRandomEnumBetween0AndEnumMaxValue)
+   {
       set<EnumType> randomEnumsReturned;
       for (size_t i = 0; i < 1000; ++i)
       {
@@ -59,42 +74,6 @@ namespace ZenUnit
          EnumType::TwoValue
       };
       SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
-   }
-
-   TEST(RandomNon0_Enum_ReturnsRandomEnumBetween1AndEnumMaxValue)
-   {
-      enum class EnumType
-      {
-         ZeroValue,
-         OneValue,
-         TwoValue,
-         MaxValue
-      };
-      set<EnumType> randomEnumsReturned;
-      for (size_t i = 0; i < 1000; ++i)
-      {
-         const EnumType randomNon0Enum = RandomNon0<EnumType>();
-         randomEnumsReturned.insert(randomNon0Enum);
-      }
-      const set<EnumType> expectedRandomEnumsReturned
-      {
-         EnumType::OneValue,
-         EnumType::TwoValue
-      };
-      SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
-   }
-
-   TEST(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
-   {
-      Random<char>();
-      Random<unsigned char>();
-      Random<short>();
-      Random<unsigned short>();
-      Random<int>();
-      Random<unsigned int>();
-      Random<long long>();
-      Random<unsigned long long>();
-      Random<size_t>();
    }
 
    TEST(Random_TIsAPair_ReturnsRandomPair)
@@ -143,6 +122,22 @@ namespace ZenUnit
       ARE_NOT_EQUAL(0, RandomNon0<unsigned int>());
       ARE_NOT_EQUAL(0, RandomNon0<long long>());
       ARE_NOT_EQUAL(0, RandomNon0<unsigned long long>());
+   }
+
+   TEST(RandomNon0_TIsEnum_ReturnsRandomEnumBetween1AndEnumMaxValue)
+   {
+      unordered_set<EnumType> randomEnumsReturned;
+      for (size_t i = 0; i < 1000; ++i)
+      {
+         const EnumType randomNon0Enum = RandomNon0<EnumType>();
+         randomEnumsReturned.insert(randomNon0Enum);
+      }
+      const unordered_set<EnumType> expectedRandomEnumsReturned
+      {
+         EnumType::OneValue,
+         EnumType::TwoValue
+      };
+      SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
    }
 
    TEST(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)
@@ -236,6 +231,38 @@ namespace ZenUnit
          const int returnValue = ZenUnit::RandomNon0NotEqualTo<int>(INT_MAX);
          ARE_NOT_EQUAL(INT_MAX, returnValue);
       }
+   }
+
+   TEST(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeOneValueTestCase)
+   {
+      unordered_set<EnumType> randomEnumsReturned;
+      for (size_t i = 0; i < 1000; ++i)
+      {
+         const EnumType randomEnum = ZenUnit::RandomEnumNotEqualTo<EnumType>(EnumType::OneValue, EnumType::MaxValue);
+         randomEnumsReturned.insert(randomEnum);
+      }
+      const unordered_set<EnumType> expectedRandomEnumsReturned
+      {
+         EnumType::ZeroValue,
+         EnumType::TwoValue
+      };
+      SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
+   }
+
+   TEST(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeTwoValueTestCase)
+   {
+      unordered_set<EnumType> randomEnumsReturned;
+      for (size_t i = 0; i < 1000; ++i)
+      {
+         const EnumType randomEnum = ZenUnit::RandomEnumNotEqualTo<EnumType>(EnumType::TwoValue, EnumType::MaxValue);
+         randomEnumsReturned.insert(randomEnum);
+      }
+      const unordered_set<EnumType> expectedRandomEnumsReturned
+      {
+         EnumType::ZeroValue,
+         EnumType::OneValue
+      };
+      SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
    }
 
    TEST(Random_Float_ReturnsRandomFloat)

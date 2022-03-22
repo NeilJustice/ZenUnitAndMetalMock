@@ -7766,20 +7766,33 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename EnumType>
-   EnumType RandomEnum(EnumType exclusiveMaxValue)
+   EnumType RandomEnum(EnumType exclusiveEnumMaxValue)
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
-      const EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveMaxValue));
+      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(exclusiveEnumMaxValue) - 1LL;
+      const EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveEnumMaxValueAsLongLong));
       return randomEnum;
    }
 
    template<typename EnumType>
-   EnumType RandomNon0Enum(EnumType exclusiveMaxValue)
+   EnumType RandomEnumNotEqualTo(EnumType notEqualEnum, EnumType exclusiveEnumMaxValue)
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveMaxValue = static_cast<long long>(exclusiveMaxValue) - 1LL;
-      const EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveMaxValue));
+      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(exclusiveEnumMaxValue) - 1LL;
+      EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveEnumMaxValueAsLongLong));
+      while (randomEnum == notEqualEnum)
+      {
+         randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveEnumMaxValueAsLongLong));
+      }
+      return randomEnum;
+   }
+
+   template<typename EnumType>
+   EnumType RandomNon0Enum(EnumType exclusiveEnumMaxValue)
+   {
+      using UnderlyingType = typename std::underlying_type<EnumType>::type;
+      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(exclusiveEnumMaxValue) - 1LL;
+      const EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveEnumMaxValueAsLongLong));
       return randomNon0Enum;
    }
 
