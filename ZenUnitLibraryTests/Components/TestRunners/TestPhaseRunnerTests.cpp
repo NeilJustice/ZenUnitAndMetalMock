@@ -341,7 +341,7 @@ namespace ZenUnit
       _consoleMock->WriteLineMock.Expect();
       _testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.Return(_testPhaseSuffix.c_str());
 
-      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
+      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>();
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase([](Test*)
       {
@@ -412,7 +412,7 @@ namespace ZenUnit
 
       _consoleMock->WriteLineAndExitMock.Expect();
 
-      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>(TestPhase::MaxValue);
+      const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>();
 
       const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
@@ -456,7 +456,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.failFast = false;
-      const TestOutcome testOutcome = ZenUnit::RandomEnum<TestOutcome>(TestOutcome::MaxValue);
+      const TestOutcome testOutcome = ZenUnit::RandomEnum<TestOutcome>();
       //
       _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, zenUnitArgs);
    }

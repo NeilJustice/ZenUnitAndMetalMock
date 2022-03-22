@@ -238,7 +238,7 @@ namespace ZenUnit
       unordered_set<EnumType> randomEnumsReturned;
       for (size_t i = 0; i < 1000; ++i)
       {
-         const EnumType randomEnum = ZenUnit::RandomEnumNotEqualTo<EnumType>(EnumType::OneValue, EnumType::MaxValue);
+         const EnumType randomEnum = ZenUnit::RandomEnumNotEqualTo<EnumType>(EnumType::OneValue);
          randomEnumsReturned.insert(randomEnum);
       }
       const unordered_set<EnumType> expectedRandomEnumsReturned
@@ -254,7 +254,7 @@ namespace ZenUnit
       unordered_set<EnumType> randomEnumsReturned;
       for (size_t i = 0; i < 1000; ++i)
       {
-         const EnumType randomEnum = ZenUnit::RandomEnumNotEqualTo<EnumType>(EnumType::TwoValue, EnumType::MaxValue);
+         const EnumType randomEnum = ZenUnit::RandomEnumNotEqualTo<EnumType>(EnumType::TwoValue);
          randomEnumsReturned.insert(randomEnum);
       }
       const unordered_set<EnumType> expectedRandomEnumsReturned

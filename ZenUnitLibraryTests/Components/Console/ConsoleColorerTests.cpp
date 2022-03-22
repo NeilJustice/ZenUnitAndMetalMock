@@ -104,7 +104,7 @@ namespace ZenUnit
 
    TEST(SetTextColor_CodeCoverage)
    {
-      const Color color = ZenUnit::RandomEnum<Color>(Color::MaxValue);
+      const Color color = ZenUnit::RandomEnum<Color>();
       _consoleColorer.SetTextColor(color);
    }
 

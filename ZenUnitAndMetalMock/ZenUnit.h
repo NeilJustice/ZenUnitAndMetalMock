@@ -7766,19 +7766,19 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename EnumType>
-   EnumType RandomEnum(EnumType exclusiveEnumMaxValue)
+   EnumType RandomEnum()
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(exclusiveEnumMaxValue) - 1LL;
+      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(EnumType::MaxValue) - 1LL;
       const EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveEnumMaxValueAsLongLong));
       return randomEnum;
    }
 
    template<typename EnumType>
-   EnumType RandomEnumNotEqualTo(EnumType notEqualEnum, EnumType exclusiveEnumMaxValue)
+   EnumType RandomEnumNotEqualTo(EnumType notEqualEnum)
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(exclusiveEnumMaxValue) - 1LL;
+      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(EnumType::MaxValue) - 1LL;
       EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveEnumMaxValueAsLongLong));
       while (randomEnum == notEqualEnum)
       {
@@ -7788,10 +7788,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename EnumType>
-   EnumType RandomNon0Enum(EnumType exclusiveEnumMaxValue)
+   EnumType RandomNon0Enum()
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(exclusiveEnumMaxValue) - 1LL;
+      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(EnumType::MaxValue) - 1LL;
       const EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveEnumMaxValueAsLongLong));
       return randomNon0Enum;
    }
@@ -7986,7 +7986,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       if constexpr (std::is_enum_v<T>)
       {
-         const T randomEnum = RandomEnum(T::MaxValue);
+         const T randomEnum = RandomEnum<T>();
          return randomEnum;
       }
       else if constexpr (is_pair_v<T>)

@@ -11,7 +11,7 @@ namespace ZenUnit
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(TestPhaseResult);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testPhase, ZenUnit::RandomNon0Enum<TestPhase>(TestPhase::MaxValue));
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testPhase, ZenUnit::RandomNon0Enum<TestPhase>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, testOutcome, TestOutcome::Anomaly);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, elapsedMicroseconds, ZenUnit::RandomNon0<unsigned>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestPhaseResult, anomalyOrException, make_shared<AnomalyOrException>(ZenUnit::Random<AnomalyOrException>()));

@@ -23,7 +23,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, destructorTestPhaseResult, nonDefaultTestPhaseResult);
       TestPhaseResult TestResult::*testPhaseResultMemberFieldPointer = &TestResult::constructorTestPhaseResult;
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, responsibleTestPhaseResultField, testPhaseResultMemberFieldPointer);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, ZenUnit::RandomNon0Enum<TestOutcome>(TestOutcome::MaxValue));
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testOutcome, ZenUnit::RandomNon0Enum<TestOutcome>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testCaseNumber, ZenUnit::RandomNotEqualTo<size_t>(numeric_limits<size_t>::max()));
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, totalTestCases, ZenUnit::RandomNon0<size_t>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, elapsedMicroseconds, ZenUnit::RandomNon0<unsigned>());
