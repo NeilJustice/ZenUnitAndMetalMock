@@ -30,12 +30,12 @@ namespace MetalMock
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
-   AFACT(CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   AFACT(CalledWith_FunctionCalledOnce_ThrowsException)
    AFACT(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
-   AFACT(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   AFACT(CalledWith_FunctionCalledTwiceWithMismatchingArgs_ThrowsAnomaly)
+   AFACT(CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
-   AFACT(CalledWith_CalledTwice_ThrowsException)
    AFACT(CalledOnceWith_CalledTwice_ThrowsException)
    AFACT(CalledAsFollows_CalledTwice_ThrowsException)
    EVIDENCE
@@ -97,9 +97,9 @@ namespace MetalMock
       _metalMock6ArgsTester->CalledNTimes_FunctionNotCalledNTimes_ThrowsException();
    }
 
-   TEST(CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
+   TEST(CalledWith_FunctionCalledOnce_ThrowsException)
    {
-      _metalMock6ArgsTester->CalledWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException();
+      _metalMock6ArgsTester->CalledWith_FunctionCalledOnce_ThrowsException();
    }
 
    TEST(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
@@ -107,9 +107,14 @@ namespace MetalMock
       _metalMock6ArgsTester->CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
    }
 
-   TEST(CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly)
+   TEST(CalledWith_FunctionCalledTwiceWithMismatchingArgs_ThrowsAnomaly)
    {
-      _metalMock6ArgsTester->CalledWith_FunctionCalledOnceWithMismatchingArg_ThrowsAnomaly();
+      _metalMock6ArgsTester->CalledWith_FunctionCalledTwiceWithMismatchingArgs_ThrowsAnomaly();
+   }
+
+   TEST(CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
+   {
+      _metalMock6ArgsTester->CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException();
    }
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
@@ -138,11 +143,6 @@ namespace MetalMock
       void6ArgsFunctions.NonVirtualFunctionConst(0, 0, 0, 0, 0, 0);
       FreeVoid6ArgsFunction(0, 0, 0, 0, 0, 0);
       MetalMock::Void6ArgsFunctions::StaticVoid6ArgsFunction(0, 0, 0, 0, 0, 0);
-   }
-
-   TEST(CalledWith_CalledTwice_ThrowsException)
-   {
-      _metalMock6ArgsTester->CalledWith_CalledTwice_ThrowsException();
    }
 
    TEST(CalledOnceWith_CalledTwice_ThrowsException)
