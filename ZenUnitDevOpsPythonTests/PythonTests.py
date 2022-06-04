@@ -17,7 +17,7 @@ testNames = [
 
 class PythonTests(unittest.TestCase):
 
-   ExpectedPylintCommand = 'pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append(\'.\')\" '
+   ExpectedPylintCommand = 'pylint --rcfile=.pylintrc --score=n '
 
    @patch('ZenUnitDevOpsPython.Process.run_and_get_exit_code', spec_set=True)
    def test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders(self, _1):

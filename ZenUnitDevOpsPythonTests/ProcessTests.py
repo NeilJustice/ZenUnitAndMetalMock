@@ -31,7 +31,7 @@ class ProcessTests(unittest.TestCase):
       self.command = Random.string()
       self.shlexedCommand = Random.string()
       self.currentWorkingDirectory = Random.string()
-      self.ExpectedPylintcommand = 'pylint --rcfile=.pylintrc --init-hook=\"sys.path.append(\'.\')\" '
+      self.ExpectedPylintcommand = 'pylint --rcfile=.pylintrc '
 
    def test_fail_fast_run_CallsProcessAndGetExitCode_SysExitsWithExitCodeIfRunReturnsNonZero(self):
       @patch('ZenUnitDevOpsPython.Process.run_and_get_exit_code', spec_set=True)

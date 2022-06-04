@@ -4,7 +4,7 @@ import platform
 import sys
 from ZenUnitDevOpsPython import Process
 
-PylintCommand = 'pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append(\'.\')\" '
+PylintCommand = 'pylint --rcfile=.pylintrc --score=n '
 
 def pylint_file(pythonFilePath: str) -> int:
    pylintCommand = PylintCommand + pythonFilePath
