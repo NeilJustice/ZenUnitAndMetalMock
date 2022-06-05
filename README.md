@@ -11,7 +11,7 @@
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
-ZenUnit's first key feature is its convenient syntax for writing value-parameterized unit tests by way typesafe variadic macro arguments:
+ZenUnit's first key feature is its convenient syntax for writing value-parameterized unit tests by way of typesafe variadic macro arguments:
 
 ```cpp
 TEST3X3(Add_ReturnsSumOfArguments,
