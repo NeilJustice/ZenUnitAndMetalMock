@@ -18,6 +18,7 @@ namespace ZenUnit
 #include <map>
 #include <random>
 #include <set>
+#include <span>
 #include <sstream>
 #include <typeindex>
 #include <unordered_map>
@@ -7546,6 +7547,28 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& actualStdUnorderedMap)
       {
          MAPS_ARE_EQUAL(expectedStdUnorderedMap, actualStdUnorderedMap);
+      }
+   };
+
+   template<>
+   class TwoTypeEqualizer<std::span<char>, std::string>
+   {
+   public:
+      static void AssertEqual(std::span<char> expectedMutableCharSpan, const std::string& actualConstantString)
+      {
+         ARE_EQUAL(expectedMutableCharSpan.size(), actualConstantString.size());
+         ARRAYS_ARE_EQUAL(expectedMutableCharSpan.data(), const_cast<char*>(actualConstantString.data()), expectedMutableCharSpan.size());
+      }
+   };
+
+   template<>
+   class TwoTypeEqualizer<std::span<const char>, std::string>
+   {
+   public:
+      static void AssertEqual(std::span<const char> expectedConstantCharSpan, const std::string& actualConstantString)
+      {
+         ARE_EQUAL(expectedConstantCharSpan.size(), actualConstantString.size());
+         ARRAYS_ARE_EQUAL(expectedConstantCharSpan.data(), actualConstantString.data(), expectedConstantCharSpan.size());
       }
    };
 
