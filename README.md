@@ -88,7 +88,7 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
      * [Asserting the expected order of MetalMocked function calls](#asserting-the-expected-order-of-metalmocked-function-calls)
    * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
-   * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2019-on-windows)
+   * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2022-on-windows)
    * [Linux Jenkins Jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-scan-zenunit-and-metalmocks-cicd-python-code)
    * [Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-sonarqube-scan-zenunit-and-metalmocks-cicd-python-code)
    * [How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
@@ -1036,11 +1036,11 @@ Seen in this screenshot is function `ZenUnit::ArgsParser::Parse` for parsing Zen
 
 ![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
 
-### ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows
+### ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows
 
 Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting that an expected value is equal to an actual value:
 
-![ZenUnit and MetalMock code structure as it appears in Visual Studio 2019 on Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2019.png)
+![ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2022.png)
 
 ### Linux Jenkins jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint-SonarQube scan ZenUnit and MetalMock's CI/CD Python code
 
