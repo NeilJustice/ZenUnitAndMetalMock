@@ -46,6 +46,18 @@ TEST(TwoTypeEqualizer_MutableCharSpan_String_LengthsAreEqual_CharsAreNotEqual_Th
    catch (const ZenUnit::Anomaly& anomaly)
    {
       const string anomalyMessage = anomaly.what();
+#if defined __linux__
+      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+"  Failed: ARRAYS_ARE_EQUAL(expectedMutableCharSpan.data(), const_cast<char*>(actualConstantString.data()), 3)",
+"Expected: char*",
+"  Actual: char*",
+" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
+"Expected: '3' (51)",
+"  Actual: '0' (48)",
+" Message: \"i=2\"",
+"File.cpp(1)",
+"File.cpp(1)");
+#elif defined _WIN32
       const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
 "  Failed: ARRAYS_ARE_EQUAL(expectedMutableCharSpan.data(), const_cast<char*>(actualConstantString.data()), 3)",
 "Expected: char *",
@@ -56,6 +68,7 @@ TEST(TwoTypeEqualizer_MutableCharSpan_String_LengthsAreEqual_CharsAreNotEqual_Th
 " Message: \"i=2\"",
 "File.cpp(1)",
 "File.cpp(1)");
+#endif
       ARE_EQUAL(expectedAnomalyMessage, anomalyMessage);
    }
 }
@@ -109,6 +122,18 @@ TEST(TwoTypeEqualizer_ConstantCharSpan_String_LengthsAreEqual_CharsAreNotEqual_T
    catch (const ZenUnit::Anomaly& anomaly)
    {
       const string anomalyMessage = anomaly.what();
+#if defined __linux__
+      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+"  Failed: ARRAYS_ARE_EQUAL(expectedConstantCharSpan.data(), actualConstantString.data(), 3)",
+"Expected: char const*",
+"  Actual: char const*",
+" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
+"Expected: '3' (51)",
+"  Actual: '0' (48)",
+" Message: \"i=2\"",
+"File.cpp(1)",
+"File.cpp(1)");
+#elif defined _WIN32
       const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
 "  Failed: ARRAYS_ARE_EQUAL(expectedConstantCharSpan.data(), actualConstantString.data(), 3)",
 "Expected: char const *",
@@ -119,6 +144,7 @@ TEST(TwoTypeEqualizer_ConstantCharSpan_String_LengthsAreEqual_CharsAreNotEqual_T
 " Message: \"i=2\"",
 "File.cpp(1)",
 "File.cpp(1)");
+#endif
       ARE_EQUAL(expectedAnomalyMessage, anomalyMessage);
    }
 }
