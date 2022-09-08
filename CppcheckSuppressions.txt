@@ -11,3 +11,6 @@ uninitMemberVar:*
 unmatchedSuppression:*
 unusedFunction:*
 useStlAlgorithm:*
+constVariable:ZenUnitAndMetalMock\ZenUnit.h:4856
+constVariable:ZenUnitAndMetalMock\ZenUnit.h:4872
+constVariable:ZenUnitAndMetalMock\ZenUnit.h:869
