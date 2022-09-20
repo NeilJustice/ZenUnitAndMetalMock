@@ -1323,15 +1323,9 @@ namespace ZenUnit
    };
 
    template<typename T>
-   class has_ostream_insertion_operator
+   concept has_ostream_insertion_operator = requires(std::ostream& os, T value)
    {
-   private:
-      template<typename U>
-      static auto SFINAE(std::ostream& os, const U& value) -> decltype(os << value);
-      static std::false_type SFINAE(...);
-   public:
-      static constexpr bool value = std::is_same<
-         std::ostream&, decltype(SFINAE(std::declval<std::ostream&>(), std::declval<T>()))>::value;
+      { os << value } -> std::convertible_to<std::ostream&>;
    };
 
    template<typename T>
@@ -1531,7 +1525,7 @@ namespace ZenUnit
          {
             oss << PointerToAddressString(value);
          }
-         else if constexpr (has_ostream_insertion_operator<T>::value)
+         else if constexpr (has_ostream_insertion_operator<T>)
          {
             if constexpr (is_quoted_when_printed<T>)
             {

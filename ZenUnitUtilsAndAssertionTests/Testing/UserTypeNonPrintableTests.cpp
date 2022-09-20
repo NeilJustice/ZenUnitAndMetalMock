@@ -42,7 +42,7 @@ namespace ZenUnit
 
    TEST(has_ostream_left_shift_ValueEqualsFalse)
    {
-      IS_FALSE(has_ostream_insertion_operator<NonPrintableUserType>::value);
+      static_assert(!has_ostream_insertion_operator<NonPrintableUserType>);
    }
 
    RUN_TESTS(UserTypeNonPrintableTests)

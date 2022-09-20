@@ -2,42 +2,30 @@
 
 namespace ZenUnit
 {
-   TESTS(has_ostream_insertion_operatorTests)
-   AFACT(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
-   AFACT(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
-   EVIDENCE
+   static_assert(has_ostream_insertion_operator<int>);
+   static_assert(has_ostream_insertion_operator<int*>);
 
-   TEST(value_IsFalseIfFreeFunctionOStreamInsertionOperatorNotDefinedForType)
-   {
-      IS_FALSE(has_ostream_insertion_operator<vector<int>>::value);
-      IS_FALSE(has_ostream_insertion_operator<NonPrintableUserType>::value);
+   static_assert(has_ostream_insertion_operator<DoublyPrintableUserType>);
+   static_assert(has_ostream_insertion_operator<DoublyPrintableUserType&>);
+   static_assert(has_ostream_insertion_operator<const DoublyPrintableUserType&>);
+   static_assert(has_ostream_insertion_operator<DoublyPrintableUserType&&>);
 
-      IS_FALSE(has_ostream_insertion_operator<UserType>::value);
-      IS_FALSE(has_ostream_insertion_operator<UserType&>::value);
-      IS_FALSE(has_ostream_insertion_operator<const UserType&>::value);
-      IS_FALSE(has_ostream_insertion_operator<UserType&&>::value);
 
-      IS_FALSE(has_ostream_insertion_operator<NonPrintableUserType>::value);
-      IS_FALSE(has_ostream_insertion_operator<NonPrintableUserType&>::value);
-      IS_FALSE(has_ostream_insertion_operator<const NonPrintableUserType&>::value);
-      IS_FALSE(has_ostream_insertion_operator<NonPrintableUserType&&>::value);
+   static_assert(!has_ostream_insertion_operator<vector<int>>);
+   static_assert(!has_ostream_insertion_operator<NonPrintableUserType>);
 
-      IS_FALSE(has_ostream_insertion_operator<OnlyZenUnitPrintableUserType>::value);
-      IS_FALSE(has_ostream_insertion_operator<OnlyZenUnitPrintableUserType&>::value);
-      IS_FALSE(has_ostream_insertion_operator<const OnlyZenUnitPrintableUserType&>::value);
-      IS_FALSE(has_ostream_insertion_operator<OnlyZenUnitPrintableUserType&&>::value);
-   }
+   static_assert(!has_ostream_insertion_operator<UserType>);
+   static_assert(!has_ostream_insertion_operator<UserType&>);
+   static_assert(!has_ostream_insertion_operator<const UserType&>);
+   static_assert(!has_ostream_insertion_operator<UserType&&>);
 
-   TEST(value_IsTrueIfFreeFunctionOStreamInsertionOperatorIsDefinedForType)
-   {
-      IS_TRUE(has_ostream_insertion_operator<int>::value);
-      IS_TRUE(has_ostream_insertion_operator<int*>::value);
+   static_assert(!has_ostream_insertion_operator<NonPrintableUserType>);
+   static_assert(!has_ostream_insertion_operator<NonPrintableUserType&>);
+   static_assert(!has_ostream_insertion_operator<const NonPrintableUserType&>);
+   static_assert(!has_ostream_insertion_operator<NonPrintableUserType&&>);
 
-      IS_TRUE(has_ostream_insertion_operator<DoublyPrintableUserType>::value);
-      IS_TRUE(has_ostream_insertion_operator<DoublyPrintableUserType&>::value);
-      IS_TRUE(has_ostream_insertion_operator<const DoublyPrintableUserType&>::value);
-      IS_TRUE(has_ostream_insertion_operator<DoublyPrintableUserType&&>::value);
-   }
-
-   RUN_TESTS(has_ostream_insertion_operatorTests)
+   static_assert(!has_ostream_insertion_operator<OnlyZenUnitPrintableUserType>);
+   static_assert(!has_ostream_insertion_operator<OnlyZenUnitPrintableUserType&>);
+   static_assert(!has_ostream_insertion_operator<const OnlyZenUnitPrintableUserType&>);
+   static_assert(!has_ostream_insertion_operator<OnlyZenUnitPrintableUserType&&>);
 }

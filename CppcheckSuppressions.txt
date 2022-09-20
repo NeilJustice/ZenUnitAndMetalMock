@@ -12,5 +12,5 @@ unmatchedSuppression:*
 unusedFunction:*
 useStlAlgorithm:*
 constVariable:ZenUnitAndMetalMock\ZenUnit.h:870
-constVariable:ZenUnitAndMetalMock\ZenUnit.h:4849
-constVariable:ZenUnitAndMetalMock\ZenUnit.h:4865
+constVariable:ZenUnitAndMetalMock\ZenUnit.h:4843
+constVariable:ZenUnitAndMetalMock\ZenUnit.h:4859

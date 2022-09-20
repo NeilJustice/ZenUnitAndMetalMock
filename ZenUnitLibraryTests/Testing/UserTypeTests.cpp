@@ -82,7 +82,7 @@ namespace ZenUnit
 
    TEST(has_ostream_left_shift_False)
    {
-      IS_FALSE(ZenUnit::has_ostream_insertion_operator<UserType>::value);
+      static_assert(!has_ostream_insertion_operator<UserType>);
    }
 
    TEST(has_ZenUnitPrinter_True)
