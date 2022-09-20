@@ -10,59 +10,59 @@ namespace ZenUnit
 
    TEST(is_quoted_when_printed_v_NarrowStringTypes_IsTrue)
    {
-      IS_TRUE(is_quoted_when_printed<char*>::value);
-      IS_TRUE(is_quoted_when_printed<char* const>::value);
+      static_assert(is_quoted_when_printed<char*>);
+      static_assert(is_quoted_when_printed<char* const>);
 
-      IS_TRUE(is_quoted_when_printed<const char*>::value);
-      IS_TRUE(is_quoted_when_printed<const char* const>::value);
+      static_assert(is_quoted_when_printed<const char*>);
+      static_assert(is_quoted_when_printed<const char* const>);
 
-      IS_TRUE(is_quoted_when_printed<string>::value);
-      IS_TRUE(is_quoted_when_printed<string&>::value);
-      IS_TRUE(is_quoted_when_printed<const string>::value);
-      IS_TRUE(is_quoted_when_printed<const string&>::value);
+      static_assert(is_quoted_when_printed<string>);
+      static_assert(is_quoted_when_printed<string&>);
+      static_assert(is_quoted_when_printed<const string>);
+      static_assert(is_quoted_when_printed<const string&>);
 
-      IS_TRUE(is_quoted_when_printed<string_view>::value);
-      IS_TRUE(is_quoted_when_printed<string_view&>::value);
-      IS_TRUE(is_quoted_when_printed<const string_view>::value);
-      IS_TRUE(is_quoted_when_printed<const string_view&>::value);
+      static_assert(is_quoted_when_printed<string_view>);
+      static_assert(is_quoted_when_printed<string_view&>);
+      static_assert(is_quoted_when_printed<const string_view>);
+      static_assert(is_quoted_when_printed<const string_view&>);
 
-      IS_TRUE(is_quoted_when_printed<char[1]>::value);
-      IS_TRUE(is_quoted_when_printed<const char[1]>::value);
-      IS_TRUE(is_quoted_when_printed<char[2]>::value);
-      IS_TRUE(is_quoted_when_printed<const char[2]>::value);
+      static_assert(is_quoted_when_printed<char[1]>);
+      static_assert(is_quoted_when_printed<const char[1]>);
+      static_assert(is_quoted_when_printed<char[2]>);
+      static_assert(is_quoted_when_printed<const char[2]>);
    }
 
    TEST(is_quoted_when_printed_v_WideStringTypes_IsTrue)
    {
-      IS_TRUE(is_quoted_when_printed<wchar_t*>::value);
-      IS_TRUE(is_quoted_when_printed<wchar_t* const>::value);
+      static_assert(is_quoted_when_printed<wchar_t*>);
+      static_assert(is_quoted_when_printed<wchar_t* const>);
 
-      IS_TRUE(is_quoted_when_printed<const wchar_t*>::value);
-      IS_TRUE(is_quoted_when_printed<const wchar_t* const>::value);
+      static_assert(is_quoted_when_printed<const wchar_t*>);
+      static_assert(is_quoted_when_printed<const wchar_t* const>);
 
-      IS_TRUE(is_quoted_when_printed<wstring>::value);
-      IS_TRUE(is_quoted_when_printed<wstring&>::value);
-      IS_TRUE(is_quoted_when_printed<const wstring>::value);
-      IS_TRUE(is_quoted_when_printed<const wstring&>::value);
+      static_assert(is_quoted_when_printed<wstring>);
+      static_assert(is_quoted_when_printed<wstring&>);
+      static_assert(is_quoted_when_printed<const wstring>);
+      static_assert(is_quoted_when_printed<const wstring&>);
 
-      IS_TRUE(is_quoted_when_printed<wstring_view>::value);
-      IS_TRUE(is_quoted_when_printed<wstring_view&>::value);
-      IS_TRUE(is_quoted_when_printed<const wstring_view>::value);
-      IS_TRUE(is_quoted_when_printed<const wstring_view&>::value);
+      static_assert(is_quoted_when_printed<wstring_view>);
+      static_assert(is_quoted_when_printed<wstring_view&>);
+      static_assert(is_quoted_when_printed<const wstring_view>);
+      static_assert(is_quoted_when_printed<const wstring_view&>);
 
-      IS_TRUE(is_quoted_when_printed<wchar_t[1]>::value);
-      IS_TRUE(is_quoted_when_printed<const wchar_t[1]>::value);
-      IS_TRUE(is_quoted_when_printed<wchar_t[2]>::value);
-      IS_TRUE(is_quoted_when_printed<const wchar_t[2]>::value);
+      static_assert(is_quoted_when_printed<wchar_t[1]>);
+      static_assert(is_quoted_when_printed<const wchar_t[1]>);
+      static_assert(is_quoted_when_printed<wchar_t[2]>);
+      static_assert(is_quoted_when_printed<const wchar_t[2]>);
    }
 
    TEST(is_quoted_when_printed_v_NonNarrowOrWideStringTypes_IsFalse)
    {
-      IS_FALSE(is_quoted_when_printed<int>::value);
-      IS_FALSE(is_quoted_when_printed<char>::value);
-      IS_FALSE(is_quoted_when_printed<exception>::value);
-      IS_FALSE(is_quoted_when_printed<UserType>::value);
-      IS_FALSE(is_quoted_when_printed<NonPrintableUserType>::value);
+      static_assert(!is_quoted_when_printed<int>);
+      static_assert(!is_quoted_when_printed<char>);
+      static_assert(!is_quoted_when_printed<exception>);
+      static_assert(!is_quoted_when_printed<UserType>);
+      static_assert(!is_quoted_when_printed<NonPrintableUserType>);
    }
 
    RUN_TESTS(is_quoted_when_printedTests)

@@ -1341,17 +1341,15 @@ namespace ZenUnit
    };
 
    template<typename T>
-   class is_quoted_when_printed : public std::integral_constant<bool,
-      std::is_same<char*, typename std::decay<T>::type>::value ||
-      std::is_same<char const*, typename std::decay<T>::type>::value ||
-      std::is_same<std::string, typename std::decay<T>::type>::value ||
-      std::is_same<std::string_view, typename std::decay<T>::type>::value ||
-      std::is_same<wchar_t*, typename std::decay<T>::type>::value ||
-      std::is_same<wchar_t const*, typename std::decay<T>::type>::value ||
-      std::is_same<std::wstring, typename std::decay<T>::type>::value ||
-      std::is_same<std::wstring_view, typename std::decay<T>::type>::value>
-   {
-   };
+   concept is_quoted_when_printed =
+      std::is_same_v<char*, typename std::decay<T>::type> ||
+      std::is_same_v<char const*, typename std::decay<T>::type> ||
+      std::is_same_v<std::string, typename std::decay<T>::type> ||
+      std::is_same_v<std::string_view, typename std::decay<T>::type> ||
+      std::is_same_v<wchar_t*, typename std::decay<T>::type> ||
+      std::is_same_v<wchar_t const*, typename std::decay<T>::type> ||
+      std::is_same_v<std::wstring, typename std::decay<T>::type> ||
+      std::is_same_v<std::wstring_view, typename std::decay<T>::type>;
 
    template<typename T>
    class Printer;
@@ -1541,13 +1539,13 @@ namespace ZenUnit
          }
          else if constexpr (has_ostream_insertion_operator<T>::value)
          {
-            if constexpr (is_quoted_when_printed<T>::value)
+            if constexpr (is_quoted_when_printed<T>)
             {
                // std::quoted not called here because std::quoted escapes backslashes in addition to quoting
                oss << '\"';
             }
             oss << value;
-            if constexpr (is_quoted_when_printed<T>::value)
+            if constexpr (is_quoted_when_printed<T>)
             {
                oss << '\"';
             }
