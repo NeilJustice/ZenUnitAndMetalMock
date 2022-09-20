@@ -63,11 +63,7 @@ namespace ZenUnit
 // COMMA is for those times when parentheses are not enough parsing disambiguation for the compiler
 #define COMMA ,
 
-// Example ZenUnit COMMA usage to escape std::unordered_map's comma within the ZenUnit IS_TRUE assertion:
-// IS_TRUE(ZenUnit::has_ZenUnitPrinter<std::unordered_map<int COMMA int>>::value);
-
-// Example MetalMock COMMA usage to escape std::unordered_map's comma
-// within the MetalMock-object-defining macro METALMOCK_NONVOID3_CONST:
+// Example MetalMock COMMA usage to escape std::unordered_map's comma within MetalMock macro METALMOCK_NONVOID3_CONST:
 
 // class Component
 // {
@@ -1343,16 +1339,9 @@ namespace ZenUnit
    class Printer;
 
    template<typename T>
-   class has_ZenUnitPrinter
+   concept has_ZenUnitPrinter = requires(std::ostream& os, T value)
    {
-   private:
-      template<typename U>
-      static auto SFINAE(std::ostream& os, const U& value) -> decltype(Printer<U>::Print(os, value));
-      template<typename U>
-      static std::false_type SFINAE(...);
-   public:
-      static constexpr bool value = std::is_same<
-         void, decltype(SFINAE<T>(std::declval<std::ostream&>(), std::declval<T>()))>::value;
+      { ZenUnit::Printer<T>::Print(os, value) } -> std::convertible_to<void>;
    };
 
    class Type
@@ -1470,7 +1459,7 @@ namespace ZenUnit
       static std::string ToString([[maybe_unused]]const T& value)
       {
          std::ostringstream oss;
-         if constexpr (has_ZenUnitPrinter<T>::value)
+         if constexpr (has_ZenUnitPrinter<T>)
          {
             Printer<T>::Print(oss, value);
          }

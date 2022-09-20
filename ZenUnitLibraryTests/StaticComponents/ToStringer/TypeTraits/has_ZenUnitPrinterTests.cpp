@@ -30,47 +30,36 @@ namespace ZenUnit
       static void Print(ostream&, const Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace&);
    };
 
-   TESTS(has_ZenUnitPrinterTests)
-   AFACT(value_FalseIfZenUnitPrinterNotDefinedForType)
-   AFACT(value_TrueIfZenUnitPrinterIsDefinedForType)
-   EVIDENCE
+   static_assert(has_ZenUnitPrinter<vector<int>>);
+   static_assert(has_ZenUnitPrinter<vector<string>>);
 
-   TEST(value_FalseIfZenUnitPrinterNotDefinedForType)
-   {
-      IS_FALSE(has_ZenUnitPrinter<int>::value);
-      IS_FALSE(has_ZenUnitPrinter<string>::value);
-      IS_FALSE(has_ZenUnitPrinter<NonPrintableUserType>::value);
-      IS_FALSE(has_ZenUnitPrinter<NonConstReferenceZenUnitPrint>::value);
-      IS_FALSE(has_ZenUnitPrinter<RValueReferenceZenUnitPrint>::value);
-   }
+   using MapIntInt = map<int, int>;
+   static_assert(has_ZenUnitPrinter<MapIntInt>);
 
-   TEST(value_TrueIfZenUnitPrinterIsDefinedForType)
-   {
-      IS_TRUE(has_ZenUnitPrinter<vector<int>>::value);
-      IS_TRUE(has_ZenUnitPrinter<vector<string>>::value);
+   using UnorderedMapIntInt = unordered_map<int, int>;
+   static_assert(has_ZenUnitPrinter<UnorderedMapIntInt>);
 
-      using MapIntInt = map<int, int>;
-      IS_TRUE(has_ZenUnitPrinter<MapIntInt>::value);
+   using MapCharString = map<char, string>;
+   static_assert(has_ZenUnitPrinter<MapCharString>);
 
-      using UnorderedMapIntInt = unordered_map<int, int>;
-      IS_TRUE(has_ZenUnitPrinter<UnorderedMapIntInt>::value);
+   using UnorderedMapCharString = unordered_map<char, string>;
+   static_assert(has_ZenUnitPrinter<UnorderedMapCharString>);
 
-      using MapCharString = map<char, string>;
-      IS_TRUE(has_ZenUnitPrinter<MapCharString>::value);
+   static_assert(has_ZenUnitPrinter<set<int>>);
+   static_assert(has_ZenUnitPrinter<unordered_set<int>>);
+   static_assert(has_ZenUnitPrinter<set<string>>);
+   static_assert(has_ZenUnitPrinter<unordered_set<string>>);
 
-      using UnorderedMapCharString = unordered_map<char, string>;
-      IS_TRUE(has_ZenUnitPrinter<UnorderedMapCharString>::value);
+   static_assert(has_ZenUnitPrinter<UserType>);
+   static_assert(has_ZenUnitPrinter<OnlyZenUnitPrintableUserType>);
+   static_assert(has_ZenUnitPrinter<DoublyPrintableUserType>);
+   static_assert(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>);
 
-      IS_TRUE(has_ZenUnitPrinter<set<int>>::value);
-      IS_TRUE(has_ZenUnitPrinter<unordered_set<int>>::value);
-      IS_TRUE(has_ZenUnitPrinter<set<string>>::value);
-      IS_TRUE(has_ZenUnitPrinter<unordered_set<string>>::value);
+   static_assert(has_ZenUnitPrinter<NonConstReferenceZenUnitPrint>);
 
-      IS_TRUE(has_ZenUnitPrinter<UserType>::value);
-      IS_TRUE(has_ZenUnitPrinter<OnlyZenUnitPrintableUserType>::value);
-      IS_TRUE(has_ZenUnitPrinter<DoublyPrintableUserType>::value);
-      IS_TRUE(has_ZenUnitPrinter<Namespace::StructInsideNamespace_ZenUnitPrintOutsideNamespace>::value);
-   }
 
-   RUN_TESTS(has_ZenUnitPrinterTests)
+   static_assert(!has_ZenUnitPrinter<int>);
+   static_assert(!has_ZenUnitPrinter<string>);
+   static_assert(!has_ZenUnitPrinter<NonPrintableUserType>);
+   static_assert(!has_ZenUnitPrinter<RValueReferenceZenUnitPrint>);
 }

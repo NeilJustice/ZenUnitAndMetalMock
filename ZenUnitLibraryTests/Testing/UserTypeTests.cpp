@@ -11,8 +11,6 @@ namespace ZenUnit
    AFACT(ZenUnitPrinterPrint_WritesExpected_ReturnOStream)
    AFACT(OperatorBool_ValueIs1_ReturnsTrue)
    AFACT(OperatorBool_ValueIsNot1_ReturnsFalse)
-   AFACT(has_ostream_left_shift_False)
-   AFACT(has_ZenUnitPrinter_True)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsValueTo0)
@@ -80,15 +78,8 @@ namespace ZenUnit
       IS_FALSE(userType2);
    }
 
-   TEST(has_ostream_left_shift_False)
-   {
-      static_assert(!has_ostream_insertion_operator<UserType>);
-   }
-
-   TEST(has_ZenUnitPrinter_True)
-   {
-      IS_TRUE(ZenUnit::has_ZenUnitPrinter<UserType>::value);
-   }
+   static_assert(!has_ostream_insertion_operator<UserType>);
+   static_assert(ZenUnit::has_ZenUnitPrinter<UserType>);
 
    RUN_TESTS(UserTypeTests)
 }
