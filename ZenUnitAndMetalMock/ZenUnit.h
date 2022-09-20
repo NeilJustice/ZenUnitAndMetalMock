@@ -1317,15 +1317,9 @@ namespace ZenUnit
    constexpr bool is_unordered_set_v<std::unordered_set<KeyType>> = true;
 
    template<typename T>
-   class has_to_string
+   concept has_to_string = requires(T value)
    {
-   private:
-      template<typename U>
-      static auto SFINAE(const U& value) -> decltype(std::to_string(value));
-      static std::false_type SFINAE(...);
-   public:
-      static constexpr bool value = std::is_same<
-         std::string, decltype(SFINAE(std::declval<T>()))>::value;
+      { std::to_string(value) } -> std::convertible_to<std::string>;
    };
 
    template<typename T>
@@ -1521,7 +1515,7 @@ namespace ZenUnit
             oss << std::setprecision(6) << value;
             oss.precision(startingPecision);
          }
-         else if constexpr (has_to_string<T>::value)
+         else if constexpr (has_to_string<T>)
          {
             oss << std::to_string(value);
          }

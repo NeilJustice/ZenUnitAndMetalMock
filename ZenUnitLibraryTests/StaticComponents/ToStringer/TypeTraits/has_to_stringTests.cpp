@@ -9,18 +9,18 @@ namespace ZenUnit
 
    TEST(HasStdToString_ValueIsTrue)
    {
-      IS_TRUE(has_to_string<char>::value);
-      IS_TRUE(has_to_string<int>::value);
-      IS_TRUE(has_to_string<long long>::value);
-      IS_TRUE(has_to_string<unsigned long long>::value);
+      static_assert(has_to_string<char>);
+      static_assert(has_to_string<int>);
+      static_assert(has_to_string<long long>);
+      static_assert(has_to_string<unsigned long long>);
    }
 
    TEST(DoesNotHaveStdToSTring_ValueIsFalse)
    {
-      IS_FALSE(has_to_string<const char*>::value);
-      IS_FALSE(has_to_string<string>::value);
-      IS_FALSE(has_to_string<vector<string>>::value);
-      IS_FALSE(has_to_string<UserType>::value);
+      static_assert(!has_to_string<const char*>);
+      static_assert(!has_to_string<string>);
+      static_assert(!has_to_string<vector<string>>);
+      static_assert(!has_to_string<UserType>);
    }
 
    RUN_TESTS(has_to_stringTests)
