@@ -1,6 +1,6 @@
 # 🧪 ZenUnit & MetalMock ⚗️
 
-[![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B20) ![MIT](https://img.shields.io/badge/license-MIT-green) ![Dependencies 0](Screenshots/Dependencies-0-brightgreen.svg)
+[![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B20) ![MIT](https://img.shields.io/badge/license-MIT-green)
 
 |Build Type|Build Status|
 |----------|------------|
@@ -25,7 +25,7 @@ TEST3X3(Add_ReturnsSumOfArguments,
 }
 ```
 
-The above `TEST3X3` syntax defines three independent test cases for function `Calculator::Add(int x, int y)`, with test values processed "three by three" for a total of three unit tests.
+The above `TEST3X3` syntax defines three independent test cases for function `Calculator::Add(int x, int y)`, with test case values processed "three by three" for a total of three unit tests.
 
 ZenUnit's second key feature is its convenient syntax for writing type-parameterized unit tests:
 
@@ -37,7 +37,7 @@ template<
    typename ContainerType, typename T>
 TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
 //
-// </ZenUnitTestCode>
+// </ZenUnitTestClassCodeElidedForBrevity>
 //
 RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, int)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, unsigned long long)
@@ -45,15 +45,15 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
 ```
 
-The above `TEMPLATE_TESTS`/`RUN_TEMPLATE_TESTS`/`THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit test class whose unit tests are to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
+The above `TEMPLATE_TESTS` / `RUN_TEMPLATE_TESTS` / `THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit test class with unit tests to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions which features a convenient arrange-act-assert syntax for setting function return values or exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free functions.
+MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for setting mocked-out function return values or exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free functions.
 
-MetalMock is a so-called "double strict" mocking framework so as to be useful for extra-rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
+MetalMock is what I would call a "double strict" mocking framework so as to be useful for extra-rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
 
 A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called.
 
-A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of any extraneous function calls being present in the C++ program under test.
+A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of extraneous correctness-compromising function calls being present in a C++ program under test.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
@@ -1060,7 +1060,7 @@ sudo cmake --build . --target install
 cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
-ZenUnit.h and MetalMock.h installed on Linux:
+ZenUnit.h and MetalMock.h as installed on Linux:
 
 ![ZenUnit.h and MetalMock.h installed on Linux](Screenshots/Linux/ZenUnitDotHAndMetalMockDotHInstalledOnLinux.png)
 
@@ -1073,7 +1073,7 @@ cmake . -G"Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 cmake --build . --target install
 ```
 
-ZenUnit.h and MetalMock.h installed on Windows:
+ZenUnit.h and MetalMock.h as installed on Windows:
 
 ![Installed ZenUnit.h and MetalMock.h on Windows](Screenshots/Windows/ZenUnitDotHAndMetalMockDotHOnWindows.png)
 
