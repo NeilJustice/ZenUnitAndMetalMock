@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import call, patch
-from ZenUnitDevOpsPython import MypyFlake8PylintThenRunTestsWithCoverage, Process, Python, UnitTester
+from ZenUnitDevOpsPython import MypyFlake8PylintThenRunTestsWithCoverage, Process, Python
+from ZenUnitDevOpsPythonTests import UnitTester
 
 testNames = ['test_main_ParsesArgs_RunsMypy_RunsFlake8_RunsPylint_RunsAllTestsWithCoverage']
 

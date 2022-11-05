@@ -6,8 +6,12 @@ import shlex
 import subprocess
 import sys
 import time
-from typing import Any, List
+from typing import Any, List, Tuple
 from ZenUnitDevOpsPython import ProcessThread
+
+def append_args(exePath: str, args: str) -> str:
+   exePathWithArgs = exePath + (' ' + args if args != '' else '')
+   return exePathWithArgs
 
 def bytes_to_utf8(byteString: bytes) -> str:
    utf8 = byteString.decode('utf-8')
@@ -22,17 +26,24 @@ def fail_fast_run(command: str) -> None:
 
 def cross_platform_subprocess_call(command: str) -> int:
    systemName = platform.system()
-   if systemName.casefold() == 'windows':
+   if systemName == 'Windows':
       exitCode = subprocess.call(command)
    else:
       shlexedCommand = shlex.split(command)
       exitCode = subprocess.call(shlexedCommand)
    return exitCode
 
+def run(command: str) -> Tuple[str, str]:
+   shlexedCommand = shlex.split(command)
+   completedProcess = subprocess.run(shlexedCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+   stdout = bytes_to_utf8(completedProcess.stdout)
+   stderr = bytes_to_utf8(completedProcess.stderr)
+   return stdout, stderr
+
 def run_and_get_exit_code(command: str) -> int:
    singleQuotedCommand = f'\'{command}\''
    currentWorkingDirectory = os.getcwd()
-   print('Running', singleQuotedCommand, 'from', currentWorkingDirectory)
+   print(' Running:', singleQuotedCommand, 'from', currentWorkingDirectory)
    try:
       exitCode = cross_platform_subprocess_call(command)
    except FileNotFoundError as ex:
@@ -42,23 +53,6 @@ def run_and_get_exit_code(command: str) -> int:
    else:
       return exitCode
 
-def run_exe(projectName: str, configuration: str, args: str) -> None:
-   exePath = f'{projectName}\\{configuration}\\{projectName}.exe'
-   exePathWithArgs = append_args(exePath, args)
-   fail_fast_run(exePathWithArgs)
-
-def append_args(exePath: str, args: str) -> str:
-   exePathWithArgs = exePath + (' ' + args if args != '' else '')
-   return exePathWithArgs
-
-def run_parallel_multiprocessing(func: Any, iterable: Any) -> bool:
-   cpuCount = multiprocessing.cpu_count()
-   pool = multiprocessing.Pool(cpuCount) # pylint: disable=consider-using-with
-   exitCodes = pool.map(func, iterable)
-   pool.close()
-   allCommandsSucceeded = not any(exitCodes)
-   return allCommandsSucceeded
-
 def run_parallel_processpoolexecutor(func: Any, iterable: Any) -> bool:
    cpuCount = multiprocessing.cpu_count()
    processPoolExecutor = concurrent.futures.ProcessPoolExecutor(cpuCount) # pylint: disable=consider-using-with
@@ -66,20 +60,6 @@ def run_parallel_processpoolexecutor(func: Any, iterable: Any) -> bool:
    processPoolExecutor.shutdown(wait=True)
    allCommandsSucceeded = not any(exitCodes)
    return allCommandsSucceeded
-
-def run_and_get_stdout(command: str) -> str:
-   shlexedCommand = shlex.split(command)
-   standardOutputBytes = subprocess.check_output(shlexedCommand)
-   standardOutputUtf8 = bytes_to_utf8(standardOutputBytes)
-   return standardOutputUtf8
-
-def run_and_check_stdout_for_substring(command: str, substring: str) -> None:
-   print(f'Running \'{command}\' and checking for substring \'{substring}\'')
-   stdOut = run_and_get_stdout(command)
-   stdOutContainsSubstring = substring in stdOut
-   print(f'Substring \'{substring}\' ' + ('found.' if stdOutContainsSubstring else 'not found.'))
-   if not stdOutContainsSubstring:
-      sys.exit(1)
 
 def run_parallel_processthread(command: str, commandSuffixArgs: List[str]) -> bool: # pragma nocover
    numberOfCommands = len(commandSuffixArgs)

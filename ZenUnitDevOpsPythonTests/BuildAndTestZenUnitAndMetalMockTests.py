@@ -4,8 +4,8 @@ import sys
 import unittest
 from unittest.mock import call, patch
 import docopt # type: ignore
-from ZenUnitDevOpsPython import CMake, BuildAndTestZenUnitAndMetalMock, Process, UnitTester
-from ZenUnitDevOpsPythonTests import Random
+from ZenUnitDevOpsPython import CMake, BuildAndTestZenUnitAndMetalMock, Process
+from ZenUnitDevOpsPythonTests import Random, UnitTester
 
 testNames = [
 'test_docstring__IsExpectedString',

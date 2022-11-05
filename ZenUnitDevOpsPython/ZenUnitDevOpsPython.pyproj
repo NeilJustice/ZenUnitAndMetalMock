@@ -36,9 +36,6 @@
     </Compile>
     <Compile Include="Python.py" />
     <Compile Include="MypyFlake8PylintThenRunTestsWithCoverage.py" />
-    <Compile Include="UnitTester.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="__init__.py" />
   </ItemGroup>
   <PropertyGroup>

@@ -2,8 +2,8 @@ import os
 import shutil
 import unittest
 from unittest.mock import patch
-from ZenUnitDevOpsPython import FileSystem, UnitTester
-from ZenUnitDevOpsPythonTests import Random
+from ZenUnitDevOpsPython import FileSystem
+from ZenUnitDevOpsPythonTests import Random, UnitTester
 
 testNames = [
 'test_delete_folder_if_exists_DeletesEmptyOrNonEmptyFolderIfItExists',

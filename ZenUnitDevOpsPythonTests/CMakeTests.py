@@ -2,7 +2,8 @@ import os
 import platform
 import unittest
 from unittest.mock import patch
-from ZenUnitDevOpsPython import CMake, Process, UnitTester
+from ZenUnitDevOpsPython import CMake, Process
+from ZenUnitDevOpsPythonTests import UnitTester
 
 testNames = [
 'test_generate_CreatesAndCdsToDirectory_RunsCMakeWithGeneratorAndBuildType'
