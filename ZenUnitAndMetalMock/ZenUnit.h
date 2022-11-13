@@ -8315,6 +8315,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomChar;
       }
 
+      virtual char Letter() const
+      {
+         const char randomLetter = RandomLetter();
+         return randomLetter;
+      }
+
       virtual unsigned char UnsignedChar() const
       {
          const unsigned char randomUnsignedChar = Random<unsigned char>();

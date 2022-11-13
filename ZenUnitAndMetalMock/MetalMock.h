@@ -3956,6 +3956,7 @@ namespace ZenUnit
       METALMOCK_NONVOID0_CONST(bool, Bool)
 
       METALMOCK_NONVOID0_CONST(char, Char)
+      METALMOCK_NONVOID0_CONST(char, Letter)
       METALMOCK_NONVOID0_CONST(unsigned char, UnsignedChar)
 
       METALMOCK_NONVOID0_CONST(short, Short)
