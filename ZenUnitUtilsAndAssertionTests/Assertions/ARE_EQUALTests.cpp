@@ -55,6 +55,7 @@ namespace ZenUnit
    AFACT(ARE_EQUAL_IntVariablesAreNotEqual_ThrowsAnomaly__MessagesTestCase)
    AFACT(ARE_EQUAL_StdStringsAreNotEqual_ThrowsAnomaly)
    AFACT(ARE_EQUAL_StringViewsAreNotEqual_ThrowsAnomaly)
+   AFACT(ARE_EQUAL_StringViewsAreEqual_DoesNotThrowException)
    AFACT(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNullptr_DoesNotThrowException)
    AFACT(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNotNullptr_ThrowsAnomaly)
    AFACT(ARE_EQUAL_LeftConstCharPointersIsNotNullptr_RightConstCharPointerIsNullptr_ThrowsAnomaly)
@@ -161,14 +162,23 @@ namespace ZenUnit
 
    TEST(ARE_EQUAL_StringViewsAreNotEqual_ThrowsAnomaly)
    {
-      const string_view expected = "expected";
-      const string_view actual = "actual";
-      THROWS_EXCEPTION(ARE_EQUAL(expected, actual),
+      const string_view expectedStringView = "expected";
+      const string_view actualStringView = "actual";
+      THROWS_EXCEPTION(ARE_EQUAL(expectedStringView, actualStringView),
          Anomaly, TestUtil::NewlineConcat("",
-"  Failed: ARE_EQUAL(expected, actual)",
+"  Failed: ARE_EQUAL(expectedStringView, actualStringView)",
 "Expected: \"expected\"",
 "  Actual: \"actual\"",
 "File.cpp(1)"));
+   }
+
+   TEST(ARE_EQUAL_StringViewsAreEqual_DoesNotThrowException)
+   {
+      const string longString = "expected_12345";
+      //                         12345678
+      const string_view expectedStringView(longString.data(), 8);
+      const string_view actualStringView = "expected";
+      ARE_EQUAL(expectedStringView, actualStringView);
    }
 
    TEST(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNullptr_DoesNotThrowException)

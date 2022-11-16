@@ -2470,49 +2470,63 @@ namespace ZenUnit
    template<typename ConstCharPointerType, typename ExpectedStringType, typename ActualStringType>
    void AssertStringsAreEqual(const ExpectedStringType& expectedString, const ActualStringType& actualString)
    {
-      ConstCharPointerType expectedConstCharPointer = nullptr;
-      ConstCharPointerType actualConstCharPointer = nullptr;
-      if constexpr (is_string_type_with_data_function_v<ExpectedStringType>)
+      if constexpr (std::is_same_v<ExpectedStringType, std::string_view> && std::is_same_v<ActualStringType, std::string_view>)
       {
-         expectedConstCharPointer = expectedString.data();
+         const bool stringViewsAreEqual = expectedString == actualString;
+         if (stringViewsAreEqual)
+         {
+            return;
+         }
+         throw EqualizerException();
       }
       else
       {
-         expectedConstCharPointer = expectedString;
-      }
-      if constexpr (is_string_type_with_data_function_v<ActualStringType>)
-      {
-         actualConstCharPointer = actualString.data();
-      }
-      else
-      {
-         actualConstCharPointer = actualString;
-      }
-      if (expectedConstCharPointer == nullptr && actualConstCharPointer == nullptr)
-      {
-         return;
-      }
-      if (expectedConstCharPointer == nullptr && actualConstCharPointer != nullptr)
-      {
-         throw EqualizerException();
-      }
-      if (expectedConstCharPointer != nullptr && actualConstCharPointer == nullptr)
-      {
-         throw EqualizerException();
-      }
-      int stringComparisonResult = 0;
-      if constexpr (std::is_same_v<ConstCharPointerType, const char*>)
-      {
-         stringComparisonResult = strcmp(expectedConstCharPointer, actualConstCharPointer);
-      }
-      else
-      {
-         static_assert(std::is_same_v<ConstCharPointerType, const wchar_t*>);
-         stringComparisonResult = wcscmp(expectedConstCharPointer, actualConstCharPointer);
-      }
-      if (stringComparisonResult != 0)
-      {
-         throw EqualizerException();
+         ConstCharPointerType expectedConstCharPointer = nullptr;
+         ConstCharPointerType actualConstCharPointer = nullptr;
+         if constexpr (is_string_type_with_data_function_v<ExpectedStringType>)
+         {
+            expectedConstCharPointer = expectedString.data();
+         }
+         else
+         {
+            expectedConstCharPointer = expectedString;
+         }
+         if constexpr (is_string_type_with_data_function_v<ActualStringType>)
+         {
+            actualConstCharPointer = actualString.data();
+         }
+         else
+         {
+            actualConstCharPointer = actualString;
+         }
+
+         if (expectedConstCharPointer == nullptr && actualConstCharPointer == nullptr)
+         {
+            return;
+         }
+         if (expectedConstCharPointer == nullptr && actualConstCharPointer != nullptr)
+         {
+            throw EqualizerException();
+         }
+         if (expectedConstCharPointer != nullptr && actualConstCharPointer == nullptr)
+         {
+            throw EqualizerException();
+         }
+
+         int stringComparisonResult = 0;
+         if constexpr (std::is_same_v<ConstCharPointerType, const char*>)
+         {
+            stringComparisonResult = strcmp(expectedConstCharPointer, actualConstCharPointer);
+         }
+         else
+         {
+            static_assert(std::is_same_v<ConstCharPointerType, const wchar_t*>);
+            stringComparisonResult = wcscmp(expectedConstCharPointer, actualConstCharPointer);
+         }
+         if (stringComparisonResult != 0)
+         {
+            throw EqualizerException();
+         }
       }
    }
 
