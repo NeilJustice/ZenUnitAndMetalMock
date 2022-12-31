@@ -325,41 +325,33 @@ namespace ZenUnit
       TestOutcome::Exception, false,
       TestOutcome::Success, true)
    {
-      _protected_consoleMock->WriteColorMock.Expect();
       _protected_consoleMock->WriteMock.Expect();
-
       string testResultThreeDecimalMillisecondsString;
       if (expectWriteLineOK)
       {
          _protected_consoleMock->WriteColorMock.Expect();
          _protected_consoleMock->WriteLineMock.Expect();
-         testResultThreeDecimalMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+         testResultThreeDecimalMillisecondsString =
+            _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       }
       TestMock testMock;
-
       TestResult newableAndDeletableTestResult;
       newableAndDeletableTestResult.testOutcome = newableDeletableTestOutcome;
       newableAndDeletableTestResult.elapsedMicroseconds = ZenUnit::Random<unsigned>();
       const vector<TestResult> newableAndDeletableTestResults{ newableAndDeletableTestResult };
       testMock.RunTestMock.Return(newableAndDeletableTestResults);
       //
-      const TestResult returnedNewableAndDeletableTestResult = _specificTestClassRunner->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock);
+      const TestResult returnedNewableAndDeletableTestResult =
+         _specificTestClassRunner->ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(&testMock);
       //
       if (expectWriteLineOK)
       {
-         METALMOCK(_protected_consoleMock->WriteColorMock.CalledAsFollows(
-         {
-            { "|", Color::Green },
-            { "OK ", Color::Green }
-         }));
-         METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(newableAndDeletableTestResult.elapsedMicroseconds));
+         METALMOCK(_protected_consoleMock->WriteColorMock.CalledOnceWith("OK ", Color::Green));
+         METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(
+            newableAndDeletableTestResult.elapsedMicroseconds));
          METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }
-      else
-      {
-         METALMOCK(_protected_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
-      }
-      METALMOCK(_protected_consoleMock->WriteMock.CalledOnceWith("TestClassIsNewableAndDeletable -> "));
+      METALMOCK(_protected_consoleMock->WriteMock.CalledOnceWith("|TestClassIsNewableAndDeletable -> "));
       METALMOCK(testMock.RunTestMock.CalledOnce());
       ARE_EQUAL(newableAndDeletableTestResult, returnedNewableAndDeletableTestResult);
    }
@@ -397,7 +389,6 @@ namespace ZenUnit
       zenUnitArgs.testNameFilters.resize(testNameFiltersSize);
       _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
-      _protected_consoleMock->WriteColorMock.Expect();
       _protected_consoleMock->WriteMock.Expect();
 
       TestMock* const testMock = new TestMock;
@@ -419,6 +410,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
+      METALMOCK(_protected_consoleMock->WriteMock.CalledNTimes(2));
       METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       METALMOCK(testMock->NameMock.CalledOnce());
       if (expectAnyerCall)
@@ -426,8 +418,8 @@ namespace ZenUnit
          METALMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
             zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
       }
-      METALMOCK(_protected_consoleMock->WriteColorMock.CalledOnceWith("|", Color::Green));
-      METALMOCK(_protected_consoleMock->WriteMock.CalledOnceWith(testName));
+      METALMOCK(_protected_consoleMock->WriteMock.CalledWith("|"));
+      METALMOCK(_protected_consoleMock->WriteMock.CalledWith(testName));
       METALMOCK(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->_protected_console.get()));
       METALMOCK(testMock->RunTestMock.CalledOnce());
       METALMOCK(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));

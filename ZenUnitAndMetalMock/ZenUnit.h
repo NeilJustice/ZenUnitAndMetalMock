@@ -6296,8 +6296,7 @@ Fatal Windows C++ Runtime Assertion
 
       TestResult ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* testClassIsNewableAndDeletableTest) const
       {
-         _protected_console->WriteColor("|", Color::Green);
-         _protected_console->Write("TestClassIsNewableAndDeletable -> ");
+         _protected_console->Write("|TestClassIsNewableAndDeletable -> ");
          // testClassIsNewableAndDeletableTest->RunTest() registers NXN tests by operator newing the test class for the first time
          std::vector<TestResult> newableAndDeletableTestResults = testClassIsNewableAndDeletableTest->RunTest();
          ZENUNIT_ASSERT(newableAndDeletableTestResults.size() == 1);
@@ -6320,7 +6319,7 @@ Fatal Windows C++ Runtime Assertion
             zenUnitArgs.testNameFilters, this, &TestClassRunner::TestNameFilterMatchesTestName, testName);
          if (testNameFilterMatchesTestName)
          {
-            _protected_console->WriteColor("|", Color::Green);
+            _protected_console->Write("|");
             _protected_console->Write(testName);
             test->WritePostTestNameMessage(_protected_console.get());
             std::vector<TestResult> testResults = test->RunTest();
@@ -6731,10 +6730,9 @@ Fatal Windows C++ Runtime Assertion
 
       virtual void PrintTestCaseNumberThenArgsThenArrow(size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
-         _console->WriteColor(" [", Color::Green);
+         _console->Write(" [");
          _console->WriteSizeT(testCaseNumber);
-         _console->WriteColor("]", Color::Green);
-         _console->Write(" (");
+         _console->Write("] (");
          const size_t testCaseArgsPrintingStartIndex = (testCaseNumber - 1) * N;
          _console->WriteStringsCommaSeparated(splitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
          _console->Write(") -> ");
