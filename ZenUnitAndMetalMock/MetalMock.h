@@ -3603,14 +3603,12 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          const char* constOrEmptyString)
       {
          std::ostringstream builder;
-         const size_t virtualOrEmptyStringLength = strlen(virtualOrEmptyString);
-         if (virtualOrEmptyStringLength > 0)
+         if (strcmp(virtualOrEmptyString, "") != 0)
          {
             builder << virtualOrEmptyString << ' ';
          }
          builder << returnType << ' ' << *metalMockedClassName << "::" << unadornedFunctionSignature;
-         const size_t constOrEmptyStringLength = strlen(constOrEmptyString);
-         if (constOrEmptyStringLength > 0)
+         if (strcmp(constOrEmptyString, "") != 0)
          {
             builder << ' ' << constOrEmptyString;
          }

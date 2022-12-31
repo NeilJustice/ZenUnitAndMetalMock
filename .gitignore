@@ -86,3 +86,8 @@ install_manifest.txt
 *.s14
 Cppcheck/files.txt
 cppcheck_results.txt
+
+# VTune
+GPUCache/
+VTune Profiler Results/
+debug.log
