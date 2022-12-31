@@ -4,7 +4,7 @@
       "CLSID": "4EA90761-2248-496C-B854-3C0399A591A4",
       "Name": "DiagnosticsHub.CpuAgent.dll",
       "Config": {
-        "cpuSampleRate": 5000
+        "cpuSampleRate": 8190
       }
     }
   ]
