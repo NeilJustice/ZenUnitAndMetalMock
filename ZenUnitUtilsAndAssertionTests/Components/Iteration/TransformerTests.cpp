@@ -98,9 +98,9 @@ namespace ZenUnit
       //
       const vector<TransformedElementType> transformedElements =  _transformer.ParallelTransform(&elements, PlusOne);
       //
-      const vector<TransformedElementType> expectedTransformedElements = 
-      { 
-         static_cast<TransformedElementType>(element1) + TransformedElementType{1}, 
+      const vector<TransformedElementType> expectedTransformedElements =
+      {
+         static_cast<TransformedElementType>(element1) + TransformedElementType{1},
          static_cast<TransformedElementType>(element2) + TransformedElementType{1}
       };
       VECTORS_ARE_EQUAL(expectedTransformedElements, transformedElements);
