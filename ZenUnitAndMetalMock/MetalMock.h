@@ -3602,17 +3602,29 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          const char* unadornedFunctionSignature,
          const char* constOrEmptyString)
       {
-         std::ostringstream builder;
-         if (strcmp(virtualOrEmptyString, "") != 0)
+         const bool hasVirtual = strcmp(virtualOrEmptyString, "") != 0;
+         const bool hasConst = strcmp(constOrEmptyString, "") != 0;
+         std::string metalMockedFunctionSignature;
+         if (hasVirtual && hasConst)
          {
-            builder << virtualOrEmptyString << ' ';
+            metalMockedFunctionSignature = ZenUnit::String::ConcatStrings(
+               virtualOrEmptyString, " ", returnType, " ", *metalMockedClassName, "::", unadornedFunctionSignature, " ", constOrEmptyString);
          }
-         builder << returnType << ' ' << *metalMockedClassName << "::" << unadornedFunctionSignature;
-         if (strcmp(constOrEmptyString, "") != 0)
+         else if (hasVirtual && !hasConst)
          {
-            builder << ' ' << constOrEmptyString;
+            metalMockedFunctionSignature = ZenUnit::String::ConcatStrings(
+               virtualOrEmptyString, " ", returnType, " ", *metalMockedClassName, "::", unadornedFunctionSignature);
          }
-         std::string metalMockedFunctionSignature = builder.str();
+         else if (!hasVirtual && hasConst)
+         {
+            metalMockedFunctionSignature = ZenUnit::String::ConcatStrings(
+               returnType, " ", *metalMockedClassName, "::", unadornedFunctionSignature, " ", constOrEmptyString);
+         }
+         else
+         {
+            metalMockedFunctionSignature = ZenUnit::String::ConcatStrings(
+               returnType, " ", *metalMockedClassName, "::", unadornedFunctionSignature);
+         }
          return metalMockedFunctionSignature;
       }
 
