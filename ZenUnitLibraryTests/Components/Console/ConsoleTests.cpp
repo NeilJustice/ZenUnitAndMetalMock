@@ -5,6 +5,7 @@ namespace ZenUnit
 {
    TESTS(ConsoleTests)
    AFACT(DefaultConstructor_SetsFunctionPointers_NewsConsoleColorer)
+   FACTS(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
    AFACT(Write_WritesMessageToCout)
    FACTS(WriteColor_WritesMessageInSpecifiedColor)
    AFACT(WriteLine_CallsWriteLineWithWhite)
@@ -66,6 +67,29 @@ namespace ZenUnit
 #endif
       // Mutable Components
       DELETE_TO_ASSERT_NEWED(console._consoleColorer);
+   }
+
+   TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
+      unsigned microseconds, const string& expectedReturnValue,
+      0U, "[0.00ms]",
+      1U, "[0.00ms]",
+      2U, "[0.00ms]",
+      10U, "[0.01ms]",
+      12U, "[0.01ms]",
+      100U, "[0.10ms]",
+      120U, "[0.12ms]",
+      123U, "[0.12ms]",
+      1000U, "[1.00ms]",
+      1234U, "[1.23ms]",
+      12345U, "[12.35ms]",
+      123456U, "[123.46ms]",
+      1234567U, "[1234.57ms]",
+      12345678U, "[12345.68ms]",
+      123456789U, "[123456.79ms]",
+      1234567890U, "[1234567.89ms]")
+   {
+      const string twoDecimalPlaceMillisecondsString = _console.MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+      ARE_EQUAL(expectedReturnValue, twoDecimalPlaceMillisecondsString);
    }
 
    TEST(Write_WritesMessageToCout)

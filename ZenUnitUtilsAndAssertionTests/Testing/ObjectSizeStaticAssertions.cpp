@@ -84,12 +84,12 @@ namespace ZenUnit
 
    #if defined(_WIN32)
       #if defined _DEBUG
-         static_assert(sizeof(TestResult) == 248);
+         static_assert(sizeof(TestResult) == 184);
       #elif NDEBUG
-         static_assert(sizeof(TestResult) == 248);
+         static_assert(sizeof(TestResult) == 184);
       #endif
    #else
-      static_assert(sizeof(TestResult) == 216);
+      static_assert(sizeof(TestResult) == 184);
    #endif
 
    #if defined(_WIN32)

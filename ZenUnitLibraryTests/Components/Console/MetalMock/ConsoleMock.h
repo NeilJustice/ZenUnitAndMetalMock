@@ -3,6 +3,7 @@
 class ConsoleMock : public Metal::Mock<Console>
 {
 public:
+   METALMOCK_NONVOID1_CONST(std::string, MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
    METALMOCK_VOID1_CONST(Write, std::string_view)
    METALMOCK_VOID1_CONST(WriteSizeT, size_t)
    METALMOCK_VOID2_CONST(WriteColor, std::string_view, Color)

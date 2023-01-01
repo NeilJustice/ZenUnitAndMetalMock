@@ -1133,6 +1133,78 @@ namespace ZenUnit
       }
    };
 
+   class Watch
+   {
+      friend class WatchTests;
+   public:
+      virtual ~Watch() = default;
+
+      // Returns the current local time in format "YYYY-MM-DD 00:00:00 TimeZone"
+      virtual std::string DateTimeNow() const
+      {
+         const tm tmNow = TMNow();
+         const std::string timeZone = TimeZone(tmNow);
+         char localTimeWithTimeZoneChars[128];
+         strftime(localTimeWithTimeZoneChars, sizeof(localTimeWithTimeZoneChars), "%F %r ", &tmNow);
+         std::string localTimeWithTimeZone = std::string(localTimeWithTimeZoneChars) + timeZone;
+         return localTimeWithTimeZone;
+      }
+
+      virtual unsigned SecondsSince1970() const
+      {
+         const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
+         const unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
+         return secondsSince1970AsUnsigned;
+      }
+
+      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds)
+      {
+         const double unroundedMilliseconds = static_cast<double>(microseconds) / 1000.0;
+
+         // Example: 0.1200000000001
+         const double millisecondsRoundedToTwoDecimalPlaces = std::floor(unroundedMilliseconds * 100 + 0.5) / 100;
+
+         // Example: "0.120000"
+         const std::string millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString =
+            std::to_string(millisecondsRoundedToTwoDecimalPlaces);
+
+         // Example: "0.12"
+         const std::string millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString =
+            millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.substr(
+               0, millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.find_first_of('.') + 3);
+
+         // Example: "[0.12ms]"
+         std::string twoDecimalPlaceMillisecondsString =
+            String::ConcatStrings("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
+
+         return twoDecimalPlaceMillisecondsString;
+      }
+   private:
+      virtual std::string TimeZone(const tm& tmNow) const
+      {
+         char timeZoneChars[64]{};
+         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmNow);
+         std::string timeZone(timeZoneChars);
+         return timeZone;
+      }
+
+      virtual tm TMNow() const
+      {
+         const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
+#if defined __linux__ || defined __APPLE__
+         tm* tmNow = nullptr;
+         long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
+         tmNow = localtime(&nowTimeT);
+         return *tmNow;
+#elif defined _WIN32
+         const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
+         tm tmNow{};
+         localtime_s(&tmNow, &nowTimeT);
+         return tmNow;
+#endif
+      }
+   };
+
    class Console
    {
       friend class ConsoleTests;
@@ -1164,6 +1236,11 @@ namespace ZenUnit
       {
          static const Console staticConsoleInstance;
          return &staticConsoleInstance;
+      }
+
+      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
+      {
+         return Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
       }
 
       virtual void Write(std::string_view message) const
@@ -2186,78 +2263,6 @@ namespace ZenUnit
       }
 
       virtual ~NonVoidTwoArgMemberFunctionCaller() = default;
-   };
-
-   class Watch
-   {
-      friend class WatchTests;
-   public:
-      virtual ~Watch() = default;
-
-      // Returns the current local time in format "YYYY-MM-DD 00:00:00 TimeZone"
-      virtual std::string DateTimeNow() const
-      {
-         const tm tmNow = TMNow();
-         const std::string timeZone = TimeZone(tmNow);
-         char localTimeWithTimeZoneChars[128];
-         strftime(localTimeWithTimeZoneChars, sizeof(localTimeWithTimeZoneChars), "%F %r ", &tmNow);
-         std::string localTimeWithTimeZone = std::string(localTimeWithTimeZoneChars) + timeZone;
-         return localTimeWithTimeZone;
-      }
-
-      virtual unsigned SecondsSince1970() const
-      {
-         const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
-         return secondsSince1970AsUnsigned;
-      }
-
-      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds)
-      {
-         const double unroundedMilliseconds = static_cast<double>(microseconds) / 1000.0;
-
-         // Example: 0.1200000000001
-         const double millisecondsRoundedToTwoDecimalPlaces = std::floor(unroundedMilliseconds * 100 + 0.5) / 100;
-
-         // Example: "0.120000"
-         const std::string millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString =
-            std::to_string(millisecondsRoundedToTwoDecimalPlaces);
-
-         // Example: "0.12"
-         const std::string millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString =
-            millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.substr(
-               0, millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.find_first_of('.') + 3);
-
-         // Example: "[0.12ms]"
-         std::string twoDecimalPlaceMillisecondsString =
-            String::ConcatStrings("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
-
-         return twoDecimalPlaceMillisecondsString;
-      }
-   private:
-      virtual std::string TimeZone(const tm& tmNow) const
-      {
-         char timeZoneChars[64]{};
-         strftime(timeZoneChars, sizeof(timeZoneChars), "%Z", &tmNow);
-         std::string timeZone(timeZoneChars);
-         return timeZone;
-      }
-
-      virtual tm TMNow() const
-      {
-         const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
-#if defined __linux__ || defined __APPLE__
-         tm* tmNow = nullptr;
-         long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
-         tmNow = localtime(&nowTimeT);
-         return *tmNow;
-#elif defined _WIN32
-         const __time64_t nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
-         tm tmNow{};
-         localtime_s(&tmNow, &nowTimeT);
-         return tmNow;
-#endif
-      }
    };
 
    class ArgsParser
@@ -4408,7 +4413,6 @@ namespace ZenUnit
       unsigned elapsedMicroseconds = 0;
       size_t testCaseNumber = std::numeric_limits<size_t>::max();
       size_t totalTestCases = 0;
-      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString;
 
       TestResult()
       {
@@ -4438,7 +4442,6 @@ namespace ZenUnit
             destructorTestPhaseResult.elapsedMicroseconds)
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , totalTestCases(0)
-         , _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
          ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
          ZENUNIT_ASSERT(startupTestPhaseResult.testOutcome == TestOutcome::Success);
@@ -4543,14 +4546,14 @@ namespace ZenUnit
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
+            const std::string twoDecimalPlaceMillisecondsString = console->MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
             console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          else if (testOutcome == TestOutcome::SuccessButPastDeadline)
          {
             console->WriteColor("OK ", Color::Green);
             console->WriteColor("but took longer than --max-test-milliseconds ", Color::Red);
-            const std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
+            const std::string twoDecimalPlaceMillisecondsString = console->MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
             console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
       }

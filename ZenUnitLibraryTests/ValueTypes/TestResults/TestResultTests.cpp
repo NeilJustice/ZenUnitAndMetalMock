@@ -24,7 +24,6 @@ namespace ZenUnit
    // Mocks
    ConsoleMock _consoleMock;
    TestFailureNumbererMock _testFailureNumbererMock;
-   METALMOCK_NONVOID1_STATIC(string, ZenUnit::Watch, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, long long)
    // Testing Fields
    TestPhaseResult ConstructorTestPhaseResult;
    TestPhaseResult StartupTestPhaseResult;
@@ -41,9 +40,6 @@ namespace ZenUnit
 
    STARTUP
    {
-      // Mocks
-      _testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString =
-         BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
       // Testing Fields
       ConstructorTestPhaseResult = TestPhaseResult(TestPhase::Constructor);
       ConstructorTestPhaseResult.elapsedMicroseconds = 1000;
@@ -57,7 +53,6 @@ namespace ZenUnit
    TEST(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
    {
       const TestResult defaultTestResult;
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString, defaultTestResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedDefaultTestResult;
       expectedDefaultTestResult.fullTestName = FullTestName();
       expectedDefaultTestResult.constructorTestPhaseResult = TestPhaseResult();
@@ -129,7 +124,6 @@ namespace ZenUnit
       {
          GetArgsMock.CalledOnce();
       }
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString, testResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
       expectedTestResult.constructorTestPhaseResult = ConstructorTestPhaseResult;
@@ -211,15 +205,15 @@ namespace ZenUnit
       _testResult.testOutcome = TestOutcome::Success;
       _consoleMock.WriteColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
-      const string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+      const string twoDecimalPlaceMillisecondsString = _consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       const unsigned elapsedMicroseconds = ZenUnit::Random<unsigned>();
       _testResult.elapsedMicroseconds = elapsedMicroseconds;
       //
       _testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(&_consoleMock);
       //
-      METALMOCK(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green));
-      METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(elapsedMicroseconds));
-      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
+      METALMOCKTHEN(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green)).Then(
+      METALMOCKTHEN(_consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(elapsedMicroseconds))).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString)));
    }
 
    TEST(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsSuccessButPastDeadline_PrintsOKButPastDeadline)
@@ -227,19 +221,16 @@ namespace ZenUnit
       _testResult.testOutcome = TestOutcome::SuccessButPastDeadline;
       _consoleMock.WriteColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
-      const string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+      const string twoDecimalPlaceMillisecondsString = _consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       const unsigned elapsedMicroseconds = ZenUnit::Random<unsigned>();
       _testResult.elapsedMicroseconds = elapsedMicroseconds;
       //
       _testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(&_consoleMock);
       //
-      METALMOCK(_consoleMock.WriteColorMock.CalledAsFollows(
-      {
-         { "OK ", Color::Green },
-         { "but took longer than --max-test-milliseconds ", Color::Red }
-      }));
-      METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(elapsedMicroseconds));
-      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString));
+      METALMOCKTHEN(_consoleMock.WriteColorMock.CalledWith("OK ", Color::Green)).Then(
+      METALMOCKTHEN(_consoleMock.WriteColorMock.CalledWith("but took longer than --max-test-milliseconds ", Color::Red))).Then(
+      METALMOCKTHEN(_consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(elapsedMicroseconds))).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString)));
    }
 
    TEST1X1(WriteLineOKIfSuccessOrSuccessButPastDeadline_TestOutcomeIsNotSuccessOrSuccessButPastDeadline_PrintsOKButPastDeadline,
