@@ -19,7 +19,7 @@ TEST(TwoTypeEqualizer_MutableCharSpan_String_LengthsAreNotEqual_ThrowsAnomaly)
    try
    {
       ZenUnit::TwoTypeEqualizer<span<char>, string>::AssertEqual(mutableCharSpanWithLength3, strWithLength5);
-      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown");
+      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown"); // LCOV_EXCL_LINE
    }
    catch (const ZenUnit::Anomaly& anomaly)
    {
@@ -41,7 +41,7 @@ TEST(TwoTypeEqualizer_MutableCharSpan_String_LengthsAreEqual_CharsAreNotEqual_Th
    try
    {
       ZenUnit::TwoTypeEqualizer<span<char>, string>::AssertEqual(mutableCharSpan, str2);
-      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown");
+      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown"); // LCOV_EXCL_LINE
    }
    catch (const ZenUnit::Anomaly& anomaly)
    {
@@ -95,7 +95,7 @@ TEST(TwoTypeEqualizer_ConstantCharSpan_String_LengthsAreNotEqual_ThrowsAnomaly)
    try
    {
       ZenUnit::TwoTypeEqualizer<span<const char>, string>::AssertEqual(constantCharSpanWithLength3, strWithLength5);
-      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown");
+      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown"); // LCOV_EXCL_LINE
    }
    catch (const ZenUnit::Anomaly& anomaly)
    {
@@ -117,7 +117,7 @@ TEST(TwoTypeEqualizer_ConstantCharSpan_String_LengthsAreEqual_CharsAreNotEqual_T
    try
    {
       ZenUnit::TwoTypeEqualizer<span<const char>, string>::AssertEqual(constantCharSpan, str2);
-      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown");
+      FAIL_TEST("ZenUnit::Anomaly unexpectedly not thrown"); // LCOV_EXCL_LINE
    }
    catch (const ZenUnit::Anomaly& anomaly)
    {
