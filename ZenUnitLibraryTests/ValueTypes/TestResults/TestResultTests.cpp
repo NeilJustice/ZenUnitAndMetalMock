@@ -282,17 +282,15 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      METALMOCK(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce());
-      METALMOCK(_consoleMock.WriteMock.CalledAsFollows(
-      {
-         { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
-         { expectedTestPhaseSuffix }
-      }));
-      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
-         CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red));
-      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy));
-      METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
+      METALMOCK(_consoleMock.WriteMock.CalledNTimes(2));
+      METALMOCKTHEN(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce()).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red))).Then(
+      METALMOCKTHEN(_consoleMock.WriteMock.CalledWith(_testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value()))).Then(
+      METALMOCKTHEN(_consoleMock.WriteMock.CalledWith(expectedTestPhaseSuffix))).Then(
+      METALMOCKTHEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.CalledOnceWith(
+         &_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber))).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineMock.CalledOnceWith(anomalyWhy))).Then(
+      METALMOCKTHEN(_consoleMock.WriteNewLineMock.CalledOnce()));
    }
 
    TEST3X3(PrintIfFailure_TestOutcomeIsException_PrintsExpected,
@@ -327,23 +325,19 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      METALMOCK(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce());
-      METALMOCK(_consoleMock.WriteMock.CalledAsFollows(
-      {
-         { _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value() },
-         { expectedTestPhaseSuffix }
-      }));
-      METALMOCK(_consoleMock.WriteLineColorMock.CalledAsFollows(
-      {
-         { numberedTestFailureArrow, Color::Red },
-         { "\n==================\nUncaught Exception\n==================", Color::Red }
-      }));
-      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(
+      METALMOCK(_consoleMock.WriteMock.CalledNTimes(2));
+      METALMOCK(_consoleMock.WriteLineColorMock.CalledNTimes(2));
+      METALMOCKTHEN(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce()).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineColorMock.CalledWith(numberedTestFailureArrow, Color::Red))).Then(
+      METALMOCKTHEN(_consoleMock.WriteMock.CalledWith(_testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value()))).Then(
+      METALMOCKTHEN(_consoleMock.WriteMock.CalledWith(expectedTestPhaseSuffix))).Then(
+      METALMOCKTHEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.CalledOnceWith(
+         &_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber))).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineColorMock.CalledWith("\n==================\nUncaught Exception\n==================", Color::Red))).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineMock.CalledOnceWith(
          "  Type: " + exceptionTypeName + "\n"
-         "what(): \""s + exceptionWhat + "\""));
-      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.
-         CalledOnceWith(&_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      METALMOCK(_consoleMock.WriteNewLineMock.CalledOnce());
+         "what(): \""s + exceptionWhat + "\""))).Then(
+      METALMOCKTHEN(_consoleMock.WriteNewLineMock.CalledOnce()));
    }
 
    TEST(PrintIfFailure_TestOutcomeIsSuccessButPastDeadline_PrintsExpectedErrorMessage)
@@ -363,16 +357,16 @@ namespace ZenUnit
       //
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
-      METALMOCK(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce());
-      METALMOCK(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.CalledOnceWith(
-         &_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber));
-      METALMOCK(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red));
       const string expectedFullTestNameString = _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value();
-      METALMOCK(_consoleMock.WriteMock.CalledOnceWith(expectedFullTestNameString));
       const unsigned expectedElapsedMilliseconds = _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMicroseconds / 1000U;
       const std::string expectedErrorMessage = String::ConcatValues(
          "\nTest succeeded but took ", expectedElapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
-      METALMOCK(_consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
+      METALMOCKTHEN(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce()).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineColorMock.CalledOnceWith(numberedTestFailureArrow, Color::Red))).Then(
+      METALMOCKTHEN(_consoleMock.WriteMock.CalledOnceWith(expectedFullTestNameString))).Then(
+      METALMOCKTHEN(_testResult_WriteTestCaseNumberIfAnyMocked.WriteTestCaseNumberIfAnyMock.CalledOnceWith(
+         &_consoleMock, _testResult_WriteTestCaseNumberIfAnyMocked.testCaseNumber))).Then(
+      METALMOCKTHEN(_consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage)));
    }
 
    TEST1X1(PrintIfFailure_TestOutcomeIsInvalid_ThrowsInvalidArgument,
