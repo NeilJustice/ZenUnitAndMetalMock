@@ -4,11 +4,11 @@ set -eu
 osname="$(uname --operating-system)"
 if [[ "$osname" == *"Linux" ]]; then
    ./JenkinsJobs/Linux/ZenUnitAndMetalMock-Cppcheck.sh
-   ./JenkinsJobs/Linux/ZenUnitAndMetalMock-ZenUnitDevOpsPython-Mypy-Flake8-Pylint-SonarQube.sh
+   ./JenkinsJobs/Linux/ZenUnitAndMetalMock-ZenUnitDevOpsPython-Mypy-Flake8-Pylint.sh
    ./JenkinsJobs/Linux/ZenUnitAndMetalMock-Debug-Clang.sh
 elif [ "$osname" == "Msys" ]; then
    pwsh.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-Cppcheck.ps1
-   pwsh.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-ZenUnitDevOpsPython-Mypy-Flake8-Pylint-SonarQube.ps1
+   pwsh.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-ZenUnitDevOpsPython-Mypy-Flake8-Pylint.ps1
    pwsh.exe JenkinsJobs/Windows/ZenUnitAndMetalMock-Debug.ps1 "OFF"
 fi
 jenkinsJobExitCode=$?
