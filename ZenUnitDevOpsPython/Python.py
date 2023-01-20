@@ -25,7 +25,7 @@ def run_pylint_on_all_files_in_parallel() -> None:
       sys.exit(1)
 
 def run_flake8() -> None:
-   flake8Command = 'flake8 --config=.flake8 --show-source --benchmark'
+   flake8Command = 'flake8 -j 61 --config=.flake8 --show-source --benchmark'
    Process.fail_fast_run(flake8Command)
 
 def run_all_with_coverage(testsProjectName: str, omitPattern: str) -> None:

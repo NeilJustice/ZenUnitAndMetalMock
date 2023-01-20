@@ -78,7 +78,7 @@ class PythonTests(unittest.TestCase):
       #
       Python.run_flake8()
       #
-      expectedFlake8Command = 'flake8 --config=.flake8 --show-source --benchmark'
+      expectedFlake8Command = 'flake8 -j 61 --config=.flake8 --show-source --benchmark'
       Process.fail_fast_run.assert_called_once_with(expectedFlake8Command)
 
    def test_run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode(self):
