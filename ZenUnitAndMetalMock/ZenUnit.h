@@ -1385,9 +1385,13 @@ namespace ZenUnit
    template<typename KeyType, typename ValueType>
    constexpr bool is_unordered_map_v<std::unordered_map<KeyType, ValueType>> = true;
 
+   template<typename T> constexpr bool is_set_v = false;
+   template<typename ElementType>
+   constexpr bool is_set_v<std::set<ElementType>> = true;
+
    template<typename T> constexpr bool is_unordered_set_v = false;
-   template<typename KeyType>
-   constexpr bool is_unordered_set_v<std::unordered_set<KeyType>> = true;
+   template<typename ElementType>
+   constexpr bool is_unordered_set_v<std::unordered_set<ElementType>> = true;
 
    template<typename T>
    concept has_to_string = requires(T value)
@@ -7930,7 +7934,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename ElementType>
-   std::set<ElementType> RandomSetWithSize(size_t size)
+   std::set<ElementType> RandomOrderedSetWithSize(size_t size)
    {
       size_t numberOfIterations = size;
       std::set<ElementType> randomOrderedSet;
@@ -7948,18 +7952,18 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename ElementType>
-   std::set<ElementType> RandomSet()
+   std::set<ElementType> RandomOrderedSet()
    {
       const std::size_t randomOrderedSetSize = RandomBetween<size_t>(0, 3);
-      std::set<ElementType> randomOrderedSet = RandomSetWithSize<ElementType>(randomOrderedSetSize);
+      std::set<ElementType> randomOrderedSet = RandomOrderedSetWithSize<ElementType>(randomOrderedSetSize);
       return randomOrderedSet;
    }
 
    template<typename ElementType>
-   std::set<ElementType> RandomNonEmptySet()
+   std::set<ElementType> RandomNonEmptyOrderedSet()
    {
       const std::size_t randomNonEmptyOrderedSetSize = RandomBetween<size_t>(1, 3);
-      std::set<ElementType> randomNonEmptyOrderedSet = RandomSetWithSize<ElementType>(randomNonEmptyOrderedSetSize);
+      std::set<ElementType> randomNonEmptyOrderedSet = RandomOrderedSetWithSize<ElementType>(randomNonEmptyOrderedSetSize);
       return randomNonEmptyOrderedSet;
    }
 
@@ -8017,6 +8021,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          std::unordered_map<typename T::key_type, typename T::mapped_type> randomUnorderedMap = RandomUnorderedMap<typename T::key_type, typename T::mapped_type>();
          return randomUnorderedMap;
+      }
+      else if constexpr (is_set_v<T>)
+      {
+         std::set<typename T::key_type> randomOrderedSet = RandomOrderedSet<typename T::key_type>();
+         return randomOrderedSet;
       }
       else if constexpr (is_unordered_set_v<T>)
       {
