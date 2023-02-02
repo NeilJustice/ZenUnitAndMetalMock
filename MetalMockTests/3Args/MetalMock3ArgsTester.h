@@ -243,34 +243,5 @@ File.cpp(1))");
          test(_freeFunctionMockObject, _freeFunctionSignature);
          test(_staticMockObject, _staticFunctionSignature);
       }
-
-      void CalledAsFollows_CalledTwice_ThrowsException()
-      {
-         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
-         {
-            metalMockObject.wasExpected = true;
-            const int arg1 = ZenUnit::Random<int>();
-            const int arg2 = ZenUnit::Random<int>();
-            const int arg3 = ZenUnit::Random<int>();
-            //
-            metalMockObject.MetalMockIt(arg1, arg2, arg3);
-            //
-            metalMockObject.CalledAsFollows(
-            {
-               { arg1, arg2, arg3 }
-            });
-            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(
-            {
-               { arg1, arg2, arg3 }
-            }), FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
-         };
-         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
-         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
-         test(_freeFunctionMockObject, _freeFunctionSignature);
-         test(_staticMockObject, _staticFunctionSignature);
-      }
    };
 }

@@ -37,7 +37,6 @@ namespace MetalMock
    AFACT(MockedFunctions_CodeCoverage)
    AFACT(CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
    AFACT(CalledOnceWith_CalledTwice_ThrowsException)
-   AFACT(CalledAsFollows_CalledTwice_ThrowsException)
    EVIDENCE
 
    Void7ArgsFunctionsMock _void7ArgsFunctionsMock;
@@ -150,11 +149,6 @@ namespace MetalMock
    TEST(CalledOnceWith_CalledTwice_ThrowsException)
    {
       _metalMock7ArgsTester->CalledOnceWith_CalledTwice_ThrowsException();
-   }
-
-   TEST(CalledAsFollows_CalledTwice_ThrowsException)
-   {
-      _metalMock7ArgsTester->CalledAsFollows_CalledTwice_ThrowsException();
    }
 
    RUN_TESTS(MetalMockVoid7Tests)

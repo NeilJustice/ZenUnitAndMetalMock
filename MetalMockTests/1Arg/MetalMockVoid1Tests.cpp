@@ -28,7 +28,7 @@ namespace MetalMock
    TESTS(MetalMockVoid1Tests)
    AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
-   AFACT(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
+   AFACT(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
    AFACT(CalledWith_FunctionCalledOnce_ThrowsException)
    AFACT(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
@@ -44,12 +44,7 @@ namespace MetalMock
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
    FACTS(CalledNTimesWith_NIs1OrGreater_FunctionWasNotCalledNTimes_ThrowsAnomaly)
    AFACT(CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesButNotWithExpectedArg_ThrowsAnomaly)
-   FACTS(CalledNTimesWith_NIs1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrowException)
-   AFACT(CalledAsFollows_EmptyExpectedCalls_ThrowsUnsupportedCalledZeroTimesException)
-   AFACT(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly)
-   AFACT(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_ThrowsAnomaly)
-   FACTS(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException)
-   AFACT(CalledAsFollows_CalledTwice_ThrowsException)
+   FACTS(CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesWithArg_DoesNotThrowException)
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
@@ -103,9 +98,9 @@ namespace MetalMock
       _metalMock1ArgTester->ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled();
    }
 
-   TEST(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
+   TEST(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
    {
-      _metalMock1ArgTester->MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly();
+      _metalMock1ArgTester->MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CallsAsFollowsInAnyOrderThrowsAnomaly();
    }
 
    TEST(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
@@ -191,40 +186,12 @@ namespace MetalMock
       _metalMock1ArgTester->CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesButNotWithExpectedArg_ThrowsAnomaly();
    }
 
-   TEST1X1(CalledNTimesWith_NIs1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrowException,
+   TEST1X1(CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesWithArg_DoesNotThrowException,
       size_t n,
       1ULL,
       2ULL)
    {
-      _metalMock1ArgTester->CalledNTimesWith_NIs1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrowException(n);
-   }
-
-   TEST(CalledAsFollows_EmptyExpectedCalls_ThrowsUnsupportedCalledZeroTimesException)
-   {
-      _metalMock1ArgTester->CalledAsFollows_EmptyExpectedCalls_ThrowsUnsupportedCalledZeroTimesException();
-   }
-
-   TEST(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly)
-   {
-      //_metalMock1ArgTester->CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly();
-   }
-
-   TEST(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_ThrowsAnomaly)
-   {
-      //_metalMock1ArgTester->CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_ThrowsAnomaly();
-   }
-
-   TEST1X1(CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException,
-      size_t expectedCallsSize,
-      1ULL,
-      2ULL)
-   {
-      _metalMock1ArgTester->CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException(expectedCallsSize);
-   }
-
-   TEST(CalledAsFollows_CalledTwice_ThrowsException)
-   {
-      _metalMock1ArgTester->CalledAsFollows_CalledTwice_ThrowsException();
+      _metalMock1ArgTester->CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesWithArg_DoesNotThrowException(n);
    }
 
    TEST(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)

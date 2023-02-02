@@ -37,7 +37,6 @@ namespace MetalMock
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    AFACT(CalledOnceWith_CalledTwice_ThrowsException)
-   AFACT(CalledAsFollows_CalledTwice_ThrowsException)
    EVIDENCE
 
    Void4ArgsFunctionsMock _void4ArgsFunctionsMock;
@@ -148,11 +147,6 @@ namespace MetalMock
    TEST(CalledOnceWith_CalledTwice_ThrowsException)
    {
       _metalMock4ArgsTester->CalledOnceWith_CalledTwice_ThrowsException();
-   }
-
-   TEST(CalledAsFollows_CalledTwice_ThrowsException)
-   {
-      _metalMock4ArgsTester->CalledAsFollows_CalledTwice_ThrowsException();
    }
 
    RUN_TESTS(MetalMockVoid4Tests)

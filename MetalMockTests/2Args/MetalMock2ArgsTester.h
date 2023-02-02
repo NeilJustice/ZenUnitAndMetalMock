@@ -98,7 +98,7 @@ namespace MetalMock
          assertCalledOnce(_staticMockObject);
       }
 
-      void MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CalledAsFollowsThrows_CallsAsFollowsInAnyOrderThrowsAnomaly()
+      void MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CallsAsFollowsInAnyOrderThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -115,37 +115,6 @@ namespace MetalMock
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
 "File.cpp(1)");
-
-#if defined _WIN32
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(
-            {
-               { 1, 1 },
-               { 2, 2 },
-               { 3, 3 }
-            }), Anomaly, "\n"
-"  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
-"Expected: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 3):\n"
-"{\n"
-"   MetalMock::TwoArgumentFunctionCall:\n"
-"Argument1: 1\n"
-"Argument2: 1,\n"
-"   MetalMock::TwoArgumentFunctionCall:\n"
-"Argument1: 2\n"
-"Argument2: 2,\n"
-"   MetalMock::TwoArgumentFunctionCall:\n"
-"Argument1: 3\n"
-"Argument2: 3\n"
-"}\n"
-"  Actual: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 0):\n"
-"{\n"
-"}\n"
-" Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed\n"
-"Expected: 3\n"
-"  Actual: 0\n"
-" Message: \"" + expectedFunctionSignature + "\"\n"
-"File.cpp(1)\n"
-"File.cpp(1)");
-#endif
          };
          test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
          test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
@@ -531,7 +500,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledNTimesWith_NIs1OrGreater_FunctionCalledAsFollowsWithMatchingArg_DoesNotThrowException(size_t n)
+      void CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesWithMatchingArgs_DoesNotThrowException(size_t n)
       {
          const auto test = [&](auto& metalMockObject)
          {
@@ -550,178 +519,6 @@ File.cpp(1))");
          test(_metalMockObject.NonVirtualFunctionConstMock);
          test(_freeFunctionMockObject);
          test(_staticMockObject);
-      }
-
-      void CalledAsFollows_EmptyExpectedCalls_ThrowsUnsupportedCalledZeroTimesException()
-      {
-         const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
-         {
-            const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(expectedFunctionSignature);
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows({}),
-               UnsupportedCalledZeroTimesException, expectedExceptionMessage);
-         };
-         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
-         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
-         test(_freeFunctionMockObject, _freeFunctionSignature);
-         test(_staticMockObject, _staticFunctionSignature);
-      }
-
-      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledNotCallsSizeTimes_ThrowsAnomaly()
-      {
-         const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
-         {
-            metalMockObject.wasExpected = true;
-            //
-            MetalMockTestUtils::CallNTimes(2, [&] { metalMockObject.MetalMockIt(0, 0); });
-            //
-            const string expectedExceptionMessage = String::ConcatStrings(R"(
-  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)
-Expected: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 1):
-{
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 0
-Argument2: 0
-}
-  Actual: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 2):
-{
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 0
-Argument2: 0,
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 0
-Argument2: 0
-}
- Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed
-Expected: 1
-  Actual: 2
- Message: ")", expectedFunctionSignature, R"("
-File.cpp(1)
-File.cpp(1))");
-            const int lvalue = 0;
-            vector<TwoArgumentFunctionCallReferences<int,int>> expectedCalls;
-            MetalMockTestUtils::CallNTimes(1, [&] { expectedCalls.emplace_back(lvalue, lvalue); });
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(expectedCalls),
-               Anomaly, expectedExceptionMessage);
-         };
-         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
-         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
-         test(_freeFunctionMockObject, _freeFunctionSignature);
-         test(_staticMockObject, _staticFunctionSignature);
-      }
-
-      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesWithOneOfTheCallsMismatching_ThrowsAnomaly()
-      {
-         const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
-         {
-            metalMockObject.wasExpected = true;
-            //
-            for (size_t i = 0; i < 3; ++i)
-            {
-               metalMockObject.MetalMockIt(10, 10);
-            }
-            metalMockObject.MetalMockIt(100, 100);
-            //
-            const int expectedArgument = 10;
-            vector<TwoArgumentFunctionCallReferences<int,int>> expectedTwoArgumentFunctionCalls;
-            MetalMockTestUtils::CallNTimes(3, [&] { expectedTwoArgumentFunctionCalls.emplace_back(expectedArgument, expectedArgument); });
-            const string expectedExceptionMessage = String::ConcatStrings(R"(
-  Failed: VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature)
-Expected: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 3):
-{
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 10
-Argument2: 10,
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 10
-Argument2: 10,
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 10
-Argument2: 10
-}
-  Actual: std::vector<MetalMock::TwoArgumentFunctionCallReferences<int,int>,std::allocator<MetalMock::TwoArgumentFunctionCallReferences<int,int> > > (size 4):
-{
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 10
-Argument2: 10,
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 10
-Argument2: 10,
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 10
-Argument2: 10,
-   MetalMock::TwoArgumentFunctionCall:
-Argument1: 100
-Argument2: 100
-}
- Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed
-Expected: 3
-  Actual: 4
- Message: ")", expectedFunctionSignature, R"("
-File.cpp(1)
-File.cpp(1))");
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(expectedTwoArgumentFunctionCalls),
-               Anomaly, expectedExceptionMessage);
-         };
-         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
-         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
-         test(_freeFunctionMockObject, _freeFunctionSignature);
-         test(_staticMockObject, _staticFunctionSignature);
-      }
-
-      void CalledAsFollows_NonEmptyExpectedCalls_FunctionCalledCallsSizeTimesMatchingArgs_DoesNotThrowException(size_t expectedCallsSize)
-      {
-         const auto test = [&](auto& metalMockObject)
-         {
-            metalMockObject.wasExpected = true;
-            const int argument1 = ZenUnit::Random<int>();
-            const int argument2 = ZenUnit::Random<int>();
-            //
-            MetalMockTestUtils::CallNTimes(expectedCallsSize, [&] { metalMockObject.MetalMockIt(argument1, argument2); });
-            //
-            vector<TwoArgumentFunctionCallReferences<int,int>> expectedCalls;
-            MetalMockTestUtils::CallNTimes(expectedCallsSize, [&] { expectedCalls.emplace_back(argument1, argument2); });
-            metalMockObject.CalledAsFollows(expectedCalls);
-         };
-         test(_metalMockObject.VirtualFunctionMock);
-         test(_metalMockObject.VirtualFunctionConstMock);
-         test(_metalMockObject.NonVirtualFunctionMock);
-         test(_metalMockObject.NonVirtualFunctionConstMock);
-         test(_freeFunctionMockObject);
-         test(_staticMockObject);
-      }
-
-      void CalledAsFollows_CalledTwice_ThrowsException()
-      {
-         const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
-         {
-            metalMockObject.wasExpected = true;
-            const int arg1 = ZenUnit::Random<int>();
-            const int arg2 = ZenUnit::Random<int>();
-            //
-            metalMockObject.MetalMockIt(arg1, arg2);
-            //
-            metalMockObject.CalledAsFollows(
-            {
-               { arg1, arg2 }
-            });
-            const string expectedExceptionMessage = FunctionAssertedOneMoreTimeThanItWasCalledException::MakeExceptionMessage(expectedFunctionSignature, 1);
-            THROWS_EXCEPTION(metalMockObject.CalledAsFollows(
-            {
-               { arg1, arg2 }
-            }), FunctionAssertedOneMoreTimeThanItWasCalledException, expectedExceptionMessage);
-         };
-         test(_metalMockObject.VirtualFunctionMock, _virtualFunctionSignature);
-         test(_metalMockObject.VirtualFunctionConstMock, _virtualFunctionConstSignature);
-         test(_metalMockObject.NonVirtualFunctionMock, _nonVirtualFunctionSignature);
-         test(_metalMockObject.NonVirtualFunctionConstMock, _nonVirtualFunctionConstSignature);
-         test(_freeFunctionMockObject, _freeFunctionSignature);
-         test(_staticMockObject, _staticFunctionSignature);
       }
    };
 }

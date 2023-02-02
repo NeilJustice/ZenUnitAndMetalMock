@@ -12,10 +12,6 @@ namespace MetalMock
    AFACT(CalledNTimesWith_NIsZero_Throws)
    FACTS(CalledNTimesWith_SetsAssertedTrue_NDiffersFromActualCallCount_Throws)
    FACTS(CalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfFunctionCalls_ThrowsIfArgsDoNotMatch)
-   AFACT(CalledAsFollows_ExpectedCallsSizeIs0_ThrowsUnsupportedCalledZeroTimesException_DoesNotSetAssertedToTrue)
-   AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
-   AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreNotEqual_ThrowsAnomaly)
-   AFACT(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqual_DoesNotThrowAnomaly)
    EVIDENCE
 
    unique_ptr<OneArgumentMetalMocker<int, MetalMockExceptionThrowerMock>> _oneArgumentMetalMocker;
@@ -188,96 +184,6 @@ File.cpp(1))");
       {
          _oneArgumentMetalMocker->CalledNTimesWith(expectedNumberOfFunctionCalls, expectedArgument);
       }
-      //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollows_ExpectedCallsSizeIs0_ThrowsUnsupportedCalledZeroTimesException_DoesNotSetAssertedToTrue)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      //
-      const string expectedExceptionMessage = UnsupportedCalledZeroTimesException::MakeExceptionMessage(_metalMockedFunctionSignature);
-      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollows({}),
-         UnsupportedCalledZeroTimesException, expectedExceptionMessage);
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndNotEqualToActualCallsSize_ThrowsAnomaly)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      const int zero = 0;
-      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ zero };
-      //
-      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
-      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
-"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
-"Expected: " + expectedVectorTypeName + " (size 1):\n"
-"{\n"
-"   MetalMock::OneArgumentFunctionCall:\n"
-"Argument: 0\n"
-"}\n"
-"  Actual: " + expectedVectorTypeName + " (size 0):\n"
-"{\n"
-"}\n"
-" Because: ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size()) failed\n"
-"Expected: 1\n"
-"  Actual: 0\n"
-" Message: \"" + _metalMockedFunctionSignature + "\"\n"
-"File.cpp(1)\n"
-"File.cpp(1)");
-      //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreNotEqual_ThrowsAnomaly)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      const int x = 10, y = 10;
-      const vector<OneArgumentFunctionCallReference<int>> expectedOneArgumentFunctionCalls{ x, y };
-      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 20 };
-      //
-      const string expectedVectorTypeName = *Type::GetName<vector<OneArgumentFunctionCallReference<int>>>();
-      THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledAsFollows(expectedOneArgumentFunctionCalls), Anomaly, "\n"
-"  Failed: VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature)\n"
-"Expected: " + expectedVectorTypeName + " (size 2):\n"
-"{\n"
-"   MetalMock::OneArgumentFunctionCall:\n"
-"Argument: 10,\n"
-"   MetalMock::OneArgumentFunctionCall:\n"
-"Argument: 10\n"
-"}\n"
-"  Actual: " + expectedVectorTypeName + " (size 2):\n"
-"{\n"
-"   MetalMock::OneArgumentFunctionCall:\n"
-"Argument: 10,\n"
-"   MetalMock::OneArgumentFunctionCall:\n"
-"Argument: 20\n"
-"}\n"
-" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed\n"
-"Expected: MetalMock::OneArgumentFunctionCall:\n"
-"Argument: 10\n"
-"  Actual: MetalMock::OneArgumentFunctionCall:\n"
-"Argument: 20\n"
-" Message: \"i=1\"\n"
-" Message: \"" + _metalMockedFunctionSignature + "\"\n"
-"File.cpp(1)\n"
-"File.cpp(1)");
-      //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
-   }
-
-   TEST(CalledAsFollows_SetsAssertedToTrue_ExpectedCallsSizeIsNot0AndEqualToNumberOfFunctionCalls_ArgsAreEqual_DoesNotThrowAnomaly)
-   {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
-      int arg1 = 10;
-      int arg2 = 10;
-      const vector<OneArgumentFunctionCallReference<int>> expectedArgumentFunctionCalls
-      {
-         arg1, arg2
-      };
-      _oneArgumentMetalMocker->metalMockedFunctionCallHistory = { 10, 10 };
-      //
-      _oneArgumentMetalMocker->CalledAsFollows(expectedArgumentFunctionCalls);
       //
       IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
    }
