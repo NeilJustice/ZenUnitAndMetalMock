@@ -1955,19 +1955,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[i].argument.value, metalMockedFunctionSignatureAndCallIndex);
          }
       }
-
-      FunctionCallSequenceNumber CalledAsFollows(
-         const std::vector<OneArgumentFunctionCallReference<ArgType>>& expectedOneArgumentFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedOneArgumentFunctionCalls.size());
-         this->MetalMockSetAsserted();
-         const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls =
-            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
-               OneArgumentFunctionCallReference<ArgType>,
-               OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
-         VECTORS_ARE_EQUAL(expectedOneArgumentFunctionCalls, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
-      }
    };
 
    template<typename ArgType>
@@ -2200,19 +2187,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             ARE_EQUAL(expectedArg2, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
          }
       }
-
-      FunctionCallSequenceNumber CalledAsFollows(
-         const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>>& expectedTwoArgumentFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedTwoArgumentFunctionCalls.size());
-         this->MetalMockSetAsserted();
-         const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>> actualTwoArgumentFunctionCalls =
-            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
-               TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>,
-               TwoArgumentFunctionCall<Arg1Type, Arg2Type>>(this->metalMockedFunctionCallHistory);
-         VECTORS_ARE_EQUAL(expectedTwoArgumentFunctionCalls, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
-      }
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type>
@@ -2432,17 +2406,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             ARE_EQUAL(expectedArg2, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg3, this->metalMockedFunctionCallHistory[i].arg3.value, metalMockedFunctionSignatureAndCallIndex);
          }
-      }
-
-      FunctionCallSequenceNumber CalledAsFollows(
-         const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>>& expectedThreeArgumentFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedThreeArgumentFunctionCalls.size());
-         this->MetalMockSetAsserted();
-         // One line to fix apparent lcov/Codecov.io bug whereby if this line is line-breaked it is labeled as covered
-         const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentFunctionCalls = MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>, ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>(this->metalMockedFunctionCallHistory);
-         VECTORS_ARE_EQUAL(expectedThreeArgumentFunctionCalls, actualThreeArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
    };
 
@@ -2695,25 +2658,13 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          for (size_t i = 0; i < expectedNumberOfFunctionCalls; ++i)
          {
-            const std::string metalMockedFunctionSignatureAndCallIndex = ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
+            const std::string metalMockedFunctionSignatureAndCallIndex =
+               ZenUnit::String::ConcatValues(this->metalMockedFunctionSignature, " at i=", i);
             ARE_EQUAL(expectedArg1, this->metalMockedFunctionCallHistory[i].arg1.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg2, this->metalMockedFunctionCallHistory[i].arg2.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg3, this->metalMockedFunctionCallHistory[i].arg3.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg4, this->metalMockedFunctionCallHistory[i].arg4.value, metalMockedFunctionSignatureAndCallIndex);
          }
-      }
-
-      FunctionCallSequenceNumber CalledAsFollows(
-         const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>& expectedFourArgumentFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFourArgumentFunctionCalls.size());
-         this->MetalMockSetAsserted();
-         const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> actualFourArgumentFunctionCalls =
-            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
-               FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>,
-               FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(this->metalMockedFunctionCallHistory);
-         VECTORS_ARE_EQUAL(expectedFourArgumentFunctionCalls, actualFourArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
    };
 
@@ -2950,19 +2901,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             ARE_EQUAL(expectedArg4, this->metalMockedFunctionCallHistory[i].arg4.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg5, this->metalMockedFunctionCallHistory[i].arg5.value, metalMockedFunctionSignatureAndCallIndex);
          }
-      }
-
-      FunctionCallSequenceNumber CalledAsFollows(
-         const std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>& expectedFiveArgumentFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedFiveArgumentFunctionCalls.size());
-         this->MetalMockSetAsserted();
-         const std::vector<FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> actualFiveArgumentFunctionCalls =
-            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
-               FiveArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>,
-               FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>>(this->metalMockedFunctionCallHistory);
-         VECTORS_ARE_EQUAL(expectedFiveArgumentFunctionCalls, actualFiveArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
    };
 
@@ -3207,19 +3145,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             ARE_EQUAL(expectedArg6, this->metalMockedFunctionCallHistory[i].arg6.value, metalMockedFunctionSignatureAndCallIndex);
          }
       }
-
-      FunctionCallSequenceNumber CalledAsFollows(
-         const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>& expectedSixArgumentFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedSixArgumentFunctionCalls.size());
-         this->MetalMockSetAsserted();
-         const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> actualSixArgumentFunctionCalls =
-            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
-               SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>,
-               SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>(this->metalMockedFunctionCallHistory);
-         VECTORS_ARE_EQUAL(expectedSixArgumentFunctionCalls, actualSixArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
-      }
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
@@ -3459,19 +3384,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             ARE_EQUAL(expectedArg6, this->metalMockedFunctionCallHistory[i].arg6.value, metalMockedFunctionSignatureAndCallIndex);
             ARE_EQUAL(expectedArg7, this->metalMockedFunctionCallHistory[i].arg7.value, metalMockedFunctionSignatureAndCallIndex);
          }
-      }
-
-      FunctionCallSequenceNumber CalledAsFollows(
-         const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>& expectedSevenArgumentFunctionCalls)
-      {
-         this->MetalMockThrowIfExpectedCallsSizeIsZero(expectedSevenArgumentFunctionCalls.size());
-         this->MetalMockSetAsserted();
-         const std::vector<SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> actualSevenArgumentFunctionCalls =
-            MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
-               SevenArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>,
-               SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>>(this->metalMockedFunctionCallHistory);
-         VECTORS_ARE_EQUAL(expectedSevenArgumentFunctionCalls, actualSevenArgumentFunctionCalls, this->metalMockedFunctionSignature);
-         return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
    };
 

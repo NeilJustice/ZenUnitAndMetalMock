@@ -256,17 +256,8 @@ namespace ZenUnit
       //
       _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
       //
-      const string expectedTripletLinesPrefix = expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
-      METALMOCK(_consoleMock->WriteColorMock.CalledAsFollows(
-      {
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedTripletLinesPrefix, expectedColor },
-         { expectedSuccessOrFailLinePrefix, expectedColor }
-      }));
+      const string expectedBracketedZenUnitOrFailArrowPrefix =
+         expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
       const string expectedCompletedLine = "  Completed: " + zenUnitArgs.commandLine;
       const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed);
       const string expectedStartTimeLine = "  StartTime: " + startDateTime;
@@ -274,17 +265,28 @@ namespace ZenUnit
       const string expectedDurationLine = "   Duration: " + testRunElapsedSeconds + " seconds";
       const string expectedTestRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
       const string expectedRunResultLine = String::ConcatStrings("     Result: ", expectedClosingLineTestsCountText);
-      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
-      {
-         { expectedCompletedLine },
-         { expectedRandomSeedLine },
-         { expectedStartTimeLine },
-         { expectedEndTimeLine },
-         { expectedDurationLine },
-         { expectedTestRunMessage },
-         { expectedRunResultLine }
-      }));
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor)).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedCompletedLine))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedRandomSeedLine))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedStartTimeLine))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
+      METALMOCKTHEN(_watchMock->DateTimeNowMock.CalledOnce())).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedEndTimeLine))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedDurationLine))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedTestRunMessage))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedSuccessOrFailLinePrefix, expectedColor))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedRunResultLine)));
    }
 
    TEST3X3(PrintTestFailuresAndSkips_PrintsTestFailures_PrintsSkippedTestClassNames_PrintsSkippedFullTestNames,
@@ -310,11 +312,11 @@ namespace ZenUnit
          METALMOCK(_memberForEacherTestClassResultsMock->MemberForEachMock.
             CalledOnceWith(&_testRunResult._testClassResults, &_testRunResult, &TestRunResult::PrintTestClassResultFailures));
       }
-      METALMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledAsFollows(
-      {
-         { &_testRunResult._skippedTestClassNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder },
-         { &_testRunResult._skippedFullTestNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder }
-      }));
+      METALMOCK(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledNTimes(2));
+      METALMOCKTHEN(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledWith(
+         &_testRunResult._skippedTestClassNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestClassReminder)).Then(
+      METALMOCKTHEN(_memberForEacherSkippedTestsMock->MemberForEachMock.CalledWith(
+         &_testRunResult._skippedFullTestNamesAndSkipReasons, &_testRunResult, &TestRunResult::PrintSkippedTestReminder)));
    }
 
    void SetState(size_t numberOfFailedTestCases, size_t numberOfSkippedTests, size_t numberOfSkippedTestClasses)

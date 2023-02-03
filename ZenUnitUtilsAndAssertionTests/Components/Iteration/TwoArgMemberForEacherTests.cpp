@@ -60,11 +60,9 @@ namespace ZenUnit
       _twoArgMemberForEacher.TwoArgMemberForEach(
          &classInstance.vec, &classInstance, &ClassType::TwoArgFunction, 20);
       //
-      classInstance.TwoArgFunctionMock.CalledAsFollows(
-      {
-         { 1, 20 },
-         { 2, 20 }
-      });
+      METALMOCK(classInstance.TwoArgFunctionMock.CalledNTimes(2));
+      METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(1, 20)).Then(
+      METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(2, 20)));
    }
 
    TEST(RandomTwoArgMemberForEach_EmptyCollection_DoesNotCallFunc)
@@ -98,19 +96,15 @@ namespace ZenUnit
       //
       try
       {
-         classInstance.TwoArgFunctionMock.CalledAsFollows(
-         {
-            { 1, 20 },
-            { 2, 20 }
-         });
+         METALMOCK(classInstance.TwoArgFunctionMock.CalledNTimes(2));
+         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(1, 20)).Then(
+         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(2, 20)));
       }
       catch (const exception&)
       {
-         classInstance.TwoArgFunctionMock.CalledAsFollows(
-         {
-            { 2, 20 },
-            { 1, 20 }
-         });
+         METALMOCK(classInstance.TwoArgFunctionMock.CalledNTimes(2));
+         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(2, 20)).Then(
+         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(1, 20)));
       }
    }
 

@@ -29,13 +29,11 @@ namespace ZenUnit
       //
       const TestPhaseResult randomTestPhaseResult = TestableRandomTestPhaseResult(&randomGeneratorMock);
       //
-      METALMOCK(randomGeneratorMock.EnumMock.CalledAsFollows(
-      {
-         static_cast<int>(TestPhase::MaxValue),
-         static_cast<int>(TestOutcome::MaxValue)
-      }));
-      METALMOCK(randomGeneratorMock.UnsignedMock.CalledOnce());
-      TestPhaseResult expectedRandomTestPhaseResult;
+      METALMOCK(randomGeneratorMock.EnumMock.CalledNTimes(2));
+      METALMOCKTHEN(randomGeneratorMock.EnumMock.CalledWith(static_cast<int>(TestPhase::MaxValue))).Then(
+      METALMOCKTHEN(randomGeneratorMock.EnumMock.CalledWith(static_cast<int>(TestOutcome::MaxValue)))).Then(
+      METALMOCKTHEN(randomGeneratorMock.UnsignedMock.CalledOnce()));
+      TestPhaseResult expectedRandomTestPhaseResult{};
       expectedRandomTestPhaseResult.testPhase = static_cast<TestPhase>(testPhaseInt);
       expectedRandomTestPhaseResult.testOutcome = static_cast<TestOutcome>(testOutcomeInt);
       expectedRandomTestPhaseResult.elapsedMicroseconds = elapsedMicroseconds;

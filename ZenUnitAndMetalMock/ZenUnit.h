@@ -888,7 +888,8 @@ namespace ZenUnit
       }
    };
 
-   NOINLINE inline void Exit1DueToZenUnitInternalAssertionHavingFailed(const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
+   NOINLINE inline void Exit1DueToZenUnitInternalAssertionHavingFailed(
+      const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
    {
       const std::string assertTrueFailedErrorMessage = String::ConcatValues( // LCOV_EXCL_LINE
          "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n", // LCOV_EXCL_LINE
@@ -1911,7 +1912,8 @@ namespace ZenUnit
       {
          Anomaly anomaly;
          // One line String::ConcatValues to fix apparent lcov/Codecov.io bug whereby line-breaked String::ConcatValue arguments are labeled as partially uncovered
-         anomaly.why = String::ConcatValues('\n', "  Failed: ", metalMockAssertExpression, '\n', "Because of this ZenUnit::Anomaly:", metalMockWrappedAnomaly.why, '\n', filePathLineNumber);
+         anomaly.why = String::ConcatValues('\n', "  Failed: ", metalMockAssertExpression, '\n',
+            "Because of this ZenUnit::Anomaly:", metalMockWrappedAnomaly.why, '\n', filePathLineNumber);
          return anomaly;
       }
 
@@ -2277,7 +2279,8 @@ namespace ZenUnit
       std::function<int(std::string_view)> _call_String_ToInt;
       std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
       // Function Callers
-      std::unique_ptr<const NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>> _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser;
+      std::unique_ptr<const NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>
+         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
@@ -2288,7 +2291,8 @@ namespace ZenUnit
          : _call_String_ToInt(String::ToInt)
          , _call_String_ToUnsigned(String::ToUnsigned)
          // Function Callers
-         , _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(std::make_unique<NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>())
+         , _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(
+            std::make_unique<NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
@@ -2300,7 +2304,7 @@ namespace ZenUnit
 
       virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const
       {
-         ZenUnitArgs zenUnitArgs;
+         ZenUnitArgs zenUnitArgs{};
          zenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
          unsigned randomSeedArgument = std::numeric_limits<unsigned>::max();
          const size_t numberOfArgs = stringArgs.size();
@@ -6659,7 +6663,8 @@ Fatal Windows C++ Runtime Assertion
          ZENUNIT_ASSERT(_currentTestCaseNumber == 1);
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
-         const std::shared_ptr<ITestCaseNumberGenerator> testCaseNumberGenerator(_call_ITestCaseNumberGeneratorFactoryNew(zenUnitArgs.randomTestOrdering));
+         const std::shared_ptr<ITestCaseNumberGenerator> testCaseNumberGenerator(
+            _call_ITestCaseNumberGeneratorFactoryNew(zenUnitArgs.randomTestOrdering));
          testCaseNumberGenerator->Initialize(numberOfTestCaseArgs, N);
          const std::vector<std::string> splitTestCaseArgs = _call_String_SplitOnNonQuotedCommas(_testCaseArgsText);
          while ((_currentTestCaseNumber = testCaseNumberGenerator->NextTestCaseNumber()) != std::numeric_limits<size_t>::max())

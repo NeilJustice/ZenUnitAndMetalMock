@@ -94,15 +94,15 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
-      METALMOCK(_stopwatchMock->StartMock.CalledOnce());
-      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
-      {
-         { &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor },
-         { &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor }
-      }));
-      METALMOCK(_testResultFactoryMock->MakeConstructorDestructorSuccessMock.CalledOnceWith(
-         _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult));
-      METALMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
+      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledNTimes(2));
+      METALMOCKTHEN(_stopwatchMock->StartMock.CalledOnce()).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor))).Then(
+      METALMOCKTHEN(_testResultFactoryMock->MakeConstructorDestructorSuccessMock.CalledOnceWith(
+         _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult))).Then(
+      METALMOCKTHEN(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce()));
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }

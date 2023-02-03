@@ -154,25 +154,26 @@ namespace ZenUnit
             }
       } test1X1SelfMocked;
 
-      METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, GetArgs)
+      METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, _call_ZenUnitTestRunner_GetZenUnitArgs)
 
-      const ZenUnitArgs args = GetArgsMock.ReturnRandom();
-      test1X1SelfMocked._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(GetArgsMock);
+      const ZenUnitArgs args = _call_ZenUnitTestRunner_GetZenUnitArgsMock.ReturnRandom();
+      test1X1SelfMocked._call_ZenUnitTestRunner_GetZenUnitArgs =
+         BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
 
       shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();
       testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1ULL, 2ULL, std::numeric_limits<size_t>::max());
       test1X1SelfMocked.FactoryNewMock.Return(testCaseNumberGeneratorMock);
 
-      METALMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, SplitOnNonQuotedCommas)
+      METALMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, _call_SplitOnNonQuotedCommas)
       const vector<string> splitTestCaseArgs =
       {
          ZenUnit::Random<string>(),
          ZenUnit::Random<string>(),
          ZenUnit::Random<string>()
       };
-      SplitOnNonQuotedCommasMock.Return(splitTestCaseArgs);
-      test1X1SelfMocked._call_String_SplitOnNonQuotedCommas = BIND_0ARG_METALMOCK_OBJECT(SplitOnNonQuotedCommasMock);
+      _call_SplitOnNonQuotedCommasMock.Return(splitTestCaseArgs);
+      test1X1SelfMocked._call_String_SplitOnNonQuotedCommas = BIND_0ARG_METALMOCK_OBJECT(_call_SplitOnNonQuotedCommasMock);
 
       test1X1SelfMocked.Exit1IfInvalidTestCaseNumberSpecifiedMock.Expect();
 
@@ -188,17 +189,22 @@ namespace ZenUnit
       //
       const vector<TestResult> testResults = test1X1SelfMocked.RunTest();
       //
-      METALMOCK(GetArgsMock.CalledOnce());
-      METALMOCK(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering));
-      METALMOCK(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N));
-      METALMOCK(SplitOnNonQuotedCommasMock.CalledOnce());
+      METALMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledNTimes(2));
       METALMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
-      METALMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledAsFollows(
-      {
-         { 1, args, splitTestCaseArgs },
-         { 2, args, splitTestCaseArgs }
-      }));
-      METALMOCK(test1X1SelfMocked.Exit1IfInvalidTestCaseNumberSpecifiedMock.CalledOnce());
+      METALMOCKTHEN(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce()).Then(
+      METALMOCKTHEN(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering))).Then(
+      METALMOCKTHEN(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N))).Then(
+      METALMOCKTHEN(_call_SplitOnNonQuotedCommasMock.CalledOnce())).Then(
+
+      METALMOCKTHEN(testCaseNumberGeneratorMock->NextTestCaseNumberMock.Called())).Then(
+      METALMOCKTHEN(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledWith(1, args, splitTestCaseArgs))).Then(
+
+      METALMOCKTHEN(testCaseNumberGeneratorMock->NextTestCaseNumberMock.Called())).Then(
+      METALMOCKTHEN(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledWith(2, args, splitTestCaseArgs))).Then(
+
+      METALMOCKTHEN(testCaseNumberGeneratorMock->NextTestCaseNumberMock.Called())).Then(
+
+      METALMOCKTHEN(test1X1SelfMocked.Exit1IfInvalidTestCaseNumberSpecifiedMock.CalledOnce()));
       ARE_EQUAL(1, test1X1SelfMocked._currentTestCaseNumber);
       IS_EMPTY(testResults);
    }

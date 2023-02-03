@@ -14,12 +14,13 @@ namespace ZenUnit
    AFACT(WriteNewLineIfValuesAreNotEqual_ValuesAreEqual_DoesNotThrowException)
    AFACT(WriteNewLineIfValuesAreNotEqual_ValuesAreNotEqual_WritesNewLine)
    AFACT(WriteStringsCommaSeparated_CallsDoWriteStringsCommaSeparated)
-   FACTS(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset)
    FACTS(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue)
    AFACT(WaitForEnterKey_CallsGetCharFromStandardInputUntilNewline)
 #if defined _WIN32
    FACTS(DebuggerIsPresentOnWindows_ReturnsTrueIfIsDebuggerPresentFunctionReturns1)
 #endif
+   AFACT(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset__TestCase1)
+   AFACT(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset__TestCase2)
    EVIDENCE
 
    Console _console;
@@ -190,31 +191,6 @@ namespace ZenUnit
       consoleSelfMocked.DoWriteStringsCommaSeparatedMock.CalledOnceWith(strings, startIndex, numberOfElements);
    }
 
-   TEST4X4(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset,
-      const vector<string>& strings, size_t startIndex, size_t numberOfElements, const vector<string>& expectedConsoleWrites,
-      vector<string>{ "Argument1" }, size_t(0), size_t(1), vector<string>{ "Argument1" },
-      vector<string>{ "Argument1", "Argument2" }, size_t(0), size_t(2), vector<string>{ "Argument1", ", ", "Argument2" },
-      vector<string>{ "Argument1", "Argument2" }, size_t(1), size_t(1), vector<string>{ "Argument2" },
-      vector<string>{ "Argument1", "Argument2", "Argument3", "Argument4" }, size_t(2), size_t(2), vector<string>{ "Argument3", ", ", "Argument4" })
-   {
-      class ConsoleSelfMocked : public Metal::Mock<Console>
-      {
-      public:
-         METALMOCK_VOID1_CONST(Write, std::string_view)
-      } consoleSelfMocked;
-      consoleSelfMocked.WriteMock.Expect();
-      //
-      consoleSelfMocked.DoWriteStringsCommaSeparated(strings, startIndex, numberOfElements);
-      //
-      vector<MetalMock::OneArgumentFunctionCallReference<string_view>> expectedConsoleWriteCalls;
-      expectedConsoleWriteCalls.reserve(expectedConsoleWrites.size());
-      for (const string& expectedConsoleWrite : expectedConsoleWrites)
-      {
-         expectedConsoleWriteCalls.emplace_back(expectedConsoleWrite);
-      }
-      METALMOCK(consoleSelfMocked.WriteMock.CalledAsFollows(expectedConsoleWriteCalls));
-   }
-
    TEST3X3(WaitForEnterKeyIfDebuggerPresentOrValueTrue_WritesPressAnyKeyAndGetsCharIfDebuggerPresentOrValueTrue,
       bool doWait, bool debuggerIsPresent, bool expectPressAnyKeyAndGetChar,
       false, false, false,
@@ -269,6 +245,42 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, debuggerIsPresentOnWindows);
    }
 #endif
+
+   class ConsoleWithWriteSelfMocked : public Metal::Mock<Console>
+   {
+   public:
+      METALMOCK_VOID1_CONST(Write, std::string_view)
+   } _consoleWithWriteSelfMocked;
+
+   TEST(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset__TestCase1)
+   {
+      const vector<string> strings = vector<string>{ "Argument1" };
+      const size_t startIndex = 0;
+      const size_t numberOfElements = 1;
+      //
+      _consoleWithWriteSelfMocked.WriteMock.Expect();
+      //
+      _consoleWithWriteSelfMocked.DoWriteStringsCommaSeparated(strings, startIndex, numberOfElements);
+      //
+      METALMOCK(_consoleWithWriteSelfMocked.WriteMock.CalledOnceWith("Argument1"));
+   }
+
+   TEST(DoWriteStringsCommaSeparated_PrintsCommaSeparatedLengthNumberOfVectorValuesAtSpecifiedOffset__TestCase2)
+   {
+      const vector<string> strings = { "Argument1", "Argument2", "Argument3", "Argument4" };
+      const size_t startIndex = 1;
+      const size_t numberOfElements = 3;
+      _consoleWithWriteSelfMocked.WriteMock.Expect();
+      //
+      _consoleWithWriteSelfMocked.DoWriteStringsCommaSeparated(strings, startIndex, numberOfElements);
+      //
+      METALMOCK(_consoleWithWriteSelfMocked.WriteMock.CalledNTimes(5));
+      METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith("Argument2")).Then(
+      METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith(", "))).Then(
+      METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith("Argument3"))).Then(
+      METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith(", "))).Then(
+      METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith("Argument3")));
+   }
 
    RUN_TESTS(ConsoleTests)
 }

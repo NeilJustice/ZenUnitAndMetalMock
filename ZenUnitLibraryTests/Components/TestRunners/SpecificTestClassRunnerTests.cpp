@@ -302,11 +302,9 @@ namespace ZenUnit
       //
       _specificTestClassRunner->PrintTestClassNameAndNumberOfNamedTests();
       //
-      METALMOCK(_protected_consoleMock->WriteColorMock.CalledAsFollows(
-      {
-         { "@", Color::Green },
-         { _testClassName.c_str(), Color::Green }
-      }));
+      METALMOCK(_protected_consoleMock->WriteColorMock.CalledNTimes(2));
+      METALMOCK(_protected_consoleMock->WriteColorMock.CalledWith("@", Color::Green));
+      METALMOCK(_protected_consoleMock->WriteColorMock.CalledWith(_testClassName.c_str(), Color::Green));
       if (expectTestsPlural)
       {
          const string expectedRunningTestsMessage = String::ConcatValues(" | Running ", numberOfTests, " tests");

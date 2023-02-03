@@ -50,13 +50,7 @@ namespace ZenUnit
       const std::unique_ptr<ZenUnit::Test>* testPointer =
          TestClass::GetTestPointerForTestNXNPmfToken(nullptr, &consoleMock, &zenUnitTestRunnerMock, &exitCallerMock);
       //
-      METALMOCK(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce());
       const string expectedExitCodeMessage = String::ConcatValues("[ZenUnit] ExitCode: ", expectedExitCode);
-      METALMOCK(consoleMock.WriteLineColorMock.CalledAsFollows(
-      {
-         { "=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red },
-         { expectedExitCodeMessage, expectedExitCodeLineColor }
-      }));
       const string expectedErrorMessage = ZenUnit::String::ConcatStrings(R"(The above test name was declared using FACTS(TestName).
 
 Unexpectedly, a corresponding TESTNXN(TestName, ...) test definition was not found in the EVIDENCE section of this test class.
@@ -65,8 +59,13 @@ To fix this mismatch either change FACTS(TestName) to AFACT(TestName) in the tes
 
 or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10, in the EVIDENCE section of this test class.
 )");
-      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage));
-      METALMOCK(exitCallerMock.CallExitMock.CalledOnceWith(expectedExitCode));
+      METALMOCK(consoleMock.WriteLineColorMock.CalledNTimes(2));
+      METALMOCKTHEN(consoleMock.WriteLineColorMock.CalledWith(
+         "=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red)).Then(
+      METALMOCKTHEN(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce())).Then(
+      METALMOCKTHEN(consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage))).Then(
+      METALMOCKTHEN(consoleMock.WriteLineColorMock.CalledWith(expectedExitCodeMessage, expectedExitCodeLineColor))).Then(
+      METALMOCKTHEN(exitCallerMock.CallExitMock.CalledOnceWith(expectedExitCode)));
       IS_NULLPTR(testPointer);
    }
 

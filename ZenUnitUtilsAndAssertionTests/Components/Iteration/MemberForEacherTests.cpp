@@ -54,10 +54,9 @@ namespace ZenUnit
       //
       _memberForEacher.MemberForEach(&classInstance.collection, &classInstance, &ClassType::Func);
       //
-      classInstance.FuncMock.CalledAsFollows(
-      {
-         1, 2
-      });
+      METALMOCK(classInstance.FuncMock.CalledNTimes(2));
+      METALMOCKTHEN(classInstance.FuncMock.CalledWith(1)).Then(
+      METALMOCKTHEN(classInstance.FuncMock.CalledWith(2)));
    }
 
    TEST(CodeCoverage_ClassTypeFunc)

@@ -46,34 +46,52 @@ namespace ZenUnit
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
 
       TestClassRunnerRunnerMock testClassRunnerRunnerMock;
-      const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
+      [[maybe_unused]] const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
 
       const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       const size_t testRunIndex = ZenUnit::RandomBetween<size_t>(0, 3);
       //
-      const string returnedStartTime = _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, testRunIndex, &testClassRunnerRunnerMock);
+      const string returnedStartTime =
+         _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, testRunIndex, &testClassRunnerRunnerMock);
       //
+      METALMOCK(_consoleMock->WriteLineMock.CalledNTimes(8));
+      METALMOCK(_consoleMock->WriteColorMock.CalledNTimes(8));
+
       const std::string expectedZenUnitVersionLine = "[C++ Unit Testing Framework ZenUnit " + std::string(Version) + "]";
-      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green));
-      METALMOCK(_consoleMock->WriteColorMock.CalledNTimesWith(8, "[ZenUnit]", Color::Green));
-      METALMOCK(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce());
-      METALMOCK(_environmentServiceMock->CurrentDirectoryPathMock.CalledOnce());
-      METALMOCK(_environmentServiceMock->MachineNameMock.CalledOnce());
-      METALMOCK(_environmentServiceMock->UserNameMock.CalledOnce());
-      METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      METALMOCK(_consoleMock->WriteLineMock.CalledAsFollows(
-      {
-         { "     Running: " + zenUnitArgs.commandLine },
-         { "   Directory: " + currentDirectoryPath },
-         { " MachineName: " + machineName },
-         { "    UserName: " + userName },
-         { "  RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed) },
-         { " TestClasses: " + to_string(numberOfTestClassesToBeRun) },
-         { "   StartTime: " + startDateTime },
-         { "     TestRun: " + to_string(testRunIndex + 1) + " of " + to_string(zenUnitArgs.testRuns) + "\n" },
-      }));
+      METALMOCKTHEN(_consoleMock->WriteLineColorMock.CalledOnceWith(expectedZenUnitVersionLine, Color::Green)).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith("     Running: " + zenUnitArgs.commandLine))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(_environmentServiceMock->CurrentDirectoryPathMock.CalledOnce())).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith("   Directory: " + currentDirectoryPath))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(_environmentServiceMock->MachineNameMock.CalledOnce())).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(" MachineName: " + machineName))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(_environmentServiceMock->UserNameMock.CalledOnce())).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith("    UserName: " + userName))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith("  RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed)))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.CalledOnce())).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(" TestClasses: " + to_string(numberOfTestClassesToBeRun)))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(_watchMock->DateTimeNowMock.CalledOnce())).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith("   StartTime: " + startDateTime))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(
+         "     TestRun: " + to_string(testRunIndex + 1) + " of " + to_string(zenUnitArgs.testRuns) + "\n")));
+
       ARE_EQUAL(startDateTime, returnedStartTime);
    }
 

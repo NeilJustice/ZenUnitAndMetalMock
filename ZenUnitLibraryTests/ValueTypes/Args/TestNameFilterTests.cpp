@@ -127,11 +127,10 @@ namespace ZenUnit
       const bool matchesTestCase = _testNameFilterSelfMocked.MatchesTestCase(
          testClassName.c_str(), testName.c_str(), testNXNTestCaseNumber);
       //
-      METALMOCK(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledAsFollows(
-      {
-         { _testNameFilterSelfMocked.testClassNamePattern, testClassName.c_str() },
-         { _testNameFilterSelfMocked.testNamePattern, testName.c_str() }
-      }));
+      METALMOCKTHEN(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledWith(
+         _testNameFilterSelfMocked.testClassNamePattern, testClassName.c_str())).Then(
+      METALMOCKTHEN(_testNameFilterSelfMocked.FilterPatternMatchesStringMock.CalledWith(
+         _testNameFilterSelfMocked.testNamePattern, testName.c_str())));
       ARE_EQUAL(expectedReturnValue, matchesTestCase);
    }
 

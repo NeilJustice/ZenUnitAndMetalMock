@@ -110,14 +110,15 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
-      {
-         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
-         { &Test::CallStartup, _test.get(), TestPhase::Startup },
-         { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-      }));
-      METALMOCK(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
-         _test->_protected_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult));
+      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledNTimes(3));
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallNewTestClass, _test.get(), TestPhase::Constructor)).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallStartup, _test.get(), TestPhase::Startup))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor))).Then(
+      METALMOCKTHEN(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
+         _test->_protected_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult)));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
 
@@ -134,21 +135,24 @@ namespace ZenUnit
       //
       const TestResult testResult = _test->BaseRunTest();
       //
-      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledAsFollows(
-      {
-         { &Test::CallNewTestClass, _test.get(), TestPhase::Constructor },
-         { &Test::CallStartup, _test.get(), TestPhase::Startup },
-         { &Test::CallTestBody, _test.get(), TestPhase::TestBody },
-         { &Test::CallCleanup, _test.get(), TestPhase::Cleanup },
-         { &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor }
-      }));
-      METALMOCK(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
+      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledNTimes(5));
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallNewTestClass, _test.get(), TestPhase::Constructor)).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallStartup, _test.get(), TestPhase::Startup))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallTestBody, _test.get(), TestPhase::TestBody))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallCleanup, _test.get(), TestPhase::Cleanup))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor))).Then(
+      METALMOCKTHEN(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
          _test->_protected_fullTestName,
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
-         TestPhaseResultWithOutcome(TestOutcome::Success)));
+         TestPhaseResultWithOutcome(TestOutcome::Success))));
       ARE_EQUAL(testResult, sixArgTestResult);
    }
 
