@@ -336,8 +336,8 @@ Example ZenUnit command line arguments:
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that two indexable data structures have equal sizes and equal elements according to ARE_EQUAL(expectedElement, actualElement) assertions.
-#define INDEXABLES_ARE_EQUAL(expectedIndexableDataStructure, actualIndexableDataStructure, ...) \
-   ZenUnit::INDEXABLES_ARE_EQUAL_Defined("INDEXABLES_ARE_EQUAL", expectedIndexableDataStructure, #expectedIndexableDataStructure, actualIndexableDataStructure, #actualIndexableDataStructure, \
+#define INDEXABLES_ARE_EQUAL(expectedIndexable, actualIndexable, ...) \
+   ZenUnit::INDEXABLES_ARE_EQUAL_Defined("INDEXABLES_ARE_EQUAL", expectedIndexable, #expectedIndexable, actualIndexable, #actualIndexable, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that two indexable data structures have equal sizes have equal elements in any order according to ARE_EQUAL(expectedElement, actualElement) assertions.
@@ -4194,16 +4194,22 @@ namespace ZenUnit
 
    template<
       template<typename...>
-      class IndexableDataStructureType, typename T, typename... MessageTypes>
+      class IndexableType,
+      typename T, typename... MessageTypes>
    NOINLINE void INDEXABLES_ARE_EQUAL_ThrowAnomaly(
       const char* indexablesAreEqualOrVectorsAreEqualMacroName, const Anomaly& becauseAnomaly,
-      const IndexableDataStructureType<T>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
-      const IndexableDataStructureType<T>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
+      const IndexableType<T>& expectedIndexable, const char* expectedIndexableText,
+      const IndexableType<T>& actualIndexable, const char* actualIndexableText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
-      const std::string toStringedExpectedIndexableDataStructure = ToStringer::ToString(expectedIndexableDataStructure);
-      const std::string toStringedActualIndexableDataStructure = ToStringer::ToString(actualIndexableDataStructure);
-      const Anomaly anomaly(indexablesAreEqualOrVectorsAreEqualMacroName, expectedIndexableDataStructureText, actualIndexableDataStructureText, "", messagesText,
+      const std::string toStringedExpectedIndexableDataStructure = ToStringer::ToString(expectedIndexable);
+      const std::string toStringedActualIndexableDataStructure = ToStringer::ToString(actualIndexable);
+      const Anomaly anomaly(
+         indexablesAreEqualOrVectorsAreEqualMacroName,
+         expectedIndexableText,
+         actualIndexableText,
+         "",
+         messagesText,
          becauseAnomaly,
          toStringedExpectedIndexableDataStructure,
          toStringedActualIndexableDataStructure,
@@ -4213,35 +4219,36 @@ namespace ZenUnit
 
    template<
       template<typename...>
-      class IndexableDataStructureType, typename T, typename... MessageTypes>
+      class IndexableType,
+      typename T, typename... MessageTypes>
    void INDEXABLES_ARE_EQUAL_Defined(
       const char* indexablesAreEqualOrVectorsAreEqualMacroName,
-      const IndexableDataStructureType<T>& expectedIndexableDataStructure, const char* expectedIndexableDataStructureText,
-      const IndexableDataStructureType<T>& actualIndexableDataStructure, const char* actualIndexableDataStructureText,
+      const IndexableType<T>& expectedIndexable, const char* expectedIndexableText,
+      const IndexableType<T>& actualIndexable, const char* actualIndexableText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       try
       {
-         ARE_EQUAL(expectedIndexableDataStructure.size(), actualIndexableDataStructure.size());
+         ARE_EQUAL(expectedIndexable.size(), actualIndexable.size());
       }
       catch (const Anomaly& becauseAnomaly)
       {
          INDEXABLES_ARE_EQUAL_ThrowAnomaly(
             indexablesAreEqualOrVectorsAreEqualMacroName, becauseAnomaly,
-            expectedIndexableDataStructure, expectedIndexableDataStructureText,
-            actualIndexableDataStructure, actualIndexableDataStructureText,
+            expectedIndexable, expectedIndexableText,
+            actualIndexable, actualIndexableText,
             filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
       }
       // auto here instead of size_t because QVector<T>.size() is of type int
-      const auto expectedIndexableDataStructureSize = expectedIndexableDataStructure.size();
+      const auto expectedIndexableSize = expectedIndexable.size();
       constexpr size_t IEqualsSignLength = 2;
       constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
       char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
-      for (std::remove_const_t<decltype(expectedIndexableDataStructureSize)> i = 0;
-           i < expectedIndexableDataStructureSize; ++i)
+      for (std::remove_const_t<decltype(expectedIndexableSize)> i = 0;
+           i < expectedIndexableSize; ++i)
       {
-         const T& ithExpectedElement = expectedIndexableDataStructure[i];
-         const T& ithActualElement = actualIndexableDataStructure[i];
+         const T& ithExpectedElement = expectedIndexable[i];
+         const T& ithActualElement = actualIndexable[i];
          WriteIntegerToCharArray(i, indexMessage + IEqualsSignLength);
          try
          {
@@ -4251,8 +4258,8 @@ namespace ZenUnit
          {
             INDEXABLES_ARE_EQUAL_ThrowAnomaly(
                indexablesAreEqualOrVectorsAreEqualMacroName, becauseAnomaly,
-               expectedIndexableDataStructure, expectedIndexableDataStructureText,
-               actualIndexableDataStructure, actualIndexableDataStructureText,
+               expectedIndexable, expectedIndexableText,
+               actualIndexable, actualIndexableText,
                filePathLineNumber, messagesText, std::forward<MessageTypes>(messages)...);
          }
       }

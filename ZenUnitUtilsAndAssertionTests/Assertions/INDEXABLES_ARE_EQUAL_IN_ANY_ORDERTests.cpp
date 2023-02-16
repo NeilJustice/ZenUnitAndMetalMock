@@ -16,18 +16,18 @@ EVIDENCE
 
 TEST(ExpectedAndActualElementsAreBothEmpty_DoesNothing)
 {
-   const IndexableType<T> expectedEmptyElements;
-   const IndexableType<T> actualEmptyElements;
-   INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualEmptyElements);
+   const IndexableType<T> expectedElements;
+   const IndexableType<T> actualElements;
+   INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements);
 }
 
 TEST(ExpectedAndActualElementsHaveDifferentSizes_ThrowsAnomaly__TestCaseExpectedSize0ActualSize1)
 {
-   const IndexableType<T> expectedEmptyElements;
-   const IndexableType<T> actualNonEmptyElements = { ZenUnit::Random<T>() };
-   THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualNonEmptyElements), ZenUnit::Anomaly,
+   const IndexableType<T> expectedElements;
+   const IndexableType<T> actualElements = { ZenUnit::Random<T>() };
+   THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements), ZenUnit::Anomaly,
       R"(
-  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualNonEmptyElements)
+  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements)
 Expected: expectedElements.size() == actualElements.size()
   Actual: expectedElements.size() != actualElements.size()
  Because: ARE_EQUAL(expectedElements.size(), actualElements.size()) failed
@@ -39,11 +39,11 @@ File.cpp(1))");
 
 TEST(ExpectedAndActualElementsHaveDifferentSizes_ThrowsAnomaly__TestCaseExpectedSize1ActualSize0)
 {
-   const IndexableType<T> expectedEmptyElements = { ZenUnit::Random<T>() };
-   const IndexableType<T> actualNonEmptyElements;
-   THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualNonEmptyElements), ZenUnit::Anomaly,
+   const IndexableType<T> expectedElements = { ZenUnit::Random<T>() };
+   const IndexableType<T> actualElements;
+   THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements), ZenUnit::Anomaly,
       R"(
-  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualNonEmptyElements)
+  Failed: INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements)
 Expected: expectedElements.size() == actualElements.size()
   Actual: expectedElements.size() != actualElements.size()
  Because: ARE_EQUAL(expectedElements.size(), actualElements.size()) failed
@@ -57,18 +57,18 @@ TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInTheSameOrder
 {
    const T randomElement1 = ZenUnit::Random<T>();
    const T randomElement2 = ZenUnit::Random<T>();
-   const IndexableType<T> expectedEmptyElements = { randomElement1, randomElement2 };
-   const IndexableType<T> actualNonEmptyElements = { randomElement1, randomElement2 };
-   INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualNonEmptyElements);
+   const IndexableType<T> expectedElements = { randomElement1, randomElement2 };
+   const IndexableType<T> actualElements = { randomElement1, randomElement2 };
+   INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements);
 }
 
 TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqualAndInDifferentOrder_DoesNothing)
 {
    const T randomElement1 = ZenUnit::Random<T>();
    const T randomElement2 = ZenUnit::Random<T>();
-   const IndexableType<T> expectedEmptyElements = { randomElement1, randomElement2 };
-   const IndexableType<T> actualNonEmptyElements = { randomElement2, randomElement1 };
-   INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedEmptyElements, actualNonEmptyElements);
+   const IndexableType<T> expectedElements = { randomElement1, randomElement2 };
+   const IndexableType<T> actualElements = { randomElement2, randomElement1 };
+   INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedElements, actualElements);
 }
 
 TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomaly__TestCase1stElementNotEqual)
