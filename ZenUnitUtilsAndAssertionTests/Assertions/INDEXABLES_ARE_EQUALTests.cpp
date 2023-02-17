@@ -14,6 +14,17 @@ AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomal
 AFACT(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreEqual_DoesNothing)
 EVIDENCE
 
+string _vectorRTTIName;
+
+STARTUP
+{
+#if defined __linux__
+   _vectorRTTIName = "std::vector<int, std::allocator<int> >";
+#elif defined _WIN32
+   _vectorRTTIName = "std::vector<int,std::allocator<int> >";
+#endif
+}
+
 TEST(ExpectedAndActualElementsAreBothEmpty_DoesNothing)
 {
    const IndexableType<T> expectedElements;
@@ -28,10 +39,10 @@ TEST(ExpectedAndActualElementsHaveDifferentSizes_ThrowsAnomaly__TestCaseExpected
    THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(expectedElements, actualElements), ZenUnit::Anomaly,
       R"(
   Failed: INDEXABLES_ARE_EQUAL(expectedElements, actualElements)
-Expected: std::vector<int,std::allocator<int> > (size 0):
+Expected: )" + _vectorRTTIName + R"( (size 0):
 {
 }
-  Actual: std::vector<int,std::allocator<int> > (size 1):
+  Actual: )" + _vectorRTTIName + R"( (size 1):
 {
    )" + to_string(actualElements[0]) + R"(
 }
@@ -49,11 +60,11 @@ TEST(ExpectedAndActualElementsHaveDifferentSizes_ThrowsAnomaly__TestCaseExpected
    THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(expectedElements, actualElements), ZenUnit::Anomaly,
       R"(
   Failed: INDEXABLES_ARE_EQUAL(expectedElements, actualElements)
-Expected: std::vector<int,std::allocator<int> > (size 1):
+Expected: )" + _vectorRTTIName + R"( (size 1):
 {
    )" + to_string(expectedElements[0]) + R"(
 }
-  Actual: std::vector<int,std::allocator<int> > (size 0):
+  Actual: )" + _vectorRTTIName + R"( (size 0):
 {
 }
  Because: ARE_EQUAL(expectedIndexable.size(), actualIndexable.size()) failed
@@ -81,11 +92,11 @@ TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomaly
    THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(expectedElements, actualElements), ZenUnit::Anomaly,
    R"(
   Failed: INDEXABLES_ARE_EQUAL(expectedElements, actualElements)
-Expected: std::vector<int,std::allocator<int> > (size 1):
+Expected: )" + _vectorRTTIName + R"( (size 1):
 {
    )" + to_string(element1) + R"(
 }
-  Actual: std::vector<int,std::allocator<int> > (size 1):
+  Actual: )" + _vectorRTTIName + R"( (size 1):
 {
    )" + to_string(element2) + R"(
 }
@@ -106,12 +117,12 @@ TEST(ExpectedAndActualElementsHaveTheSameSizes_ElementsAreNotEqual_ThrowsAnomaly
    THROWS_EXCEPTION(INDEXABLES_ARE_EQUAL(expectedElements, actualElements), ZenUnit::Anomaly,
    R"(
   Failed: INDEXABLES_ARE_EQUAL(expectedElements, actualElements)
-Expected: std::vector<int,std::allocator<int> > (size 2):
+Expected: )" + _vectorRTTIName + R"( (size 2):
 {
    )" + to_string(element1) + R"(,
    )" + to_string(element1) + R"(
 }
-  Actual: std::vector<int,std::allocator<int> > (size 2):
+  Actual: )" + _vectorRTTIName + R"( (size 2):
 {
    )" + to_string(element1) + R"(,
    )" + to_string(element2) + R"(
