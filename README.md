@@ -1,5 +1,11 @@
-# 🧪 ZenUnit & MetalMock ⚗️
-[![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B20) [![ZenUnitAndMetalMock](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg)](https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml) <a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"/></a> [![codecov](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2)](https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_ZenUnitAndMetalMock&metric=alert_status)](https://sonarcloud.io/dashboard?id=NeilJustice_ZenUnitAndMetalMock) ![Dependencies 0](Screenshots/Dependencies-0-brightgreen.svg)
+<p align="center"> 
+<img src="Screenshots/ZenUnitLogo.png" width="64%"><br>
+<img src="https://img.shields.io/badge/c%2B%2B-20-blue.svg"/>
+<a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg"></a>
+<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"></a>
+<a href="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock"><img src="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2"></a>
+<a href="https://sonarcloud.io/dashboard?id=NeilJustice_ZenUnitAndMetalMock"><img src="https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_ZenUnitAndMetalMock&metric=alert_status"></a>
+</p>
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
@@ -81,8 +87,8 @@ A "double strict" mocking framework requires that all mocked-out functions be bo
    * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2022-on-windows)
-   * [Linux Jenkins Jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint ZenUnit and MetalMock's CI/CD Python code](#linux-jenkins-jobs-which-build-cppcheck-clang-tidy-addresssanitize-and-undefinedbehaviorsanitize-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-zenunit-and-metalmocks-cicd-python-code)
-   * [Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint ZenUnit and MetalMock's CI/CD Python code](#windows-jenkins-jobs-which-build-and-cppcheck-zenunit-and-metalmocks-c-code-and-mypy-flake8-pylint-zenunit-and-metalmocks-cicd-python-code)
+   * [Linux Jenkins Jobs](#linux-jenkins-jobs)
+   * [Windows Jenkins jobs](#windows-jenkins-jobs)
    * [How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
    * [How to build and run ZenUnit and MetalMock unit tests on Windows and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
    * [Thanks to](#Thanks-to)
@@ -1024,21 +1030,17 @@ Testing using random values instead of constant values renders test code immune 
 
 ### ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux
 
-Seen in this screenshot is function `ZenUnit::ArgsParser::Parse` for parsing ZenUnit's command line arguments:
-
 ![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
 
 ### ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows
 
-Seen in this screenshot is function `ZenUnit::ARE_EQUAL_Defined` for asserting that an expected value is equal to an actual value:
-
 ![ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2022.png)
 
-### Linux Jenkins jobs which build, Cppcheck, clang-tidy, AddressSanitize, and UndefinedBehaviorSanitize ZenUnit and MetalMock's C++ Code and Mypy-Flake8-Pylint ZenUnit and MetalMock's CI/CD Python code
+### Linux Jenkins jobs
 
 ![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
 
-### Windows Jenkins jobs which build and Cppcheck ZenUnit and MetalMock's C++ code and Mypy-Flake8-Pylint ZenUnit and MetalMock's CI/CD Python code
+### Windows Jenkins jobs
 
 ![Windows Jenkins Jobs](Screenshots/Windows/WindowsJenkinsJobs.png)
 
