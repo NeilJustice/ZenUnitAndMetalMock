@@ -6,6 +6,9 @@
 <a href="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock"><img src="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2"></a>
 <a href="https://sonarcloud.io/dashboard?id=NeilJustice_ZenUnitAndMetalMock"><img src="https://sonarcloud.io/api/project_badges/measure?project=NeilJustice_ZenUnitAndMetalMock&metric=alert_status"></a>
 </p>
+<p align="center"> 
+<img src="Screenshots/MetalMockLogo.png" width="64%"><br>
+</p>
 
 ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
 
