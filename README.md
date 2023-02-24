@@ -1088,4 +1088,4 @@ ZenUnit.h and MetalMock.h as installed on Windows:
 * [Alex Denisov and Stanislav Pankevich, authors of C++ mutation testing framework Mull](https://github.com/mull-project/mull)
 * [My colleagues at Quantlab](https://www.quantlab.com)
 * [My colleagues at Emerson](https://www.emerson.com/en-us/automation/deltav)
-* [Brandmark.io for the ZenUnit and MetalMock logos]
+* [Brandmark.io for the ZenUnit and MetalMock logos](https://brandmark.io)
