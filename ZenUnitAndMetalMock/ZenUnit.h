@@ -8152,46 +8152,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
-   template<>
-   inline const char* Random<const char*>()
-   {
-      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
-      switch (randomIntBetween1And10)
-      {
-      case 1: return "RandomConstCharPointer1";
-      case 2: return "RandomConstCharPointer2";
-      case 3: return "RandomConstCharPointer3";
-      case 4: return "RandomConstCharPointer4";
-      case 5: return "RandomConstCharPointer5";
-      case 6: return "RandomConstCharPointer6";
-      case 7: return "RandomConstCharPointer7";
-      case 8: return "RandomConstCharPointer8";
-      case 9: return "RandomConstCharPointer9";
-      default: return "RandomConstCharPointer10";
-      }
-   }
-
-   template<>
-   inline const wchar_t* Random<const wchar_t*>()
-   {
-      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
-      switch (randomIntBetween1And10)
-      {
-      case 1: return L"RandomWideConstCharPointer1";
-      case 2: return L"RandomWideConstCharPointer2";
-      case 3: return L"RandomWideConstCharPointer3";
-      case 4: return L"RandomWideConstCharPointer4";
-      case 5: return L"RandomWideConstCharPointer5";
-      case 6: return L"RandomWideConstCharPointer6";
-      case 7: return L"RandomWideConstCharPointer7";
-      case 8: return L"RandomWideConstCharPointer8";
-      case 9: return L"RandomWideConstCharPointer9";
-      default: return L"RandomWideConstCharPointer10";
-      }
-   }
-
-   template<>
-   inline std::string Random<std::string>()
+   inline const char* GetRandomConstCharPointer()
    {
       const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
       switch (randomIntBetween1And10)
@@ -8209,23 +8170,58 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
-   template<>
-   inline std::wstring Random<std::wstring>()
+   inline const wchar_t* GetRandomWideConstCharPointer()
    {
       const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
       switch (randomIntBetween1And10)
       {
-      case 1: return L"RandomWString1";
-      case 2: return L"RandomWString2";
-      case 3: return L"RandomWString3";
-      case 4: return L"RandomWString4";
-      case 5: return L"RandomWString5";
-      case 6: return L"RandomWString6";
-      case 7: return L"RandomWString7";
-      case 8: return L"RandomWString8";
-      case 9: return L"RandomWString9";
-      default: return L"RandomWString10";
+      case 1: return L"RandomWideString1";
+      case 2: return L"RandomWideString2";
+      case 3: return L"RandomWideString3";
+      case 4: return L"RandomWideString4";
+      case 5: return L"RandomWideString5";
+      case 6: return L"RandomWideString6";
+      case 7: return L"RandomWideString7";
+      case 8: return L"RandomWideString8";
+      case 9: return L"RandomWideString9";
+      default: return L"RandomWideString10";
       }
+   }
+
+   template<>
+   inline const char* Random<const char*>()
+   {
+      return GetRandomConstCharPointer();
+   }
+
+   template<>
+   inline const wchar_t* Random<const wchar_t*>()
+   {
+      return GetRandomWideConstCharPointer();
+   }
+
+   template<>
+   inline std::string Random<std::string>()
+   {
+      return GetRandomConstCharPointer();
+   }
+
+   template<>
+   inline std::wstring Random<std::wstring>()
+   {
+      return GetRandomWideConstCharPointer();
+   }
+
+   template<>
+   inline std::string_view Random<std::string_view>()
+   {
+      return GetRandomConstCharPointer();
+   }
+
+   template<>
+   inline std::wstring_view Random<std::wstring_view>()
+   {
+      return GetRandomWideConstCharPointer();
    }
 
    inline char RandomLetter()

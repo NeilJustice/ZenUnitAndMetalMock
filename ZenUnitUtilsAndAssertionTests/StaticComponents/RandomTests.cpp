@@ -20,12 +20,14 @@ namespace ZenUnit
    AFACT(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeTwoValueTestCase)
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
-   AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
-   AFACT(Random_ConstWCharTPointer_CodeCoverage)
    AFACT(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
+   AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
+   AFACT(Random_ConstWCharTPointer_CodeCoverage)
    AFACT(Random_String_ReturnsRandomString1Through10)
    AFACT(Random_WideString_CodeCoverage)
+   AFACT(Random_StringView_ReturnsRandomString1Through10)
+   AFACT(Random_WideStringView_CodeCoverage)
    AFACT(RandomLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
    AFACT(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
    AFACT(RandomStringWithLength_ReturnsRandomStringWithLength)
@@ -371,31 +373,6 @@ namespace ZenUnit
       IS_TRUE(didReturnMaxDoubleValue);
    }
 
-   TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
-   {
-      set<const char*> randomConstCharPointers;
-      //
-      for (size_t i = 0; i < 300; ++i)
-      {
-         const char* const randonConstCharPointer = Random<const char*>();
-         randomConstCharPointers.insert(randonConstCharPointer);
-      }
-      //
-      for (const char* randomConstCharPointer : randomConstCharPointers)
-      {
-         REGEX_MATCHES("RandomConstCharPointer\\d+", randomConstCharPointer);
-      }
-   }
-
-   TEST(Random_ConstWCharTPointer_CodeCoverage)
-   {
-      // 1000 iterations for code coverage of all ten branches
-      for (size_t i = 0; i < 1000; ++i)
-      {
-         Random<const wchar_t*>();
-      }
-   }
-
    TEST(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
    {
       // 100 iterations for code coverage of the for-loop and hasFileExtension if-statement
@@ -411,6 +388,31 @@ namespace ZenUnit
       for (size_t i = 0; i < 100; ++i)
       {
          Random<error_code>();
+      }
+   }
+
+   TEST(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
+   {
+      set<const char*> randomConstCharPointers;
+      //
+      for (size_t i = 0; i < 300; ++i)
+      {
+         const char* const randonConstCharPointer = Random<const char*>();
+         randomConstCharPointers.insert(randonConstCharPointer);
+      }
+      //
+      for (const char* randomConstCharPointer : randomConstCharPointers)
+      {
+         REGEX_MATCHES("RandomString\\d+", randomConstCharPointer);
+      }
+   }
+
+   TEST(Random_ConstWCharTPointer_CodeCoverage)
+   {
+      // 1000 iterations for code coverage of all ten branches
+      for (size_t i = 0; i < 1000; ++i)
+      {
+         Random<const wchar_t*>();
       }
    }
 
@@ -437,6 +439,24 @@ namespace ZenUnit
       for (size_t i = 0; i < 1000; ++i)
       {
          Random<wstring>();
+      }
+   }
+
+   TEST(Random_StringView_ReturnsRandomString1Through10)
+   {
+      // 1000 iterations for code coverage of all ten branches
+      for (size_t i = 0; i < 1000; ++i)
+      {
+         Random<string_view>();
+      }
+   }
+
+   TEST(Random_WideStringView_CodeCoverage)
+   {
+      // 1000 iterations for code coverage of all ten branches
+      for (size_t i = 0; i < 1000; ++i)
+      {
+         Random<wstring_view>();
       }
    }
 
