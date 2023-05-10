@@ -61,7 +61,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 )");
       METALMOCK(consoleMock.WriteLineColorMock.CalledNTimes(2));
       METALMOCKTHEN(consoleMock.WriteLineColorMock.CalledWith(
-         "=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red)).Then(
+         "=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red)).Then( // LCOV_EXCL_LINE
       METALMOCKTHEN(zenUnitTestRunnerMock.VirtualGetZenUnitArgsMock.CalledOnce())).Then(
       METALMOCKTHEN(consoleMock.WriteLineMock.CalledOnceWith(expectedErrorMessage))).Then(
       METALMOCKTHEN(consoleMock.WriteLineColorMock.CalledWith(expectedExitCodeMessage, expectedExitCodeLineColor))).Then(
