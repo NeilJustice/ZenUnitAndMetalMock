@@ -136,16 +136,11 @@ namespace ZenUnit
       const TestResult testResult = _test->BaseRunTest();
       //
       METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledNTimes(5));
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallNewTestClass, _test.get(), TestPhase::Constructor)).Then(
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallStartup, _test.get(), TestPhase::Startup))).Then(
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallTestBody, _test.get(), TestPhase::TestBody))).Then(
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallCleanup, _test.get(), TestPhase::Cleanup))).Then(
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor)).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallStartup, _test.get(), TestPhase::Startup))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallTestBody, _test.get(), TestPhase::TestBody))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallCleanup, _test.get(), TestPhase::Cleanup))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor))).Then(
       METALMOCKTHEN(_testResultFactoryMock->MakeFullTestResultMock.CalledOnceWith(
          _test->_protected_fullTestName,
          TestPhaseResultWithOutcome(TestOutcome::Success),
