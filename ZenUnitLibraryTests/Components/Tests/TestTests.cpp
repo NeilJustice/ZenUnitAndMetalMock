@@ -111,12 +111,9 @@ namespace ZenUnit
       const TestResult testResult = _test->BaseRunTest();
       //
       METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledNTimes(3));
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallNewTestClass, _test.get(), TestPhase::Constructor)).Then(
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallStartup, _test.get(), TestPhase::Startup))).Then(
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallNewTestClass, _test.get(), TestPhase::Constructor)).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallStartup, _test.get(), TestPhase::Startup))).Then(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(&Test::CallDeleteTestClass, _test.get(), TestPhase::Destructor))).Then(
       METALMOCKTHEN(_testResultFactoryMock->MakeStartupFailMock.CalledOnceWith(
          _test->_protected_fullTestName, constructorSuccessTestPhaseResult, startupFailTestPhaseResult, destructorTestPhaseResult)));
       ARE_EQUAL(startupFailTestResult, testResult);
