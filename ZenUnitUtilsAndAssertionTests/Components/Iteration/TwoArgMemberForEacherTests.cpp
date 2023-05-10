@@ -102,9 +102,9 @@ namespace ZenUnit
       }
       catch (const exception&)
       {
-         METALMOCK(classInstance.TwoArgFunctionMock.CalledNTimes(2));
-         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(2, 20)).Then(
-         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(1, 20)));
+         METALMOCK(classInstance.TwoArgFunctionMock.CalledNTimes(2)); // LCOV_EXCL_LINE
+         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(2, 20)).Then( // LCOV_EXCL_LINE
+         METALMOCKTHEN(classInstance.TwoArgFunctionMock.CalledWith(1, 20))); // LCOV_EXCL_LINE
       }
    }
 
