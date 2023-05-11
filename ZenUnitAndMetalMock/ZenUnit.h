@@ -7889,7 +7889,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const bool didEmplaceNewKeyIntoMap = emplaceResult.second;
          if (!didEmplaceNewKeyIntoMap)
          {
-            ++numberOfIterations;
+            ++numberOfIterations; // LCOV_EXCL_LINE
          }
       }
       ZENUNIT_ASSERT(randomOrderedMap.size() == size);
@@ -7923,7 +7923,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const bool didEmplaceNewKeyIntoMap = emplaceResult.second;
          if (!didEmplaceNewKeyIntoMap)
          {
-            ++numberOfIterations;
+            ++numberOfIterations; // LCOV_EXCL_LINE
          }
       }
       ZENUNIT_ASSERT(randomUnorderedMap.size() == size);
@@ -7956,7 +7956,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const bool didEmplaceNewElementIntoMap = emplaceResult.second;
          if (!didEmplaceNewElementIntoMap)
          {
-            ++numberOfIterations;
+            ++numberOfIterations; // LCOV_EXCL_LINE
          }
       }
       return randomOrderedSet;
@@ -7990,7 +7990,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const bool didEmplaceNewElementIntoMap = emplaceResult.second;
          if (!didEmplaceNewElementIntoMap)
          {
-            ++numberOfIterations;
+            ++numberOfIterations; // LCOV_EXCL_LINE
          }
       }
       return randomNonEmptyUnorderedSet;
