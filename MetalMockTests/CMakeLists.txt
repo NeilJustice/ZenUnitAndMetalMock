@@ -51,6 +51,9 @@ if(WIN32)
 endif()
 
 IfMSVCEnablePrecompiledHeaders()
+set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD ON)
+set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD_BATCH_SIZE 4)
+append(CMAKE_CXX_FLAGS "/FIpch.h")
 IfMSVCAddPostBuildStepToRunTestsRandomly()
 
 if(UNIX AND NOT APPLE)

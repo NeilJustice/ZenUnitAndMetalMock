@@ -57,9 +57,9 @@ if(WIN32)
 endif()
 
 IfMSVCEnablePrecompiledHeaders()
-#set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD ON)
-#set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD_BATCH_SIZE 3)
-#append(CMAKE_CXX_FLAGS "/FIpch.h")
+set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD ON)
+set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD_BATCH_SIZE 3)
+append(CMAKE_CXX_FLAGS "/FIpch.h")
 IfMSVCAddPostBuildStepToRunTestsRandomly()
 
 if(UNIX AND NOT APPLE)
