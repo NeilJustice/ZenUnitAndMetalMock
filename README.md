@@ -10,9 +10,9 @@
 <img src="Screenshots/MetalMockLogo.png" width="64%"><br>
 </p>
 
-ZenUnit is a C++ single-header unit testing framework designed for assertion exactness, test readability, and clarity of error messages.
+ZenUnit is a C++20 single-header unit testing framework designed for test readability, error message clarity, value-parameterized tests, and template-parameterized test classes.
 
-ZenUnit's first key feature is its convenient syntax for writing value-parameterized unit tests by way of typesafe variadic macro arguments:
+Here is the ZenUnit syntax for specifying value-parameterized tests by way of typesafe variadic macro arguments:
 
 ```cpp
 TEST3X3(Add_ReturnsSumOfArguments,
@@ -28,33 +28,97 @@ TEST3X3(Add_ReturnsSumOfArguments,
 
 The above `TEST3X3` syntax defines three independent test cases for function `Calculator::Add(int x, int y)`, with test case values processed "three by three" for a total of three unit tests.
 
-ZenUnit's second key feature is its convenient syntax for writing type-parameterized unit tests:
+Here is the ZenUnit syntax for specifying template-parameterized test classes:
 
 ```cpp
-#include "ZenUnitAndMetalMock/ZenUnit.h"
-
 template<
    template<typename...>
    typename ContainerType, typename T>
 TEMPLATE_TESTS(PredicateCounterTests, ContainerType, T)
-//
-// </ZenUnitTestClassCodeElidedForBrevity>
-//
+AFACT(CountWhere_ElementsAreEmpty_Returns0)
+AFACT(CountWhere_ElementsAreSize2_BothElementDoNotMatch_Returns0)
+AFACT(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
+AFACT(CountWhere_ElementsAreSize4_TwoElementsMatchOutOf4_Returns2)
+EVIDENCE
+
+PredicateCounter<ContainerType, T> _predicateCounter;
+
+static bool IsEven(const T& element)
+{
+   const bool elementIsEven = element % 2 == 0;
+   return elementIsEven;
+}
+
+static bool AlwaysMatchingPredicate(const T&)
+{
+   return true;
+}
+
+static bool NeverMatchingPredicate(const T&)
+{
+   return false;
+}
+
+TEST(CountWhere_ElementsAreEmpty_Returns0)
+{
+   const ContainerType<T> emptyElements;
+   //
+   const size_t numberOfMatchingElements =
+      _predicateCounter.CountWhere(emptyElements, NeverMatchingPredicate);
+   //
+   ARE_EQUAL(0, numberOfMatchingElements);
+}
+
+TEST(CountWhere_ElementsAreSize2_BothElementDoNotMatch_Returns0)
+{
+   const ContainerType<T> elements{ ZenUnit::Random<T>(), ZenUnit::Random<T>() };
+   //
+   const size_t numberOfMatchingElements =
+      _predicateCounter.CountWhere(elements, NeverMatchingPredicate);
+   //
+   ARE_EQUAL(0, numberOfMatchingElements);
+}
+
+TEST(CountWhere_ElementsAreSize2_BothElementsMatch_Returns2)
+{
+   const T element1 = ZenUnit::Random<T>();
+   const T element2 = ZenUnit::RandomNotEqualTo<T>(element1);
+   const ContainerType<T> elements{ element1, element2 };
+   //
+   const size_t numberOfMatchingElements =
+      _predicateCounter.CountWhere(elements, AlwaysMatchingPredicate);
+   //
+   ARE_EQUAL(2, numberOfMatchingElements);
+}
+
+TEST(CountWhere_ElementsAreSize4_TwoElementsMatchOutOf4_Returns2)
+{
+   const ContainerType<T> elements{ T{1}, T{2}, T{3}, T{4} };
+   //
+   const size_t numberOfEvenElements = _predicateCounter.CountWhere(elements, IsEven);
+   //
+   ARE_EQUAL(2, numberOfEvenElements);
+}
+
 RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, int)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::vector, unsigned long long)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
 ```
 
-The above `TEMPLATE_TESTS` / `RUN_TEMPLATE_TESTS` / `THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit test class with unit tests to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
+The above `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, `THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit test class with unit tests to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
 
-MetalMock is a C++ single-header mocking framework powered by ZenUnit assertions and features a convenient arrange-act-assert syntax for setting mocked-out function return values or exceptions to be thrown, and asserting that mocked-out functions were called with exact expected arguments - be those functions virtual, non-virtual / template, static, or free functions.
+MetalMock, a C++ single-header mocking framework powered by ZenUnit assertions, features a convenient arrange-act-assert syntax for setting mocked-out function return values, a specific exception to be thrown, or an alternative function to be called instead of the mocked-out function.
 
-MetalMock is what I would call a "double strict" mocking framework so as to be useful for extra-rigorously confirming the correctness of function calls made in safety-critical and financially-critical C++ programs.
+MetalMock supports the mocking of virtual functions, template functions, static functions, and global / free functions.
 
-A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called.
+MetalMock is a so-called "double strict" mocking framework so as to be useful for rigorously confirming the correctness of function calls made in safety-critical and financially-critical environments.
 
-A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and explicitly asserted as having been called, thereby minimizing the likelihood of extraneous correctness-compromising function calls being present in a C++ program under test.
+A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called, else an exception.
+
+A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and then explicitly asserted as having been called, else an exception.
+
+Without the design feature of requiring expected functions to be confirmed to have been called with expected arguments, there is the possibility of correctness-compromising extraneous function calls being introduced into a C++ program under test.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
