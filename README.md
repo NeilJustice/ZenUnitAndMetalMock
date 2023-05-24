@@ -106,7 +106,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, int)
 THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long long)
 ```
 
-The above `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, `THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit test class with unit tests to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
+The above `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, and `THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit templated test class with unit tests to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
 
 MetalMock, a C++ single-header mocking framework powered by ZenUnit assertions, features a convenient arrange-act-assert syntax for setting mocked-out function return values, a specific exception to be thrown, or an alternative function to be called instead of the mocked-out function.
 
