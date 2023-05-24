@@ -118,7 +118,7 @@ A "single strict" mocking framework requires that all mocked-out functions be ex
 
 A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and then explicitly asserted as having been called, else an exception.
 
-Without the design feature of requiring expected functions to be confirmed to have been called with expected arguments, there is the possibility of correctness-compromising extraneous function calls being introduced into a C++ program under test.
+Absent the MetalMock design feature of requiring expected functions to be subsequently confirmed as having been called with expected arguments, there is the possibility of correctness-compromising extraneous function calls being present in the C++ program under test.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
