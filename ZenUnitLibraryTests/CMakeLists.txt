@@ -62,7 +62,7 @@ if(MSVC)
    set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD_BATCH_SIZE 3)
    append(CMAKE_CXX_FLAGS "/FIpch.h")
 endif()
-IfMSVCAddPostBuildStepToRunTestsRandomly()
+IfMSVCAddPostBuildStepToRunTests()
 
 if(UNIX AND NOT APPLE)
    if(LCovCodeCoverageMode)

@@ -23,7 +23,7 @@ if(UNIX AND NOT APPLE)
 endif()
 
 IfMSVCEnablePrecompiledHeaders()
-IfMSVCAddPostBuildStepToRunTestsRandomly()
+IfMSVCAddPostBuildStepToRunTests()
 
 if(UNIX AND NOT APPLE)
    if(LCovCodeCoverageMode)

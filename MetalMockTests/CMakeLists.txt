@@ -56,7 +56,7 @@ if(MSVC)
    set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD_BATCH_SIZE 4)
    append(CMAKE_CXX_FLAGS "/FIpch.h")
 endif()
-IfMSVCAddPostBuildStepToRunTestsRandomly()
+IfMSVCAddPostBuildStepToRunTests()
 
 if(UNIX AND NOT APPLE)
    if(LCovCodeCoverageMode)
