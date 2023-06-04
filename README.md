@@ -518,8 +518,8 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 |Assertion|Behavior|
 |---------|--------|
 |`ARE_WITHIN(expectedFloatingPointValue, actualFloatingPointValue, expectedAbsoluteMaxDifference, messages...)`|Asserts that `std::abs(expectedFloatingPointValue - actualFloatingPointValue) <= expectedAbsoluteMaxDifference`.|
-|`FLOATS_ARE_NEAR(expectedFloat, actualFloat, messages...)`|Asserts that `std::abs(expectedFloat - actualFloat) <= 1e-7`. Roadmap: Replace 1e-7 with 4 Units in the Last Place comparison.|
-|`DOUBLES_ARE_NEAR(expectedDouble, actualDouble, messages...)`|Asserts that `std::abs(expectedDouble - actualDouble) <= 1e-13`. Roadmap: Replace 1e-13 with 4 Units in the Last Place comparison.|
+|`FLOATS_ARE_NEAR(expectedFloat, actualFloat, messages...)`|Asserts that `std::abs(expectedFloat - actualFloat) <= 1e-7`.|
+|`DOUBLES_ARE_NEAR(expectedDouble, actualDouble, messages...)`|Asserts that `std::abs(expectedDouble - actualDouble) <= 1e-7`.|
 
 #### Exception assertions
 |Assertion|Behavior|

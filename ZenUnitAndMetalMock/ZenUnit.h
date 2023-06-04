@@ -2885,7 +2885,7 @@ namespace ZenUnit
       }
       const double difference = expectedDouble - actualDouble;
       const double absoluteDifference = std::abs(difference);
-      if (absoluteDifference >= 1e-12)
+      if (absoluteDifference >= 1e-7)
       {
          DOUBLES_ARE_NEAR_ThrowAnomaly(
             expectedDouble, expectedDoubleText,

@@ -9,8 +9,8 @@ namespace ZenUnit
    AFACT(LeftDoubleIsQuietNaN_RightDoubleIsNotNaN_ThrowsAnomaly)
    AFACT(LeftDoubleIsNotNaN_RightDoubleIsQuietNaN_ThrowsAnomaly)
    AFACT(DoublesAreExactlyEqual_DoesNotThrowException)
-   AFACT(DoublesDifferenceIsLessThan1EMinus12_DoesNotThrowException)
-   AFACT(DoublesDifferenceIsGreaterThanOrEqualTo1EMinus12_ThrowsAnomaly)
+   AFACT(DoublesDifferenceIsLessThan1EMinus7_DoesNotThrowException)
+   AFACT(DoublesDifferenceIsGreaterThanOrEqualTo1EMinus7_ThrowsAnomaly)
    EVIDENCE
 
    TEST(DoublesAreBothQuietNaN_DoesNothing)
@@ -58,33 +58,33 @@ namespace ZenUnit
       DOUBLES_ARE_NEAR(DBL_MAX, DBL_MAX);
    }
 
-   TEST(DoublesDifferenceIsLessThan1EMinus12_DoesNotThrowException)
+   TEST(DoublesDifferenceIsLessThan1EMinus7_DoesNotThrowException)
    {
-      const double d1 = 1e-12;
-      const double d2 = 1.1e-12;
+      const double d1 = 1e-7;
+      const double d2 = 1.1e-7;
       DOUBLES_ARE_NEAR(d1, d2);
 
-      const double d3 = -1e-12;
-      const double d4 = -1.1e-12;
+      const double d3 = -1e-7;
+      const double d4 = -1.1e-7;
       DOUBLES_ARE_NEAR(d3, d4);
    }
 
-   TEST(DoublesDifferenceIsGreaterThanOrEqualTo1EMinus12_ThrowsAnomaly)
+   TEST(DoublesDifferenceIsGreaterThanOrEqualTo1EMinus7_ThrowsAnomaly)
    {
-      const double d1 = 1e-12;
-      const double d2 = 2e-12;
+      const double d1 = 1e-7;
+      const double d2 = 2e-7;
       THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DOUBLES_ARE_NEAR(d1, d2)",
-"Expected: 1e-12",
-"  Actual: 2e-12",
+"Expected: 1e-07",
+"  Actual: 2e-07",
 "File.cpp(1)"));
 
-      const double d3 = -1e-12;
-      const double d4 = -2e-12;
+      const double d3 = -1e-7;
+      const double d4 = -2e-7;
       THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d3, d4), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: DOUBLES_ARE_NEAR(d3, d4)",
-"Expected: -1e-12",
-"  Actual: -2e-12",
+"Expected: -1e-07",
+"  Actual: -2e-07",
 "File.cpp(1)"));
    }
 
