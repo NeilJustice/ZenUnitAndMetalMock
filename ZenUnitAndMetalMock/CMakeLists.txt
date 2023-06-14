@@ -9,6 +9,7 @@ if(WIN32)
 else()
    add_library(ZenUnitAndMetalMock INTERFACE)
 endif()
+set_property(TARGET ZenUnitAndMetalMock PROPERTY CXX_STANDARD 20)
 
 install(DIRECTORY .
         DESTINATION include/ZenUnitAndMetalMock/ZenUnitAndMetalMock

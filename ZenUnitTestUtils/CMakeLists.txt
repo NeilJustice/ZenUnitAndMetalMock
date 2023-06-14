@@ -13,7 +13,7 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 source_group("" FILES ${sourceFilePaths})
 
 add_library(ZenUnitTestUtils ${sourceFilePaths})
-
+set_property(TARGET ZenUnitTestUtils PROPERTY CXX_STANDARD 20)
 IfMSVCEnablePrecompiledHeaders()
 
 if(UNIX)

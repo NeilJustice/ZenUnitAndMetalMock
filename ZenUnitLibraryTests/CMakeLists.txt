@@ -43,6 +43,7 @@ source_group("" FILES ZenUnitLibraryTestsMain.cpp IfWindowsIgnoreTheseWarningGlo
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitLibraryTests ${sourceFilePaths})
+set_property(TARGET ZenUnitLibraryTests PROPERTY CXX_STANDARD 20)
 target_link_libraries(ZenUnitLibraryTests ZenUnitTestUtils)
 
 if(UNIX AND NOT APPLE)
