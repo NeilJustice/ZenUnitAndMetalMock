@@ -8346,6 +8346,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomChar;
       }
 
+      virtual char CharBetween(char inclusiveLowerBound, char inclusiveUpperBound) const
+      {
+         const char randomCharBetween = RandomBetween<char>(inclusiveLowerBound, inclusiveUpperBound);
+         return randomCharBetween;
+      }
+
       virtual char Letter() const
       {
          const char randomLetter = RandomLetter();
