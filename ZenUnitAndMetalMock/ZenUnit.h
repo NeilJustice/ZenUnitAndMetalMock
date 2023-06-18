@@ -216,8 +216,8 @@ Example ZenUnit command line arguments:
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that str.empty() is true.
-#define IS_EMPTY_STRING(value, ...) \
-   ZenUnit::IS_EMPTY_STRING_Defined(value, #value, \
+#define IS_EMPTY_STRING(str, ...) \
+   ZenUnit::IS_EMPTY_STRING_Defined(str, #str, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
 // Asserts that stdFilesystemPath.empty() is true.
