@@ -220,7 +220,7 @@ Example ZenUnit command line arguments:
    ZenUnit::IS_EMPTY_STRING_Defined(value, #value, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
-// Asserts that str.empty() is true.
+// Asserts that stdFilesystemPath.empty() is true.
 #define IS_EMPTY_PATH(stdFilesystemPath, ...) \
    ZenUnit::IS_EMPTY_PATH_Defined(stdFilesystemPath, #stdFilesystemPath, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
