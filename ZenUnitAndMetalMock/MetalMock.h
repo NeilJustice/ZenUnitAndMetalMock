@@ -3887,7 +3887,9 @@ namespace ZenUnit
 
       METALMOCK_NONVOID0_CONST(int, Int)
       METALMOCK_NONVOID2_CONST(int, IntBetween, int, int)
+
       METALMOCK_NONVOID0_CONST(unsigned, Unsigned)
+      METALMOCK_NONVOID0_CONST(std::vector<unsigned>, UnsignedVector)
 
       METALMOCK_NONVOID1_CONST(int, Enum, int)
 

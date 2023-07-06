@@ -44,6 +44,7 @@ namespace ZenUnit
       IS_TRUE(randomIntBetween5And7 >= 5 && randomIntBetween5And7 <= 7);
 
       [[maybe_unused]] const unsigned randomUnsigned = _randomGenerator.Unsigned();
+      [[maybe_unused]] const vector<unsigned> randomUnsignedVector = _randomGenerator.UnsignedVector();
 
       [[maybe_unused]] const int randomEnumIntValue = _randomGenerator.Enum(1);
 

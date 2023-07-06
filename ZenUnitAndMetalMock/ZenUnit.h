@@ -8394,6 +8394,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomUnsigned;
       }
 
+      virtual std::vector<unsigned> UnsignedVector() const
+      {
+         std::vector<unsigned> randomUnsignedVector = RandomVector<unsigned>();
+         return randomUnsignedVector;
+      }
+
       // Example Enum(int exclusiveEnumMaxValue) usage:
       // enum class Color
       // {
