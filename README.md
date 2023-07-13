@@ -1026,9 +1026,9 @@ When there is an unexpected ordering of MetalMocked function calls, for example 
 
 ### Maximizing mutation coverage by testing with random values
 
-ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing), a test metric I consider to be the next frontier in software quality measurement beyond code coverage.
+ZenUnit provides the following random-value-generating functions for maximizing [mutation coverage](https://en.wikipedia.org/wiki/Mutation_testing).
 
-Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the mid-2020s during CI/CD time by running the exceptionally-promising LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
+Testing using random values instead of constant values renders test code immune to the `swap-variable-with-constant` code mutation, which is a straightforward code mutation to induce manually today during code review time or automatically in the mid-2020s during CI/CD time by running the highly promising LLVM-powered mutation testing framework [Mull](https://github.com/mull-project/mull).
 
 |Random number-generating functions|Behavior|
 |----------------------------------|--------|

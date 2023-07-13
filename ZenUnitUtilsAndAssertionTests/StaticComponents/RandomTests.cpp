@@ -752,11 +752,14 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(RandomLessThanOrEqualToTests, T)
-   AFACT(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenTMinValueAndInclusiveUpperBound)
+   AFACT(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenInclusiveTMinValueAndInclusiveUpperBound)
    EVIDENCE
 
-   TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenTMinValueAndInclusiveUpperBound)
+   TEST(RandomLessThanOrEqualTo_ReturnsARandomValueBetweenInclusiveTMinValueAndInclusiveUpperBound)
    {
+      const T randomTValueMin = ZenUnit::RandomLessThanOrEqualTo<T>(numeric_limits<T>::min());
+      ARE_EQUAL(numeric_limits<T>::min(), randomTValueMin);
+
       for (size_t i = 0; i < 100; ++i)
       {
          const T randomTValue = ZenUnit::RandomLessThanOrEqualTo<T>(3);
@@ -772,11 +775,14 @@ namespace ZenUnit
 
    template<typename T>
    TEMPLATE_TESTS(RandomGreaterThanOrEqualToTests, T)
-   AFACT(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
+   AFACT(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndInclusiveTMaxValue)
    EVIDENCE
 
-   TEST(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndTMaxValue)
+   TEST(RandomGreaterThanOrEqualTo_ReturnsARandomValueBetweenInclusiveLowerBoundAndInclusiveTMaxValue)
    {
+      const T randomTValueMax = ZenUnit::RandomGreaterThanOrEqualTo<T>(numeric_limits<T>::max());
+      ARE_EQUAL(numeric_limits<T>::max(), randomTValueMax);
+
       for (size_t i = 0; i < 100; ++i)
       {
          const T randomTValue = ZenUnit::RandomGreaterThanOrEqualTo<T>(3);

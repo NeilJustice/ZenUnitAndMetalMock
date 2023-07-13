@@ -7684,6 +7684,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<std::integral T>
    T RandomLessThanOrEqualTo(T inclusiveUpperBound)
    {
+      constexpr T minTValue = std::numeric_limits<T>::min();
+      if (inclusiveUpperBound == minTValue)
+      {
+         return minTValue;
+      }
       const int equivalenceClass1Or2Or3 = RandomBetween<int>(1, 3);
       switch (equivalenceClass1Or2Or3)
       {
@@ -7692,7 +7697,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 3:
       default:
       {
-         constexpr T minTValue = std::numeric_limits<T>::min();
          std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
          const T randomIntegerBetweenMinValueAndInclusiveUpperBound = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenMinValueAndInclusiveUpperBound;
@@ -7723,6 +7727,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    template<std::integral T>
    T RandomGreaterThanOrEqualTo(T inclusiveLowerBound)
    {
+      constexpr T maxTValue = std::numeric_limits<T>::max();
+      if (inclusiveLowerBound == maxTValue)
+      {
+         return maxTValue;
+      }
       const int equivalenceClass1Or2Or3 = RandomBetween<int>(1, 3);
       switch (equivalenceClass1Or2Or3)
       {
@@ -7731,7 +7740,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 3:
       default:
       {
-         constexpr T maxTValue = std::numeric_limits<T>::max();
          std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
          const T randomIntegerBetweenInclusiveLowerBoundAndMaxValue = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenInclusiveLowerBoundAndMaxValue;
