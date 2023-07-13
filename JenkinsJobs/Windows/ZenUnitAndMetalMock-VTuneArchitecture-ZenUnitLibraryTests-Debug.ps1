@@ -1,3 +1,9 @@
+if ((Get-CimInstance Win32_Processor | Select-Object Manufacturer).Manufacturer -ne "Intel")
+{
+   Write-Host "Not running VTune in microarchitecture mode because this computer does not have an Intel processor"
+   exit 0
+}
+
 $env:PYTHONPATH="."
 python.exe -u ZenUnitDevOpsPython\BuildAndTestZenUnitAndMetalMock.py `
    --cmake-generator="Visual Studio 17 2022" `
