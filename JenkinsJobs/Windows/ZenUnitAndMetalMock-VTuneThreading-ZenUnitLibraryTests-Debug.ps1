@@ -4,6 +4,7 @@ python.exe -u ZenUnitDevOpsPython\BuildAndTestZenUnitAndMetalMock.py `
    --cmake-build-type="Debug" `
    --cmake-definitions=""
 if ($LastExitCode -ne 0) { exit $LastExitCode }
+Write-Host
 
 AcceliTune.exe collect-threading `
    --app-working-dir=ZenUnitLibraryTests\Debug `
