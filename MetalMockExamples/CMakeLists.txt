@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.20)
 project(MetalMockExamples)
 include(${CMAKE_SOURCE_DIR}/CMakeMacros.cmake)
 
