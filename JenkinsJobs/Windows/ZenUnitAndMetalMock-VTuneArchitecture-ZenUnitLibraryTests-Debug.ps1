@@ -1,6 +1,6 @@
-if ((Get-CimInstance Win32_Processor | Select-Object Manufacturer).Manufacturer -ne "Intel")
+if ((Get-CimInstance Win32_Processor | Select-Object Manufacturer).Manufacturer -ne "GenuineIntel")
 {
-   Write-Host "Not running VTune in microarchitecture mode because this computer does not have an Intel processor"
+   Write-Host "Not running VTune in microarchitecture mode because this computer does not have a GenuineIntel processor"
    exit 0
 }
 

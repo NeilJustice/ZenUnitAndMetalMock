@@ -1,4 +1,4 @@
-if ((Get-CimInstance Win32_Processor | Select-Object Manufacturer).Manufacturer -ne "Intel")
+if ((Get-CimInstance Win32_Processor | Select-Object Manufacturer).Manufacturer -ne "GenuineIntel")
 {
    Write-Host "Not running VTune in memory access mode because this computer does not have an Intel processor"
    exit 0
