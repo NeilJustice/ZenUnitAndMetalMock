@@ -3,6 +3,7 @@
 #if defined _WIN32
 #pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member
 #pragma warning(disable: 4514) // unreferenced inline function has been removed
+#pragma warning(disable: 4619) // #pragma warning: there is no warning number '5267'
 #pragma warning(disable: 4625) // copy constructor was implicitly defined as deleted
 #pragma warning(disable: 4626) // assignment operator was implicitly defined as deleted
 #pragma warning(disable: 4710) // function not inlined
