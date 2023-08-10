@@ -10,5 +10,5 @@ AcceliTune.exe collect-threading `
    --app-working-dir=ZenUnitLibraryTests\Debug `
    --program=ZenUnitLibraryTests.exe `
    --args="--test-runs=10" `
-   --results-folder="C:\PerformanceProfilingResults\VTune\ZenUnitLibraryTests_Threading" `
+   --results-folder="D:\PerformanceProfilingResults\VTune\ZenUnitLibraryTests_Threading" `
    --overwrite-results-folder

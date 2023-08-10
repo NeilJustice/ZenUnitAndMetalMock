@@ -12,5 +12,5 @@ VSDiagnostics.exe start 1 `
    /loadConfig:"JenkinsJobs\Windows\VSDiagnosticsCPUUsage.json"
 if ($LastExitCode -ne 0) { exit $LastExitCode }
 sleep 30
-VSDiagnostics.exe stop 1 /output:"C:\PerformanceProfilingResults\VSDiagnostics\ZenUnitLibraryTests-Debug.diagsession"
+VSDiagnostics.exe stop 1 /output:"D:\PerformanceProfilingResults\VSDiagnostics\ZenUnitLibraryTests-Debug.diagsession"
 exit $LastExitCode
