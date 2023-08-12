@@ -25,7 +25,6 @@ source_group("" FILES ZenUnitUtilsAndAssertionTestsMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitUtilsAndAssertionTests ${sourceFilePaths})
-set_property(TARGET ZenUnitUtilsAndAssertionTests PROPERTY CXX_STANDARD 20)
 target_link_libraries(ZenUnitUtilsAndAssertionTests ZenUnitTestUtils)
 
 if(UNIX AND NOT APPLE)
