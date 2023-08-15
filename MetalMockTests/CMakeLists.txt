@@ -36,6 +36,7 @@ source_group("" FILES MetalMockTestMain.cpp pch.h pch.cpp)
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(MetalMockTests ${sourceFilePaths})
+set_property(TARGET MetalMockTests PROPERTY CXX_STANDARD 20)
 target_link_libraries(MetalMockTests ZenUnitTestUtils)
 
 if(UNIX AND NOT APPLE)

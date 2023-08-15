@@ -18,6 +18,7 @@ source_group("" FILES
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitExamples ${sourceFilePaths})
+set_property(TARGET ZenUnitExamples PROPERTY CXX_STANDARD 20)
 if(UNIX AND NOT APPLE)
    target_link_libraries(ZenUnitExamples stdc++fs)
 endif()
