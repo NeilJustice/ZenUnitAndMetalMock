@@ -13,11 +13,11 @@ elif [ "$osname" == "Msys" ]; then
 fi
 jenkinsJobExitCode=$?
 if [ "$jenkinsJobExitCode" -ne 0 ]; then
-   echo "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-   echo "pre-commit: Jenkins job failed with exit code $jenkinsJobExitCode. Disallowing commit."
-   echo "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+   echo "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+   echo "pre-commit: Jenkins job failed with exit code $jenkinsJobExitCode. Not committing."
+   echo "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
    exit 1
 fi
-echo "***************************************************"
-echo "pre-commit: Jenkins job succeeded. Allowing commit."
-echo "***************************************************"
+echo "**********************************************"
+echo "pre-commit: Jenkins job succeeded. Committing."
+echo "**********************************************"
