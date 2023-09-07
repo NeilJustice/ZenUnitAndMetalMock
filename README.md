@@ -1140,8 +1140,7 @@ ZenUnit.h and MetalMock.h as installed on Windows:
 
 ### Thanks to
 
-* [Jason Turner, host of C++ Weekly and co-host of CppCast](https://www.youtube.com/user/lefticus1/videos)
-* [Rob Irving, co-host of CppCast](https://cppcast.com)
+* [Jason Turner, host of C++ Weekly](https://www.youtube.com/user/lefticus1/videos)
 * [Martin Moene, author of lest and much more](https://github.com/martinmoene/lest)
 * [Viktor Kirilov and the contributors to doctest](https://github.com/onqtam/doctest)
 * [Phil Nash, Martin Horenovský, and the contributors to Catch2](https://github.com/catchorg/Catch2)
