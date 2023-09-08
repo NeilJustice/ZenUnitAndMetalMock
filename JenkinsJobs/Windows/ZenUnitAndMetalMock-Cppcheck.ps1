@@ -1,4 +1,4 @@
-$numberOfLogicalProcessorsDividedBy2 = (Get-CimInstance -ClassName Win32_ComputerSystem).NumberOfLogicalProcessors / 2
+$numberOfLogicalProcessors = (Get-CimInstance -ClassName Win32_ComputerSystem).NumberOfLogicalProcessors
 cppcheck.exe `
    --cppcheck-build-dir=Cppcheck `
    --enable=all `
@@ -62,7 +62,9 @@ cppcheck.exe `
    -DMETALMOCK_VOID2 `
    -D_WIN32 `
    -I . `
-   -j $numberOfLogicalProcessorsDividedBy2 `
+   -I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um" `
+   -I MetalMockTests `
+   -j $numberOfLogicalProcessors `
    --output-file=cppcheck_results.txt `
    --error-exitcode=1 `
    .

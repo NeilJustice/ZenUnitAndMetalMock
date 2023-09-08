@@ -4860,8 +4860,7 @@ namespace ZenUnit
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
-            T& element = *iter;
-            (classPointer->*memberFunction)(element, arg2);
+            (classPointer->*memberFunction)(*iter, arg2);
          }
       }
 
@@ -4876,8 +4875,7 @@ namespace ZenUnit
          const typename std::vector<T>::iterator elementsEnd = elements->end();
          for (typename std::vector<T>::iterator iter = elements->begin(); iter != elementsEnd; ++iter)
          {
-            T& element = *iter;
-            (classPointer->*memberFunction)(element, arg2);
+            (classPointer->*memberFunction)(*iter, arg2);
          }
       }
 
