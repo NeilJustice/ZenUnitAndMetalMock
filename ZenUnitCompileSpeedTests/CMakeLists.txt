@@ -11,7 +11,6 @@ source_group("" FILES ${sourceFilePaths})
 add_executable(ZenUnitCompileSpeedTests ${sourceFilePaths})
 
 target_link_libraries(ZenUnitCompileSpeedTests)
-set_property(TARGET ZenUnitCompileSpeedTests PROPERTY CXX_STANDARD 20)
 if(UNIX AND NOT APPLE)
    target_link_libraries(ZenUnitCompileSpeedTests stdc++fs)
 endif()

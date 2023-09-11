@@ -1554,7 +1554,7 @@ namespace ZenUnit
          }
          else if constexpr (std::is_enum_v<T>)
          {
-            oss << std::to_string(static_cast<typename std::underlying_type<T>::type>(value));
+            oss << std::to_string(std::to_underlying(value));
          }
          else if constexpr (std::is_same_v<T, char>)
          {
