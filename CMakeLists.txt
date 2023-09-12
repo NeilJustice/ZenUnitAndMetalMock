@@ -7,7 +7,7 @@ if(${CMAKE_SIZEOF_VOID_P} STREQUAL "4")
 endif()
 
 if(UNIX)
-   set(CMAKE_CXX_FLAGS "-std=c++23 -Wall -Wextra -pedantic -Werror -pthread -Wno-unused-variable")
+   set(CMAKE_CXX_FLAGS "-std=c++2b -Wall -Wextra -pedantic -Werror -pthread -Wno-unused-variable")
    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
       append(CMAKE_CXX_FLAGS "-Wno-gnu-zero-variadic-macro-arguments")
    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
