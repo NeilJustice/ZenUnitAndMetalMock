@@ -24,6 +24,7 @@ namespace ZenUnit
 #include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 
 #if defined __linux__ || defined __APPLE__
 #include <cfloat> // FLT_MAX and DBL_MAX
