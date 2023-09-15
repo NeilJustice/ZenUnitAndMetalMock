@@ -5024,9 +5024,7 @@ namespace ZenUnit
    {
    public:
       const char* TestClassName() const override { return "NoOpTestClassRunner"; }
-      size_t NumberOfTestCases() const override { return 0; }
       TestClassResult RunTests() override { return TestClassResult(); }
-      bool HasTestThatMatchesTestNameFilter(const TestNameFilter&) const override { return false; }
    };
 
    class TestClassRunnerRunner
@@ -6633,7 +6631,7 @@ Fatal Windows C++ Runtime Assertion
          , _currentTestCaseNumber(1)
          , _protected_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
-         const size_t numberOfTestCases = NumberOfTestCases();
+         const size_t numberOfTestCases = sizeof...(TestCaseArgTypes) / N;
          _testResults.reserve(numberOfTestCases);
       }
 
