@@ -12,7 +12,6 @@ namespace MetalMock
       virtual void VirtualFunctionConst(int, int) const {}
       void NonVirtualFunction(int, int) {}
       void NonVirtualFunctionConst(int, int) const {}
-      static void StaticVoid2ArgsFunction(int, int) {}
       virtual ~Void2ArgsFunctions() = default;
    };
 
@@ -51,12 +50,10 @@ namespace MetalMock
 
    Void2ArgsFunctionsMock _void2ArgsFunctionsMock;
    METALMOCK_VOID2_FREE(_call_FreeVoid2ArgsFunction, int, int)
-   METALMOCK_VOID2_STATIC(MetalMock::Void2ArgsFunctions, _call_StaticVoid2ArgsFunction, int, int)
 
    unique_ptr<MetalMock2ArgsTester<
       Void2ArgsFunctionsMock,
-      decltype(_call_FreeVoid2ArgsFunctionMock),
-      decltype(_call_StaticVoid2ArgsFunctionMock)>> _metalMock2ArgsTester;
+      decltype(_call_FreeVoid2ArgsFunctionMock)>> _metalMock2ArgsTester;
 
    const string VirtualFunctionSignature =
       "virtual void MetalMock::Void2ArgsFunctions::VirtualFunction(int, int)";
@@ -68,22 +65,18 @@ namespace MetalMock
       "void MetalMock::Void2ArgsFunctions::NonVirtualFunctionConst(int, int) const";
    const string FreeFunctionSignature =
       "void _call_FreeVoid2ArgsFunction(int, int)";
-   const string StaticFunctionSignature =
-      "void MetalMock::Void2ArgsFunctions::_call_StaticVoid2ArgsFunction(int, int)";
 
    STARTUP
    {
       _metalMock2ArgsTester = make_unique<MetalMock2ArgsTester<
-         Void2ArgsFunctionsMock, decltype(_call_FreeVoid2ArgsFunctionMock), decltype(_call_StaticVoid2ArgsFunctionMock)>>(
+         Void2ArgsFunctionsMock, decltype(_call_FreeVoid2ArgsFunctionMock)>>(
          _void2ArgsFunctionsMock,
          VirtualFunctionSignature,
          VirtualFunctionConstSignature,
          NonVirtualFunctionSignature,
          NonVirtualFunctionConstSignature,
          _call_FreeVoid2ArgsFunctionMock,
-         FreeFunctionSignature,
-         _call_StaticVoid2ArgsFunctionMock,
-         StaticFunctionSignature);
+         FreeFunctionSignature);
    }
 
    TEST(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
@@ -206,7 +199,6 @@ namespace MetalMock
       test(_void2ArgsFunctionsMock.NonVirtualFunctionMock);
       test(_void2ArgsFunctionsMock.NonVirtualFunctionConstMock);
       test(_call_FreeVoid2ArgsFunctionMock);
-      test(_call_StaticVoid2ArgsFunctionMock);
    }
 
    TEST(MockedFunctions_CodeCoverage)
@@ -217,7 +209,6 @@ namespace MetalMock
       void2ArgsFunctions.NonVirtualFunction(0, 0);
       void2ArgsFunctions.NonVirtualFunctionConst(0, 0);
       FreeVoid2ArgsFunction(0, 0);
-      MetalMock::Void2ArgsFunctions::StaticVoid2ArgsFunction(0, 0);
    }
 
    RUN_TESTS(MetalMockVoid2Tests)

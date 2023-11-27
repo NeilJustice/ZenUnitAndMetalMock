@@ -98,7 +98,6 @@ class StaticWidget
 public:
    static void void_static_0() {}
    static void void_static_1(int) {}
-   static void void_static_2(int, int) {}
    static void void_static_3(int, int, int) {}
    static void void_static_4(int, int, int, int) {}
    static void void_static_5(int, int, int, int, int) {}
@@ -107,7 +106,6 @@ public:
 
    static int nonvoid_static_0() { return 0; }
    static int nonvoid_static_1(int) { return 0; }
-   static int nonvoid_static_2(int, int) { return 0; }
    static int nonvoid_static_3(int, int, int) { return 0; }
    static int nonvoid_static_4(int, int, int, int) { return 0; }
    static int nonvoid_static_5(int, int, int, int, int) { return 0; }
@@ -117,7 +115,6 @@ public:
 
 METALMOCK_VOID0_STATIC(StaticWidget, void_static_0)
 METALMOCK_VOID1_STATIC(StaticWidget, void_static_1, int)
-METALMOCK_VOID2_STATIC(StaticWidget, void_static_2, int, int)
 METALMOCK_VOID3_STATIC(StaticWidget, void_static_3, int, int, int)
 METALMOCK_VOID4_STATIC(StaticWidget, void_static_4, int, int, int, int)
 METALMOCK_VOID5_STATIC(StaticWidget, void_static_5, int, int, int, int, int)
@@ -126,7 +123,6 @@ METALMOCK_VOID7_STATIC(StaticWidget, void_static_7, int, int, int, int, int, int
 
 METALMOCK_NONVOID0_STATIC(StaticWidget, int, nonvoid_static_0)
 METALMOCK_NONVOID1_STATIC(StaticWidget, int, nonvoid_static_1, int)
-METALMOCK_NONVOID2_STATIC(StaticWidget, int, nonvoid_static_2, int, int)
 METALMOCK_NONVOID3_STATIC(StaticWidget, int, nonvoid_static_3, int, int, int)
 METALMOCK_NONVOID4_STATIC(StaticWidget, int, nonvoid_static_4, int, int, int, int)
 METALMOCK_NONVOID5_STATIC(StaticWidget, int, nonvoid_static_5, int, int, int, int, int)
