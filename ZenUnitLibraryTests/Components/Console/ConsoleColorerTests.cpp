@@ -132,8 +132,8 @@ namespace ZenUnit
       0, false,
       1, true)
    {
-      METALMOCK_NONVOID1_FREE(int, fileno, FILE*)
-      METALMOCK_NONVOID1_FREE(int, isatty, int)
+      METALMOCK_NONVOID1_STATIC_OR_FREE(int, fileno, FILE*)
+      METALMOCK_NONVOID1_STATIC_OR_FREE(int, isatty, int)
       const int StdoutFileHandle = 1;
       filenoMock.Return(StdoutFileHandle);
       isattyMock.Return(isattyReturnValue);
@@ -155,8 +155,8 @@ namespace ZenUnit
       Color::Red, WindowsColor::Red,
       Color::Teal, WindowsColor::Teal)
    {
-      METALMOCK_NONVOID1_FREE(HANDLE, GetStdHandle, DWORD)
-      METALMOCK_NONVOID2_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
+      METALMOCK_NONVOID1_STATIC_OR_FREE(HANDLE, GetStdHandle, DWORD)
+      METALMOCK_NONVOID2_STATIC_OR_FREE(BOOL, SetConsoleTextAttribute, HANDLE, WORD)
       _consoleColorer._call_GetStdHandle = BIND_1ARG_METALMOCK_OBJECT(GetStdHandleMock);
       _consoleColorer._call_SetConsoleTextAttribute = BIND_2ARG_METALMOCK_OBJECT(SetConsoleTextAttributeMock);
       const HANDLE getStdHandleReturnValue = reinterpret_cast<HANDLE>(1);

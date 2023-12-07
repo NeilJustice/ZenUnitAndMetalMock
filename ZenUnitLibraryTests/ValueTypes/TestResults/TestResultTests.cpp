@@ -101,7 +101,7 @@ namespace ZenUnit
       cleanupTestPhaseResult.testOutcome = cleanupOutcome;
       cleanupTestPhaseResult.elapsedMicroseconds = static_cast<unsigned>(5000 + relativeMicroseconds);
 
-      METALMOCK_NONVOID0_FREE(const ZenUnitArgs&, _call_ZenUnitArgs_GetArgs)
+      METALMOCK_NONVOID0_STATIC_OR_FREE(const ZenUnitArgs&, _call_ZenUnitArgs_GetArgs)
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;

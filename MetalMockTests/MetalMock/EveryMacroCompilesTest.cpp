@@ -115,59 +115,59 @@ public:
    static int nonvoid_static_7(int, int, int, int, int, int, int) { return 0; }
 };
 
-METALMOCK_VOID0_FREE(_call_void_static_0)
-METALMOCK_VOID1_FREE(_call_void_static_1, int)
-METALMOCK_VOID2_FREE(_call_void_static_2, int, int)
-METALMOCK_VOID3_FREE(_call_void_static_3, int, int, int)
-METALMOCK_VOID4_FREE(_call_void_static_4, int, int, int, int)
-METALMOCK_VOID5_FREE(_call_void_static_5, int, int, int, int, int)
-METALMOCK_VOID6_FREE(_call_void_static_6, int, int, int, int, int, int)
-METALMOCK_VOID7_FREE(_call_void_static_7, int, int, int, int, int, int, int)
+METALMOCK_VOID0_STATIC_OR_FREE(_call_void_static_0)
+METALMOCK_VOID1_STATIC_OR_FREE(_call_void_static_1, int)
+METALMOCK_VOID2_STATIC_OR_FREE(_call_void_static_2, int, int)
+METALMOCK_VOID3_STATIC_OR_FREE(_call_void_static_3, int, int, int)
+METALMOCK_VOID4_STATIC_OR_FREE(_call_void_static_4, int, int, int, int)
+METALMOCK_VOID5_STATIC_OR_FREE(_call_void_static_5, int, int, int, int, int)
+METALMOCK_VOID6_STATIC_OR_FREE(_call_void_static_6, int, int, int, int, int, int)
+METALMOCK_VOID7_STATIC_OR_FREE(_call_void_static_7, int, int, int, int, int, int, int)
 
-METALMOCK_NONVOID0_FREE(int, _call_nonvoid_static_0)
-METALMOCK_NONVOID1_FREE(int, _call_nonvoid_static_1, int)
-METALMOCK_NONVOID2_FREE(int, _call_nonvoid_static_2, int, int)
-METALMOCK_NONVOID3_FREE(int, _call_nonvoid_static_3, int, int, int)
-METALMOCK_NONVOID4_FREE(int, _call_nonvoid_static_4, int, int, int, int)
-METALMOCK_NONVOID5_FREE(int, _call_nonvoid_static_5, int, int, int, int, int)
-METALMOCK_NONVOID6_FREE(int, _call_nonvoid_static_6, int, int, int, int, int, int)
-METALMOCK_NONVOID7_FREE(int, _call_nonvoid_static_7, int, int, int, int, int, int, int)
+METALMOCK_NONVOID0_STATIC_OR_FREE(int, _call_nonvoid_static_0)
+METALMOCK_NONVOID1_STATIC_OR_FREE(int, _call_nonvoid_static_1, int)
+METALMOCK_NONVOID2_STATIC_OR_FREE(int, _call_nonvoid_static_2, int, int)
+METALMOCK_NONVOID3_STATIC_OR_FREE(int, _call_nonvoid_static_3, int, int, int)
+METALMOCK_NONVOID4_STATIC_OR_FREE(int, _call_nonvoid_static_4, int, int, int, int)
+METALMOCK_NONVOID5_STATIC_OR_FREE(int, _call_nonvoid_static_5, int, int, int, int, int)
+METALMOCK_NONVOID6_STATIC_OR_FREE(int, _call_nonvoid_static_6, int, int, int, int, int, int)
+METALMOCK_NONVOID7_STATIC_OR_FREE(int, _call_nonvoid_static_7, int, int, int, int, int, int, int)
 
-void void_global_0() {}
-void void_global_1(int) {}
-void void_global_2(int, int) {}
-void void_global_3(int, int, int) {}
-void void_global_4(int, int, int, int) {}
-void void_global_5(int, int, int, int, int) {}
-void void_global_6(int, int, int, int, int, int) {}
-void void_global_7(int, int, int, int, int, int, int) {}
+void void_free_0() {}
+void void_free_1(int) {}
+void void_free_2(int, int) {}
+void void_free_3(int, int, int) {}
+void void_free_4(int, int, int, int) {}
+void void_free_5(int, int, int, int, int) {}
+void void_free_6(int, int, int, int, int, int) {}
+void void_free_7(int, int, int, int, int, int, int) {}
 
-METALMOCK_VOID0_FREE(_call_void_global_0)
-METALMOCK_VOID1_FREE(_call_void_global_1, int)
-METALMOCK_VOID2_FREE(_call_void_global_2, int, int)
-METALMOCK_VOID3_FREE(_call_void_global_3, int, int, int)
-METALMOCK_VOID4_FREE(_call_void_global_4, int, int, int, int)
-METALMOCK_VOID5_FREE(_call_void_global_5, int, int, int, int, int)
-METALMOCK_VOID6_FREE(_call_void_global_6, int, int, int, int, int, int)
-METALMOCK_VOID7_FREE(_call_void_global_7, int, int, int, int, int, int, int)
+METALMOCK_VOID0_STATIC_OR_FREE(_call_void_free_0)
+METALMOCK_VOID1_STATIC_OR_FREE(_call_void_free_1, int)
+METALMOCK_VOID2_STATIC_OR_FREE(_call_void_free_2, int, int)
+METALMOCK_VOID3_STATIC_OR_FREE(_call_void_free_3, int, int, int)
+METALMOCK_VOID4_STATIC_OR_FREE(_call_void_free_4, int, int, int, int)
+METALMOCK_VOID5_STATIC_OR_FREE(_call_void_free_5, int, int, int, int, int)
+METALMOCK_VOID6_STATIC_OR_FREE(_call_void_free_6, int, int, int, int, int, int)
+METALMOCK_VOID7_STATIC_OR_FREE(_call_void_free_7, int, int, int, int, int, int, int)
 
-int nonvoid_global_0() { return 0; }
-int nonvoid_global_1(int) { return 0; }
-int nonvoid_global_2(int, int) { return 0; }
-int nonvoid_global_3(int, int, int) { return 0; }
-int nonvoid_global_4(int, int, int, int) { return 0; }
-int nonvoid_global_5(int, int, int, int, int) { return 0; }
-int nonvoid_global_6(int, int, int, int, int, int) { return 0; }
-int nonvoid_global_7(int, int, int, int, int, int, int) { return 0; }
+int nonvoid_free_0() { return 0; }
+int nonvoid_free_1(int) { return 0; }
+int nonvoid_free_2(int, int) { return 0; }
+int nonvoid_free_3(int, int, int) { return 0; }
+int nonvoid_free_4(int, int, int, int) { return 0; }
+int nonvoid_free_5(int, int, int, int, int) { return 0; }
+int nonvoid_free_6(int, int, int, int, int, int) { return 0; }
+int nonvoid_free_7(int, int, int, int, int, int, int) { return 0; }
 
-METALMOCK_NONVOID0_FREE(int, _call_nonvoid_global_0)
-METALMOCK_NONVOID1_FREE(int, _call_nonvoid_global_1, int)
-METALMOCK_NONVOID2_FREE(int, _call_nonvoid_global_2, int, int)
-METALMOCK_NONVOID3_FREE(int, _call_nonvoid_global_3, int, int, int)
-METALMOCK_NONVOID4_FREE(int, _call_nonvoid_global_4, int, int, int, int)
-METALMOCK_NONVOID5_FREE(int, _call_nonvoid_global_5, int, int, int, int, int)
-METALMOCK_NONVOID6_FREE(int, _call_nonvoid_global_6, int, int, int, int, int, int)
-METALMOCK_NONVOID7_FREE(int, _call_nonvoid_global_7, int, int, int, int, int, int, int)
+METALMOCK_NONVOID0_STATIC_OR_FREE(int, _call_nonvoid_free_0)
+METALMOCK_NONVOID1_STATIC_OR_FREE(int, _call_nonvoid_free_1, int)
+METALMOCK_NONVOID2_STATIC_OR_FREE(int, _call_nonvoid_free_2, int, int)
+METALMOCK_NONVOID3_STATIC_OR_FREE(int, _call_nonvoid_free_3, int, int, int)
+METALMOCK_NONVOID4_STATIC_OR_FREE(int, _call_nonvoid_free_4, int, int, int, int)
+METALMOCK_NONVOID5_STATIC_OR_FREE(int, _call_nonvoid_free_5, int, int, int, int, int)
+METALMOCK_NONVOID6_STATIC_OR_FREE(int, _call_nonvoid_free_6, int, int, int, int, int, int)
+METALMOCK_NONVOID7_STATIC_OR_FREE(int, _call_nonvoid_free_7, int, int, int, int, int, int, int)
 
 TESTS(EveryMacroCompilesTest_CodeCoverage)
 AFACT(CodeCoverage)
@@ -175,23 +175,23 @@ EVIDENCE
 
 TEST(CodeCoverage)
 {
-   void_global_0();
-   void_global_1(0);
-   void_global_2(0, 0);
-   void_global_3(0, 0, 0);
-   void_global_4(0, 0, 0, 0);
-   void_global_5(0, 0, 0, 0, 0);
-   void_global_6(0, 0, 0, 0, 0, 0);
-   void_global_7(0, 0, 0, 0, 0, 0, 0);
+   void_free_0();
+   void_free_1(0);
+   void_free_2(0, 0);
+   void_free_3(0, 0, 0);
+   void_free_4(0, 0, 0, 0);
+   void_free_5(0, 0, 0, 0, 0);
+   void_free_6(0, 0, 0, 0, 0, 0);
+   void_free_7(0, 0, 0, 0, 0, 0, 0);
 
-   nonvoid_global_0();
-   nonvoid_global_1(0);
-   nonvoid_global_2(0, 0);
-   nonvoid_global_3(0, 0, 0);
-   nonvoid_global_4(0, 0, 0, 0);
-   nonvoid_global_5(0, 0, 0, 0, 0);
-   nonvoid_global_6(0, 0, 0, 0, 0, 0);
-   nonvoid_global_7(0, 0, 0, 0, 0, 0, 0);
+   nonvoid_free_0();
+   nonvoid_free_1(0);
+   nonvoid_free_2(0, 0);
+   nonvoid_free_3(0, 0, 0);
+   nonvoid_free_4(0, 0, 0, 0);
+   nonvoid_free_5(0, 0, 0, 0, 0);
+   nonvoid_free_6(0, 0, 0, 0, 0, 0);
+   nonvoid_free_7(0, 0, 0, 0, 0, 0, 0);
 }
 
 RUN_TESTS(EveryMacroCompilesTest_CodeCoverage)

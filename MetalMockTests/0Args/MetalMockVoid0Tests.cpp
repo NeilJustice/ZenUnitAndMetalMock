@@ -42,8 +42,8 @@ namespace MetalMock
    EVIDENCE
 
    Void0ArgFunctionsMock _void0ArgFunctionsMock;
-   METALMOCK_VOID0_FREE(_call_FreeVoid0ArgFunction)
-   METALMOCK_VOID0_FREE(_call_StaticVoid0ArgFunction)
+   METALMOCK_VOID0_STATIC_OR_FREE(_call_FreeVoid0ArgFunction)
+   METALMOCK_VOID0_STATIC_OR_FREE(_call_StaticVoid0ArgFunction)
 
    unique_ptr<MetalMock0ArgsTester<
       Void0ArgFunctionsMock,

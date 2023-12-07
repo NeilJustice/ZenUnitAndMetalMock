@@ -15,7 +15,7 @@ namespace ZenUnit
 
    TestNameFilterStringParser _testNameFilterStringParser;
    MemberFunctionTransformerMock<TestNameFilterStringParser, string, TestNameFilter>* _memberFunctionTransformerMock = nullptr;
-   METALMOCK_NONVOID1_FREE(unsigned, _call_String_ToUnsigned, string_view)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(unsigned, _call_String_ToUnsigned, string_view)
 
    STARTUP
    {

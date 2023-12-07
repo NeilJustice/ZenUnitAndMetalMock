@@ -41,10 +41,10 @@ EVIDENCE
 StaticFunctionMockingExample _staticFunctionMockingExample;
 
 // Creates a MetalMock object named _call_Utilities_VoidStaticFunctionMock
-METALMOCK_VOID0_FREE(_call_Utilities_VoidStaticFunction)
+METALMOCK_VOID0_STATIC_OR_FREE(_call_Utilities_VoidStaticFunction)
 
 // Creates a MetalMock object named _call_Utilities_NonVoidStaticFunctionMock
-METALMOCK_NONVOID1_FREE(int, _call_Utilities_NonVoidStaticFunction, int)
+METALMOCK_NONVOID1_STATIC_OR_FREE(int, _call_Utilities_NonVoidStaticFunction, int)
 
 STARTUP
 {

@@ -132,7 +132,7 @@ inline MetalMock::FunctionCallSequenceNumber MetalMockThen(
         METALMOCK_VOID0_DEFINED(NonVirtualFunctionName,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::FreeFunctionName()".
-#define METALMOCK_VOID0_FREE(GlobalFreeFunctionName) \
+#define METALMOCK_VOID0_STATIC_OR_FREE(GlobalFreeFunctionName) \
    MetalMock::VoidZeroArgFunctionPointerMetalMocker GlobalFreeFunctionName##Mock = \
       MetalMock::VoidZeroArgFunctionPointerMetalMocker(MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"()"));
 
@@ -165,7 +165,7 @@ void FunctionName() Constness Finalness \
         METALMOCK_NONVOID0_DEFINED(ReturnType, VirtualFunctionName,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName()".
-#define METALMOCK_NONVOID0_FREE(ReturnType, GlobalFreeFunctionName) \
+#define METALMOCK_NONVOID0_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName) \
    MetalMock::NonVoidZeroArgFunctionPointerMetalMocker<ReturnType> GlobalFreeFunctionName##Mock = \
       MetalMock::NonVoidZeroArgFunctionPointerMetalMocker<ReturnType>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"()"));
@@ -203,7 +203,7 @@ ReturnType FunctionName() Constness Finalness \
         METALMOCK_VOID1_DEFINED(NonVirtualFunctionName, Arg1Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type)".
-#define METALMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type) \
+#define METALMOCK_VOID1_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type) \
    MetalMock::VoidOneArgFunctionPointerMetalMocker<Arg1Type> GlobalFreeFunctionName##Mock = \
       MetalMock::VoidOneArgFunctionPointerMetalMocker<Arg1Type>( \
          MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"("#Arg1Type")"));
@@ -237,7 +237,7 @@ void FunctionName(Arg1Type arg) Constness Finalness \
         METALMOCK_NONVOID1_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type)".
-#define METALMOCK_NONVOID1_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type) \
+#define METALMOCK_NONVOID1_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type) \
    MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type> \
       GlobalFreeFunctionName##Mock = MetalMock::NonVoidOneArgFunctionPointerMetalMocker<ReturnType, Arg1Type>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"("#Arg1Type")"));
@@ -275,7 +275,7 @@ ReturnType FunctionName(Arg1Type arg) Constness Finalness \
         METALMOCK_VOID2_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
-#define METALMOCK_VOID2_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type) \
+#define METALMOCK_VOID2_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type) \
    MetalMock::VoidTwoArgFunctionPointerMetalMocker<Arg1Type, Arg2Type> GlobalFreeFunctionName##Mock = \
       MetalMock::VoidTwoArgFunctionPointerMetalMocker<Arg1Type, Arg2Type>( \
          MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type")"));
@@ -309,7 +309,7 @@ void FunctionName(Arg1Type arg1, Arg2Type arg2) Constness Finalness \
         METALMOCK_NONVOID2_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type)".
-#define METALMOCK_NONVOID2_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type) \
+#define METALMOCK_NONVOID2_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type) \
    MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type> GlobalFreeFunctionName##Mock = \
       MetalMock::NonVoidTwoArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type")"));
@@ -347,7 +347,7 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2) Constness Finalness \
         METALMOCK_VOID3_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
-#define METALMOCK_VOID3_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type) \
+#define METALMOCK_VOID3_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type) \
    MetalMock::VoidThreeArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##Mock = \
       MetalMock::VoidThreeArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type>( \
          MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
@@ -381,7 +381,7 @@ void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3) Constness Finalne
         METALMOCK_NONVOID3_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type)".
-#define METALMOCK_NONVOID3_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type) \
+#define METALMOCK_NONVOID3_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type) \
    MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type> GlobalFreeFunctionName##Mock = \
       MetalMock::NonVoidThreeArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type")"));
@@ -419,7 +419,7 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3) Constness F
         METALMOCK_VOID4_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
-#define METALMOCK_VOID4_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type) \
+#define METALMOCK_VOID4_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type) \
    MetalMock::VoidFourArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##Mock = \
       MetalMock::VoidFourArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
          MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
@@ -453,7 +453,7 @@ void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4) Co
         METALMOCK_NONVOID4_DEFINED(ReturnType, FunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type)".
-#define METALMOCK_NONVOID4_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type) \
+#define METALMOCK_NONVOID4_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type) \
    MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type> GlobalFreeFunctionName##Mock = \
       MetalMock::NonVoidFourArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type")"));
@@ -491,7 +491,7 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type ar
         METALMOCK_VOID5_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,       , const, mutable,          )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
-#define METALMOCK_VOID5_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) \
+#define METALMOCK_VOID5_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) \
    MetalMock::VoidFiveArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##Mock = \
       MetalMock::VoidFiveArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
          MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
@@ -525,7 +525,7 @@ void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Ar
         METALMOCK_NONVOID5_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)".
-#define METALMOCK_NONVOID5_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) \
+#define METALMOCK_NONVOID5_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type) \
    MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type> GlobalFreeFunctionName##Mock = \
       MetalMock::NonVoidFiveArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type")"));
@@ -563,7 +563,7 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type ar
         METALMOCK_VOID6_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
-#define METALMOCK_VOID6_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) \
+#define METALMOCK_VOID6_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) \
    MetalMock::VoidSixArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##Mock = \
       MetalMock::VoidSixArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
          MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
@@ -597,7 +597,7 @@ void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Ar
         METALMOCK_NONVOID6_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type)".
-#define METALMOCK_NONVOID6_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) \
+#define METALMOCK_NONVOID6_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type) \
    MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> GlobalFreeFunctionName##Mock = \
       MetalMock::NonVoidSixArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type")"));
@@ -635,7 +635,7 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type ar
         METALMOCK_VOID7_DEFINED(NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
-#define METALMOCK_VOID7_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) \
+#define METALMOCK_VOID7_STATIC_OR_FREE(GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) \
    MetalMock::VoidSevenArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##Mock = \
       MetalMock::VoidSevenArgFunctionPointerMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
          MetalMock::FunctionSignature::FunctionPointer("void", #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
@@ -669,7 +669,7 @@ void FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4, Ar
         METALMOCK_NONVOID7_DEFINED(ReturnType, NonVirtualFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type,        , const, mutable,         )
 
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "ReturnType ::GlobalFreeFunctionName(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type)".
-#define METALMOCK_NONVOID7_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) \
+#define METALMOCK_NONVOID7_STATIC_OR_FREE(ReturnType, GlobalFreeFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type) \
    MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type> GlobalFreeFunctionName##Mock = \
       MetalMock::NonVoidSevenArgFunctionPointerMetalMocker<ReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>( \
          MetalMock::FunctionSignature::FunctionPointer(#ReturnType, #GlobalFreeFunctionName"("#Arg1Type", "#Arg2Type", "#Arg3Type", "#Arg4Type", "#Arg5Type", "#Arg6Type", "#Arg7Type")"));
@@ -687,7 +687,7 @@ ReturnType FunctionName(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type ar
 }
 
 //
-// MetalMock Binding Macros For Overwriting std::functions With Static And Free MetalMock Objects
+// MetalMock binding macros for overwriting std::functions with static or free MetalMock objects
 //
 
 // std::binds a 0-argument MetalMock object

@@ -31,8 +31,8 @@ namespace ZenUnit
 
    ArgsParser _argsParser;
    // Function Pointers
-   METALMOCK_NONVOID1_FREE(int, _call_String_ToInt, std::string_view)
-   METALMOCK_NONVOID1_FREE(unsigned, _call_String_ToUnsigned, std::string_view)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(int, _call_String_ToInt, std::string_view)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(unsigned, _call_String_ToUnsigned, std::string_view)
    // Function Callers
    NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>* _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = nullptr;
    // Constant Components

@@ -11,7 +11,7 @@ namespace ZenUnit
    EVIDENCE
 
    Stopwatch _stopwatch;
-   METALMOCK_NONVOID0_FREE(chrono::time_point<chrono::high_resolution_clock>, _call_high_resolution_clock_now)
+   METALMOCK_NONVOID0_STATIC_OR_FREE(chrono::time_point<chrono::high_resolution_clock>, _call_high_resolution_clock_now)
 
    STARTUP
    {

@@ -35,7 +35,7 @@ namespace ZenUnit
       METALMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)
    } _testClassResultSelfMocked;
 
-   METALMOCK_NONVOID1_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
 
    STARTUP
    {

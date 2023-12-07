@@ -59,7 +59,7 @@ namespace ZenUnit
    // Function Pointers
 #if defined _WIN32 && defined _DEBUG
    using CRT_REPORT_HOOK_FunctionType = int(*)(int, char*, int*);
-   METALMOCK_NONVOID1_FREE(CRT_REPORT_HOOK_FunctionType, _CrtSetReportHook, CRT_REPORT_HOOK_FunctionType)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(CRT_REPORT_HOOK_FunctionType, _CrtSetReportHook, CRT_REPORT_HOOK_FunctionType)
 #endif
    // Constant Components
    ArgsParserMock* _argsParserMock = nullptr;

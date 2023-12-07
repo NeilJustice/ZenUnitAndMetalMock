@@ -52,8 +52,8 @@ namespace ZenUnit
    ConsoleMock* _protected_consoleMock = nullptr;
 
    // Function Pointers
-   METALMOCK_NONVOID1_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
-   METALMOCK_NONVOID0_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
+   METALMOCK_NONVOID0_STATIC_OR_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
 
    // Function Callers
    using _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMockType =

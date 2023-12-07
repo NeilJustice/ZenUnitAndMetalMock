@@ -26,7 +26,7 @@ namespace ZenUnit
 
    TestPhaseRunner _testPhaseRunner;
    // Function Pointers
-   METALMOCK_NONVOID0_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
+   METALMOCK_NONVOID0_STATIC_OR_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
    // Function Callers
    VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>*
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = nullptr;

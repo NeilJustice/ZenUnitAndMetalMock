@@ -50,8 +50,8 @@ namespace MetalMock
    EVIDENCE
 
    Void2ArgsFunctionsMock _void2ArgsFunctionsMock;
-   METALMOCK_VOID2_FREE(_call_FreeVoid2ArgsFunction, int, int)
-   METALMOCK_VOID2_FREE(_call_StaticVoid2ArgsFunction, int, int)
+   METALMOCK_VOID2_STATIC_OR_FREE(_call_FreeVoid2ArgsFunction, int, int)
+   METALMOCK_VOID2_STATIC_OR_FREE(_call_StaticVoid2ArgsFunction, int, int)
 
    unique_ptr<MetalMock2ArgsTester<
       Void2ArgsFunctionsMock,

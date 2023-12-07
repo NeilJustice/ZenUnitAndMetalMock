@@ -40,8 +40,8 @@ namespace MetalMock
    EVIDENCE
 
    Void3ArgsFunctionsMock _void3ArgsFunctionsMock;
-   METALMOCK_VOID3_FREE(_call_FreeVoid3ArgsFunction, int, int, int)
-   METALMOCK_VOID3_FREE(_call_StaticVoid3ArgsFunction, int, int, int)
+   METALMOCK_VOID3_STATIC_OR_FREE(_call_FreeVoid3ArgsFunction, int, int, int)
+   METALMOCK_VOID3_STATIC_OR_FREE(_call_StaticVoid3ArgsFunction, int, int, int)
 
    unique_ptr<MetalMock3ArgsTester<
       Void3ArgsFunctionsMock,

@@ -8,7 +8,7 @@ namespace ZenUnit
    EVIDENCE
 
    ExitCaller _exitCaller;
-   METALMOCK_VOID1_FREE(_call_quick_exit, int)
+   METALMOCK_VOID1_STATIC_OR_FREE(_call_quick_exit, int)
 
    STARTUP
    {

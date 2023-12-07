@@ -25,10 +25,10 @@ namespace ZenUnit
 
    Console _console;
    // Function Pointers
-   METALMOCK_VOID1_FREE(_call_quick_exit, int)
-   METALMOCK_NONVOID0_FREE(int, _call_GetCharFromStandardInput)
+   METALMOCK_VOID1_STATIC_OR_FREE(_call_quick_exit, int)
+   METALMOCK_NONVOID0_STATIC_OR_FREE(int, _call_GetCharFromStandardInput)
 #if defined _WIN32
-   METALMOCK_NONVOID0_FREE(int, _call_IsDebuggerPresent)
+   METALMOCK_NONVOID0_STATIC_OR_FREE(int, _call_IsDebuggerPresent)
 #endif
    // Mutable Components
    ConsoleColorerMock* _consoleColorerMock = nullptr;

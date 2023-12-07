@@ -28,8 +28,8 @@ namespace MetalMock
    EVIDENCE
 
    unique_ptr<MetalMocker<MetalMockExceptionThrowerMock>> _metalMocker;
-   METALMOCK_VOID1_FREE(_call_quick_exit, int)
-   METALMOCK_NONVOID0_FREE(const ZenUnit::ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
+   METALMOCK_VOID1_STATIC_OR_FREE(_call_quick_exit, int)
+   METALMOCK_NONVOID0_STATIC_OR_FREE(const ZenUnit::ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
    const string ExpectedMetalMockedFunctionSignature = "virtual void ClassName::FunctionName() const";
 
    STARTUP

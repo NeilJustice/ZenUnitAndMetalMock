@@ -30,7 +30,7 @@ EVIDENCE
 MetalMockFreeFunctionMockingExample _metalMockFreeFunctionMockingExample;
 
 // Creates a MetalMock object named _call_GlobalFreeFunctionMock for mocking a free function
-METALMOCK_NONVOID1_FREE(int, _call_GlobalFreeFunction, int)
+METALMOCK_NONVOID1_STATIC_OR_FREE(int, _call_GlobalFreeFunction, int)
 
 STARTUP
 {
