@@ -39,7 +39,7 @@ namespace ZenUnit
    unique_ptr<TestNXN<TestingTestClass, N, int>> _testNXN;
    // Function Pointers
    METALMOCK_VOID1_FREE(_call_quick_exit, int)
-   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, _call_GetZenUnitArgs)
+   METALMOCK_NONVOID0_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
    using CallerOfTestNameFilterMatchesTestCaseMockType = ThreeArgAnyerMock<
       std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
    // Function Callers
@@ -56,7 +56,7 @@ namespace ZenUnit
       _testNXN = make_unique<TestNXN<TestingTestClass, N, int>>("", "", "", 0);
       // Function Pointers
       _testNXN->_call_quick_exit = BIND_1ARG_METALMOCK_OBJECT(_call_quick_exitMock);
-      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_GetZenUnitArgsMock);
+      _testNXN->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
       // Function Callers
       _testNXN->_callerOfTestNameFilterMatchesTestCase.reset(_callerOfTestNameFilterMatchesTestCaseMock = new CallerOfTestNameFilterMatchesTestCaseMockType);
       // Constant Components
@@ -139,7 +139,7 @@ namespace ZenUnit
       public:
          METALMOCK_VOID3(RunTestCaseIfNotFilteredOut, size_t, const ZenUnitArgs&, const std::vector<std::string>&)
          METALMOCK_VOID0_CONST(Exit1IfInvalidTestCaseNumberSpecified)
-         METALMOCK_NONVOID1_STATIC(std::shared_ptr<ITestCaseNumberGenerator>, ITestCaseNumberGenerator, FactoryNew, bool)
+         METALMOCK_NONVOID1_FREE(std::shared_ptr<ITestCaseNumberGenerator>, _call_ITestCaseNumberGenerator_FactoryNew, bool)
 
          Test1X1SelfMocked() noexcept
             : Metal::Mock<TestNXN<TestingTestClass, 1, int, int>>(
@@ -150,30 +150,27 @@ namespace ZenUnit
                0 // test case arg 1
                )
             {
-               _call_ITestCaseNumberGeneratorFactoryNew = BIND_1ARG_METALMOCK_OBJECT(FactoryNewMock);
+               _call_ITestCaseNumberGeneratorFactoryNew = BIND_1ARG_METALMOCK_OBJECT(_call_ITestCaseNumberGenerator_FactoryNewMock);
             }
       } test1X1SelfMocked;
 
-      METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, _call_ZenUnitTestRunner_GetZenUnitArgs)
-
       const ZenUnitArgs args = _call_ZenUnitTestRunner_GetZenUnitArgsMock.ReturnRandom();
-      test1X1SelfMocked._call_ZenUnitTestRunner_GetZenUnitArgs =
-         BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
+      test1X1SelfMocked._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
 
       shared_ptr<ITestCaseNumberGeneratorMock> testCaseNumberGeneratorMock = make_shared<ITestCaseNumberGeneratorMock>();
       testCaseNumberGeneratorMock->InitializeMock.Expect();
       testCaseNumberGeneratorMock->NextTestCaseNumberMock.ReturnValues(1ULL, 2ULL, std::numeric_limits<size_t>::max());
-      test1X1SelfMocked.FactoryNewMock.Return(testCaseNumberGeneratorMock);
+      test1X1SelfMocked._call_ITestCaseNumberGenerator_FactoryNewMock.Return(testCaseNumberGeneratorMock);
 
-      METALMOCK_NONVOID0_STATIC(vector<string>, ZenUnit::String, _call_SplitOnNonQuotedCommas)
+      METALMOCK_NONVOID0_FREE(vector<string>, _call_String_SplitOnNonQuotedCommas)
       const vector<string> splitTestCaseArgs =
       {
          ZenUnit::Random<string>(),
          ZenUnit::Random<string>(),
          ZenUnit::Random<string>()
       };
-      _call_SplitOnNonQuotedCommasMock.Return(splitTestCaseArgs);
-      test1X1SelfMocked._call_String_SplitOnNonQuotedCommas = BIND_0ARG_METALMOCK_OBJECT(_call_SplitOnNonQuotedCommasMock);
+      _call_String_SplitOnNonQuotedCommasMock.Return(splitTestCaseArgs);
+      test1X1SelfMocked._call_String_SplitOnNonQuotedCommas = BIND_0ARG_METALMOCK_OBJECT(_call_String_SplitOnNonQuotedCommasMock);
 
       test1X1SelfMocked.Exit1IfInvalidTestCaseNumberSpecifiedMock.Expect();
 
@@ -192,9 +189,9 @@ namespace ZenUnit
       METALMOCK(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledNTimes(2));
       METALMOCK(testCaseNumberGeneratorMock->NextTestCaseNumberMock.CalledNTimes(3));
       METALMOCKTHEN(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce()).Then(
-      METALMOCKTHEN(test1X1SelfMocked.FactoryNewMock.CalledOnceWith(args.randomTestOrdering))).Then(
+      METALMOCKTHEN(test1X1SelfMocked._call_ITestCaseNumberGenerator_FactoryNewMock.CalledOnceWith(args.randomTestOrdering))).Then(
       METALMOCKTHEN(testCaseNumberGeneratorMock->InitializeMock.CalledOnceWith(2, N))).Then(
-      METALMOCKTHEN(_call_SplitOnNonQuotedCommasMock.CalledOnce())).Then(
+      METALMOCKTHEN(_call_String_SplitOnNonQuotedCommasMock.CalledOnce())).Then(
 
       METALMOCKTHEN(testCaseNumberGeneratorMock->NextTestCaseNumberMock.Called())).Then(
       METALMOCKTHEN(test1X1SelfMocked.RunTestCaseIfNotFilteredOutMock.CalledWith(1, args, splitTestCaseArgs))).Then(

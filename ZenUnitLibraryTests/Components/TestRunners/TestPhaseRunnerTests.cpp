@@ -26,7 +26,7 @@ namespace ZenUnit
 
    TestPhaseRunner _testPhaseRunner;
    // Function Pointers
-   METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitTestRunner, _call_GetZenUnitArgs)
+   METALMOCK_NONVOID0_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
    // Function Callers
    VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>*
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = nullptr;
@@ -50,7 +50,7 @@ namespace ZenUnit
    STARTUP
    {
       // Function Pointers
-      _testPhaseRunner._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_GetZenUnitArgsMock);
+      _testPhaseRunner._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
       // Function Callers
       _testPhaseRunner._caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess.reset(
          _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = new VoidTwoArgMemberFunctionCallerMock<
@@ -112,7 +112,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.failFast = ZenUnit::Random<bool>();
-      _call_GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       ExpectStopwatchStartAndStopCalls();
 
@@ -121,7 +121,7 @@ namespace ZenUnit
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(
          FunctionThatDoesNotThrowAnException, _testMock.get(), TestPhase::Startup);
       //
-      METALMOCK(_call_GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       ARE_EQUAL(1, TestPhaseRunnerTests::s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException);
       AssertStopwatchStartAndStopCalled();
       METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
@@ -142,7 +142,7 @@ namespace ZenUnit
 
    TEST(RunTestPhase_FunctionThrowsAnomaly_TestPhaseIsTestBody_ReturnsAnomalyResult)
    {
-      const ZenUnitArgs zenUnitArgs = _call_GetZenUnitArgsMock.ReturnRandom();
+      const ZenUnitArgs zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgsMock.ReturnRandom();
 
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.Expect();
 
@@ -154,7 +154,7 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowAnomaly, _testMock.get(), TestPhase::TestBody);
       //
-      METALMOCK(_call_GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
@@ -188,7 +188,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.alwaysExit0 = alwaysExit0;
-      _call_GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.Expect();
 
@@ -202,7 +202,7 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowAnomaly, _testMock.get(), testPhase);
       //
-      METALMOCK(_call_GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
@@ -231,7 +231,7 @@ namespace ZenUnit
 
    TEST(RunTestPhase_FunctionThrowsStdException_TestPhaseIsTestBody_ReturnsExceptionResult)
    {
-      const ZenUnitArgs zenUnitArgs = _call_GetZenUnitArgsMock.ReturnRandom();
+      const ZenUnitArgs zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgsMock.ReturnRandom();
 
       ExpectStopwatchStartAndStopCalls();
       _consoleMock->WriteMock.Expect();
@@ -244,7 +244,7 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowStdException, _testMock.get(), TestPhase::TestBody);
       //
-      METALMOCK(_call_GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
@@ -281,7 +281,7 @@ namespace ZenUnit
    {
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.alwaysExit0 = alwaysExit0;
-      _call_GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.Expect();
 
@@ -295,7 +295,7 @@ namespace ZenUnit
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowStdException, _testMock.get(), testPhase);
       //
-      METALMOCK(_call_GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(
@@ -334,7 +334,7 @@ namespace ZenUnit
    TEST(RunTestPhase_FunctionThrowsMetalMockException_ReturnsExceptionResult)
    {
       ZenUnitArgs zenUnitArgs;
-      _call_GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.Expect();
 
@@ -350,7 +350,7 @@ namespace ZenUnit
          throw MetalMock::UnexpectedCallException("MetalMockedFunctionSignature");
       }, _testMock.get(), testPhase);
       //
-      METALMOCK(_call_GetZenUnitArgsMock.CalledOnce());
+      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       AssertStopwatchStartAndStopCalled();
 
       const string exceptionTypeName = "MetalMock::UnexpectedCallException";
@@ -398,7 +398,7 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.alwaysExit0 = alwaysExit0;
-      _call_GetZenUnitArgsMock.Return(zenUnitArgs);
+      _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _testPhaseStopwatchMock->StartMock.Expect();
 
@@ -429,7 +429,7 @@ namespace ZenUnit
          "    Result: Fatal ... exception thrown during test phase: ", testPhaseName);
 
       METALMOCKTHEN(_testPhaseStopwatchMock->StartMock.CalledOnce()).Then(
-      METALMOCKTHEN(_call_GetZenUnitArgsMock.CalledOnce())).Then(
+      METALMOCKTHEN(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce())).Then(
       METALMOCKTHEN(_testRunStopwatchStopperMock->StopTestRunStopwatchAndGetElapsedSecondsMock.CalledOnceWith(zenUnitTestRunner))).Then(
       METALMOCKTHEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
          "\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red))).Then(

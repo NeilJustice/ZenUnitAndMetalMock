@@ -101,15 +101,15 @@ namespace ZenUnit
       cleanupTestPhaseResult.testOutcome = cleanupOutcome;
       cleanupTestPhaseResult.elapsedMicroseconds = static_cast<unsigned>(5000 + relativeMicroseconds);
 
-      METALMOCK_NONVOID0_STATIC(const ZenUnitArgs&, ZenUnit::ZenUnitArgs, GetArgs)
+      METALMOCK_NONVOID0_FREE(const ZenUnitArgs&, _call_ZenUnitArgs_GetArgs)
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.maxTestMilliseconds = maxTestMilliseconds;
       if (expectedOverallOutcome == TestOutcome::Success || expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
-         GetArgsMock.Return(zenUnitArgs);
+         _call_ZenUnitArgs_GetArgsMock.Return(zenUnitArgs);
       }
-      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_METALMOCK_OBJECT(GetArgsMock);
+      const function<const ZenUnitArgs&()> getArgsMockFunction = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitArgs_GetArgsMock);
       //
       const TestResult testResult(
          FullTestNameValue,
@@ -122,7 +122,7 @@ namespace ZenUnit
       //
       if (expectedOverallOutcome == TestOutcome::Success || expectedOverallOutcome == TestOutcome::SuccessButPastDeadline)
       {
-         GetArgsMock.CalledOnce();
+         _call_ZenUnitArgs_GetArgsMock.CalledOnce();
       }
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;

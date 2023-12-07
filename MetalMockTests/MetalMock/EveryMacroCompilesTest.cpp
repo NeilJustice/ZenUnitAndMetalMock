@@ -124,14 +124,14 @@ METALMOCK_VOID5_FREE(_call_void_static_5, int, int, int, int, int)
 METALMOCK_VOID6_FREE(_call_void_static_6, int, int, int, int, int, int)
 METALMOCK_VOID7_FREE(_call_void_static_7, int, int, int, int, int, int, int)
 
-METALMOCK_NONVOID0_STATIC(StaticWidget, int, nonvoid_static_0)
-METALMOCK_NONVOID1_STATIC(StaticWidget, int, nonvoid_static_1, int)
-METALMOCK_NONVOID2_STATIC(StaticWidget, int, nonvoid_static_2, int, int)
-METALMOCK_NONVOID3_STATIC(StaticWidget, int, nonvoid_static_3, int, int, int)
-METALMOCK_NONVOID4_STATIC(StaticWidget, int, nonvoid_static_4, int, int, int, int)
-METALMOCK_NONVOID5_STATIC(StaticWidget, int, nonvoid_static_5, int, int, int, int, int)
-METALMOCK_NONVOID6_STATIC(StaticWidget, int, nonvoid_static_6, int, int, int, int, int, int)
-METALMOCK_NONVOID7_STATIC(StaticWidget, int, nonvoid_static_7, int, int, int, int, int, int, int)
+METALMOCK_NONVOID0_FREE(int, _call_nonvoid_static_0)
+METALMOCK_NONVOID1_FREE(int, _call_nonvoid_static_1, int)
+METALMOCK_NONVOID2_FREE(int, _call_nonvoid_static_2, int, int)
+METALMOCK_NONVOID3_FREE(int, _call_nonvoid_static_3, int, int, int)
+METALMOCK_NONVOID4_FREE(int, _call_nonvoid_static_4, int, int, int, int)
+METALMOCK_NONVOID5_FREE(int, _call_nonvoid_static_5, int, int, int, int, int)
+METALMOCK_NONVOID6_FREE(int, _call_nonvoid_static_6, int, int, int, int, int, int)
+METALMOCK_NONVOID7_FREE(int, _call_nonvoid_static_7, int, int, int, int, int, int, int)
 
 void void_global_0() {}
 void void_global_1(int) {}

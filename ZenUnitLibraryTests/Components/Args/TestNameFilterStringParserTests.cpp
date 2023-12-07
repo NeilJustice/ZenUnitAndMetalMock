@@ -15,12 +15,12 @@ namespace ZenUnit
 
    TestNameFilterStringParser _testNameFilterStringParser;
    MemberFunctionTransformerMock<TestNameFilterStringParser, string, TestNameFilter>* _memberFunctionTransformerMock = nullptr;
-   METALMOCK_NONVOID1_STATIC(unsigned, String, ToUnsigned, string_view)
+   METALMOCK_NONVOID1_FREE(unsigned, _call_String_ToUnsigned, string_view)
 
    STARTUP
    {
       _testNameFilterStringParser._memberFunctionTransformer.reset(_memberFunctionTransformerMock = new MemberFunctionTransformerMock<TestNameFilterStringParser, string, TestNameFilter>);
-      _testNameFilterStringParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(ToUnsignedMock);
+      _testNameFilterStringParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(_call_String_ToUnsignedMock);
    }
 
    TEST(DefaultConstructor_SetsStringToUnsignedFunction_NewsMemberFunctionTransformer)
@@ -69,11 +69,11 @@ namespace ZenUnit
       "TestClassA::TestNameA/1", "1", TestNameFilter("TestClassA", "TestNameA", 1),
       "TestClassB::TestNameB/2", "2", TestNameFilter("TestClassB", "TestNameB", 2))
    {
-      ToUnsignedMock.Return(static_cast<unsigned>(expectedTestNameFilter.testCaseNumber));
+      _call_String_ToUnsignedMock.Return(static_cast<unsigned>(expectedTestNameFilter.testCaseNumber));
       //
       const TestNameFilter testNameFilter = _testNameFilterStringParser.ParseTestNameFilterString(testNameFilterString);
       //
-      METALMOCK(ToUnsignedMock.CalledOnceWith(expectedTestCaseNumberString));
+      METALMOCK(_call_String_ToUnsignedMock.CalledOnceWith(expectedTestCaseNumberString));
       ARE_EQUAL(expectedTestNameFilter, testNameFilter);
    }
 
