@@ -635,19 +635,19 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 |MetalMock macro|
 |---------------|
-|`METALMOCK_VOID0_STATIC_OR_FREE(NamespaceQualifiedClassName, StaticFunctionName, ...)`|
-|`METALMOCK_VOID1_STATIC_OR_FREE(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
+|`METALMOCK_VOID0_STATIC_OR_FREE(StaticFunctionName, ...)`|
+|`METALMOCK_VOID1_STATIC_OR_FREE(StaticFunctionName, Arg1Type, ...)`|
 |Arities 2 through 6 elided for brevity|
-|`METALMOCK_VOID7_STATIC_OR_FREE(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_VOID7_STATIC_OR_FREE(StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
 #### non-void static functions
 
 |MetalMock macro|
 |---------------|
-|`METALMOCK_NONVOID0_STATIC_OR_FREE(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, ...)`|
-|`METALMOCK_NONVOID1_STATIC_OR_FREE(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, ...)`|
+|`METALMOCK_NONVOID0_STATIC_OR_FREE(ReturnType, StaticFunctionName, ...)`|
+|`METALMOCK_NONVOID1_STATIC_OR_FREE(ReturnType, StaticFunctionName, Arg1Type, ...)`|
 |Arities 2 through 6 elided for brevity|
-|`METALMOCK_NONVOID7_STATIC_OR_FREE(ReturnType, NamespaceQualifiedClassName, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
+|`METALMOCK_NONVOID7_STATIC_OR_FREE(ReturnType, StaticFunctionName, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, ...)`|
 
 #### void free functions
 
