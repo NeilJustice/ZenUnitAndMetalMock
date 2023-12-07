@@ -113,6 +113,7 @@ public:
    static int nonvoid_static_7(int, int, int, int, int, int, int) { return 0; }
 };
 
+METALMOCK_VOID0_STATIC(StaticWidget, void_static_0)
 METALMOCK_VOID3_STATIC(StaticWidget, void_static_3, int, int, int)
 METALMOCK_VOID4_STATIC(StaticWidget, void_static_4, int, int, int, int)
 METALMOCK_VOID5_STATIC(StaticWidget, void_static_5, int, int, int, int, int)

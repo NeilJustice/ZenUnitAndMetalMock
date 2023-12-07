@@ -131,6 +131,12 @@ inline MetalMock::FunctionCallSequenceNumber MetalMockThen(
 #define METALMOCK_VOID0_NONVIRTUAL_CONST(NonVirtualFunctionName) \
         METALMOCK_VOID0_DEFINED(NonVirtualFunctionName,        , const, mutable,         )
 
+// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName()".
+#define METALMOCK_VOID0_STATIC(NamespaceQualifiedClassName, StaticFunctionName) \
+   MetalMock::VoidZeroArgFunctionPointerMetalMocker StaticFunctionName##Mock = \
+      MetalMock::VoidZeroArgFunctionPointerMetalMocker( \
+         MetalMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"()"));
+
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::FreeFunctionName()".
 #define METALMOCK_VOID0_FREE(GlobalFreeFunctionName) \
    MetalMock::VoidZeroArgFunctionPointerMetalMocker GlobalFreeFunctionName##Mock = \
@@ -1247,7 +1253,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    {
       template<
          typename MetalMockObjectType,
-         typename FreeFunctionMockObjectType>
+         typename FreeFunctionMockObjectType,
+         typename StaticFunctionMockObjectType>
       friend class MetalMock0ArgsTester;
       friend class ZeroArgumentMetalMockerTests;
    private:
