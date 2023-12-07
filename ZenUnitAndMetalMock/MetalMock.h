@@ -208,12 +208,6 @@ ReturnType FunctionName() Constness Finalness \
 #define METALMOCK_VOID1_NONVIRTUAL_CONST(NonVirtualFunctionName, Arg1Type) \
         METALMOCK_VOID1_DEFINED(NonVirtualFunctionName, Arg1Type,        , const, mutable,         )
 
-// Defines a MetalMock object named <StaticFunctionName>Mock for mocking a static function with signature "void NamespaceQualifiedClassName::StaticFunctionName(Arg1Type)".
-#define METALMOCK_VOID1_STATIC(NamespaceQualifiedClassName, StaticFunctionName, Arg1Type) \
-   MetalMock::VoidOneArgFunctionPointerMetalMocker<Arg1Type> StaticFunctionName##Mock = \
-      MetalMock::VoidOneArgFunctionPointerMetalMocker<Arg1Type>( \
-         MetalMock::FunctionSignature::FunctionPointer("void", #NamespaceQualifiedClassName"::"#StaticFunctionName"("#Arg1Type")"));
-
 // Defines a MetalMock object named <GlobalFreeFunctionName>Mock for mocking a global free function with signature "void ::GlobalFreeFunctionName(Arg1Type)".
 #define METALMOCK_VOID1_FREE(GlobalFreeFunctionName, Arg1Type) \
    MetalMock::VoidOneArgFunctionPointerMetalMocker<Arg1Type> GlobalFreeFunctionName##Mock = \

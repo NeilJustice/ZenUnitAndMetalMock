@@ -51,7 +51,7 @@ namespace MetalMock
 
    Void1ArgFunctionsMock _void1ArgFunctionsMock;
    METALMOCK_VOID1_FREE(_call_FreeVoid1ArgFunction, int)
-   METALMOCK_VOID1_STATIC(MetalMock::Void1ArgFunctions, _call_StaticVoid1ArgFunction, int)
+   METALMOCK_VOID1_FREE(_call_StaticVoid1ArgFunction, int)
 
    unique_ptr<MetalMock1ArgTester<
       Void1ArgFunctionsMock,
@@ -69,7 +69,7 @@ namespace MetalMock
    const string FreeFunctionSignature =
       "void _call_FreeVoid1ArgFunction(int)";
    const string StaticFunctionSignature =
-      "void MetalMock::Void1ArgFunctions::_call_StaticVoid1ArgFunction(int)";
+      "void _call_StaticVoid1ArgFunction(int)";
 
    STARTUP
    {
