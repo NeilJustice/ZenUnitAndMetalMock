@@ -1,3 +1,4 @@
+constParameterPointer:ZenUnitAndMetalMock\ZenUnit.h:1730
 constVariable:*
 internalAstError:*
 missingIncludeSystem:*

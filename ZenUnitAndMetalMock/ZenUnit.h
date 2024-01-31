@@ -1727,7 +1727,7 @@ namespace ZenUnit
 
    private:
       template<typename T>
-      static std::string PointerToAddressString(const T* pointer)
+      static std::string PointerToAddressString(T* pointer)
       {
          if (pointer == nullptr)
          {
