@@ -3122,8 +3122,8 @@ namespace ZenUnit
       throw anomaly;
    }
 
-   template<typename ConvertableToBoolType, typename... MessageTypes>
-   void IS_FALSE_Defined(const ConvertableToBoolType& value, const char* valueText,
+   template<typename ConvertibleToBoolType, typename... MessageTypes>
+   void IS_FALSE_Defined(const ConvertibleToBoolType& value, const char* valueText,
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       if (value)
