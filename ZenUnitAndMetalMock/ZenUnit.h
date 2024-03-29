@@ -736,7 +736,7 @@ namespace ZenUnit
       static bool Contains(std::string_view str, std::string_view substring) noexcept
       {
          const char* const strstrResult = strstr(str.data(), substring.data());
-         const bool strContainsSubstring = strstrResult != nullptr;
+         bool strContainsSubstring = strstrResult != nullptr;
          return strContainsSubstring;
       }
 
@@ -853,9 +853,9 @@ namespace ZenUnit
       static int CaseInsensitiveStrcmp(std::string_view string1, std::string_view string2) noexcept
       {
 #if defined __linux__ || defined __APPLE__
-         const int strcmpResult = strcasecmp(string1.data(), string2.data());
+         int strcmpResult = strcasecmp(string1.data(), string2.data());
 #elif defined _WIN32
-         const int strcmpResult = _strcmpi(string1.data(), string2.data());
+         int strcmpResult = _strcmpi(string1.data(), string2.data());
 #endif
          return strcmpResult;
       }
@@ -957,13 +957,13 @@ namespace ZenUnit
 
       virtual bool MatchesTestClassName(std::string_view testClassName) const
       {
-         const bool testClassNamePatternMatchesTestClassName = FilterPatternMatchesString(testClassNamePattern, testClassName);
+         bool testClassNamePatternMatchesTestClassName = FilterPatternMatchesString(testClassNamePattern, testClassName);
          return testClassNamePatternMatchesTestClassName;
       }
 
       virtual bool MatchesTestName(std::string_view testName) const
       {
-         const bool testNamePatternMatchesTestName = FilterPatternMatchesString(testNamePattern, testName);
+         bool testNamePatternMatchesTestName = FilterPatternMatchesString(testNamePattern, testName);
          return testNamePatternMatchesTestName;
       }
 
@@ -1003,7 +1003,7 @@ namespace ZenUnit
          {
             return false;
          }
-         const bool testCaseNumberIsUnsetOrMatches =
+         bool testCaseNumberIsUnsetOrMatches =
             this->testCaseNumber == std::numeric_limits<size_t>::max() ||
             this->testCaseNumber == testNXNTestCaseNumber;
          return testCaseNumberIsUnsetOrMatches;
@@ -1129,7 +1129,7 @@ namespace ZenUnit
       {
          const int standardOutputFileHandle = _call_fileno(stdout);
          const int standardOutputFileHandleIsAtty = _call_isatty(standardOutputFileHandle);
-         const bool standardOutputSupportsColor = standardOutputFileHandleIsAtty != 0;
+         bool standardOutputSupportsColor = standardOutputFileHandleIsAtty != 0;
          return standardOutputSupportsColor;
       }
    };
@@ -1154,7 +1154,7 @@ namespace ZenUnit
       virtual unsigned SecondsSince1970() const
       {
          const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         const unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
+         unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
          return secondsSince1970AsUnsigned;
       }
 
@@ -1177,7 +1177,6 @@ namespace ZenUnit
          // Example: "[0.12ms]"
          std::string twoDecimalPlaceMillisecondsString =
             String::ConcatStrings("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
-
          return twoDecimalPlaceMillisecondsString;
       }
    private:
@@ -1325,7 +1324,7 @@ namespace ZenUnit
          return false;
 #elif defined _WIN32
          const int isDebuggerPresentReturnValue = _call_IsDebuggerPresent();
-         const bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
+         bool isDebuggerPresent = isDebuggerPresentReturnValue == 1;
          return isDebuggerPresent;
 #endif
       }
@@ -4349,7 +4348,7 @@ namespace ZenUnit
 
       virtual const char* TestPhaseToTestPhaseSuffix(TestPhase testPhase) const
       {
-         const char* const testPhaseSuffix = DoTestPhaseToTestPhaseSuffix(testPhase);
+         const char* testPhaseSuffix = DoTestPhaseToTestPhaseSuffix(testPhase);
          return testPhaseSuffix;
       }
 
@@ -5004,7 +5003,7 @@ namespace ZenUnit
 
       bool TestNameFilterMatchesTestName(const TestNameFilter& testNameFilter, const char* testName) const
       {
-         const bool testNameFilterMatchesTestName = testNameFilter.MatchesTestName(testName);
+         bool testNameFilterMatchesTestName = testNameFilter.MatchesTestName(testName);
          return testNameFilterMatchesTestName;
       }
 
@@ -5015,7 +5014,7 @@ namespace ZenUnit
          const char* leftTestClassName = leftTestClassRunner->TestClassName();
          const char* rightTestClassName = rightTestClassRunner->TestClassName();
          const int caseInsensitiveComparisonResult = String::CaseInsensitiveStrcmp(leftTestClassName, rightTestClassName);
-         const bool isLessThan = caseInsensitiveComparisonResult < 0;
+         bool isLessThan = caseInsensitiveComparisonResult < 0;
          return isLessThan;
       }
    };
@@ -5148,7 +5147,7 @@ namespace ZenUnit
          {
             return false;
          }
-         const bool hasTestThatMatchesTestNameFilter = testClassRunner->HasTestThatMatchesTestNameFilter(testNameFilter);
+         bool hasTestThatMatchesTestNameFilter = testClassRunner->HasTestThatMatchesTestNameFilter(testNameFilter);
          return hasTestThatMatchesTestNameFilter;
       }
 
@@ -5388,7 +5387,7 @@ namespace ZenUnit
          {
             return 1;
          }
-         const int zenUnitExitCode = _numberOfFailedTestCases > 0 ? 1 : 0;
+         int zenUnitExitCode = _numberOfFailedTestCases > 0 ? 1 : 0;
          return zenUnitExitCode;
       }
 
@@ -5453,7 +5452,7 @@ namespace ZenUnit
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_high_resolution_clock_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         const unsigned elapsedMicroseconds = static_cast<unsigned>(std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count());
+         unsigned elapsedMicroseconds = static_cast<unsigned>(std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count());
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
          return elapsedMicroseconds;
       }
@@ -5482,7 +5481,6 @@ namespace ZenUnit
 
          // Example elapsedSecondsWithMillisecondResolution: "0.001"
          std::string elapsedSecondsWithMillisecondResolution = String::ConcatValues(elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
-
          return elapsedSecondsWithMillisecondResolution;
       }
    };
@@ -5657,7 +5655,7 @@ namespace ZenUnit
          _testClassRunnerRunner->ApplyTestNameFiltersIfAny(_zenUnitArgs.testNameFilters);
          const size_t numberOfTestRuns = _zenUnitArgs.testRuns < 0 ?
             std::numeric_limits<size_t>::max() : static_cast<size_t>(_zenUnitArgs.testRuns);
-         const int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTests->
+         int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTests->
             AccumulateNonConstMemberFunctionNTimes(numberOfTestRuns, this, &ZenUnitTestRunner::RunTests);
          _exitCodeLinePrinter->PrintExitCodeLine(zenUnitExitCode, _zenUnitArgs.alwaysExit0);
          _console->WaitForEnterKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
@@ -5712,7 +5710,7 @@ Fatal Windows C++ Runtime Assertion
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
          _testRunResult->PrintConclusionLines(startDateTime, numberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
-         const int zenUnitExitCode = _testRunResult->DetermineZenUnitExitCode(zenUnitArgs);
+         int zenUnitExitCode = _testRunResult->DetermineZenUnitExitCode(zenUnitArgs);
          return zenUnitExitCode;
       }
 
@@ -6170,7 +6168,7 @@ Fatal Windows C++ Runtime Assertion
             tests->cbegin(), tests->cend(), 0ULL, [](size_t runningSumOfTestResults, const std::unique_ptr<Test>& test)
             {
                const size_t numberOfTestCases = test->NumberOfTestCases();
-               const size_t newRunningSumOfTestResults = runningSumOfTestResults + numberOfTestCases;
+               size_t newRunningSumOfTestResults = runningSumOfTestResults + numberOfTestCases;
                return newRunningSumOfTestResults;
             });
          return numberOfTestResults;
@@ -6247,14 +6245,14 @@ Fatal Windows C++ Runtime Assertion
          {
             return true;
          }
-         const bool thisTestClassHasATestThatMatchesTestNameFilter = _twoArgTestAnyer->TwoArgAny(&_tests, TestNameFilterMatchesTestName, testNameFilter);
+         bool thisTestClassHasATestThatMatchesTestNameFilter = _twoArgTestAnyer->TwoArgAny(&_tests, TestNameFilterMatchesTestName, testNameFilter);
          return thisTestClassHasATestThatMatchesTestNameFilter;
       }
 
       static bool TestNameFilterMatchesTestName(const std::unique_ptr<Test>& test, const TestNameFilter& testNameFilter)
       {
          const char* const testName = test->Name();
-         const bool testNameFilterMatchesTestName = testNameFilter.MatchesTestName(testName);
+         bool testNameFilterMatchesTestName = testNameFilter.MatchesTestName(testName);
          return testNameFilterMatchesTestName;
       }
 
@@ -6474,7 +6472,7 @@ Fatal Windows C++ Runtime Assertion
       size_t NumberOfTestCases() const override
       {
          const std::unique_ptr<Test>* const testNXN = PmfTokenToTest();
-         const size_t numberOfTestCases = (*testNXN)->NumberOfTestCases();
+         size_t numberOfTestCases = (*testNXN)->NumberOfTestCases();
          return numberOfTestCases;
       }
 
@@ -6533,7 +6531,7 @@ Fatal Windows C++ Runtime Assertion
             return std::numeric_limits<size_t>::max();
          }
          ZENUNIT_ASSERT(_currentTestCaseNumber <= _maxTestCaseNumber);
-         const size_t nextTestCaseNumber = _currentTestCaseNumber++;
+         size_t nextTestCaseNumber = _currentTestCaseNumber++;
          return nextTestCaseNumber;
       }
 
@@ -6571,7 +6569,7 @@ Fatal Windows C++ Runtime Assertion
             return std::numeric_limits<size_t>::max();
          }
          ZENUNIT_ASSERT(_testCaseNumberIndex < _randomTestCaseNumbers.size());
-         const size_t nextTestCaseNumber = _randomTestCaseNumbers[_testCaseNumberIndex];
+         size_t nextTestCaseNumber = _randomTestCaseNumbers[_testCaseNumberIndex];
          ++_testCaseNumberIndex;
          return nextTestCaseNumber;
       }
@@ -6731,7 +6729,7 @@ Fatal Windows C++ Runtime Assertion
          {
             return true;
          }
-         const bool anyTestNameFilterMatchesThisTestCase = _callerOfTestNameFilterMatchesTestCase->ThreeArgAny(
+         bool anyTestNameFilterMatchesThisTestCase = _callerOfTestNameFilterMatchesTestCase->ThreeArgAny(
             zenUnitArgs.testNameFilters, TestNameFilterMatchesTestCase, fullTestName, testCaseNumber);
          return anyTestNameFilterMatchesThisTestCase;
       }
@@ -6739,7 +6737,7 @@ Fatal Windows C++ Runtime Assertion
       static bool TestNameFilterMatchesTestCase(const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
       {
          ZENUNIT_ASSERT(testCaseNumber >= 1);
-         const bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(fullTestName.testClassName, fullTestName.testName, testCaseNumber);
+         bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(fullTestName.testClassName, fullTestName.testName, testCaseNumber);
          return testNameFilterMatchesTestCase;
       }
 
@@ -6926,8 +6924,7 @@ Fatal Windows C++ Runtime Assertion
 
       template<typename ClassType, typename MemberFunction, unsigned long long I = 0ULL, typename... ArgTypes>
       static typename std::enable_if< I < sizeof...(ArgTypes)>::type Call10ArgMemberFunction(
-         ClassType* classPointer, MemberFunction&& memberFunction,
-         unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
+         ClassType* classPointer, MemberFunction&& memberFunction, unsigned long long argsIndex, const std::tuple<ArgTypes...>& args)
       {
          if (argsIndex == 0ULL)
          {
@@ -7179,8 +7176,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       Test10X10(const char* testClassName, const char* testName,
          Test10X10MemberFunction test10X10MemberFunction, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
-         : TestNXN<TestClassType, 10, TestCaseArgTypes...>(testClassName, testName,
-            testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
+         : TestNXN<TestClassType, 10, TestCaseArgTypes...>(testClassName, testName, testCaseArgsText, std::forward<TestCaseArgTypes>(testCaseArgs)...)
          , _test10X10MemberFunction(test10X10MemberFunction)
       {
       }
@@ -7249,7 +7245,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          }
          else
          {
-            const std::unique_ptr<Test>* const testPointer = &findIter->second;
+            const std::unique_ptr<Test>* testPointer = &findIter->second;
             return testPointer;
          }
       }
@@ -7600,7 +7596,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
          const long long randomIntegerAsLongLong = uniformLongLongDistribution(RandomEngineForCurrentTestRun());
-         const T randomIntegerAsT = static_cast<T>(randomIntegerAsLongLong);
+         T randomIntegerAsT = static_cast<T>(randomIntegerAsLongLong);
          return randomIntegerAsT;
       }
       case 9: return static_cast<T>(inclusiveUpperBound - 1LL);
@@ -7629,7 +7625,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 8:
       {
          std::uniform_int_distribution<size_t> uniformSizeTDistribution(inclusiveLowerBound, inclusiveUpperBound);
-         const size_t randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformSizeTDistribution(RandomEngineForCurrentTestRun());
+         size_t randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformSizeTDistribution(RandomEngineForCurrentTestRun());
          return randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound;
       }
       case 9: return inclusiveUpperBound - 1ULL;
@@ -7642,19 +7638,19 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    FloatingPointType RandomFloatOrDoubleBetween(FloatingPointType inclusiveLowerBound, FloatingPointType inclusiveUpperBound)
    {
       std::uniform_real_distribution<FloatingPointType> uniformRealDistribution(inclusiveLowerBound, inclusiveUpperBound);
-      const FloatingPointType randomFloatOrDoubleBetween = uniformRealDistribution(RandomEngineForCurrentTestRun());
+      FloatingPointType randomFloatOrDoubleBetween = uniformRealDistribution(RandomEngineForCurrentTestRun());
       return randomFloatOrDoubleBetween;
    }
 
    inline float RandomFloatBetween(float inclusiveLowerBound, float inclusiveUpperBound)
    {
-      const float randomFloatBetween = RandomFloatOrDoubleBetween(inclusiveLowerBound, inclusiveUpperBound);
+      float randomFloatBetween = RandomFloatOrDoubleBetween(inclusiveLowerBound, inclusiveUpperBound);
       return randomFloatBetween;
    }
 
    inline double RandomDoubleBetween(double inclusiveLowerBound, double inclusiveUpperBound)
    {
-      const double randomDoubleBetween = RandomFloatOrDoubleBetween(inclusiveLowerBound, inclusiveUpperBound);
+      double randomDoubleBetween = RandomFloatOrDoubleBetween(inclusiveLowerBound, inclusiveUpperBound);
       return randomDoubleBetween;
    }
 
@@ -7672,7 +7668,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          const T inclusiveUpperBound = exclusiveUpperBound - T{1};
          std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
-         const T randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1 = uniformTDistribution(RandomEngineForCurrentTestRun());
+         T randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1 = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenMinValueAndExclusiveUpperBoundMinus1;
       }
       }
@@ -7695,7 +7691,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       default:
       {
          std::uniform_int_distribution<T> uniformTDistribution(minTValue, inclusiveUpperBound);
-         const T randomIntegerBetweenMinValueAndInclusiveUpperBound = uniformTDistribution(RandomEngineForCurrentTestRun());
+         T randomIntegerBetweenMinValueAndInclusiveUpperBound = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenMinValueAndInclusiveUpperBound;
       }
       }
@@ -7715,7 +7711,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          const T inclusiveLowerBound = exclusiveLowerBound + T{1};
          std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
-         const T randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue = uniformTDistribution(RandomEngineForCurrentTestRun());
+         T randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenExclusiveLowerBoundPlus1AndMaxValue;
       }
       }
@@ -7788,14 +7784,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       constexpr unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
       std::uniform_int_distribution<unsigned long long> distribution(0, maximumUnsignedLongLong);
-      const unsigned long long randomUnsignedLongLong = distribution(RandomEngineForCurrentTestRun());
+      unsigned long long randomUnsignedLongLong = distribution(RandomEngineForCurrentTestRun());
       return randomUnsignedLongLong;
    }
 
    inline unsigned long long RandomUnsignedLongLongBetween0AndValue(unsigned long long inclusiveMaxValue)
    {
       std::uniform_int_distribution<unsigned long long> distribution(0, inclusiveMaxValue);
-      const unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue = distribution(RandomEngineForCurrentTestRun());
+      unsigned long long randomUnsignedLongLongBetween0AndInclusiveMaxValue = distribution(RandomEngineForCurrentTestRun());
       return randomUnsignedLongLongBetween0AndInclusiveMaxValue;
    }
 
@@ -7804,7 +7800,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
       const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(EnumType::MaxValue) - 1LL;
-      const EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveEnumMaxValueAsLongLong));
+      EnumType randomEnum = static_cast<EnumType>(RandomBetween<UnderlyingType>(0LL, inclusiveEnumMaxValueAsLongLong));
       return randomEnum;
    }
 
@@ -7825,8 +7821,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    EnumType RandomNon0Enum()
    {
       using UnderlyingType = typename std::underlying_type<EnumType>::type;
-      const long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(EnumType::MaxValue) - 1LL;
-      const EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveEnumMaxValueAsLongLong));
+      long long inclusiveEnumMaxValueAsLongLong = static_cast<long long>(EnumType::MaxValue) - 1LL;
+      EnumType randomNon0Enum = static_cast<EnumType>(RandomBetween<UnderlyingType>(1LL, inclusiveEnumMaxValueAsLongLong));
       return randomNon0Enum;
    }
 
@@ -8020,7 +8016,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       if constexpr (std::is_enum_v<T>)
       {
-         const T randomEnum = RandomEnum<T>();
+         T randomEnum = RandomEnum<T>();
          return randomEnum;
       }
       else if constexpr (is_pair_v<T>)
@@ -8050,14 +8046,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       else if constexpr (std::is_same_v<T, unsigned long long>)
       {
-         const unsigned long long randomUnsignedLongLong = RandomUnsignedLongLong();
+         unsigned long long randomUnsignedLongLong = RandomUnsignedLongLong();
          return randomUnsignedLongLong;
       }
       else
       {
          constexpr T minTValue = std::numeric_limits<T>::min();
          constexpr T maxTValue = std::numeric_limits<T>::max();
-         const T randomIntegerBetweenMinAndMaxValue = RandomBetween<T>(minTValue, maxTValue);
+         T randomIntegerBetweenMinAndMaxValue = RandomBetween<T>(minTValue, maxTValue);
          return randomIntegerBetweenMinAndMaxValue;
       }
    }
@@ -8075,7 +8071,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       case 2:
       {
-         const float nextLowestFloat = std::nextafterf(std::numeric_limits<float>::lowest(), 0.0f);
+         float nextLowestFloat = std::nextafterf(std::numeric_limits<float>::lowest(), 0.0f);
          return nextLowestFloat;
       }
       case 3:
@@ -8099,7 +8095,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       case 9:
       {
-         const float floatOneBeforeMaxFloat = std::nextafterf(std::numeric_limits<float>::max(), 0.0f);
+         float floatOneBeforeMaxFloat = std::nextafterf(std::numeric_limits<float>::max(), 0.0f);
          return floatOneBeforeMaxFloat;
       }
       default:
@@ -8122,7 +8118,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       case 2:
       {
-         const double nextLowestDouble = std::nextafter(std::numeric_limits<double>::lowest(), 0.0);
+         double nextLowestDouble = std::nextafter(std::numeric_limits<double>::lowest(), 0.0);
          return nextLowestDouble;
       }
       case 3:
@@ -8146,7 +8142,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       case 9:
       {
-         const double doubleOneBeforeMaxFloat = std::nextafter(std::numeric_limits<double>::max(), 0.0);
+         double doubleOneBeforeMaxFloat = std::nextafter(std::numeric_limits<double>::max(), 0.0);
          return doubleOneBeforeMaxFloat;
       }
       default:
@@ -8236,7 +8232,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          ZENUNIT_ASSERT(65 == static_cast<int>('A'));
          ZENUNIT_ASSERT(90 == static_cast<int>('Z'));
          const int randomUppercaseLetterInt = RandomBetween<int>(65, 90);
-         const char randomUppercaseLetter = static_cast<char>(randomUppercaseLetterInt);
+         char randomUppercaseLetter = static_cast<char>(randomUppercaseLetterInt);
          return randomUppercaseLetter;
       }
       else
@@ -8244,7 +8240,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          ZENUNIT_ASSERT(97 == static_cast<int>('a'));
          ZENUNIT_ASSERT(122 == static_cast<int>('z'));
          const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
-         const char randomLowercaseLetter = static_cast<char>(randomLowercaseLetterInt);
+         char randomLowercaseLetter = static_cast<char>(randomLowercaseLetterInt);
          return randomLowercaseLetter;
       }
    }
@@ -8257,7 +8253,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          ZENUNIT_ASSERT(65 == static_cast<int>(L'A'));
          ZENUNIT_ASSERT(90 == static_cast<int>(L'Z'));
          const int randomUppercaseLetterInt = RandomBetween<int>(65, 90);
-         const wchar_t randomUppercaseWideLetter = static_cast<wchar_t>(randomUppercaseLetterInt);
+         wchar_t randomUppercaseWideLetter = static_cast<wchar_t>(randomUppercaseLetterInt);
          return randomUppercaseWideLetter;
       }
       else
@@ -8265,7 +8261,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          ZENUNIT_ASSERT(97 == static_cast<int>(L'a'));
          ZENUNIT_ASSERT(122 == static_cast<int>(L'z'));
          const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
-         const wchar_t randomLowercaseWideLetter = static_cast<wchar_t>(randomLowercaseLetterInt);
+         wchar_t randomLowercaseWideLetter = static_cast<wchar_t>(randomLowercaseLetterInt);
          return randomLowercaseWideLetter;
       }
    }
@@ -8341,61 +8337,61 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual bool Bool() const
       {
-         const bool randomBool = Random<bool>();
+         bool randomBool = Random<bool>();
          return randomBool;
       }
 
       virtual char Char() const
       {
-         const char randomChar = Random<char>();
+         char randomChar = Random<char>();
          return randomChar;
       }
 
       virtual char CharBetween(char inclusiveLowerBound, char inclusiveUpperBound) const
       {
-         const char randomCharBetween = RandomBetween<char>(inclusiveLowerBound, inclusiveUpperBound);
+         char randomCharBetween = RandomBetween<char>(inclusiveLowerBound, inclusiveUpperBound);
          return randomCharBetween;
       }
 
       virtual char Letter() const
       {
-         const char randomLetter = RandomLetter();
+         char randomLetter = RandomLetter();
          return randomLetter;
       }
 
       virtual unsigned char UnsignedChar() const
       {
-         const unsigned char randomUnsignedChar = Random<unsigned char>();
+         unsigned char randomUnsignedChar = Random<unsigned char>();
          return randomUnsignedChar;
       }
 
       virtual short Short() const
       {
-         const short randomShort = Random<short>();
+         short randomShort = Random<short>();
          return randomShort;
       }
 
       virtual unsigned short UnsignedShort() const
       {
-         const unsigned short randomUnsignedShort = Random<unsigned short>();
+         unsigned short randomUnsignedShort = Random<unsigned short>();
          return randomUnsignedShort;
       }
 
       virtual int Int() const
       {
-         const int randomInt = Random<int>();
+         int randomInt = Random<int>();
          return randomInt;
       }
 
       virtual int IntBetween(int inclusiveLowerBound, int inclusiveUpperBound) const
       {
-         const int randomIntBetween = RandomBetween<int>(inclusiveLowerBound, inclusiveUpperBound);
+         int randomIntBetween = RandomBetween<int>(inclusiveLowerBound, inclusiveUpperBound);
          return randomIntBetween;
       }
 
       virtual unsigned Unsigned() const
       {
-         const unsigned randomUnsigned = Random<unsigned>();
+         unsigned randomUnsigned = Random<unsigned>();
          return randomUnsigned;
       }
 
@@ -8418,43 +8414,43 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       virtual int Enum(int exclusiveEnumMaxValue) const
       {
          const int inclusiveEnumMaxValue = exclusiveEnumMaxValue - 1;
-         const int randomEnumAsInt = RandomBetween<int>(0, inclusiveEnumMaxValue);
+         int randomEnumAsInt = RandomBetween<int>(0, inclusiveEnumMaxValue);
          return randomEnumAsInt;
       }
 
       virtual long long LongLong() const
       {
-         const long long randomLongLong = Random<long long>();
+         long long randomLongLong = Random<long long>();
          return randomLongLong;
       }
 
       virtual unsigned long long UnsignedLongLong() const
       {
-         const unsigned long long randomUnsignedLongLong = Random<unsigned long long>();
+         unsigned long long randomUnsignedLongLong = Random<unsigned long long>();
          return randomUnsignedLongLong;
       }
 
       virtual size_t SizeT() const
       {
-         const size_t randomSizeT = Random<size_t>();
+         size_t randomSizeT = Random<size_t>();
          return randomSizeT;
       }
 
       virtual size_t SizeTBetween(size_t inclusiveLowerBound, size_t inclusiveUpperBound) const
       {
-         const size_t randomSizeTBetween = RandomSizeTBetween(inclusiveLowerBound, inclusiveUpperBound);
+         size_t randomSizeTBetween = RandomSizeTBetween(inclusiveLowerBound, inclusiveUpperBound);
          return randomSizeTBetween;
       }
 
       virtual float Float() const
       {
-         const float randomFloat = Random<float>();
+         float randomFloat = Random<float>();
          return randomFloat;
       }
 
       virtual float FloatBetween(float inclusiveMinValue, float inclusiveMaxValue) const
       {
-         const float randomFloat = RandomFloatBetween(inclusiveMinValue, inclusiveMaxValue);
+         float randomFloat = RandomFloatBetween(inclusiveMinValue, inclusiveMaxValue);
          return randomFloat;
       }
 
@@ -8466,13 +8462,13 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual double Double() const
       {
-         const double randomDouble = Random<double>();
+         double randomDouble = Random<double>();
          return randomDouble;
       }
 
       virtual double DoubleBetween(double inclusiveMinValue, double inclusiveMaxValue) const
       {
-         const double randomDouble = RandomDoubleBetween(inclusiveMinValue, inclusiveMaxValue);
+         double randomDouble = RandomDoubleBetween(inclusiveMinValue, inclusiveMaxValue);
          return randomDouble;
       }
 
@@ -8484,7 +8480,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
       virtual const char* ConstCharPointer() const
       {
-         const char* const randomConstChraPointer = Random<const char*>();
+         const char* randomConstChraPointer = Random<const char*>();
          return randomConstChraPointer;
       }
 
@@ -8576,7 +8572,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
       const std::vector<std::string> stringArgs = VectorUtils::FromArgcArgv(argc, argv);
       ZenUnitTestRunner* const zenUnitTestRunner = ZenUnitTestRunner::Instance();
-      const int exitCode = zenUnitTestRunner->RunTestsNumberOfTestRunsTimes(stringArgs);
+      int exitCode = zenUnitTestRunner->RunTestsNumberOfTestRunsTimes(stringArgs);
       return exitCode;
    }
 }
