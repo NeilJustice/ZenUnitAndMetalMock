@@ -8490,6 +8490,12 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomString;
       }
 
+      virtual std::string_view StringView() const
+      {
+         std::string_view randomStringView = Random<std::string_view>();
+         return randomStringView;
+      }
+
       virtual std::vector<std::string> StringVector() const
       {
          std::vector<std::string> randomStringVector = RandomVector<std::string>();

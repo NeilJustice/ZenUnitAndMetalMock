@@ -84,6 +84,8 @@ namespace ZenUnit
 
       [[maybe_unused]] const string randomString = _randomGenerator.String();
 
+      [[maybe_unused]] const string_view randomStringView = _randomGenerator.StringView();
+
       [[maybe_unused]] const vector<string> randomStringVector = _randomGenerator.StringVector();
 
       [[maybe_unused]] const error_code randomErrorCode = _randomGenerator.ErrorCode();
