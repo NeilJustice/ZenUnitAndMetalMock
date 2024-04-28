@@ -2,6 +2,8 @@ constParameterPointer:ZenUnitAndMetalMock\ZenUnit.h:1729
 constVariable:*
 internalAstError:*
 missingIncludeSystem:*
+normalCheckLevelMaxBranches:*
 nullPointer:*
+returnDanglingLifetime:ZenUnitAndMetalMock\ZenUnit.h:3548
 unusedFunction:*
 useStlAlgorithm:*
