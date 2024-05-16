@@ -42,6 +42,7 @@ jobs:
         with:
           files: ZenUnitDevOpsPythonTests/CoberturaCodeCoverageResults_ZenUnitDevOpsPythonTests.xml
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
         if: ${{ matrix.cxx == 'g++-11' && matrix.cmake_build_type == 'Release' }}
 
       - name: Run BuildAndTestZenUnitAndMetalMock.py in non code coverage mode if clang++ Debug/Release or g++-11 Debug
