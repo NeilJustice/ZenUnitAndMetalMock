@@ -69,14 +69,14 @@ jobs:
       - name: Print .comment section of binary ZenUnitLibraryTests to confirm it was linked with LLD
         run: readelf --string-dump .comment "${{matrix.cmake_build_type}}/ZenUnitLibraryTests/ZenUnitLibraryTests"
 
-      - name: Install and run lcov 1.15 then upload to Codecov.io if g++-11 Release
+      - name: Install and run lcov 2.1 then upload to Codecov.io if g++-11 Release
         run: |
-          mkdir -p lcov_1_15
-          wget https://github.com/linux-test-project/lcov/releases/download/v1.15/lcov-1.15.tar.gz --output-document="lcov_1_15/lcov-1.15.tar.gz"
-          tar xf "lcov_1_15/lcov-1.15.tar.gz" --strip-components=1 --directory lcov_1_15
-          lcov_1_15/bin/lcov --version
-          lcov_1_15/bin/lcov --directory . --capture --output-file coverage.info
-          lcov_1_15/bin/lcov --list coverage.info
+          mkdir -p lcov_21
+          wget https://github.com/linux-test-project/lcov/releases/download/v2.1/lcov-2.1.tar.gz --output-document="lcov_21/lcov-2.1.tar.gz"
+          tar xf "lcov_21/lcov-2.1.tar.gz" --strip-components=1 --directory lcov_21
+          lcov_21/bin/lcov --version
+          lcov_21/bin/lcov --directory . --capture --output-file coverage.info
+          lcov_21/bin/lcov --list coverage.info
           bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
         if: ${{ matrix.cxx == 'g++-11' && matrix.cmake_build_type == 'Release' }}
 
