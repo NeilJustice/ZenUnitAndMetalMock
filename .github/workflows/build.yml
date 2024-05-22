@@ -24,8 +24,8 @@ jobs:
       - name: Install lld and ninja-build
         run: sudo apt-get install lld ninja-build
         
-      - name: Install lcov if g++-11 Release
-        run: sudo apt-get install lcov
+      - name: Install lcov Perl dependencies if g++-11 Release
+        run: sudo apt-get install libcapture-tiny-perl libdatetime-perl
         if: ${{ matrix.cxx == 'g++-11' && matrix.cmake_build_type == 'Release' }}
 
       - name: Install pip packages
