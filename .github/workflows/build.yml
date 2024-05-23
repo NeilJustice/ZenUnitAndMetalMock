@@ -78,5 +78,5 @@ jobs:
           lcov_21/bin/lcov --version
           lcov_21/bin/lcov --directory . --capture --output-file coverage.info
           lcov_21/bin/lcov --list coverage.info
-          bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+          bash <(curl -s https://codecov.io/bash) -f coverage.info -t ${{ secrets.CODECOV_TOKEN }} || echo "Codecov did not collect coverage reports"
         if: ${{ matrix.cxx == 'g++-11' && matrix.cmake_build_type == 'Release' }}
