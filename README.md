@@ -155,8 +155,8 @@ Absent the MetalMock design feature of requiring expected functions to be subseq
    * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2022-on-windows)
    * [Linux Jenkins jobs which build and statically analyze ZenUnit and MetalMock](#linux-jenkins-jobs-which-build-and-statically-analyze-zenunit-and-metalmock)
    * [Windows Jenkins jobs which build and statically analyze ZenUnit and MetalMock](#windows-jenkins-jobs-which-build-and-statically-analyze-zenunit-and-metalmock)
-   * [How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-then-install-zenunith-and-metalmockh)
-   * [How to build and run ZenUnit and MetalMock unit tests on Windows and then install ZenUnit.h and MetalMock.h](#how-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-then-install-zenunith-and-metalmockh)
+   * [6 steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h](#6-steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-install-zenunith-and-metalmockh)
+   * [4 steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h](#4-steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-install-zenunith-and-metalmockh)
    * [Thanks to](#Thanks-to)
 
 ### ZenUnit command line usage
@@ -1110,7 +1110,7 @@ Testing using random values instead of constant values renders test code immune 
 
 ![Windows Jenkins Jobs](Screenshots/Windows/WindowsJenkinsJobs.png)
 
-### How to build and run ZenUnit and MetalMock unit tests on Linux and then install ZenUnit.h and MetalMock.h
+### 6 steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -1124,7 +1124,7 @@ ZenUnit.h and MetalMock.h as installed on Linux:
 
 ![ZenUnit.h and MetalMock.h installed on Linux](Screenshots/Linux/ZenUnitDotHAndMetalMockDotHInstalledOnLinux.png)
 
-### How to build and run ZenUnit and MetalMock unit tests on Windows and then install ZenUnit.h and MetalMock.h
+### 4 steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
