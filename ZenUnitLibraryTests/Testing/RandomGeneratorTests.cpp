@@ -30,6 +30,7 @@ namespace ZenUnit
    TEST(AllRandomGeneratorFunctions_ReturnsRandomValues)
    {
       [[maybe_unused]] const char randomChar = _randomGenerator.Char();
+      [[maybe_unused]] const char randomCharBetween = _randomGenerator.CharBetween('A', 'Z');
       [[maybe_unused]] const char randomLetter = _randomGenerator.Letter();
       [[maybe_unused]] const unsigned char randomUnsignedChar = _randomGenerator.UnsignedChar();
       [[maybe_unused]] const bool randomBool = _randomGenerator.Bool();
