@@ -7,6 +7,7 @@ namespace ZenUnit
    AFACT(RandomEngineForCurrentTestRun_randomEngineForCurrentTestRunIsNullptr_SetsNewRandomEngineForNewTestRun_ReturnsRandomEngineForCurrentTestRun)
    AFACT(AllRandomGeneratorFunctions_ReturnsRandomValues)
    AFACT(Enum_ReturnsIntBetween0InclusiveAndEnumMaxValueExclusive)
+   AFACT(RandomSizeTBetween_CodeCoverageOfAllBranches)
    EVIDENCE
 
    RandomGenerator _randomGenerator;
@@ -149,6 +150,17 @@ namespace ZenUnit
       IS_TRUE(didSee0);
       IS_TRUE(didSee1);
       IS_TRUE(didSee2);
+   }
+
+   TEST(RandomSizeTBetween_CodeCoverageOfAllBranches)
+   {
+      const RandomGenerator* const randomGenerator = RandomGenerator::Instance();
+      //
+      for (size_t i = 0; i < 500; ++i)
+      {
+         const size_t randomSizeTBetween = randomGenerator->SizeTBetween(5, 10);
+         IS_TRUE(randomSizeTBetween >= 5 && randomSizeTBetween <= 10);
+      }
    }
 
    RUN_TESTS(RandomGeneratorTests)
