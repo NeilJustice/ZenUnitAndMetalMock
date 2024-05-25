@@ -2615,7 +2615,7 @@ namespace ZenUnit
       FilePathLineNumber filePathLineNumber, const char* messagesText, MessageTypes&&... messages)
    {
       const std::string toStringedExpectedInteger = std::to_string(expectedInteger);
-      const std::string toStringedActualEnumClass = std::to_string(static_cast<typename std::underlying_type<EnumType>::type>(actualEnumClass));
+      const std::string toStringedActualEnumClass = std::to_string(std::to_underlying(actualEnumClass));
       const Anomaly anomaly("ENUM_EQUALS_INT", expectedIntegerText, actualEnumClassText, "", messagesText, Anomaly::Default(),
          toStringedExpectedInteger, toStringedActualEnumClass, ExpectedActualFormat::Fields, filePathLineNumber, std::forward<MessageTypes>(messages)...);
       throw anomaly;
