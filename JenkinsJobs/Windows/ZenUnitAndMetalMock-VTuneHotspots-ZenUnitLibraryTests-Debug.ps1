@@ -9,6 +9,6 @@ Write-Host
 AcceliTune.exe collect-hotspots `
    --app-working-dir=ZenUnitLibraryTests\Debug `
    --program=ZenUnitLibraryTests.exe `
-   --args="--test-runs=10" `
+   --args="--test-runs=100" `
    --results-folder="D:\PerformanceProfilingResults\VTune\ZenUnitLibraryTests_Hotspots" `
    --overwrite-results-folder
