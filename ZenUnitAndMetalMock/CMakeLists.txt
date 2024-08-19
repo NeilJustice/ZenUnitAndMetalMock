@@ -20,6 +20,6 @@ if(UNIX)
       rm -rf ${CMAKE_INSTALL_PREFIX}/include/ZenUnitAndMetalMock)
 elseif(MSVC)
    add_custom_target(clean_installed_files COMMAND
-      del /S /Q C:\\include\\ZenUnitAndMetalMock &&
-      rmdir /S /Q C:\\include\\ZenUnitAndMetalMock)
+      del /S /Q X:\\include\\ZenUnitAndMetalMock &&
+      rmdir /S /Q X:\\include\\ZenUnitAndMetalMock)
 endif()
