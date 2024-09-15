@@ -1,5 +1,4 @@
 constParameterPointer:ZenUnitAndMetalMock\ZenUnit.h:1729
-constVariable:*
 internalAstError:*
 missingIncludeSystem:*
 normalCheckLevelMaxBranches:*
