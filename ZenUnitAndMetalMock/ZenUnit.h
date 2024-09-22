@@ -356,6 +356,10 @@ Example ZenUnit command line arguments:
    ZenUnit::SETS_ARE_EQUAL_Defined(expectedSet, #expectedSet, actualSet, #actualSet, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
 
+// Asserts that two std::spans<T> have equal sizes and equal elements according to ARE_EQUAL(expectedElement, actualElement) assertions.
+#define SPANS_ARE_EQUAL(expectedSpan, actualSpan, ...) \
+   ZenUnit::SPANS_ARE_EQUAL_Defined(expectedSpan, #expectedSpan, actualSpan, #actualSpan, ZENUNIT_FILELINE)
+
 // Asserts that the elements of expectedMap are equal to the elements of actualMap according to ARE_EQUAL(expectedElement, actualElement) assertions.
 #define MAPS_ARE_EQUAL(expectedMap, actualMap, ...) \
    ZenUnit::MAPS_ARE_EQUAL_Defined(expectedMap, #expectedMap, actualMap, #actualMap, \
@@ -4216,6 +4220,70 @@ namespace ZenUnit
       throw anomaly;
    }
 
+   template<typename T>
+   NOINLINE void SPANS_ARE_EQUAL_ThrowAnomaly(
+      const Anomaly& becauseAnomaly,
+      const std::span<T>& expectedSpan, const char* expectedSpanText,
+      const std::span<T>& actualSpan, const char* actualSpanText,
+      FilePathLineNumber filePathLineNumber)
+   {
+      const std::string toStringedExpectedSpan = ToStringer::ToString(expectedSpan);
+      const std::string toStringedActualSpan = ToStringer::ToString(actualSpan);
+      const Anomaly anomaly(
+         "SPANS_ARE_EQUAL",
+         expectedSpanText,
+         actualSpanText,
+         "",
+         "",
+         becauseAnomaly,
+         toStringedExpectedSpan,
+         toStringedActualSpan,
+         ExpectedActualFormat::Fields, filePathLineNumber);
+      throw anomaly;
+   }
+
+   template<typename T>
+   void SPANS_ARE_EQUAL_Defined(
+      const std::span<T>& expectedSpan, const char* expectedSpanText,
+      const std::span<T>& actualSpan, const char* actualSpanText,
+      FilePathLineNumber filePathLineNumber)
+   {
+      try
+      {
+         ARE_EQUAL(expectedSpan.size(), actualSpan.size());
+      }
+      catch (const Anomaly& becauseAnomaly)
+      {
+         SPANS_ARE_EQUAL_ThrowAnomaly(
+            becauseAnomaly,
+            expectedSpan, expectedSpanText,
+            actualSpan, actualSpanText,
+            filePathLineNumber);
+      }
+      const size_t expectedSpanSize = expectedSpan.size();
+      constexpr size_t IEqualsSignLength = 2;
+      constexpr size_t SizeTMaxValueLength = 21; // strlen("18446744073709551615")
+      char indexMessage[IEqualsSignLength + SizeTMaxValueLength]{ "i=" };
+      for (size_t i = 0; i < expectedSpanSize; ++i)
+      {
+         const T& ithExpectedElement = expectedSpan[i];
+         const T& ithActualElement = actualSpan[i];
+         WriteIntegerToCharArray(i, indexMessage + IEqualsSignLength);
+         try
+         {
+            ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage);
+         }
+         catch (const Anomaly& becauseAnomaly)
+         {
+            SPANS_ARE_EQUAL_ThrowAnomaly(
+               becauseAnomaly,
+               expectedSpan, expectedSpanText,
+               actualSpan, actualSpanText,
+               filePathLineNumber);
+         }
+      }
+   }
+
    template<
       template<typename...>
       class IndexableType,
@@ -7432,6 +7500,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       static void Print(std::ostream& os, const std::vector<T>& vec)
       {
          PrintCollection(os, vec);
+      }
+   };
+
+   template<typename T>
+   class Printer<std::span<T>>
+   {
+   public:
+      static void Print(std::ostream& os, const std::span<T>& sp)
+      {
+         PrintCollection(os, sp);
       }
    };
 
