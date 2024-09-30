@@ -7,6 +7,7 @@ namespace ZenUnit
    AFACT(Random_AllIntegerTypes_ReturnsRandomValueBetweenMinAndMaxForThatType)
    AFACT(Random_TIsEnum_ReturnsRandomEnumBetween0AndEnumMaxValue)
    AFACT(Random_TIsAPair_ReturnsRandomPair)
+   AFACT(Random_TIsASpan_ReturnsRandomSpanOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(Random_TIsAnOrderedSet_ReturnsRandomOrderedSet)
@@ -86,6 +87,15 @@ namespace ZenUnit
 
       [[maybe_unused]]
       const pair<double, char> randomDoubleCharPair = Random<pair<double, char>>();
+   }
+
+   TEST(Random_TIsASpan_ReturnsRandomSpanOfTWithSizeLessThanOrEqualTo3)
+   {
+      const span<int> randomIntSpan = Random<span<int>>();
+      IS_TRUE(randomIntSpan.size() <= 3);
+
+      const span<string> randomStringSpan = Random<span<string>>();
+      IS_TRUE(randomStringSpan.size() <= 3);
    }
 
    TEST(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)

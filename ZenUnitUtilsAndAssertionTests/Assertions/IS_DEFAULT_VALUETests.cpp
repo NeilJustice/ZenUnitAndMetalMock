@@ -37,6 +37,9 @@ namespace ZenUnit
       const string defaultString;
       IS_DEFAULT_VALUE(defaultString);
 
+      const span<int> defaultSpan;
+      IS_DEFAULT_VALUE(defaultSpan);
+
       const vector<int> defaultVector;
       IS_DEFAULT_VALUE(defaultVector);
 

@@ -8,6 +8,7 @@ namespace ZenUnit
    AFACT(FloatIsZero_ThrowsAnomaly)
    AFACT(DoubleIsZero_ThrowsAnomaly)
    AFACT(StringIsEmptyString_ThrowsAnomaly)
+   AFACT(IntSpanIsEmpty_ThrowsAnomaly)
    AFACT(IntVectorIsEmpty_ThrowsAnomaly)
    AFACT(UserTypeIsDefaultValue_ThrowsAnomaly)
    AFACT(UserTypeIsDefaultValue_ThrowsAnomaly__MessagesTestCase)
@@ -38,6 +39,10 @@ namespace ZenUnit
 
       const string nonDefaultString = ZenUnit::Random<string>();
       IS_NOT_DEFAULT_VALUE(nonDefaultString);
+
+      const vector<int> ints = { 1, 2, 3 };
+      const span<const int> nonDefaultSpan(ints.cbegin(), 3);
+      IS_NOT_DEFAULT_VALUE(nonDefaultSpan);
 
       const vector<int> nonDefaultVector = { 1, 2, 3 };
       IS_NOT_DEFAULT_VALUE(nonDefaultVector);
@@ -79,6 +84,19 @@ namespace ZenUnit
 "  Failed: IS_NOT_DEFAULT_VALUE(\"\"s)",
 "Expected: Not T{}",
 "  Actual: \"\"",
+"File.cpp(1)"));
+   }
+
+   TEST(IntSpanIsEmpty_ThrowsAnomaly)
+   {
+      const span<int> defaultIntSpan;
+      const string expectedIntSpanTypeName = *Type::GetName<span<int>>();
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultIntSpan), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT_VALUE(defaultIntSpan)",
+"Expected: Not T{}",
+"  Actual: " + expectedIntSpanTypeName + " (size 0):",
+"{",
+"}",
 "File.cpp(1)"));
    }
 

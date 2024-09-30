@@ -1382,6 +1382,9 @@ namespace ZenUnit
    template<typename T> constexpr bool is_pair_v = false;
    template<typename T1, typename T2> constexpr bool is_pair_v<std::pair<T1, T2>> = true;
 
+   template<typename T> constexpr bool is_span_v = false;
+   template<typename T> constexpr bool is_span_v<std::span<T>> = true;
+
    template<typename T> constexpr bool is_vector_v = false;
    template<typename T> constexpr bool is_vector_v<std::vector<T>> = true;
 
@@ -7585,6 +7588,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    };
 
    template<typename T>
+   class Equalizer<std::span<T>>
+   {
+   public:
+      static void AssertEqual(const std::span<T>& expectedSpan, const std::span<T>& actualSpan)
+      {
+         SPANS_ARE_EQUAL(expectedSpan, actualSpan);
+      }
+   };
+
+   template<typename T>
    class Equalizer<std::vector<T>>
    {
    public:
@@ -7923,6 +7936,32 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
+   std::span<T> RandomSpanWithSize(size_t size)
+   {
+      T* elements = new T[size]; // By-design memory leak to return a span that points to valid memory
+      for (size_t i = 0; i < size; ++i)
+      {
+         elements[i] = Random<T>();
+      }
+      std::span<T> randomSpan(elements, size);
+      return randomSpan;
+   }
+
+   template<typename T>
+   std::span<T> RandomSpan()
+   {
+      const std::size_t randomSpanSize = RandomBetween<size_t>(0, 3);
+      return RandomSpanWithSize<T>(randomSpanSize);
+   }
+
+   template<typename T>
+   std::span<T> RandomNonEmptySpan()
+   {
+      const std::size_t randomSpanSize = RandomBetween<size_t>(1, 3);
+      return RandomSpanWithSize<T>(randomSpanSize);
+   }
+
+   template<typename T>
    std::vector<T> RandomVectorWithSize(size_t size)
    {
       std::vector<T> randomVectorWithSize(size);
@@ -8101,6 +8140,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          std::pair<typename T::first_type, typename T::second_type> randomPair = RandomPair<typename T::first_type, typename T::second_type>();
          return randomPair;
+      }
+      else if constexpr (is_span_v<T>)
+      {
+         std::span<typename T::value_type> randomSpan = RandomSpan<typename T::value_type>();
+         return randomSpan;
       }
       else if constexpr (is_vector_v<T>)
       {
