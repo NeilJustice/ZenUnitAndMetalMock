@@ -91,10 +91,10 @@ namespace ZenUnit
 
    TEST(Random_TIsASpan_ReturnsRandomSpanOfTWithSizeLessThanOrEqualTo3)
    {
-      const span<int> randomIntSpan = Random<span<int>>();
+      const span<const int> randomIntSpan = Random<span<const int>>();
       IS_TRUE(randomIntSpan.size() <= 3);
 
-      const span<string> randomStringSpan = Random<span<string>>();
+      const span<const string> randomStringSpan = Random<span<const string>>();
       IS_TRUE(randomStringSpan.size() <= 3);
    }
 

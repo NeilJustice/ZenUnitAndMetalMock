@@ -1382,8 +1382,8 @@ namespace ZenUnit
    template<typename T> constexpr bool is_pair_v = false;
    template<typename T1, typename T2> constexpr bool is_pair_v<std::pair<T1, T2>> = true;
 
-   template<typename T> constexpr bool is_span_v = false;
-   template<typename T> constexpr bool is_span_v<std::span<T>> = true;
+   template<typename T> constexpr bool is_const_span_v = false;
+   template<typename T> constexpr bool is_const_span_v<std::span<const T>> = true;
 
    template<typename T> constexpr bool is_vector_v = false;
    template<typename T> constexpr bool is_vector_v<std::vector<T>> = true;
@@ -4226,8 +4226,8 @@ namespace ZenUnit
    template<typename T>
    NOINLINE void SPANS_ARE_EQUAL_ThrowAnomaly(
       const Anomaly& becauseAnomaly,
-      const std::span<T>& expectedSpan, const char* expectedSpanText,
-      const std::span<T>& actualSpan, const char* actualSpanText,
+      const std::span<const T>& expectedSpan, const char* expectedSpanText,
+      const std::span<const T>& actualSpan, const char* actualSpanText,
       FilePathLineNumber filePathLineNumber)
    {
       const std::string toStringedExpectedSpan = ToStringer::ToString(expectedSpan);
@@ -4247,8 +4247,8 @@ namespace ZenUnit
 
    template<typename T>
    void SPANS_ARE_EQUAL_Defined(
-      const std::span<T>& expectedSpan, const char* expectedSpanText,
-      const std::span<T>& actualSpan, const char* actualSpanText,
+      const std::span<const T>& expectedSpan, const char* expectedSpanText,
+      const std::span<const T>& actualSpan, const char* actualSpanText,
       FilePathLineNumber filePathLineNumber)
    {
       try
@@ -7507,10 +7507,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    };
 
    template<typename T>
-   class Printer<std::span<T>>
+   class Printer<std::span<const T>>
    {
    public:
-      static void Print(std::ostream& os, const std::span<T>& sp)
+      static void Print(std::ostream& os, const std::span<const T>& sp)
       {
          PrintCollection(os, sp);
       }
@@ -7588,10 +7588,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    };
 
    template<typename T>
-   class Equalizer<std::span<T>>
+   class Equalizer<std::span<const T>>
    {
    public:
-      static void AssertEqual(const std::span<T>& expectedSpan, const std::span<T>& actualSpan)
+      static void AssertEqual(const std::span<const T>& expectedSpan, const std::span<const T>& actualSpan)
       {
          SPANS_ARE_EQUAL(expectedSpan, actualSpan);
       }
@@ -7936,26 +7936,26 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   std::span<T> RandomSpanWithSize(size_t size)
+   std::span<const T> RandomSpanWithSize(size_t size)
    {
-      T* elements = new T[size]; // By-design memory leak to return a span that points to valid memory
+      T* const elements = new T[size]; // By-design memory leak to return a span that points to valid memory
       for (size_t i = 0; i < size; ++i)
       {
          elements[i] = Random<T>();
       }
-      std::span<T> randomSpan(elements, size);
+      std::span<const T> randomSpan(elements, size);
       return randomSpan;
    }
 
    template<typename T>
-   std::span<T> RandomSpan()
+   std::span<const T> RandomSpan()
    {
       const std::size_t randomSpanSize = RandomBetween<size_t>(0, 3);
       return RandomSpanWithSize<T>(randomSpanSize);
    }
 
    template<typename T>
-   std::span<T> RandomNonEmptySpan()
+   std::span<const T> RandomNonEmptySpan()
    {
       const std::size_t randomSpanSize = RandomBetween<size_t>(1, 3);
       return RandomSpanWithSize<T>(randomSpanSize);
@@ -8141,9 +8141,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          std::pair<typename T::first_type, typename T::second_type> randomPair = RandomPair<typename T::first_type, typename T::second_type>();
          return randomPair;
       }
-      else if constexpr (is_span_v<T>)
+      else if constexpr (is_const_span_v<T>)
       {
-         std::span<typename T::value_type> randomSpan = RandomSpan<typename T::value_type>();
+         std::span<const typename T::value_type> randomSpan = RandomSpan<typename T::value_type>();
          return randomSpan;
       }
       else if constexpr (is_vector_v<T>)

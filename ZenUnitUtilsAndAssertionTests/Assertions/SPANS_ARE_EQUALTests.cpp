@@ -5,29 +5,19 @@ namespace ZenUnit
    template<typename T>
    TEMPLATE_TESTS(SPANS_ARE_EQUALTests, T)
    AFACT(ConstEmptySpans_DoesNothing)
-   AFACT(NonConstEmptySpans_DoesNothing)
    AFACT(ConstNonEmptySpans_AllElementsEqual_DoesNothing)
    AFACT(ConstNonEmptySpans_SizesAreNotEqual_ThrowsAnomaly)
    AFACT(ConstNonEmptySpans_SizesAreEqual_ElementsAreNotEqual_ThrowsAnomaly__TestCase1)
    AFACT(ConstNonEmptySpans_SizesAreEqual_ElementsAreNotEqual_ThrowsAnomaly__TestCase2)
-   AFACT(NonConstNonEmptySpans_SizesAreEqual_ElementsAreNotEqual_ThrowsAnomaly)
    EVIDENCE
 
    const string TypeName = *Type::GetName<T>();
    const string _constSpanTypeName = *Type::GetName<span<const T>>();
-   const string _nonConstSpanTypeName = *Type::GetName<span<T>>();
 
    TEST(ConstEmptySpans_DoesNothing)
    {
       const span<const T> expectedSpan;
       const span<const T> actualSpan;
-      SPANS_ARE_EQUAL(expectedSpan, actualSpan);
-   }
-
-   TEST(NonConstEmptySpans_DoesNothing)
-   {
-      const span<T> expectedSpan;
-      const span<T> actualSpan;
       SPANS_ARE_EQUAL(expectedSpan, actualSpan);
    }
 
@@ -120,33 +110,6 @@ namespace ZenUnit
 "Expected: 20",
 "  Actual: 30",
 " Message: \"i=2\"",
-"File.cpp(1)",
-"File.cpp(1)"));
-   }
-
-   TEST(NonConstNonEmptySpans_SizesAreEqual_ElementsAreNotEqual_ThrowsAnomaly)
-   {
-      vector<T> expectedElements{ 0 };
-      vector<T> actualElements{ 1 };
-
-      const span<T> expectedSpan = expectedElements;
-      const span<T> actualSpan = actualElements;
-
-      THROWS_EXCEPTION(SPANS_ARE_EQUAL(expectedSpan, actualSpan),
-         Anomaly, TestUtil::NewlineConcat("",
-"  Failed: SPANS_ARE_EQUAL(expectedSpan, actualSpan)",
-"Expected: " + _nonConstSpanTypeName + " (size 1):",
-"{",
-"   0",
-"}",
-"  Actual: " + _nonConstSpanTypeName + " (size 1):",
-"{",
-"   1",
-"}",
-" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: 0",
-"  Actual: 1",
-" Message: \"i=0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
    }

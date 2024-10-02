@@ -89,12 +89,12 @@ namespace ZenUnit
 
    TEST(IntSpanIsEmpty_ThrowsAnomaly)
    {
-      const span<int> defaultIntSpan;
-      const string expectedIntSpanTypeName = *Type::GetName<span<int>>();
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultIntSpan), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: IS_NOT_DEFAULT_VALUE(defaultIntSpan)",
+      const span<const int> defaultConstIntSpan;
+      const string expectedConstIntSpanTypeName = *Type::GetName<span<const int>>();
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultConstIntSpan), Anomaly, TestUtil::NewlineConcat("",
+"  Failed: IS_NOT_DEFAULT_VALUE(defaultConstIntSpan)",
 "Expected: Not T{}",
-"  Actual: " + expectedIntSpanTypeName + " (size 0):",
+"  Actual: " + expectedConstIntSpanTypeName + " (size 0):",
 "{",
 "}",
 "File.cpp(1)"));

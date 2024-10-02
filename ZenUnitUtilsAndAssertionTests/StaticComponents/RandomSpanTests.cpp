@@ -15,19 +15,19 @@ namespace ZenUnit
       1ULL,
       5ULL)
    {
-      const span<T> randomSpanWithSize = ZenUnit::RandomSpanWithSize<T>(size);
+      const span<const T> randomSpanWithSize = ZenUnit::RandomSpanWithSize<T>(size);
       ARE_EQUAL(size, randomSpanWithSize.size());
    }
 
    TEST(RandomSpan_ReturnsASpanWithSizeBetween0And2)
    {
-      const span<T> randomSpan = ZenUnit::RandomSpan<T>();
+      const span<const T> randomSpan = ZenUnit::RandomSpan<T>();
       IS_TRUE(randomSpan.size() <= 3);
    }
 
    TEST(RandomNonEmptySpan_ReturnsASpanWithSizeBetween1And3)
    {
-      const span<T> randomNonEmptySpan = ZenUnit::RandomNonEmptySpan<T>();
+      const span<const T> randomNonEmptySpan = ZenUnit::RandomNonEmptySpan<T>();
       IS_TRUE(randomNonEmptySpan.size() >= 1 && randomNonEmptySpan.size() <= 3);
    }
 
