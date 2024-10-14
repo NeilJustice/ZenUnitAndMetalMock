@@ -65,6 +65,7 @@ cppcheck.exe `
    -I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um" `
    -I MetalMockTests `
    -j $numberOfLogicalProcessors `
+   --file-filter="*.cpp" `
    --output-file=cppcheck_results.txt `
    --error-exitcode=1 `
    .
