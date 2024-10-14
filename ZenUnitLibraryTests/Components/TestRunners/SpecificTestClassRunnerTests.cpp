@@ -408,7 +408,6 @@ namespace ZenUnit
       //
       _specificTestClassRunner->RunTest(test, &testClassResultMock);
       //
-      METALMOCK(_protected_consoleMock->WriteMock.CalledNTimes(2));
       METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       METALMOCK(testMock->NameMock.CalledOnce());
       if (expectAnyerCall)
@@ -416,8 +415,8 @@ namespace ZenUnit
          METALMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
             zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
       }
-      METALMOCK(_protected_consoleMock->WriteMock.CalledWith("|"));
-      METALMOCK(_protected_consoleMock->WriteMock.CalledWith(testName));
+      const string expectedBarTestName = String::ConcatStrings("|", testName);
+      METALMOCK(_protected_consoleMock->WriteMock.CalledOnceWith(expectedBarTestName));
       METALMOCK(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->_protected_console.get()));
       METALMOCK(testMock->RunTestMock.CalledOnce());
       METALMOCK(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));

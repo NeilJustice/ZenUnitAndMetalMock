@@ -6402,8 +6402,8 @@ Fatal Windows C++ Runtime Assertion
             zenUnitArgs.testNameFilters, this, &TestClassRunner::TestNameFilterMatchesTestName, testName);
          if (testNameFilterMatchesTestName)
          {
-            _protected_console->Write("|");
-            _protected_console->Write(testName);
+            const std::string barTestName = String::ConcatStrings("|", testName);
+            _protected_console->Write(barTestName);
             test->WritePostTestNameMessage(_protected_console.get());
             std::vector<TestResult> testResults = test->RunTest();
             test->WritePostTestCompletionMessage(_protected_console.get(), testResults[0]);
