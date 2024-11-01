@@ -4,12 +4,13 @@ namespace ZenUnit
 {
    template<typename T>
    TEMPLATE_TESTS(RandomVectorTests, T)
-   FACTS(RandomVectorWithSize_ReturnsAVectorWithSpecifiedSize)
-   AFACT(RandomVector_ReturnsAVectorWithSizeBetween0And2)
-   AFACT(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween1And3)
+   FACTS(RandomVectorWithSize_DoesSo)
+   AFACT(RandomVector_DoesSo)
+   AFACT(RandomNonEmptyVector_DoesSo)
+   AFACT(RandomSharedPtrVector_DoesSo)
    EVIDENCE
 
-   TEST1X1(RandomVectorWithSize_ReturnsAVectorWithSpecifiedSize,
+   TEST1X1(RandomVectorWithSize_DoesSo,
       size_t size,
       0ULL,
       1ULL,
@@ -19,16 +20,22 @@ namespace ZenUnit
       ARE_EQUAL(size, randomVectorWithSize.size());
    }
 
-   TEST(RandomVector_ReturnsAVectorWithSizeBetween0And2)
+   TEST(RandomVector_DoesSo)
    {
       const vector<T> randomVector = ZenUnit::RandomVector<T>();
       IS_TRUE(randomVector.size() <= 3);
    }
 
-   TEST(RandomNonEmptyVector_ReturnsAVectorWithSizeBetween1And3)
+   TEST(RandomNonEmptyVector_DoesSo)
    {
       const vector<T> randomNonEmptyVector = ZenUnit::RandomNonEmptyVector<T>();
       IS_TRUE(randomNonEmptyVector.size() >= 1 && randomNonEmptyVector.size() <= 3);
+   }
+
+   TEST(RandomSharedPtrVector_DoesSo)
+   {
+      const shared_ptr<vector<T>> randomSharedPtrVector = ZenUnit::RandomSharedPtrVector<T>();
+      IS_TRUE(randomSharedPtrVector->size() >= 0 && randomSharedPtrVector->size() <= 3);
    }
 
    RUN_TEMPLATE_TESTS(RandomVectorTests, int)

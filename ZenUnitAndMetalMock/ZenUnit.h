@@ -7986,6 +7986,15 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return RandomVectorWithSize<T>(randomVectorSize);
    }
 
+   template<typename T>
+   std::shared_ptr<std::vector<T>> RandomSharedPtrVector()
+   {
+      const std::size_t randomVectorSize = RandomBetween<size_t>(0, 3);
+      const std::vector<T> randomVector = RandomVectorWithSize<T>(randomVectorSize);
+      std::shared_ptr<std::vector<T>> randomSharedPtrVector = std::make_shared<std::vector<T>>(randomVector);
+      return randomSharedPtrVector;
+   }
+
    template<typename T, size_t Size>
    std::array<T, Size> RandomStdArray()
    {
