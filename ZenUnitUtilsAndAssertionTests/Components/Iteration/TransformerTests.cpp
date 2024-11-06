@@ -10,8 +10,6 @@ namespace ZenUnit
    AFACT(RandomTransform_EmptyElements_DoesNotThrowException)
    AFACT(RandomTransform_Size1Elements_CallsTransformerOnce_ReturnsTransformedElements)
    AFACT(RandomTransform_Size3Elements_CallsTransformerThreeTimesInRandomOrder_ReturnsTransformedElements)
-   AFACT(ParallelTransform_ElementsEmpty_DoesNotCallTransformFunction_ReturnsEmptyVector)
-   AFACT(ParallelTransform_TwoElements_CallsTransformFunctionOnEachElementInParallel_ReturnsTransformedElements)
    EVIDENCE
 
    using TransformerType = Transformer<ElementType, TransformedElementType>;
@@ -79,31 +77,6 @@ namespace ZenUnit
       //
       const vector<TransformedElementType> expectedTransformedElements = { 2, 3, 4 };
       INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedTransformedElements, transformedElements);
-   }
-
-   TEST(ParallelTransform_ElementsEmpty_DoesNotCallTransformFunction_ReturnsEmptyVector)
-   {
-      const vector<ElementType> emptyElements;
-      //
-      const vector<TransformedElementType> transformedElements = _transformer.ParallelTransform(&emptyElements, PlusOne);
-      //
-      IS_EMPTY(transformedElements);
-   }
-
-   TEST(ParallelTransform_TwoElements_CallsTransformFunctionOnEachElementInParallel_ReturnsTransformedElements)
-   {
-      const ElementType element1 = ZenUnit::RandomBetween<ElementType>(1, 3);
-      const ElementType element2 = ZenUnit::RandomBetween<ElementType>(1, 3);
-      const vector<ElementType> elements = { element1, element2 };
-      //
-      const vector<TransformedElementType> transformedElements =  _transformer.ParallelTransform(&elements, PlusOne);
-      //
-      const vector<TransformedElementType> expectedTransformedElements =
-      {
-         static_cast<TransformedElementType>(element1) + TransformedElementType{1},
-         static_cast<TransformedElementType>(element2) + TransformedElementType{1}
-      };
-      VECTORS_ARE_EQUAL(expectedTransformedElements, transformedElements);
    }
 
    RUN_TEMPLATE_TESTS(TransformerTests, int, long long)

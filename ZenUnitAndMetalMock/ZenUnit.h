@@ -12,7 +12,6 @@ namespace ZenUnit
 #include <array>
 #include <charconv>
 #include <concepts>
-#include <execution>
 #include <filesystem>
 #include <functional>
 #include <iostream>
@@ -1999,20 +1998,6 @@ namespace ZenUnit
             TransformedElementType transformedElement = transformFunction(element);
             transformedElements[i] = std::move(transformedElement);
          }
-         return transformedElements;
-      }
-
-      virtual std::vector<TransformedElementType> ParallelTransform(
-         const std::vector<ElementType>* elements,
-         TransformedElementType(*transformFunction)(const ElementType&)) const
-      {
-         std::vector<TransformedElementType> transformedElements(elements->size());
-         std::transform(
-            std::execution::par_unseq,
-            elements->cbegin(),
-            elements->cend(),
-            transformedElements.begin(),
-            transformFunction);
          return transformedElements;
       }
 
