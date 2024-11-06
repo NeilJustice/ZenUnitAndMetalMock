@@ -217,7 +217,6 @@ namespace ZenUnit
          _voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.Expect();
       }
       _voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
-      _protected_consoleMock->WriteNewLineMock.Expect();
       _specificTestClassRunner->_testClassResult = TestingNonDefaultTestClassResult();
       TestClassResult expectedResultingTestClassResult = _specificTestClassRunner->_testClassResult;
       expectedResultingTestClassResult.AddTestResult(testClassIsNewableAndDeletableTestResult);
@@ -244,7 +243,6 @@ namespace ZenUnit
       METALMOCK(_voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
          &_specificTestClassRunner->_testClassResult));
-      METALMOCK(_protected_consoleMock->WriteNewLineMock.CalledOnce());
       ARE_EQUAL(expectedResultingTestClassResult, testClassResult);
       IS_DEFAULT_VALUE(_specificTestClassRunner->_testClassResult); // Assertion that _testClassResult was std::moved from
    }

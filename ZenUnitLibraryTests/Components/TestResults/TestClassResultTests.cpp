@@ -196,7 +196,7 @@ namespace ZenUnit
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0ull);
       const unsigned sumOfTestResultMicroseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
 
-      const string oneDecimalPlaceMilliseconds = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+      const string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
 
       ConsoleMock consoleMock;
       consoleMock.WriteMock.Expect();
@@ -205,12 +205,14 @@ namespace ZenUnit
       //
       _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
       //
+      const std::string expected_closingBracket_milliseconds_newline = String::ConcatStrings(
+         "  ] ", twoDecimalPlaceMillisecondsString, "\n");
       METALMOCK(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       METALMOCK(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
       METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(sumOfTestResultMicroseconds));
       METALMOCK(consoleMock.WriteMock.CalledOnceWith("[  "));
       METALMOCK(consoleMock.WriteColorMock.CalledOnceWith("OK", Color::Green));
-      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith("  ] " + oneDecimalPlaceMilliseconds));
+      METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expected_closingBracket_milliseconds_newline));
    }
 
    TEST1X1(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed,
@@ -222,17 +224,19 @@ namespace ZenUnit
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
       const unsigned microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
 
-      const string oneDecimalPlaceMilliseconds = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+      const string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
 
       ConsoleMock consoleMock;
       consoleMock.WriteLineColorMock.Expect();
       //
       _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
       //
+      const std::string expected_testClassFailed_milliseconds_newline = String::ConcatStrings(
+         "[TestClass Failed] ", twoDecimalPlaceMillisecondsString, "\n");
       METALMOCK(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
       METALMOCK(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
       METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(microseconds));
-      METALMOCK(consoleMock.WriteLineColorMock.CalledOnceWith("[TestClass Failed] " + oneDecimalPlaceMilliseconds, Color::Red));
+      METALMOCK(consoleMock.WriteLineColorMock.CalledOnceWith(expected_testClassFailed_milliseconds_newline, Color::Red));
    }
 
    TEST(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)

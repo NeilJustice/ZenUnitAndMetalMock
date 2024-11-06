@@ -4807,11 +4807,15 @@ namespace ZenUnit
          {
             console->Write("[  ");
             console->WriteColor("OK", Color::Green);
-            console->WriteLine("  ] " + twoDecimalPlaceMillisecondsString);
+            const std::string closingBracket_milliseconds_newline = String::ConcatStrings(
+               "  ] ", twoDecimalPlaceMillisecondsString, "\n");
+            console->WriteLine(closingBracket_milliseconds_newline);
          }
          else
          {
-            console->WriteLineColor("[TestClass Failed] " + twoDecimalPlaceMillisecondsString, Color::Red);
+            const std::string testClassFailed_milliseconds_newline = String::ConcatStrings(
+               "[TestClass Failed] ", twoDecimalPlaceMillisecondsString, "\n");
+            console->WriteLineColor(testClassFailed_milliseconds_newline, Color::Red);
          }
       }
 
@@ -6352,7 +6356,6 @@ Fatal Windows C++ Runtime Assertion
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
          _voidOneArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
-         _protected_console->WriteNewLine();
          return std::move(_testClassResult);
       }
    private:
