@@ -32,6 +32,10 @@ callgrind.out.*
 callgrind_results.txt
 heaptrack.ZenUnitUtilsAndAssertionTests.*.zst
 rules.ninja
+MetalMockExamples/MetalMockExamples
+ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests
+ZenUnitExamples/ZenUnitExamples
+ZenUnitLibraryTests/ZenUnitLibraryTests
 
 # Windows
 .vs/
