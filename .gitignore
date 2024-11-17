@@ -15,6 +15,7 @@ htmlcov/
 
 # Linux
 covhtml/
+*.a
 *.dot
 *.gch
 *.gch*
