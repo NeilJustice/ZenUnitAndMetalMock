@@ -27,6 +27,7 @@ covhtml/
 *.swp
 .ninja_deps
 .ninja_log
+build_errors.txt
 build.ninja
 callgrind.out.*
 callgrind_results.txt
@@ -37,6 +38,7 @@ MetalMockTests/MetalMockTests
 ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests
 ZenUnitExamples/ZenUnitExamples
 ZenUnitLibraryTests/ZenUnitLibraryTests
+ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
 
 # Windows
 .vs/
