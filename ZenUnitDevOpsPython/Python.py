@@ -1,4 +1,5 @@
 import glob
+import multiprocessing
 import os
 import platform
 import sys
@@ -10,6 +11,11 @@ def pylint_file(pythonFilePath: str) -> int:
    pylintCommand = PylintCommand + pythonFilePath
    pylintExitCode = Process.run_and_get_exit_code(pylintCommand)
    return pylintExitCode
+
+def run_flake8() -> None:
+   cpuCount = multiprocessing.cpu_count()
+   flake8Command = f'flake8 -j {cpuCount} --config=.flake8 --show-source --benchmark'
+   Process.fail_fast_run(flake8Command)
 
 def run_mypy() -> None:
    Process.fail_fast_run('mypy .')
@@ -23,10 +29,6 @@ def run_pylint_on_all_files_in_parallel() -> None:
       allPylintsSucceeded = Process.run_parallel_processpoolexecutor(pylint_file, pyFilePaths)
    if not allPylintsSucceeded:
       sys.exit(1)
-
-def run_flake8() -> None:
-   flake8Command = 'flake8 -j 61 --config=.flake8 --show-source --benchmark'
-   Process.fail_fast_run(flake8Command)
 
 def run_all_with_coverage(testsProjectName: str, omitPattern: str) -> None:
    print(f'Running {testsProjectName}/RunAll.py with coverage from', os.getcwd())

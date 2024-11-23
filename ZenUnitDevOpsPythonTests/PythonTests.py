@@ -1,4 +1,5 @@
 import glob
+import multiprocessing
 import os
 import platform
 import sys
@@ -9,9 +10,9 @@ from ZenUnitDevOpsPythonTests import Random, UnitTester
 
 testNames = [
 'test_pylint_file_CallsPylintOnAllPythonFilesInCurrentFolderAndSubFolders',
+'test_run_flake8_RunsFlake8WithFlake8Config',
 'test_run_mypy_RunsMypyDot',
 'test_run_pylint_on_all_files_in_parallel_LinuxCallsMapParallelPylintFileWithAllPyFilePaths_WindowsCallsMapSequential',
-'test_run_flake8_RunsFlake8WithFlake8Config',
 'test_run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode'
 ]
 
@@ -29,6 +30,18 @@ class PythonTests(unittest.TestCase):
       #
       Process.run_and_get_exit_code.assert_called_once_with(PythonTests.ExpectedPylintCommand + pythonFilePath)
       self.assertEqual(pylintExitCode, pylintExitCode)
+
+   @staticmethod
+   @patch('ZenUnitDevOpsPython.Process.fail_fast_run', spec_set=True)
+   @patch('multiprocessing.cpu_count', spec_set=True)
+   def test_run_flake8_RunsFlake8WithFlake8Config(_1, _2):
+      cpuCount = Random.integer()
+      multiprocessing.cpu_count.return_value = cpuCount
+      #
+      Python.run_flake8()
+      #
+      expectedFlake8Command = f'flake8 -j {cpuCount} --config=.flake8 --show-source --benchmark'
+      Process.fail_fast_run.assert_called_once_with(expectedFlake8Command)
 
    @staticmethod
    @patch('ZenUnitDevOpsPython.Process.fail_fast_run', spec_set=True)
@@ -71,15 +84,6 @@ class PythonTests(unittest.TestCase):
       testcase('Linux', True, True, False)
       testcase('Windows', False, False, True)
       testcase('windows', True, False, True)
-
-   @staticmethod
-   @patch('ZenUnitDevOpsPython.Process.fail_fast_run', spec_set=True)
-   def test_run_flake8_RunsFlake8WithFlake8Config(_1):
-      #
-      Python.run_flake8()
-      #
-      expectedFlake8Command = 'flake8 -j 61 --config=.flake8 --show-source --benchmark'
-      Process.fail_fast_run.assert_called_once_with(expectedFlake8Command)
 
    def test_run_all_with_coverage_RunsCoverage_RunsReport_RunsHtml_RunsXml_ExitsWithReportExitCode(self):
       @patch('os.getcwd', spec_set=True)
