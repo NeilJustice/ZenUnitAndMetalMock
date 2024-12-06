@@ -6,7 +6,7 @@
     <ProjectGuid>5be2bd06-b3d6-4e12-9d37-cb82aa0ef9d3</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>PythonTests.py</StartupFile>
+    <StartupFile>RunAll.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <WorkingDirectory>..</WorkingDirectory>
     <OutputPath>.</OutputPath>

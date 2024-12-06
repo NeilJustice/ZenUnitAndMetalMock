@@ -14,7 +14,7 @@ def pylint_file(pythonFilePath: str) -> int:
 
 def run_flake8() -> None:
    cpuCount = multiprocessing.cpu_count()
-   flake8Command = f'flake8 -j {cpuCount} --config=.flake8 --show-source --benchmark'
+   flake8Command = f'flake8 -j {cpuCount - 3} --config=.flake8 --show-source --benchmark'
    Process.fail_fast_run(flake8Command)
 
 def run_mypy() -> None:

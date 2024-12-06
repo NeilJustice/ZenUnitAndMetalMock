@@ -40,7 +40,7 @@ class PythonTests(unittest.TestCase):
       #
       Python.run_flake8()
       #
-      expectedFlake8Command = f'flake8 -j {cpuCount} --config=.flake8 --show-source --benchmark'
+      expectedFlake8Command = f'flake8 -j {cpuCount - 3} --config=.flake8 --show-source --benchmark'
       Process.fail_fast_run.assert_called_once_with(expectedFlake8Command)
 
    @staticmethod
