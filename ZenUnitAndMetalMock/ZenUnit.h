@@ -5407,10 +5407,6 @@ namespace ZenUnit
             _console->WriteLine(completedCommandLineMessage);
 
             _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
-            const std::string randomSeedMessage = String::ConcatValues(" RandomSeed: --random-seed=", globalZenUnitMode.randomSeed);
-            _console->WriteLine(randomSeedMessage);
-
-            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string endDateTime = _watch->DateTimeNow();
             const std::string endTimeMessage = String::ConcatStrings("    EndTime: ", endDateTime);
             _console->WriteLine(endTimeMessage);
@@ -5723,14 +5719,12 @@ namespace ZenUnit
 #if defined _WIN32 && defined _DEBUG
       static int FailFastInResponseToWindowsCrtAssertionFailure(int, char* fileNameLineNumberErrorMessage, int*)
       {
-         Console console;
+         const Console console;
          console.WriteLineColor(R"(
 ===================================
 Fatal Windows C++ Runtime Assertion
 ===================================)", Color::Red);
          console.WriteLine(fileNameLineNumberErrorMessage);
-         const std::string randomSeedLine = "[ZenUnit] RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed);
-         console.WriteLine(randomSeedLine);
          console.WriteLine("[ZenUnit]   ExitCode: 1");
          quick_exit(1);
       }
@@ -5851,8 +5845,11 @@ Fatal Windows C++ Runtime Assertion
          if (zenUnitArgs.failFast && testOutcome != TestOutcome::Success)
          {
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
-            // One line String::ConcatValues to fix apparent lcov/Codecov.io bug whereby line-breaked String::ConcatValue arguments are labeled as partially uncovered
-            const std::string failFastMessage = String::ConcatValues('\n', "[ZenUnit] A test failed in --fail-fast mode.\n", "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, '\n', "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitMode.randomSeed, '\n', "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, '\n', "[ZenUnit]    ExitCode: ", exitCode);
+            const std::string failFastMessage = String::ConcatValues('\n', 
+               "[ZenUnit] A test failed in --fail-fast mode.\n", 
+               "[ZenUnit] Completed: ", zenUnitArgs.commandLine, '\n', 
+               "[ZenUnit]   TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, '\n', 
+               "[ZenUnit]  ExitCode: ", exitCode);
             _console->WriteLineAndExit(failFastMessage, exitCode);
          }
       }
@@ -5865,9 +5862,6 @@ Fatal Windows C++ Runtime Assertion
 
          _console->WriteColor(">>------> ", Color::Red);
          _console->WriteLine(" Completed: " + zenUnitArgs.commandLine);
-
-         _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine("RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));
 
          _console->WriteColor(">>------> ", Color::Red);
          const std::string endDateTime = _watch->DateTimeNow();

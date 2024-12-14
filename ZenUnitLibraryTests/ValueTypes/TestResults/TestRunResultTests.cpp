@@ -260,7 +260,6 @@ namespace ZenUnit
       const string expectedBracketedZenUnitOrFailArrowPrefix =
          expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
       const string expectedCompletedLine = "  Completed: " + zenUnitArgs.commandLine;
-      const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed);
       const string expectedEndTimeLine = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine = "   Duration: " + testRunElapsedSeconds + " seconds";
       const string expectedTestRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
@@ -268,9 +267,6 @@ namespace ZenUnit
 
       METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor)).Then(
       METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedCompletedLine))).Then(
-
-      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
-      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedRandomSeedLine))).Then(
 
       METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
       METALMOCKTHEN(_watchMock->DateTimeNowMock.CalledOnce())).Then(

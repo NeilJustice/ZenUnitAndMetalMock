@@ -438,10 +438,6 @@ namespace ZenUnit
       METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(" Completed: " + zenUnitArgs.commandLine))).Then(
 
       METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(">>------> ", Color::Red))).Then(
-      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(
-         "RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed)))).Then(
-
-      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(">>------> ", Color::Red))).Then(
       METALMOCKTHEN(_watchMock->DateTimeNowMock.CalledOnce())).Then(
       METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith("   EndTime: " + endDateTime))).Then(
 
@@ -499,10 +495,9 @@ namespace ZenUnit
       //
       const string expectedFailFastMessage = String::ConcatValues("\n",
          "[ZenUnit] A test failed in --fail-fast mode.\n",
-         "[ZenUnit]   Completed: ", zenUnitArgs.commandLine, "\n",
-         "[ZenUnit]  RandomSeed: --random-seed=", globalZenUnitModeRandomSeed, "\n",
-         "[ZenUnit]     TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, "\n",
-         "[ZenUnit]    ExitCode: ", expectedExitCode);
+         "[ZenUnit] Completed: ", zenUnitArgs.commandLine, "\n",
+         "[ZenUnit]   TestRun: ", globalZenUnitMode.currentTestRunNumber, " of ", zenUnitArgs.testRuns, "\n",
+         "[ZenUnit]  ExitCode: ", expectedExitCode);
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(expectedFailFastMessage, expectedExitCode));
    }
 
