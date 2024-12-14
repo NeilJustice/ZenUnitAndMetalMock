@@ -1128,9 +1128,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
             console.WriteLine(" RandomSeed: --random-seed=" + std::to_string(ZenUnit::globalZenUnitMode.randomSeed));
 
             console.WriteColor(">>------>", ZenUnit::Color::Red);
-            console.WriteLine("  StartTime: " + zenUnitArgs.startDateTime);
-
-            console.WriteColor(">>------>", ZenUnit::Color::Red);
             ZenUnit::Watch watch;
             const std::string endDateTime = watch.DateTimeNow();
             console.WriteLine("    EndTime: " + endDateTime);

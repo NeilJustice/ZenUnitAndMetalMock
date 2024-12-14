@@ -8,7 +8,7 @@ namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
    AFACT(DefaultConstructor_NewsComponents)
-   AFACT(PrintPreambleLinesAndGetStartDateTime_PrintsPreambleLines_ReturnsStartDateTime)
+   AFACT(PrintPreambleLines_PrintsPreambleLines_ReturnsStartDateTime)
    EVIDENCE
 
    PreamblePrinter _preamblePrinter;
@@ -31,7 +31,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(preamblePrinter._watch);
    }
 
-   TEST(PrintPreambleLinesAndGetStartDateTime_PrintsPreambleLines_ReturnsStartDateTime)
+   TEST(PrintPreambleLines_PrintsPreambleLines_ReturnsStartDateTime)
    {
       _consoleMock->WriteLineColorMock.Expect();
       _consoleMock->WriteColorMock.Expect();
@@ -53,8 +53,7 @@ namespace ZenUnit
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       const size_t testRunIndex = ZenUnit::RandomBetween<size_t>(0, 3);
       //
-      const string returnedStartTime =
-         _preamblePrinter.PrintPreambleLinesAndGetStartDateTime(zenUnitArgs, testRunIndex, &testClassRunnerRunnerMock);
+      _preamblePrinter.PrintPreambleLines(zenUnitArgs, testRunIndex, &testClassRunnerRunnerMock);
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledNTimes(8));
       METALMOCK(_consoleMock->WriteColorMock.CalledNTimes(8));
@@ -91,8 +90,6 @@ namespace ZenUnit
       METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith("[ZenUnit]", Color::Green))).Then(
       METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(
          "     TestRun: " + to_string(testRunIndex + 1) + " of " + to_string(zenUnitArgs.testRuns) + "\n")));
-
-      ARE_EQUAL(startDateTime, returnedStartTime);
    }
 
    RUN_TESTS(PreamblePrinterTests)

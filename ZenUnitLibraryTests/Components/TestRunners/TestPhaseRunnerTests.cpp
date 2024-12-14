@@ -442,9 +442,6 @@ namespace ZenUnit
          "RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed)))).Then(
 
       METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(">>------> ", Color::Red))).Then(
-      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(" StartTime: " + zenUnitArgs.startDateTime))).Then(
-
-      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(">>------> ", Color::Red))).Then(
       METALMOCKTHEN(_watchMock->DateTimeNowMock.CalledOnce())).Then(
       METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith("   EndTime: " + endDateTime))).Then(
 

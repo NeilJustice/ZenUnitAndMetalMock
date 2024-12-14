@@ -5237,8 +5237,7 @@ namespace ZenUnit
 
       virtual ~PreamblePrinter() = default;
 
-      virtual std::string PrintPreambleLinesAndGetStartDateTime(
-         const ZenUnitArgs& zenUnitArgs, size_t testRunIndex, const TestClassRunnerRunner* testClassRunnerRunner) const
+      virtual void PrintPreambleLines(const ZenUnitArgs& zenUnitArgs, size_t testRunIndex, const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          const std::string zenUnitVersionLine = String::ConcatStrings("[C++ Unit Testing Framework ZenUnit ", Version, "]");
          _console->WriteLineColor(zenUnitVersionLine, Color::Green);
@@ -5266,14 +5265,12 @@ namespace ZenUnit
          _console->WriteLine(" TestClasses: " + std::to_string(numberOfTestClassesToBeRun));
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         std::string startDateTime = _watch->DateTimeNow();
+         const std::string startDateTime = _watch->DateTimeNow();
          _console->WriteLine("   StartTime: " + startDateTime);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string testRunLine = "     TestRun: " + std::to_string(testRunIndex + 1) + " of " + std::to_string(zenUnitArgs.testRuns) + "\n";
          _console->WriteLine(testRunLine);
-
-         return startDateTime;
       }
    };
 
@@ -5375,7 +5372,6 @@ namespace ZenUnit
       }
 
       virtual void PrintConclusionLines(
-         std::string_view startDateTime,
          size_t totalNumberOfTestCases,
          std::string_view testRunElapsedSeconds,
          const ZenUnitArgs& zenUnitArgs,
@@ -5413,10 +5409,6 @@ namespace ZenUnit
             _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string randomSeedMessage = String::ConcatValues(" RandomSeed: --random-seed=", globalZenUnitMode.randomSeed);
             _console->WriteLine(randomSeedMessage);
-
-            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
-            const std::string startTimeMessage = String::ConcatStrings("  StartTime: ", startDateTime);
-            _console->WriteLine(startTimeMessage);
 
             _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
             const std::string endDateTime = _watch->DateTimeNow();
@@ -5760,8 +5752,7 @@ Fatal Windows C++ Runtime Assertion
 
       int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& zenUnitArgs, size_t testRunIndex)
       {
-         const std::string startDateTime = _preamblePrinter->PrintPreambleLinesAndGetStartDateTime(
-            zenUnitArgs, testRunIndex, _testClassRunnerRunner.get());
+         _preamblePrinter->PrintPreambleLines(zenUnitArgs, testRunIndex, _testClassRunnerRunner.get());
          _havePaused = _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused->CallConstMemberFunction(
             this, &ZenUnitTestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();
@@ -5769,7 +5760,7 @@ Fatal Windows C++ Runtime Assertion
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
-         _testRunResult->PrintConclusionLines(startDateTime, numberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
+         _testRunResult->PrintConclusionLines(numberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
          int zenUnitExitCode = _testRunResult->DetermineZenUnitExitCode(zenUnitArgs);
          return zenUnitExitCode;
       }
@@ -5877,9 +5868,6 @@ Fatal Windows C++ Runtime Assertion
 
          _console->WriteColor(">>------> ", Color::Red);
          _console->WriteLine("RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));
-
-         _console->WriteColor(">>------> ", Color::Red);
-         _console->WriteLine(" StartTime: " + zenUnitArgs.startDateTime);
 
          _console->WriteColor(">>------> ", Color::Red);
          const std::string endDateTime = _watch->DateTimeNow();

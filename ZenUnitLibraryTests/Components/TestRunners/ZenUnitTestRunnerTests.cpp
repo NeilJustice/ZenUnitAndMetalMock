@@ -16,7 +16,6 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NTimesMemberFunctionAccumulatorMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
@@ -237,7 +236,7 @@ namespace ZenUnit
 
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.commandLine = Random<string>();
-      const string startDateTime = _preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.ReturnRandom();
+      _preamblePrinterMock->PrintPreambleLinesMock.Expect();
       _caller_RunTestClassesMock->CallNonConstMemberFunctionMock.Expect();
       _testRunResultMock->PrintTestFailuresAndSkipsMock.Expect();
       _testRunResultMock->PrintConclusionLinesMock.Expect();
@@ -257,7 +256,7 @@ namespace ZenUnit
          zenUnitArgs.pauseBefore, havePausedInitialValue));
       ARE_EQUAL(waitForAnyKeyIfPauseModeReturnValue, _zenUnitTestRunner._havePaused);
       METALMOCK(_testRunStopwatchMock->StartMock.CalledOnce());
-      METALMOCK(_preamblePrinterMock->PrintPreambleLinesAndGetStartDateTimeMock.CalledOnceWith(
+      METALMOCK(_preamblePrinterMock->PrintPreambleLinesMock.CalledOnceWith(
          zenUnitArgs, testRunIndex, _zenUnitTestRunner._testClassRunnerRunner.get()));
       METALMOCK(_caller_RunTestClassesMock->CallNonConstMemberFunctionMock.CalledOnceWith(
          &_zenUnitTestRunner, &ZenUnitTestRunner::RunTestClasses));
@@ -265,7 +264,7 @@ namespace ZenUnit
       METALMOCK(_testClassRunnerRunnerMock->NumberOfTestCasesMock.CalledOnce());
       METALMOCK(_testRunStopwatchMock->StopAndGetElapsedSecondsMock.CalledOnce());
       METALMOCK(_testRunResultMock->PrintConclusionLinesMock.CalledOnceWith(
-         startDateTime, totalNumberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex));
+         totalNumberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex));
       METALMOCK(_testRunResultMock->DetermineZenUnitExitCodeMock.CalledOnceWith(zenUnitArgs));
       ARE_EQUAL(determineZenUnitExitCodeReturnValue, exitCode);
    }

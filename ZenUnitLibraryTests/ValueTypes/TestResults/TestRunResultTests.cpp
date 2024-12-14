@@ -215,9 +215,11 @@ namespace ZenUnit
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineAndExitMock.Expect();
+      const string_view testRunElapsedSeconds = ZenUnit::Random<string_view>();
+      const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
+      const size_t testRunIndex = ZenUnit::Random<size_t>();
       //
-      _testRunResult.PrintConclusionLines(
-         ZenUnit::Random<string>(), 0, ZenUnit::Random<string>(), ZenUnit::Random<ZenUnitArgs>(), ZenUnit::Random<size_t>());
+      _testRunResult.PrintConclusionLines(0, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
       //
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Red));
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(" Zero test classes run. Exiting with code 1.", 1));
@@ -246,7 +248,6 @@ namespace ZenUnit
       _testRunResult._numberOfFailedTestCases = numberOfFailedTestCases;
       const string dateTimeNow = _watchMock->DateTimeNowMock.ReturnRandom();
 
-      const string startDateTime = ZenUnit::Random<string>();
       const string testRunElapsedSeconds = ZenUnit::Random<string>();
       const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
 
@@ -254,13 +255,12 @@ namespace ZenUnit
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       const size_t testRunIndex = ZenUnit::RandomBetween<size_t>(0, 3);
       //
-      _testRunResult.PrintConclusionLines(startDateTime, numberOfTotalTests, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
+      _testRunResult.PrintConclusionLines(numberOfTotalTests, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
       //
       const string expectedBracketedZenUnitOrFailArrowPrefix =
          expectedSuccessOrFailLinePrefix == "[SUCCESS]" ? "[ZenUnit]" : ">>------>";
       const string expectedCompletedLine = "  Completed: " + zenUnitArgs.commandLine;
       const string expectedRandomSeedLine = " RandomSeed: --random-seed=" + to_string(globalZenUnitModeRandomSeed);
-      const string expectedStartTimeLine = "  StartTime: " + startDateTime;
       const string expectedEndTimeLine = "    EndTime: " + dateTimeNow;
       const string expectedDurationLine = "   Duration: " + testRunElapsedSeconds + " seconds";
       const string expectedTestRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
@@ -271,9 +271,6 @@ namespace ZenUnit
 
       METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
       METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedRandomSeedLine))).Then(
-
-      METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
-      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledWith(expectedStartTimeLine))).Then(
 
       METALMOCKTHEN(_consoleMock->WriteColorMock.CalledWith(expectedBracketedZenUnitOrFailArrowPrefix, expectedColor))).Then(
       METALMOCKTHEN(_watchMock->DateTimeNowMock.CalledOnce())).Then(
