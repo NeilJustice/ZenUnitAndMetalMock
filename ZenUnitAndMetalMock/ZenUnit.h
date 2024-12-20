@@ -25,7 +25,8 @@ namespace ZenUnit
 #include <unordered_set>
 #include <utility>
 
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
+#include <algorithm> // std::for_each/count_if/generate/shuffle
 #include <cfloat> // FLT_MAX and DBL_MAX
 #include <climits> // ULLONG_MAX
 #include <cxxabi.h> // abi::__cxa_demangle()
