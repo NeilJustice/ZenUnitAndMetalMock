@@ -4864,7 +4864,7 @@ namespace ZenUnit
       virtual std::string UserName() const
       {
          const uid_t uidValue = geteuid();
-         struct const passwd* const passwdValue = getpwuid(uidValue);
+         const passwd* const passwdValue = getpwuid(uidValue);
          std::string userName(passwdValue->pw_name);
          return userName;
       }

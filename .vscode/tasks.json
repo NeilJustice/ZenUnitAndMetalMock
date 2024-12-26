@@ -2,7 +2,7 @@
    "version": "2.0.0",
    "tasks": [
       {
-         "label": "Ninja Build Debug",
+         "label": "Build Debug",
          "type": "shell",
          "command": "ninja",
          "args": [
@@ -11,16 +11,16 @@
          "options": {
             "cwd": "${workspaceRoot}/Debug"
          },
-         "problemMatcher": [
-            "$gcc"
-         ],
+         "problemMatcher": {
+            "base": "$gcc"
+         },
          "group": {
             "kind": "build",
             "isDefault": true
          }
       },
       {
-         "label": "Ninja Build Release",
+         "label": "Build Release",
          "type": "shell",
          "command": "ninja",
          "args": [
@@ -29,46 +29,20 @@
          "options": {
             "cwd": "${workspaceRoot}/Release"
          },
-         "problemMatcher": [
-            "$gcc"
-         ]
-      },
-      {
-         "label": "Run ZenUnitUtilsAndAssertionTests",
-         "type": "shell",
-         "command": "./Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests",
-         "options": {
-            "cwd": "${workspaceRoot}"
-         },
-         "presentation": {
-            "panel": "dedicated",
-            "showReuseMessage": false,
-            "clear": true
+         "problemMatcher": {
+            "base": "$gcc"
          }
       },
       {
-         "label": "Run All Debug Tests",
+         "label": "Run Debug Tests",
          "type": "shell",
-         "command": "./TestScripts/RunAllDebugTests.sh",
+         "command": "./Debug/ZenUnitLibraryTests/ZenUnitLibraryTests",
          "options": {
             "cwd": "${workspaceRoot}"
-         },
-         "presentation": {
-            "panel": "dedicated",
-            "showReuseMessage": false,
-            "clear": true
          },
          "group": {
             "kind": "test",
             "isDefault": true
-         }
-      },
-      {
-         "label": "Run All Release Tests",
-         "type": "shell",
-         "command": "./TestScripts/RunAllReleaseTests.sh",
-         "options": {
-            "cwd": "${workspaceRoot}"
          },
          "presentation": {
             "panel": "dedicated",
@@ -77,123 +51,63 @@
          }
       },
       {
-         "label": "clang++ build active file",
+         "label": "Run Release Tests",
          "type": "shell",
-         "command": "/usr/bin/clang++",
-         "args": [
-            "-std=c++2a",
-            "-g",
-            "${file}",
-            "-I${workspaceRoot}",
-            "-I${workspaceRoot}/MetalMockExamples",
-            "-I${workspaceRoot}/MetalMockTests",
-            "-I${workspaceRoot}/ZenUnitCompileSpeedTests",
-            "-I${workspaceRoot}/ZenUnitExamples",
-            "-I${workspaceRoot}/ZenUnitLibraryTests",
-            "-I${workspaceRoot}/ZenUnitTestUtils",
-            "-I${workspaceRoot}/ZenUnitUtilsAndAssertionTests",
-            "-o",
-            "${fileDirname}/${fileBasenameNoExtension}"
-         ],
-         "problemMatcher": [
-            "$gcc"
-         ]
+         "command": "./Release/ZenUnitLibraryTests/ZenUnitLibraryTests",
+         "options": {
+            "cwd": "${workspaceRoot}"
+         },
+         "group": {
+            "kind": "test",
+            "isDefault": false
+         },
+         "presentation": {
+            "panel": "dedicated",
+            "showReuseMessage": false,
+            "clear": true
+         },
+         "problemMatcher": []
       },
       {
-         "label": "C/C++: clang build active file",
          "type": "cppbuild",
-         "command": "/usr/bin/clang",
+         "label": "g++ build active file",
+         "command": "/usr/lib64/ccache/g++",
          "args": [
-            "-std=c++2a",
+            "-IZenUnitLibraryTests",
+            "-fdiagnostics-color=always",
             "-g",
             "${file}",
-            "-I${workspaceRoot}",
-            "-I${workspaceRoot}/MetalMockExamples",
-            "-I${workspaceRoot}/MetalMockTests",
-            "-I${workspaceRoot}/ZenUnitCompileSpeedTests",
-            "-I${workspaceRoot}/ZenUnitExamples",
-            "-I${workspaceRoot}/ZenUnitLibraryTests",
-            "-I${workspaceRoot}/ZenUnitTestUtils",
-            "-I${workspaceRoot}/ZenUnitUtilsAndAssertionTests",
             "-o",
             "${fileDirname}/${fileBasenameNoExtension}"
          ],
          "options": {
-            "cwd": "${workspaceFolder}"
+            "cwd": "${fileDirname}"
          },
          "problemMatcher": [
             "$gcc"
          ],
-         "group": "build",
-         "detail": "compiler: /usr/bin/clang"
+         "group": "build"
       },
       {
-         "label": "Run Current Python File",
-         "type": "shell",
-         "command": "PYTHONPATH=. python ${file}",
+         "type": "cppbuild",
+         "label": "clang++-19 build active file",
+         "command": "/usr/bin/clang++-19",
+         "args": [
+            "-IZenUnitLibraryTests",
+            "-fcolor-diagnostics",
+            "-fansi-escape-codes",
+            "-g",
+            "${file}",
+            "-o",
+            "${fileDirname}/${fileBasenameNoExtension}"
+         ],
          "options": {
-            "cwd": "${workspaceRoot}"
+            "cwd": "${fileDirname}"
          },
-         "presentation": {
-            "panel": "dedicated",
-            "showReuseMessage": false,
-            "clear": true
-         }
-      },
-      {
-         "label": "Run All Python Tests",
-         "type": "shell",
-         "command": "PYTHONPATH=ZenUnitDevOpsPython python ZenUnitDevOpsPythonTests/RunAll.py",
-         "options": {
-            "cwd": "${workspaceRoot}"
-         },
-         "presentation": {
-            "panel": "dedicated",
-            "showReuseMessage": false,
-            "clear": true
-         }
-      },
-      {
-         "label": "Pylint Current File",
-         "type": "shell",
-         "command": "pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\" ${file}",
-         "options": {
-            "cwd": "${workspaceRoot}"
-         },
-         "presentation": {
-            "panel": "dedicated",
-            "showReuseMessage": false,
-            "clear": true
-         },
-         "problemMatcher": []
-      },
-      {
-         "label": "Pylint All Python Files",
-         "type": "shell",
-         "command": "ag -g \"\\.py$\" -0 | xargs -0 pylint --rcfile=.pylintrc --score=n --init-hook=\"sys.path.append('.')\"",
-         "options": {
-            "cwd": "${workspaceRoot}"
-         },
-         "presentation": {
-            "panel": "dedicated",
-            "showReuseMessage": false,
-            "clear": true
-         },
-         "problemMatcher": []
-      },
-      {
-         "label": "flake8 All Python Files",
-         "type": "shell",
-         "command": "flake8 --config=.flake8 --show-source --benchmark",
-         "options": {
-            "cwd": "${workspaceRoot}"
-         },
-         "presentation": {
-            "panel": "dedicated",
-            "showReuseMessage": false,
-            "clear": true
-         },
-         "problemMatcher": []
+         "problemMatcher": [
+            "$gcc"
+         ],
+         "group": "build"
       }
    ]
 }

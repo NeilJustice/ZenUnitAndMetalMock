@@ -2,13 +2,14 @@
    "configurations": [
       {
          "name": "Linux",
+         "compilerPath": "/usr/bin/clang",
+         "intelliSenseMode": "clang-x64",
+         "cppStandard": "c++23",
          "includePath": [
-            "${workspaceFolder}/**"
-         ],
-         "defines": [],
-         "compilerPath": "/usr/bin/clang++",
-         "cppStandard": "c++20",
-         "intelliSenseMode": "clang-x64"
+            "${workspaceFolder}",
+            "${workspaceFolder}/ZenUnitLibraryTests",
+            "/usr/local/include/ZenUnitAndMetalMock"
+         ]
       }
    ],
    "version": 4

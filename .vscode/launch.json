@@ -1,27 +1,45 @@
 {
    "version": "0.2.0",
-   "configurations":
-   [
+   "configurations": [
       {
-         "name": "GDB Debug ZenUnitLibraryTests",
+         "name": "Launch GBD Debugger",
          "type": "cppdbg",
          "request": "launch",
-         "preLaunchTask": "Ninja Build Debug",
-         "cwd": "${workspaceRoot}",
-         "program": "Debug/ZenUnitLibraryTests/ZenUnitLibraryTests",
-         "linux": { "MIMode": "gdb" }
+         "program": "${workspaceRoot}/Debug/ZenUnitLibraryTestsTests/ZenUnitLibraryTestsTests",
+         "args": [],
+         "stopAtEntry": false,
+         "cwd": "${fileDirname}",
+         "environment": [],
+         "externalConsole": false,
+         "MIMode": "gdb",
+         "setupCommands": [
+            {
+               "description": "Enable pretty-printing for gdb",
+               "text": "-enable-pretty-printing",
+               "ignoreFailures": true
+            },
+            {
+               "description": "Set Disassembly Flavor to Intel",
+               "text": "-gdb-set disassembly-flavor intel",
+               "ignoreFailures": true
+            }
+         ],
+         "preLaunchTask": "Build Debug",
+         "miDebuggerPath": "gdb"
       },
-      {
-         "name": "Debug Python",
-         "type": "python",
-         "python": "/usr/bin/python",
-         "request": "launch",
-         "program": "${file}",
-         "args": [ "" ],
-         "env": { "PYTHONPATH": ".." },
-         "stopOnEntry": false,
-         "console": "integratedTerminal",
-         "cwd": "${fileDirname}"
-      }
+      // {
+      //    "name": "Launch LLDB Debugger",
+      //    "type": "cppdbg",
+      //    "request": "launch",
+      //    "program": "${workspaceRoot}/Debug/ZenUnitLibraryTestsTests/ZenUnitLibraryTestsTests",
+      //    "args": [],
+      //    "stopAtEntry": false,
+      //    "cwd": "${fileDirname}",
+      //    "environment": [],
+      //    "externalConsole": false,
+      //    "MIMode": "lldb",
+      //    "miDebuggerPath": "/usr/bin/lld",
+      //    "preLaunchTask": "Build Debug"
+      // }
    ]
 }

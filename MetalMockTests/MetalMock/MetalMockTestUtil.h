@@ -7,7 +7,7 @@ struct MetalMockTestUtils
    {
       for (size_t i = 0; i < n; ++i)
       {
-         forward<Callable>(callable)();
+         std::forward<Callable>(callable)();
       }
    }
 
