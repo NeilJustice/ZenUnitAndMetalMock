@@ -18,12 +18,13 @@ source_group("" FILES
 file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitExamples ${sourceFilePaths})
-if(UNIX AND NOT APPLE)
+if(UNIX)
+   target_precompile_headers(ZenUnitExamples PRIVATE pch.h)
    target_link_libraries(ZenUnitExamples stdc++fs)
+elseif(MSVC)
+   IfMSVCEnablePrecompiledHeaders()
+   IfMSVCAddPostBuildStepToRunTests()
 endif()
-
-IfMSVCEnablePrecompiledHeaders()
-IfMSVCAddPostBuildStepToRunTests()
 
 if(UNIX AND NOT APPLE)
    if(LCovCodeCoverageMode)

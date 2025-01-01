@@ -13,7 +13,11 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 source_group("" FILES ${sourceFilePaths})
 
 add_library(ZenUnitTestUtils ${sourceFilePaths})
-IfMSVCEnablePrecompiledHeaders()
+if(UNIX)
+   target_precompile_headers(ZenUnitTestUtils PRIVATE pch.h)
+elseif(MSVC)
+   IfMSVCEnablePrecompiledHeaders()
+endif()
 
 if(UNIX)
    if(LCovCodeCoverageMode)

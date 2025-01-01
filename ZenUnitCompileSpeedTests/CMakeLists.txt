@@ -15,7 +15,11 @@ if(UNIX AND NOT APPLE)
    target_link_libraries(ZenUnitCompileSpeedTests stdc++fs)
 endif()
 
-IfMSVCEnablePrecompiledHeaders()
+if(UNIX)
+   target_precompile_headers(ZenUnitCompileSpeedTests PRIVATE pch.h)
+elseif(MSVC)
+   IfMSVCEnablePrecompiledHeaders()
+endif()
 
 if(UNIX AND NOT APPLE)
    if(LCovCodeCoverageMode)
