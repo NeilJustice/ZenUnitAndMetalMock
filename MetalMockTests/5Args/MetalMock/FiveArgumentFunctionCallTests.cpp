@@ -1,47 +1,50 @@
 #include "pch.h"
-
+#include "MetalMockTests/MetalMock/T.h"
 
 namespace MetalMock
 {
+   namespace A5T
+   {
+      const T<1> DV1;
+      const T<2> DV2;
+      const T<3> DV3;
+      const T<4> DV4;
+      const T<5> DV5;
+      const T<1> V1 = T<1>(true);
+      const T<2> V2 = T<2>(true);
+      const T<3> V3 = T<3>(true);
+      const T<4> V4 = T<4>(true);
+      const T<5> V5 = T<5>(true);
+   }
+
    TESTS(FiveArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
    AFACT(FiveArgConstructor_CopiesValuesToDecayTypeFields)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    EVIDENCE
 
-   const T<1> DV1;
-   const T<2> DV2;
-   const T<3> DV3;
-   const T<4> DV4;
-   const T<5> DV5;
-   const T<1> V1 = T<1>(true);
-   const T<2> V2 = T<2>(true);
-   const T<3> V3 = T<3>(true);
-   const T<4> V4 = T<4>(true);
-   const T<5> V5 = T<5>(true);
-
    using Call5 = FiveArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>, T<5>>;
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call5 fiveArgumentFunctionCall;
-      ARE_EQUAL(DV1, fiveArgumentFunctionCall.arg1.value);
-      ARE_EQUAL(DV2, fiveArgumentFunctionCall.arg2.value);
-      ARE_EQUAL(DV3, fiveArgumentFunctionCall.arg3.value);
-      ARE_EQUAL(DV4, fiveArgumentFunctionCall.arg4.value);
-      ARE_EQUAL(DV5, fiveArgumentFunctionCall.arg5.value);
+      ARE_EQUAL(A5T::DV1, fiveArgumentFunctionCall.arg1.value);
+      ARE_EQUAL(A5T::DV2, fiveArgumentFunctionCall.arg2.value);
+      ARE_EQUAL(A5T::DV3, fiveArgumentFunctionCall.arg3.value);
+      ARE_EQUAL(A5T::DV4, fiveArgumentFunctionCall.arg4.value);
+      ARE_EQUAL(A5T::DV5, fiveArgumentFunctionCall.arg5.value);
    }
 
    TEST(FiveArgConstructor_CopiesValuesToDecayTypeFields)
    {
       const FiveArgumentFunctionCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&, const T<5>&>
-         call(V1, V2, V3, V4, V5);
+         call(A5T::V1, A5T::V2, A5T::V3, A5T::V4, A5T::V5);
       //
-      ARE_COPIES(V1, call.arg1.value);
-      ARE_COPIES(V2, call.arg2.value);
-      ARE_COPIES(V3, call.arg3.value);
-      ARE_COPIES(V4, call.arg4.value);
-      ARE_COPIES(V5, call.arg5.value);
+      ARE_COPIES(A5T::V1, call.arg1.value);
+      ARE_COPIES(A5T::V2, call.arg2.value);
+      ARE_COPIES(A5T::V3, call.arg3.value);
+      ARE_COPIES(A5T::V4, call.arg4.value);
+      ARE_COPIES(A5T::V5, call.arg5.value);
       IS_TRUE((is_same<T<1>, decltype(call.arg1.value)>::value));
       IS_TRUE((is_same<T<2>, decltype(call.arg2.value)>::value));
       IS_TRUE((is_same<T<3>, decltype(call.arg3.value)>::value));
@@ -52,11 +55,11 @@ namespace MetalMock
    TEST(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(Call5);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg1, V1);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg2, V2);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg3, V3);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg4, V4);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg5, V5);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg1, A5T::V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg2, A5T::V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg3, A5T::V3);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg4, A5T::V4);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call5, arg5, A5T::V5);
    }
 
    RUN_TESTS(FiveArgumentFunctionCallTests)
@@ -126,21 +129,21 @@ namespace MetalMock
       const T<4> VF4 = T<4>(false);
       const T<5> VF5 = T<5>(false);
 
-      const CallRef5 callRef(V1, V2, V3, V4, V5);
+      const CallRef5 callRef(A5T::V1, A5T::V2, A5T::V3, A5T::V4, A5T::V5);
 
-      const CallRef5 callRef_arg1(VF1, V2, V3, V4, V5);
+      const CallRef5 callRef_arg1(VF1, A5T::V2, A5T::V3, A5T::V4, A5T::V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "arg1");
 
-      const CallRef5 callRef_arg2(V1, VF2, V3, V4, V5);
+      const CallRef5 callRef_arg2(A5T::V1, VF2, A5T::V3, A5T::V4, A5T::V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg2); }, "arg2");
 
-      const CallRef5 callRef_arg3(V1, V2, VF3, V4, V5);
+      const CallRef5 callRef_arg3(A5T::V1, A5T::V2, VF3, A5T::V4, A5T::V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg3); }, "arg3");
 
-      const CallRef5 callRef_arg4(V1, V2, V3, VF4, V5);
+      const CallRef5 callRef_arg4(A5T::V1, A5T::V2, A5T::V3, VF4, A5T::V5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg4); }, "arg4");
 
-      const CallRef5 callRef_arg5(V1, V2, V3, V4, VF5);
+      const CallRef5 callRef_arg5(A5T::V1, A5T::V2, A5T::V3, A5T::V4, VF5);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg5); }, "arg5");
    }
 

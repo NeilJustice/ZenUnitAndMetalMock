@@ -51,6 +51,9 @@ endif()
 
 if(UNIX)
    target_precompile_headers(MetalMockTests PRIVATE pch.h)
+
+   set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD ON)
+   set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD_BATCH_SIZE 20)
 elseif(MSVC)
    set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD ON)
    set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD_BATCH_SIZE 4)

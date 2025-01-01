@@ -1,42 +1,46 @@
 #include "pch.h"
+#include "MetalMockTests/MetalMock/T.h"
 
 namespace MetalMock
 {
+   namespace A4T
+   {
+      const T<1> DV1;
+      const T<2> DV2;
+      const T<3> DV3;
+      const T<4> DV4;
+      const T<1> V1 = T<1>(true);
+      const T<2> V2 = T<2>(true);
+      const T<3> V3 = T<3>(true);
+      const T<4> V4 = T<4>(true);
+   }
+
    TESTS(FourArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesFields)
    AFACT(FourArgConstructor_CopiesValuesToDecayTypeFields)
    AFACT(ZenUnitEqualizer_CallsAreEqualOnEachField)
    EVIDENCE
 
-   const T<1> DV1;
-   const T<2> DV2;
-   const T<3> DV3;
-   const T<4> DV4;
-   const T<1> V1 = T<1>(true);
-   const T<2> V2 = T<2>(true);
-   const T<3> V3 = T<3>(true);
-   const T<4> V4 = T<4>(true);
-
    using Call4 = FourArgumentFunctionCall<T<1>, T<2>, T<3>, T<4>>;
 
    TEST(DefaultConstructor_DefaultInitializesFields)
    {
       const Call4 fourArgumentFunctionCall;
-      ARE_EQUAL(DV1, fourArgumentFunctionCall.arg1.value);
-      ARE_EQUAL(DV2, fourArgumentFunctionCall.arg2.value);
-      ARE_EQUAL(DV3, fourArgumentFunctionCall.arg3.value);
-      ARE_EQUAL(DV4, fourArgumentFunctionCall.arg4.value);
+      ARE_EQUAL(A4T::DV1, fourArgumentFunctionCall.arg1.value);
+      ARE_EQUAL(A4T::DV2, fourArgumentFunctionCall.arg2.value);
+      ARE_EQUAL(A4T::DV3, fourArgumentFunctionCall.arg3.value);
+      ARE_EQUAL(A4T::DV4, fourArgumentFunctionCall.arg4.value);
    }
 
    TEST(FourArgConstructor_CopiesValuesToDecayTypeFields)
    {
       const FourArgumentFunctionCall<const T<1>&, const T<2>&, const T<3>&, const T<4>&>
-         call(V1, V2, V3, V4);
+         call(A4T::V1, A4T::V2, A4T::V3, A4T::V4);
       //
-      ARE_COPIES(V1, call.arg1.value);
-      ARE_COPIES(V2, call.arg2.value);
-      ARE_COPIES(V3, call.arg3.value);
-      ARE_COPIES(V4, call.arg4.value);
+      ARE_COPIES(A4T::V1, call.arg1.value);
+      ARE_COPIES(A4T::V2, call.arg2.value);
+      ARE_COPIES(A4T::V3, call.arg3.value);
+      ARE_COPIES(A4T::V4, call.arg4.value);
       IS_TRUE((is_same<T<1>, decltype(call.arg1.value)>::value));
       IS_TRUE((is_same<T<2>, decltype(call.arg2.value)>::value));
       IS_TRUE((is_same<T<3>, decltype(call.arg3.value)>::value));
@@ -46,10 +50,10 @@ namespace MetalMock
    TEST(ZenUnitEqualizer_CallsAreEqualOnEachField)
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(Call4);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg1, V1);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg2, V2);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg3, V3);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg4, V4);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg1, A4T::V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg2, A4T::V2);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg3, A4T::V3);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call4, arg4, A4T::V4);
    }
 
    RUN_TESTS(FourArgumentFunctionCallTests)

@@ -1,9 +1,13 @@
 #include "pch.h"
+#include "MetalMockTests/MetalMock/T.h"
 
 namespace MetalMock
 {
-   const T<1> DV1;
-   const T<1> V1 = T<1>(true);
+   namespace A1T
+   {
+      const T<1> DV1;
+      const T<1> V1 = T<1>(true);
+   }
 
    TESTS(ArgumentFunctionCallTests)
    AFACT(DefaultConstructor_DefaultInitializesArg)
@@ -16,21 +20,21 @@ namespace MetalMock
    TEST(DefaultConstructor_DefaultInitializesArg)
    {
       const Call1 intArgumentFunctionCall;
-      ARE_EQUAL(DV1, intArgumentFunctionCall.argument.value);
+      ARE_EQUAL(A1T::DV1, intArgumentFunctionCall.argument.value);
    }
 
    TEST(OneArgConstructor_CopiesArgToDecayedTypeArgField)
    {
-      const OneArgumentFunctionCall<const T<1>&> call(V1);
+      const OneArgumentFunctionCall<const T<1>&> call(A1T::V1);
       //
-      ARE_COPIES(V1, call.argument.value);
+      ARE_COPIES(A1T::V1, call.argument.value);
       IS_TRUE((is_same<T<1>, decltype(call.argument.value)>::value));
    }
 
    TEST(ZenUnitEqualizer_ThrowsIfArg1NotEqual)
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(Call1);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call1, argument, V1);
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Call1, argument, A1T::V1);
    }
 
    RUN_TESTS(ArgumentFunctionCallTests)
@@ -49,13 +53,13 @@ namespace MetalMock
 
    TEST(Constructor_SetsReferences)
    {
-      const CallRef1 callRef(V1);
-      ARE_SAME(V1, callRef.argumentReference.value);
+      const CallRef1 callRef(A1T::V1);
+      ARE_SAME(A1T::V1, callRef.argumentReference.value);
    }
 
    TEST(CallConstructor_SetsReferencesToArgumentFunctionCallArg)
    {
-      const Call1 call(V1);
+      const Call1 call(A1T::V1);
       //
       const CallRef1 callRef(call);
       //
@@ -79,7 +83,7 @@ namespace MetalMock
    {
       const T<1> VF1 = T<1>(false);
 
-      const CallRef1 callRef(V1);
+      const CallRef1 callRef(A1T::V1);
       const CallRef1 callRef_arg1(VF1);
       AssertARE_EQUALThrowsAnomalyContaining([&] { ARE_EQUAL(callRef, callRef_arg1); }, "argument");
    }

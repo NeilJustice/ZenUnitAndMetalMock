@@ -58,6 +58,9 @@ endif()
 
 if(UNIX)
    target_precompile_headers(ZenUnitLibraryTests PRIVATE pch.h)
+
+   set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD ON)
+   set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD_BATCH_SIZE 30)
 elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
    set_target_properties(ZenUnitLibraryTests PROPERTIES UNITY_BUILD ON)
