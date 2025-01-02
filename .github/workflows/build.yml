@@ -53,7 +53,7 @@ jobs:
           python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
             --cmake-generator=Ninja \
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
-            --cmake-definitions="-DFastLinuxDebugBuildMode=ON"
+            --cmake-definitions="-DFastLinuxDebugBuildMode=ON -DFastLinuxReleaseBuildMode=ON"
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
           PYTHONPATH: .
