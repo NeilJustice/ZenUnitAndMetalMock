@@ -32,10 +32,10 @@ def run_pylint_on_all_files_in_parallel() -> None:
 
 def run_all_with_coverage(testsProjectName: str, omitPattern: str) -> None:
    print(f'Running {testsProjectName}/RunAll.py with coverage from', os.getcwd())
-   Process.fail_fast_run(f'coverage run --branch {testsProjectName}/RunAll.py')
-   reportExitCode = Process.run_and_get_exit_code(f'coverage report --omit="{omitPattern}" --fail-under=100 --show-missing')
-   Process.fail_fast_run(f'coverage xml --omit="{omitPattern}" -o {testsProjectName}/CoberturaCodeCoverageResults_{testsProjectName}.xml')
-   Process.fail_fast_run(f'coverage html --directory={testsProjectName}/CodeCoverageHTMLReport --title="{testsProjectName} Code Coverage"')
+   Process.fail_fast_run(f'python -m coverage run --branch {testsProjectName}/RunAll.py')
+   reportExitCode = Process.run_and_get_exit_code(f'python -m coverage report --omit="{omitPattern}" --fail-under=100 --show-missing')
+   Process.fail_fast_run(f'python -m coverage xml --omit="{omitPattern}" -o {testsProjectName}/CoberturaCodeCoverageResults_{testsProjectName}.xml')
+   Process.fail_fast_run(f'python -m coverage html --directory={testsProjectName}/CodeCoverageHTMLReport --title="{testsProjectName} Code Coverage"')
    if reportExitCode == 0:
       print('Success. Code coverage is 100%.')
    else:

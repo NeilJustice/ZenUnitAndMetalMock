@@ -103,12 +103,12 @@ class PythonTests(unittest.TestCase):
          self.assertEqual(2, len(printMock.call_args_list))
          printMock.assert_has_calls([call(f'Running {testsProjectName}/RunAll.py with coverage from', currentWorkingDirectory)])
          Process.run_and_get_exit_code.assert_called_once_with(
-            f'coverage report --omit="{omitPattern}" --fail-under=100 --show-missing')
+            f'python -m coverage report --omit="{omitPattern}" --fail-under=100 --show-missing')
          self.assertEqual(3, len(Process.fail_fast_run.call_args_list))
          Process.fail_fast_run.assert_has_calls([
-            call(f'coverage run --branch {testsProjectName}/RunAll.py'),
-            call(f'coverage xml --omit="{omitPattern}" -o {testsProjectName}/CoberturaCodeCoverageResults_{testsProjectName}.xml'),
-            call(f'coverage html --directory={testsProjectName}/CodeCoverageHTMLReport --title="{testsProjectName} Code Coverage"')])
+            call(f'python -m coverage run --branch {testsProjectName}/RunAll.py'),
+            call(f'python -m coverage xml --omit="{omitPattern}" -o {testsProjectName}/CoberturaCodeCoverageResults_{testsProjectName}.xml'),
+            call(f'python -m coverage html --directory={testsProjectName}/CodeCoverageHTMLReport --title="{testsProjectName} Code Coverage"')])
          printMock.assert_has_calls([call(expectedConcludingPrint)])
          sys.exit.assert_called_once_with(reportExitCode)
       expectedFailureMessage = 'Failure. Code coverage is less than 100%.'
