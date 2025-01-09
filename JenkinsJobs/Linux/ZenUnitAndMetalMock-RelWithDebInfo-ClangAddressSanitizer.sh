@@ -6,4 +6,4 @@ export PYTHONPATH=.
 python -u ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
    --cmake-generator=Ninja \
    --cmake-build-type=RelWithDebInfo \
-   --cmake-definitions="-DClangAddressSanitizerMode=ON -DFastLinuxRelWithDebInfoBuildMode=ON"
+   --cmake-definitions="-DClangAddressSanitizerMode=ON -DFastLinuxReleaseBuildMode=ON"
