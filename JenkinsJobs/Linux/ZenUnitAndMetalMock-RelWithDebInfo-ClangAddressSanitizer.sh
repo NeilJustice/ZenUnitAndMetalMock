@@ -5,5 +5,5 @@ export CXX=/usr/bin/clang++
 export PYTHONPATH=.
 python -u ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
    --cmake-generator=Ninja \
-   --cmake-build-type=Release \
-   --cmake-definitions="-DClangAddressSanitizerMode=ON -DFastLinuxReleaseBuildMode=ON"
+   --cmake-build-type=RelWithDebInfo \
+   --cmake-definitions="-DClangAddressSanitizerMode=ON -DFastLinuxRelWithDebInfoBuildMode=ON"
