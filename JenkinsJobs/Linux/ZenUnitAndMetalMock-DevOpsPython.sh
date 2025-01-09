@@ -2,4 +2,4 @@
 set -ev
 
 export PYTHONPATH=.
-python ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py
+python -u ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py
