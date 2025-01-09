@@ -51,7 +51,6 @@ jobs:
       - name: Run BuildAndTestZenUnitAndMetalMock.py in non code coverage mode if clang++ Debug/Release or g++ Debug
         run: |
           python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
-            --cmake-generator=Ninja \
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions="-DFastLinuxDebugBuildMode=ON -DFastLinuxReleaseBuildMode=ON"
         env:
@@ -62,7 +61,6 @@ jobs:
       - name: Run BuildAndTestZenUnitAndMetalMock.py in code coverage mode if g++ Release
         run: |
           python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
-            --cmake-generator=Ninja \
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions="-DLCovCodeCoverageMode=ON"
         env:
