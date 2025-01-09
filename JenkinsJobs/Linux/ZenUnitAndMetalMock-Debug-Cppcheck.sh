@@ -10,6 +10,7 @@ cppcheck \
    -DTEST \
    -DTHEN_RUN_TEMPLATE_TESTS \
    -DCOMMA \
+   -D_DEBUG \
    -DTEST \
    -DTESTS \
    -DAFACT \
