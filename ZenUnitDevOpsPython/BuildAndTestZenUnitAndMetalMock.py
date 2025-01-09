@@ -1,4 +1,4 @@
-"""Usage: BuildAndTestZenUnitAndMetalMock.py --cmake-generator=<CMakeGenerator> --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>"""
+"""Usage: BuildAndTestZenUnitAndMetalMock.py --cmake-build-type=<CMakeBuildType> --cmake-definitions=<QuotedSpaceSeparatedCMakeDefinitions>"""
 import os
 import platform
 import sys
@@ -10,12 +10,11 @@ def main() -> int:
    runningSysArgvMessage = f'Running {sys.argv}\n'
    print(runningSysArgvMessage)
    docoptDictionary: docopt.Dict = docopt.docopt(__doc__)
-   cmakeGenerator: Any = docoptDictionary['--cmake-generator']
    cmakeBuildType: Any = docoptDictionary['--cmake-build-type']
    cmakeDefinitions: Any = docoptDictionary['--cmake-definitions']
    platformSystem: Any = platform.system().casefold()
    if platformSystem == 'linux':
-      linux_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions)
+      linux_cmake_build(cmakeBuildType, cmakeDefinitions)
       Process.fail_fast_run('MetalMockExamples/MetalMockExamples --test-runs=2 --random --max-test-milliseconds=200')
       Process.fail_fast_run('MetalMockTests/MetalMockTests --test-runs=2 --random --max-test-milliseconds=200')
       Process.fail_fast_run('ZenUnitCompileSpeedTests/ZenUnitCompileSpeedTests --test-runs=2 --random --max-test-milliseconds=200')
@@ -24,7 +23,7 @@ def main() -> int:
       Process.fail_fast_run('ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests --test-runs=2 --random --max-test-milliseconds=200')
       os.chdir('..')
    else:
-      windows_cmake_build(cmakeGenerator, cmakeBuildType, cmakeDefinitions) # Runs all tests once randomly as post-build events
+      windows_cmake_build(cmakeBuildType, cmakeDefinitions) # Runs all tests once randomly as post-build events
       # Run all tests randomly a second time
       Process.fail_fast_run(f'MetalMockExamples/{cmakeBuildType}/MetalMockExamples.exe --random --max-test-milliseconds=200')
       Process.fail_fast_run(f'MetalMockTests/{cmakeBuildType}/MetalMockTests.exe --random --max-test-milliseconds=200')
@@ -34,12 +33,12 @@ def main() -> int:
       Process.fail_fast_run(f'ZenUnitUtilsAndAssertionTests/{cmakeBuildType}/ZenUnitUtilsAndAssertionTests.exe --random --max-test-milliseconds=200')
    return 0
 
-def linux_cmake_build(cmakeGenerator: str, cmakeBuildType: str, cmakeDefinitions: str) -> None:
-   CMake.generate(cmakeBuildType, cmakeGenerator, cmakeBuildType, cmakeDefinitions, '..')
+def linux_cmake_build(cmakeBuildType: str, cmakeDefinitions: str) -> None:
+   CMake.generate(cmakeBuildType, 'Ninja', cmakeBuildType, cmakeDefinitions, '..')
    Process.fail_fast_run('ninja -v')
 
-def windows_cmake_build(cmakeGenerator: str, cmakeBuildType: str, cmakeDefinitions: str) -> None:
-   CMake.generate('.', cmakeGenerator, cmakeBuildType, cmakeDefinitions, '.')
+def windows_cmake_build(cmakeBuildType: str, cmakeDefinitions: str) -> None:
+   CMake.generate('.', 'Visual Studio 17 2022', cmakeBuildType, cmakeDefinitions, '.')
    cmakeBuildCommand = f'cmake.exe --build . --config {cmakeBuildType}'
    Process.fail_fast_run(cmakeBuildCommand)
 
@@ -48,6 +47,6 @@ if __name__ == "__main__": # pragma nocover
    sys.exit(main())
 
 # Example command line arguments:
-# --cmake-generator="Visual Studio 17 2022" --cmake-build-type=Debug --cmake-definitions=""
+# --cmake-build-type=Debug --cmake-definitions=""
 # Working directory:
 # D:\Code\ZenUnitAndMetalMock

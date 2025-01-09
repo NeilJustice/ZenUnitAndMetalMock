@@ -11,7 +11,7 @@
     <Name>ZenUnitDevOpsPython</Name>
     <RootNamespace>ZenUnitDevOpsPython</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--cmake-generator="Visual Studio 17 2022" --cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
+    <CommandLineArguments>--cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <WorkingDirectory>D:\Code\ZenUnitAndMetalMock</WorkingDirectory>
