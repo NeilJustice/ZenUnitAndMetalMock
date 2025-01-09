@@ -1,5 +1,5 @@
-#!/bin/bash
-set -v
+#!/usr/bin/bash
+set -ev
 
 cores=$(grep -c ^processor /proc/cpuinfo)
 cppcheck \
