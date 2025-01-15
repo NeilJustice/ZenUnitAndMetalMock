@@ -46,10 +46,8 @@ namespace ZenUnit
    STARTUP
    {
       // Function Callers
-      _testRunResult._memberForEacherSkippedTests.reset(
-         _memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
-      _testRunResult._memberForEacherTestClassResults.reset(
-         _memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
+      _testRunResult._memberForEacherSkippedTests.reset(_memberForEacherSkippedTestsMock = new TypedefMemberForEacherSkippedTestsMock);
+      _testRunResult._memberForEacherTestClassResults.reset(_memberForEacherTestClassResultsMock = new TypedefMemberForEacherTestClassResultsMock);
       // Constant Components
       _testRunResult._console.reset(_consoleMock = new ConsoleMock);
       _testRunResult._watch.reset(_watchMock = new WatchMock);
