@@ -44,10 +44,7 @@ ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
 .vs/
 *.dir/
 x64/
-Win32/
 Debug/
-Release/
-MinSizeRel/
 RelWithDebInfo/
 *.cache
 *.dat
@@ -74,25 +71,7 @@ RelWithDebInfo/
 install_manifest.txt
 
 # Cppcheck
-*.a1
-*.a2
-*.a3
-*.a4
-*.a5
-*.a6
-*.a7
-*.a9
-*.a11
-*.a13
-*.diagsession
-*.s2
-*.s4
-*.s6
-*.s8
-*.s10
-*.s12
-*.s14
-Cppcheck/files.txt
+Cppcheck/
 cppcheck_results.txt
 
 # VTune
