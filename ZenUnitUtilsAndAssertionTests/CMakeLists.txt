@@ -27,10 +27,6 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 add_executable(ZenUnitUtilsAndAssertionTests ${sourceFilePaths})
 target_link_libraries(ZenUnitUtilsAndAssertionTests ZenUnitTestUtils)
 
-if(UNIX AND NOT APPLE)
-   target_link_libraries(ZenUnitUtilsAndAssertionTests stdc++fs)
-endif()
-
 if(EXISTS ${GoogleBenchmarkLibraryPath})
    target_link_libraries(ZenUnitUtilsAndAssertionTests ${GoogleBenchmarkLibraryPath})
 endif()

@@ -11,9 +11,6 @@ source_group("" FILES ${sourceFilePaths})
 add_executable(ZenUnitCompileSpeedTests ${sourceFilePaths})
 
 target_link_libraries(ZenUnitCompileSpeedTests)
-if(UNIX AND NOT APPLE)
-   target_link_libraries(ZenUnitCompileSpeedTests stdc++fs)
-endif()
 
 if(UNIX)
    target_precompile_headers(ZenUnitCompileSpeedTests PRIVATE pch.h)

@@ -9,9 +9,6 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 source_group("" FILES ${sourceFilePaths})
 
 add_executable(MetalMockExamples ${sourceFilePaths})
-if(UNIX AND NOT APPLE)
-   target_link_libraries(MetalMockExamples stdc++fs)
-endif()
 
 if(UNIX)
    target_precompile_headers(MetalMockExamples PRIVATE pch.h)

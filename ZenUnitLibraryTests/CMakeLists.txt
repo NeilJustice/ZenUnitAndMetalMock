@@ -45,10 +45,6 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 add_executable(ZenUnitLibraryTests ${sourceFilePaths})
 target_link_libraries(ZenUnitLibraryTests ZenUnitTestUtils)
 
-if(UNIX AND NOT APPLE)
-   target_link_libraries(ZenUnitLibraryTests stdc++fs)
-endif()
-
 if(EXISTS ${GoogleBenchmarkLibraryPath})
    target_link_libraries(MetalMockTests ${GoogleBenchmarkLibraryPath})
 endif()

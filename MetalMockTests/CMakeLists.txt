@@ -38,10 +38,6 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 add_executable(MetalMockTests ${sourceFilePaths})
 target_link_libraries(MetalMockTests ZenUnitTestUtils)
 
-if(UNIX AND NOT APPLE)
-   target_link_libraries(MetalMockTests stdc++fs)
-endif()
-
 if(EXISTS ${GoogleBenchmarkLibraryPath})
    target_link_libraries(MetalMockTests ${GoogleBenchmarkLibraryPath})
 endif()
