@@ -343,7 +343,7 @@ namespace ZenUnit
 
       const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>();
       //
-      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase([](Test*)
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase([](Test*) // LCOV_EXCL_LINE
       {
          throw MetalMock::UnexpectedCallException("MetalMockedFunctionSignature");
       }, _testMock.get(), testPhase);
