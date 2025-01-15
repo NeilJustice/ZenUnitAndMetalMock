@@ -83,16 +83,11 @@ namespace ZenUnit
    STARTUP
    {
       // Function Callers
-      _zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines.reset(
-         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMockType);
-      _zenUnitTestRunner._caller_RunTestClasses.reset(
-         _caller_RunTestClassesMock = new _caller_RunTestClassesMockType);
-      _zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed.reset(
-         _caller_SetNextGlobalZenUnitModeRandomSeedMock = new _caller_SetNextGlobalZenUnitModeRandomSeedMockType);
-      _zenUnitTestRunner._caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(
-         _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMockType);
-      _zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests.reset(
-         _nTimesMemberFunctionAccumulator_RunTestsMock = new NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>);
+      _zenUnitTestRunner._caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines.reset(_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMock = new _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesMockType);
+      _zenUnitTestRunner._caller_RunTestClasses.reset(_caller_RunTestClassesMock = new _caller_RunTestClassesMockType);
+      _zenUnitTestRunner._caller_SetNextGlobalZenUnitModeRandomSeed.reset(_caller_SetNextGlobalZenUnitModeRandomSeedMock = new _caller_SetNextGlobalZenUnitModeRandomSeedMockType);
+      _zenUnitTestRunner._caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused.reset(_caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMock = new _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedMockType);
+      _zenUnitTestRunner._nTimesMemberFunctionAccumulator_RunTests.reset(_nTimesMemberFunctionAccumulator_RunTestsMock = new NTimesMemberFunctionAccumulatorMock<int, ZenUnitTestRunner>);
       // Function Pointers
 #if defined _WIN32 && defined _DEBUG
       _zenUnitTestRunner._call_CrtSetReportHook = BIND_1ARG_METALMOCK_OBJECT(_CrtSetReportHookMock);
