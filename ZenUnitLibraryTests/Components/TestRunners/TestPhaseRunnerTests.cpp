@@ -52,9 +52,7 @@ namespace ZenUnit
       // Function Pointers
       _testPhaseRunner._call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
       // Function Callers
-      _testPhaseRunner._caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess.reset(
-         _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = new VoidTwoArgMemberFunctionCallerMock<
-         TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
+      _testPhaseRunner._caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess.reset(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock = new VoidTwoArgMemberFunctionCallerMock<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>);
       // Constant Components
       _testPhaseRunner._console.reset(_consoleMock = new ConsoleMock);
       _testPhaseRunner._testPhaseTranslator.reset(_testPhaseTranslatorMock = new TestPhaseTranslatorMock);
