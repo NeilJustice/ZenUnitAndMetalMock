@@ -6,7 +6,6 @@
 using namespace std;
 
 // ZenUnitTestUtils
-#include "ZenUnitTestUtils/IntializerConstructable.h"
 #include "ZenUnitTestUtils/TestUtil.h"
 #include "ZenUnitTestUtils/UserType.h"
 #include "ZenUnitTestUtils/OnlyZenUnitEqualizerUserType.h"
