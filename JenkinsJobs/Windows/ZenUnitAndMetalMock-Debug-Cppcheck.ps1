@@ -3,6 +3,7 @@ cppcheck.exe `
    --cppcheck-build-dir=Cppcheck `
    --enable=all `
    --suppressions-list=CppcheckSuppressions.txt `
+   -D_DEBUG `
    -DCOMMA `
    -DAFACT `
    -DFACTS `
