@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestRunResultEqualizerAndRandom.h"
 
 namespace ZenUnit
