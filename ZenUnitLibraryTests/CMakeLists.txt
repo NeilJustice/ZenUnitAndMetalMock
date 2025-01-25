@@ -66,7 +66,7 @@ elseif(MSVC)
    IfMSVCAddPostBuildStepToRunTests()
 endif()
 
-if(UNIX AND NOT APPLE)
+if(UNIX)
    if(LCovCodeCoverageMode)
      target_link_libraries(ZenUnitLibraryTests CodeCovLibraryInterface)
    endif()

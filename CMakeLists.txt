@@ -70,7 +70,7 @@ add_subdirectory(MetalMockTests)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;RelWithDebInfo")
 
-if(UNIX AND NOT APPLE)
+if(UNIX)
    include(ProcessorCount)
    ProcessorCount(numberOfThreads)
    add_custom_target(clang-tidy COMMAND

@@ -18,7 +18,7 @@ elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
 endif()
 
-if(UNIX AND NOT APPLE)
+if(UNIX)
    if(LCovCodeCoverageMode)
      target_link_libraries(ZenUnitCompileSpeedTests CodeCovLibraryInterface)
    endif()
