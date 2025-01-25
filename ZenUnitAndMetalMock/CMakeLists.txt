@@ -4,7 +4,7 @@ project(ZenUnitAndMetalMock)
 file(GLOB_RECURSE sourceFilePaths ZenUnit.h MetalMock.h)
 source_group("" FILES ${sourceFilePaths})
 
-if(WIN32)
+if(MSVC)
    add_library(ZenUnitAndMetalMock INTERFACE ${sourceFilePaths})
 else()
    add_library(ZenUnitAndMetalMock INTERFACE)

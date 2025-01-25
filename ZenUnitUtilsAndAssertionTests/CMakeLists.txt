@@ -30,7 +30,7 @@ target_link_libraries(ZenUnitUtilsAndAssertionTests ZenUnitTestUtils)
 if(EXISTS ${GoogleBenchmarkLibraryPath})
    target_link_libraries(ZenUnitUtilsAndAssertionTests ${GoogleBenchmarkLibraryPath})
 endif()
-if(WIN32)
+if(MSVC)
    target_link_libraries(ZenUnitUtilsAndAssertionTests shlwapi)
 endif()
 

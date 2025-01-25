@@ -48,7 +48,7 @@ target_link_libraries(ZenUnitLibraryTests ZenUnitTestUtils)
 if(EXISTS ${GoogleBenchmarkLibraryPath})
    target_link_libraries(MetalMockTests ${GoogleBenchmarkLibraryPath})
 endif()
-if(WIN32)
+if(MSVC)
    target_link_libraries(ZenUnitLibraryTests shlwapi)
 endif()
 
