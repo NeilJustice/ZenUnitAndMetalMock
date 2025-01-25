@@ -35,7 +35,7 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          string expectedPattern;
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
          expectedPattern = "1";
 #elif defined _WIN32
          expectedPattern = "0x\\w{16}";
@@ -64,7 +64,7 @@ namespace ZenUnit
       catch (const Anomaly& anomaly)
       {
          string expectedPattern;
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
          expectedPattern = "1";
 #elif defined _WIN32
          expectedPattern = "0x\\w{16}";
@@ -85,7 +85,7 @@ namespace ZenUnit
    {
       const function<void()> stdFunctionA(FunctionA);
 
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 
       THROWS_EXCEPTION(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)",

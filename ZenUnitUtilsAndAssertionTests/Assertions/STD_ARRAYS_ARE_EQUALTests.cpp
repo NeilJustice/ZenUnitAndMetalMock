@@ -59,17 +59,6 @@ namespace ZenUnit
 " Message: \"i=0\"",
 "File.cpp(1)",
 "File.cpp(1)"));
-#elif defined __APPLE__
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
-"Expected: <std::__1::array<" + TypeName + ", 1ul>>",
-"  Actual: <std::__1::array<" + TypeName + ", 1ul>>",
-" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray[0]),
-"  Actual: " + ToStringer::ToString(actualArray[0]),
-" Message: \"i=0\"",
-"File.cpp(1)",
-"File.cpp(1)"));
 #elif defined _WIN32
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
@@ -120,22 +109,11 @@ namespace ZenUnit
       const array<T, 2> expectedArray{ { randomElement1, randomElement1 } };
       const array<T, 2> actualArray{ { randomElement2, randomElement1 } };
       //
-#if defined __linux__ || defined __APPLE____linux__
+#if defined __linux____linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
-" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray[0]),
-"  Actual: " + ToStringer::ToString(actualArray[0]),
-" Message: \"i=0\"",
-"File.cpp(1)",
-"File.cpp(1)"));
-#elif defined __APPLE__
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
-"Expected: <std::__1::array<" + TypeName + ", 2ul>>",
-"  Actual: <std::__1::array<" + TypeName + ", 2ul>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
 "Expected: " + ToStringer::ToString(expectedArray[0]),
 "  Actual: " + ToStringer::ToString(actualArray[0]),
@@ -164,22 +142,11 @@ namespace ZenUnit
       const array<T, 2> expectedArray = { randomElement1, randomElement2 };
       const array<T, 2> actualArray = { randomElement1, randomElement3 };
       //
-#if defined __linux__ || defined __APPLE____linux__
+#if defined __linux____linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
-" Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
-"Expected: " + ToStringer::ToString(expectedArray[1]),
-"  Actual: " + ToStringer::ToString(actualArray[1]),
-" Message: \"i=1\"",
-"File.cpp(1)",
-"File.cpp(1)"));
-#elif defined __APPLE__
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
-"  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
-"Expected: <std::__1::array<" + TypeName + ", 2ul>>",
-"  Actual: <std::__1::array<" + TypeName + ", 2ul>>",
 " Because: ARE_EQUAL(ithExpectedElement, ithActualElement, indexMessage) failed",
 "Expected: " + ToStringer::ToString(expectedArray[1]),
 "  Actual: " + ToStringer::ToString(actualArray[1]),

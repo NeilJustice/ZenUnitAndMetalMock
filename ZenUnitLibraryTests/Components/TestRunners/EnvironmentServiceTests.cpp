@@ -2,7 +2,7 @@
 
 namespace ZenUnit
 {
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 
    TESTS(LinuxEnvironmentServiceTests)
    AFACT(CurrentDirectoryPath_ReturnsCurrentDirectoryPath)

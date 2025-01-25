@@ -55,7 +55,7 @@ namespace ZenUnit
 #define ZENUNIT_VA_ARGS_TEXT(...) ZENUNIT_VA_ARGS_TEXT_IMPL("", __VA_ARGS__)
 
 // NOINLINE boosts instruction cache performance by uninlining error handling code from the hot path
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 #define NOINLINE __attribute__((noinline))
 #elif defined _WIN32
 #define NOINLINE __declspec(noinline)
@@ -856,7 +856,7 @@ namespace ZenUnit
 
       static int CaseInsensitiveStrcmp(std::string_view string1, std::string_view string2) noexcept
       {
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
          int strcmpResult = strcasecmp(string1.data(), string2.data());
 #elif defined _WIN32
          int strcmpResult = _strcmpi(string1.data(), string2.data());
@@ -1110,7 +1110,7 @@ namespace ZenUnit
 
       virtual void SetTextColor(Color color) const
       {
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
          const char* const linuxColor = ColorToLinuxColor(color);
          std::cout << linuxColor;
 #elif defined _WIN32
@@ -1195,7 +1195,7 @@ namespace ZenUnit
       virtual tm TMNow() const
       {
          const std::chrono::time_point<std::chrono::system_clock> nowTimePoint = std::chrono::system_clock::now();
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
          const long nowTimeT = std::chrono::system_clock::to_time_t(nowTimePoint);
          const tm* const tmNow = localtime(&nowTimeT);
          return *tmNow;
@@ -1323,7 +1323,7 @@ namespace ZenUnit
 
       virtual bool DebuggerIsPresentOnWindows() const
       {
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
          return false;
 #elif defined _WIN32
          const int isDebuggerPresentReturnValue = _call_IsDebuggerPresent();
@@ -1472,7 +1472,7 @@ namespace ZenUnit
          return cachedDemangledTypeName;
       }
 
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
       static std::string DemangleTypeName(const char* mangledTypeName)
       {
          int demangleReturnCode = -1;
@@ -4830,7 +4830,7 @@ namespace ZenUnit
    static_assert(std::is_move_constructible_v<TestClassResult>);
    static_assert(std::is_move_assignable_v<TestClassResult>);
 
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
 
    class EnvironmentService
    {

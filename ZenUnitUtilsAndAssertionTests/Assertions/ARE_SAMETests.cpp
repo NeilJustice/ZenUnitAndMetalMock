@@ -48,7 +48,7 @@ namespace ZenUnit
       }
       expectedWhatPatternBuilder << R"()
 Expected: )";
-#if defined __linux__ || defined __APPLE__
+#if defined __linux__
       expectedWhatPatternBuilder << expectedAddress << R"(
   Actual: )" << actualAddress;
 #elif defined _WIN32

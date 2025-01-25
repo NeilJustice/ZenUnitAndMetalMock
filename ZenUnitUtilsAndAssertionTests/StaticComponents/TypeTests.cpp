@@ -33,12 +33,6 @@ namespace ZenUnit
       ARE_EQUAL("char [2]", *Type::GetName("a"));
       const char* const ccp = "hello";
       ARE_EQUAL("char const*", *Type::GetName(ccp));
-#elif defined __APPLE__
-      ARE_EQUAL("std::nullptr_t", *Type::GetName(nullptr));
-      ARE_EQUAL("char [1]", *Type::GetName(""));
-      ARE_EQUAL("char [2]", *Type::GetName("a"));
-      const char* const ccp = "hello";
-      ARE_EQUAL("char const*", *Type::GetName(ccp));
 #elif defined _WIN32
       ARE_EQUAL("std::nullptr_t", *Type::GetName(nullptr));
       ARE_EQUAL("char const [1]", *Type::GetName(""));
@@ -94,11 +88,6 @@ namespace ZenUnit
       ARE_EQUAL("int", *Type::GetName<int>());
 #if defined __linux__
       ARE_EQUAL("decltype(nullptr)", *Type::GetName<nullptr_t>());
-      ARE_EQUAL("char [1]", *Type::GetName<decltype("")>());
-      ARE_EQUAL("char [2]", *Type::GetName<decltype("a")>());
-      ARE_EQUAL("char const*", *Type::GetName<const char*>());
-#elif defined __APPLE__
-      ARE_EQUAL("std::nullptr_t", *Type::GetName<nullptr_t>());
       ARE_EQUAL("char [1]", *Type::GetName<decltype("")>());
       ARE_EQUAL("char [2]", *Type::GetName<decltype("a")>());
       ARE_EQUAL("char const*", *Type::GetName<const char*>());
