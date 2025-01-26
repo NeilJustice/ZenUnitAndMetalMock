@@ -17,7 +17,7 @@ install(DIRECTORY .
 
 if(UNIX)
    add_custom_target(clean_installed_files COMMAND
-      rm -rf ${CMAKE_INSTALL_PREFIX}/include/ZenUnitAndMetalMock)
+      rm -rf /usr/local/include/ZenUnitAndMetalMock)
 elseif(MSVC)
    add_custom_target(clean_installed_files COMMAND
       del /S /Q C:\\include\\ZenUnitAndMetalMock &&
