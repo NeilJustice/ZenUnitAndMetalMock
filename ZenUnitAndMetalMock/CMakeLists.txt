@@ -16,10 +16,10 @@ install(DIRECTORY .
         PATTERN REGEX "CMakeFiles|Debug|Release|RelWithDebInfo|MinSizeRel|x64|ZenUnit.dir" EXCLUDE)
 
 if(UNIX)
-   add_custom_target(clean_installed_files COMMAND
+   add_custom_target(delete_installed_include_files COMMAND
       rm -rf /usr/local/include/ZenUnitAndMetalMock)
 elseif(MSVC)
-   add_custom_target(clean_installed_files COMMAND
+   add_custom_target(delete_installed_include_files COMMAND
       del /S /Q C:\\include\\ZenUnitAndMetalMock &&
       rmdir /S /Q C:\\include\\ZenUnitAndMetalMock)
 endif()
