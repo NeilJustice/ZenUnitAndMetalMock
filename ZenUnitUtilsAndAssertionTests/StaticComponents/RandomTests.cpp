@@ -12,13 +12,19 @@ namespace ZenUnit
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
    AFACT(Random_TIsAnOrderedSet_ReturnsRandomOrderedSet)
    AFACT(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
+
    AFACT(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
    AFACT(RandomNon0_TIsEnum_ReturnsRandomEnumBetween1AndEnumMaxValue)
+
+   AFACT(RandomNonNegative_ReturnsNonNegative)
+
    AFACT(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)
+
    AFACT(RandomNon0NotEqualTo_NotEqualValueIs0_ThrowsInvalidArgument)
    AFACT(RandomNon0NotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualTo0AndNotEqualToTheExceptValue)
    AFACT(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeOneValueTestCase)
    AFACT(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeTwoValueTestCase)
+
    AFACT(Random_Float_ReturnsRandomFloat)
    AFACT(Random_Double_ReturnsRandomDouble)
    AFACT(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
@@ -29,15 +35,21 @@ namespace ZenUnit
    AFACT(Random_WideString_CodeCoverage)
    AFACT(Random_StringView_ReturnsRandomString1Through10)
    AFACT(Random_WideStringView_CodeCoverage)
+
    AFACT(RandomLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
    AFACT(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
+
    AFACT(RandomStringWithLength_ReturnsRandomStringWithLength)
    AFACT(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
+
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+
    AFACT(RandomSizeTBetween_InclusiveLowerBoundEqualsInclusiveUpperBound_ReturnsInclusiveLowerBound)
    AFACT(RandomSizeTBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+
    AFACT(RandomFloatBetween_ReturnsRandomFloatBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomDoubleBetween_ReturnsRandomDoubleBetweenInclusiveLowerBoundAndInclusiveUpperBound)
+
    AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
    FACTS(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue)
    EVIDENCE
@@ -160,6 +172,15 @@ namespace ZenUnit
          EnumType::TwoValue
       };
       SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
+   }
+
+   TEST(RandomNonNegative_ReturnsNonNegative)
+   {
+      const int value = ZenUnit::RandomNonNegative<int>();
+      IS_GREATER_THAN_OR_EQUAL(value, 0);
+
+      const unsigned unsignedValue = ZenUnit::RandomNonNegative<unsigned>();
+      IS_GREATER_THAN_OR_EQUAL(unsignedValue, 0U);
    }
 
    TEST(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)

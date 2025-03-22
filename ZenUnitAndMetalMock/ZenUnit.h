@@ -7812,6 +7812,19 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
+   T RandomNonNegative()
+   {
+      static_assert(!std::is_same_v<T, std::string>);
+      T randomInteger = Random<T>();
+      static const T zeroValue{0};
+      while (randomInteger < zeroValue)
+      {
+         randomInteger = Random<T>();
+      }
+      return randomInteger;
+   }
+
+   template<typename T>
    T RandomNon0NotEqualTo(const T& notEqualValue)
    {
       static const T zeroTValue{0};
