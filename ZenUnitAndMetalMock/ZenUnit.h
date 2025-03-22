@@ -4709,20 +4709,16 @@ namespace ZenUnit
       const Console*,
       TestFailureNumberer*>;
 
-   class RandomGenerator;
-
    class TestClassResult
    {
-      friend class Equalizer<TestClassResult>;
       friend class TestClassResultTests;
-      friend class TestClassResultEqualizerAndRandomTests;
-      friend class SpecificTestClassRunnerTests;
-      friend TestClassResult TestableRandomTestClassResult(const RandomGenerator* randomGenerator);
-      friend TestClassResult TestingNonDefaultTestClassResult();
    private:
+      // Function Callers
       std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
-      std::vector<TestResult> _testResults;
    public:
+      // Mutable Fields
+      std::vector<TestResult> _testResults;
+
       TestClassResult() noexcept
          : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
       {
@@ -4804,7 +4800,10 @@ namespace ZenUnit
          }
       }
 
-      virtual void PrintTestFailures(const ThreeArgForEacherType* threeArgForEacher, const Console* console, TestFailureNumberer* testFailureNumberer) const
+      virtual void PrintTestFailures(
+         const ThreeArgForEacherType* threeArgForEacher, 
+         const Console* console, 
+         TestFailureNumberer* testFailureNumberer) const
       {
          threeArgForEacher->ThreeArgForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
       }
@@ -8629,34 +8628,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          std::vector<std::filesystem::path> randomFilesystemPathVector = RandomVector<std::filesystem::path>();
          return randomFilesystemPathVector;
-      }
-
-      template<typename T>
-      std::vector<T> Vector() const
-      {
-         std::vector<T> randomVectorOfTBetweenSize0And3 = RandomVector<T>();
-         return randomVectorOfTBetweenSize0And3;
-      }
-
-      template<typename T>
-      std::vector<T> NonEmptyVector() const
-      {
-         std::vector<T> randomVectorOfTBetweenSize1And3 = RandomNonEmptyVector<T>();
-         return randomVectorOfTBetweenSize1And3;
-      }
-
-      template<typename T, size_t Size>
-      std::array<T, Size> StdArray() const
-      {
-         std::array<T, Size> randomStdArray = RandomStdArray<T, Size>();
-         return randomStdArray;
-      }
-
-      template<typename KeyType, typename ValueType>
-      std::unordered_map<KeyType, ValueType> UnorderedMap() const
-      {
-         std::unordered_map<KeyType, ValueType> randomUnorderedMap = RandomUnorderedMap<KeyType, ValueType>();
-         return randomUnorderedMap;
       }
    };
 

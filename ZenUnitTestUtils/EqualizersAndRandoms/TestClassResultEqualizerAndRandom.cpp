@@ -10,16 +10,11 @@ namespace ZenUnit
       FIELDS_ARE_EQUAL(expectedTestClassResult, actualTestClassResult, _testResults);
    }
 
-   TestClassResult TestableRandomTestClassResult(const RandomGenerator* randomGenerator)
-   {
-      TestClassResult randomTestClassResult;
-      randomTestClassResult._testResults = randomGenerator->NonEmptyVector<TestResult>();
-      return randomTestClassResult;
-   }
-
    template<>
    TestClassResult Random()
    {
-      return TestableRandomTestClassResult(RandomGenerator::Instance());
+      TestClassResult randomTestClassResult;
+      randomTestClassResult._testResults = ZenUnit::RandomNonEmptyVector<TestResult>();
+      return randomTestClassResult;
    }
 }

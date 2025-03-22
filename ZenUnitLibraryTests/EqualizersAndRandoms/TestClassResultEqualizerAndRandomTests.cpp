@@ -4,7 +4,6 @@ namespace ZenUnit
 {
    TESTS(TestClassResultEqualizerAndRandomTests)
    AFACT(ZenUnitEqualizer_ThrowsIfAnyFieldNotEqual)
-   AFACT(TestableRandomTestClassResult_ReturnsTestClassResultWithAllRandomFields)
    AFACT(ZenUnitRandomTestClassResult_DoesNotThrowException)
    EVIDENCE
 
@@ -14,22 +13,15 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestClassResult, _testResults, ZenUnit::RandomNonEmptyVector<TestResult>());
    }
 
-   TEST(TestableRandomTestClassResult_ReturnsTestClassResultWithAllRandomFields)
+   TEST(ZenUnitRandomTestClassResult_DoesNotThrowException)
    {
-      ZenUnit::RandomGeneratorMock randomGeneratorMock;
-      //
-      const TestClassResult randomTestClassResult = TestableRandomTestClassResult(&randomGeneratorMock);
+      const TestClassResult randomTestClassResult = ZenUnit::Random<TestClassResult>();
       //
       IS_NOT_EMPTY(randomTestClassResult._testResults);
       for (size_t i = 0; i < randomTestClassResult._testResults.size(); ++i)
       {
          IS_NOT_DEFAULT_VALUE(randomTestClassResult._testResults[i]);
       }
-   }
-
-   TEST(ZenUnitRandomTestClassResult_DoesNotThrowException)
-   {
-      const TestClassResult randomTestClassResult = ZenUnit::Random<TestClassResult>();
    }
 
    RUN_TESTS(TestClassResultEqualizerAndRandomTests)

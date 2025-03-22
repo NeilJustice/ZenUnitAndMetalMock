@@ -96,17 +96,6 @@ namespace ZenUnit
 
       const std::vector<std::filesystem::path> randomFilesystemPathVector = _randomGenerator.FilesystemPathVector();
       IS_TRUE(randomFilesystemPathVector.size() <= 3);
-
-      const vector<int> randomVectorOfTBetweenSize0And3 = _randomGenerator.Vector<int>();
-      IS_TRUE(randomVectorOfTBetweenSize0And3.size() <= 3);
-
-      const vector<int> randomVectorOfTBetweenSize1And3 = _randomGenerator.NonEmptyVector<int>();
-      IS_TRUE(randomVectorOfTBetweenSize1And3.size() <= 3);
-
-      [[maybe_unused]] array<int, 3> intArray = _randomGenerator.StdArray<int, 3>();
-
-      const unordered_map<int, string> randomUnorderedMap = _randomGenerator.UnorderedMap<int, string>();
-      IS_TRUE(randomUnorderedMap.size() <= 3);
    }
 
    enum TestEnum

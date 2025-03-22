@@ -9,7 +9,6 @@ namespace ZenUnit
       static void AssertEqual(const TestClassResult& expectedTestClassResult, const TestClassResult& actualTestClassResult);
    };
 
-   TestClassResult TestableRandomTestClassResult(const RandomGenerator* randomGenerator);
    template<>
    TestClassResult Random();
 }
