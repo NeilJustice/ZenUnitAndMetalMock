@@ -7810,13 +7810,37 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomInteger;
    }
 
-   template<typename T>
+   template<std::signed_integral T>
+   T RandomNegative()
+   {
+      T randomInteger = Random<T>();
+      static const T zeroValue{0};
+      while (randomInteger >= zeroValue)
+      {
+         randomInteger = Random<T>();
+      }
+      return randomInteger;
+   }
+
+   template<std::integral T>
    T RandomNonNegative()
    {
       static_assert(!std::is_same_v<T, std::string>);
       T randomInteger = Random<T>();
       static const T zeroValue{0};
       while (randomInteger < zeroValue)
+      {
+         randomInteger = Random<T>();
+      }
+      return randomInteger;
+   }
+
+   template<std::integral T>
+   T RandomPositive()
+   {
+      T randomInteger = Random<T>();
+      static const T zeroValue{0};
+      while (randomInteger <= zeroValue)
       {
          randomInteger = Random<T>();
       }

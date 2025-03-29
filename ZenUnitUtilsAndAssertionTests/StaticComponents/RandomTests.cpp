@@ -16,7 +16,9 @@ namespace ZenUnit
    AFACT(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
    AFACT(RandomNon0_TIsEnum_ReturnsRandomEnumBetween1AndEnumMaxValue)
 
-   AFACT(RandomNonNegative_ReturnsNonNegative)
+   AFACT(RandomNegative_ReturnsNegativeInteger)
+   AFACT(RandomNonNegative_ReturnsNonNegativeInteger)
+   AFACT(RandomPositive_ReturnsPositiveInteger)
 
    AFACT(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)
 
@@ -174,13 +176,31 @@ namespace ZenUnit
       SETS_ARE_EQUAL(expectedRandomEnumsReturned, randomEnumsReturned);
    }
 
-   TEST(RandomNonNegative_ReturnsNonNegative)
+   TEST(RandomNegative_ReturnsNegativeInteger)
    {
-      const int value = ZenUnit::RandomNonNegative<int>();
-      IS_GREATER_THAN_OR_EQUAL(value, 0);
+      const int intValue = ZenUnit::RandomNegative<int>();
+      IS_LESS_THAN(intValue, 0);
+
+      const short shortValue = ZenUnit::RandomNegative<short>();
+      IS_LESS_THAN(shortValue, 0);
+   }
+
+   TEST(RandomNonNegative_ReturnsNonNegativeInteger)
+   {
+      const int intValue = ZenUnit::RandomNonNegative<int>();
+      IS_GREATER_THAN_OR_EQUAL(intValue, 0);
 
       const unsigned unsignedValue = ZenUnit::RandomNonNegative<unsigned>();
       IS_GREATER_THAN_OR_EQUAL(unsignedValue, 0U);
+   }
+
+   TEST(RandomPositive_ReturnsPositiveInteger)
+   {
+      const int intValue = ZenUnit::RandomPositive<int>();
+      IS_GREATER_THAN(intValue, 0);
+
+      const unsigned unsignedValue = ZenUnit::RandomPositive<unsigned>();
+      IS_GREATER_THAN(unsignedValue, 0U);
    }
 
    TEST(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)
