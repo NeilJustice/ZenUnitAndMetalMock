@@ -5724,7 +5724,7 @@ namespace ZenUnit
 Fatal Windows C++ Runtime Assertion
 ===================================)", Color::Red);
          console.WriteLine(fileNameLineNumberErrorMessage);
-         console.WriteLine("[ZenUnit]   ExitCode: 1");
+         console.WriteLine("[ZenUnit] ExitCode: 1");
          quick_exit(1);
       }
 #endif
