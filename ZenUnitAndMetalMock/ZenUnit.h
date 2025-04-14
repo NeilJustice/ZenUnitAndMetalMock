@@ -8276,8 +8276,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
       case 9:
       {
-         double doubleOneBeforeMaxFloat = std::nextafter(std::numeric_limits<double>::max(), 0.0);
-         return doubleOneBeforeMaxFloat;
+         double doubleOneBeforeMaxDouble = std::nextafter(std::numeric_limits<double>::max(), 0.0);
+         return doubleOneBeforeMaxDouble;
       }
       default:
       {
