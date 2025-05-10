@@ -94,8 +94,11 @@ namespace ZenUnit
 
       [[maybe_unused]] const std::filesystem::path randomFilesystemPath = _randomGenerator.FilesystemPath();
 
-      const std::vector<std::filesystem::path> randomFilesystemPathVector = _randomGenerator.FilesystemPathVector();
+      const vector<fs::path> randomFilesystemPathVector = _randomGenerator.FilesystemPathVector();
       IS_TRUE(randomFilesystemPathVector.size() <= 3);
+
+      const shared_ptr<vector<char>> randomSharedPtrToCharsVector = _randomGenerator.SharedPtrToCharsVector();
+      IS_NOT_NULLPTR(randomSharedPtrToCharsVector);
    }
 
    enum TestEnum

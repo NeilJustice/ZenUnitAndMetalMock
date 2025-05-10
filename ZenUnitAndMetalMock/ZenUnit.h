@@ -4801,8 +4801,8 @@ namespace ZenUnit
       }
 
       virtual void PrintTestFailures(
-         const ThreeArgForEacherType* threeArgForEacher, 
-         const Console* console, 
+         const ThreeArgForEacherType* threeArgForEacher,
+         const Console* console,
          TestFailureNumberer* testFailureNumberer) const
       {
          threeArgForEacher->ThreeArgForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
@@ -7921,14 +7921,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename KeyType, typename ValueType>
-   inline std::pair<KeyType, ValueType> RandomPair()
+   std::pair<KeyType, ValueType> RandomPair()
    {
       std::pair<KeyType, ValueType> randomPair = std::make_pair(Random<KeyType>(), Random<ValueType>());
       return randomPair;
    }
 
    template<typename... TupleTypes>
-   inline std::tuple<TupleTypes...> RandomTuple()
+   std::tuple<TupleTypes...> RandomTuple()
    {
       std::tuple<TupleTypes...> randomTuple;
       CallFunctionOnEachMutableTupleElement(randomTuple, [](auto tupleElementReferenceWrapper)
@@ -7996,6 +7996,19 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       const std::vector<T> randomVector = RandomVectorWithSize<T>(randomVectorSize);
       std::shared_ptr<std::vector<T>> randomSharedPtrVector = std::make_shared<std::vector<T>>(randomVector);
       return randomSharedPtrVector;
+   }
+
+   inline std::shared_ptr<std::vector<char>> RandomSharedPtrToCharsVector()
+   {
+      std::shared_ptr<std::vector<char>> randomSharedPtrToCharsVector = std::make_shared<std::vector<char>>();
+      const size_t randomVectorSize = ZenUnit::RandomBetween<size_t>(0, 2);
+      randomSharedPtrToCharsVector->reserve(randomVectorSize);
+      for (size_t i = 0; i < randomVectorSize; ++i)
+      {
+         const char randomChar = ZenUnit::Random<char>();
+         randomSharedPtrToCharsVector->push_back(randomChar);
+      }
+      return randomSharedPtrToCharsVector;
    }
 
    template<typename T, size_t Size>
@@ -8652,6 +8665,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          std::vector<std::filesystem::path> randomFilesystemPathVector = RandomVector<std::filesystem::path>();
          return randomFilesystemPathVector;
+      }
+
+      virtual std::shared_ptr<std::vector<char>> SharedPtrToCharsVector() const
+      {
+         return RandomSharedPtrToCharsVector();
       }
    };
 
