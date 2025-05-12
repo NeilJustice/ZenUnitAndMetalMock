@@ -36,13 +36,13 @@ namespace ZenUnit
    TEST(RandomSharedPtrVector_DoesSo)
    {
       const shared_ptr<vector<T>> randomSharedPtrVector = ZenUnit::RandomSharedPtrVector<T>();
-      IS_TRUE(randomSharedPtrVector->size() >= 0 && randomSharedPtrVector->size() <= 3);
+      IS_TRUE(randomSharedPtrVector->size() <= 3);
    }
 
    TEST(RandomSharedPtrToCharsVector_DoesSo)
    {
       const shared_ptr<vector<char>> randomSharedPtrToCharsVector = ZenUnit::RandomSharedPtrToCharsVector();
-      IS_TRUE(randomSharedPtrToCharsVector->size() >= 0 && randomSharedPtrToCharsVector->size() <= 2);
+      IS_TRUE(randomSharedPtrToCharsVector->size() <= 2);
    }
 
    RUN_TEMPLATE_TESTS(RandomVectorTests, int)
