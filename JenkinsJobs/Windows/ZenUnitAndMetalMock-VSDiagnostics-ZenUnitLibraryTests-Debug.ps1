@@ -9,5 +9,5 @@ AcceliTune.exe collect-vsdiagnostics `
    --launch-exe="ZenUnitLibraryTests\Debug\ZenUnitLibraryTests.exe" `
    --launch-dir="." `
    --launch-args-file="JenkinsJobs\Windows\VSDiagnosticsArgs.txt" `
-   --session-id=1 `
+   --session-id=29 `
    --diagsession-output-file="D:\PerformanceProfilingResults\VSDiagnostics\ZenUnitLibraryTests-Debug-VSDiagnostics.diagsession"
