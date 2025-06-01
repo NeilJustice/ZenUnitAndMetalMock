@@ -4463,14 +4463,7 @@ namespace ZenUnit
       TestPhaseResult testBodyTestPhaseResult;
       TestPhaseResult cleanupTestPhaseResult;
       TestPhaseResult destructorTestPhaseResult;
-#if defined _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4371) // layout of class may have changed from a previous version of the compiler due to better packing of member
-#endif
       TestPhaseResult TestResult::* responsibleTestPhaseResultField = nullptr;
-#if defined _WIN32
-#pragma warning(pop)
-#endif
       TestOutcome testOutcome = TestOutcome::Unset;
       unsigned elapsedMicroseconds = 0;
       size_t testCaseNumber = std::numeric_limits<size_t>::max();
