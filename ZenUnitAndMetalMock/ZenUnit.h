@@ -5983,12 +5983,6 @@ Fatal Windows C++ Runtime Assertion
          return _protected_fullTestName.testName;
       }
 
-      virtual std::string FullName() const
-      {
-         std::string fullTestName = _protected_fullTestName.Value();
-         return fullTestName;
-      }
-
       virtual std::string FilePathLineNumberString() const
       {
          std::string filePathAndLineNumber = _protected_fileLine.ToString();

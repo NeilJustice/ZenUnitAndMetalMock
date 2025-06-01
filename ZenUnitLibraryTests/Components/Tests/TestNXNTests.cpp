@@ -87,8 +87,6 @@ namespace ZenUnit
 
       // Getters
       ARE_EQUAL(_testName, test2X2.Name());
-      const string expectedFullName = String::ConcatStrings("TESTS(", _testClassName, ")\nTEST2X2(", _testName, ")");
-      ARE_EQUAL(expectedFullName, test2X2.FullName());
       ARE_EQUAL("(0)", test2X2.FilePathLineNumberString());
    }
 

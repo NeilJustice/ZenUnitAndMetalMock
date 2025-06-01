@@ -13,13 +13,9 @@ namespace ZenUnit
    const char* const TestName = "Test";
 
    template<typename TestNXNType>
-   void AssertTestNXNState(
-      const TestNXNType& testNXN,
-      const string& expectedFullTestName,
-      size_t expectedNumberOfTestCases)
+   void AssertTestNXNState(const TestNXNType& testNXN, size_t expectedNumberOfTestCases)
    {
       ARE_EQUAL("Test", testNXN.Name());
-      ARE_EQUAL(expectedFullTestName, testNXN.FullName());
       ARE_EQUAL("(0)", testNXN.FilePathLineNumberString());
       ARE_EQUAL(expectedNumberOfTestCases, testNXN.NumberOfTestCases());
    }
@@ -157,12 +153,12 @@ namespace ZenUnit
       Test1X1<TestingTestClass1X1, int, int> test1X1_1TestCase(
          TestClassName, TestName, &TestingTestClass1X1::Test,
          "1", 1);
-      AssertTestNXNState(test1X1_1TestCase, "TESTS(Tests)\nTEST1X1(Test)", 1);
+      AssertTestNXNState(test1X1_1TestCase, 1);
 
       Test1X1<TestingTestClass1X1, int, int, int> test1X1_2TestCases(
          TestClassName, TestName, &TestingTestClass1X1::Test,
          "10, 20", 10, 20);
-      AssertTestNXNState(test1X1_2TestCases, "TESTS(Tests)\nTEST1X1(Test)", 2);
+      AssertTestNXNState(test1X1_2TestCases, 2);
 
       const vector<TestResult> testResults = test1X1_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 1);
@@ -191,7 +187,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass2X2::Test,
             "1, string()",
             1, string());
-      AssertTestNXNState(test2X2_1TestCase, "TESTS(Tests)\nTEST2X2(Test)", 1);
+      AssertTestNXNState(test2X2_1TestCase, 1);
 
       Test2X2<TestingTestClass2X2,
          int, string,
@@ -201,7 +197,7 @@ namespace ZenUnit
             "10, string(), 30, string()",
             10, string(),
             30, string());
-      AssertTestNXNState(test2X2_2TestCases, "TESTS(Tests)\nTEST2X2(Test)", 2);
+      AssertTestNXNState(test2X2_2TestCases, 2);
 
       const vector<TestResult> testResults = test2X2_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 2);
@@ -230,7 +226,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass3X3::Test,
             "1, 2, string()",
             1, 2, string());
-      AssertTestNXNState(test3X3_1TestCase, "TESTS(Tests)\nTEST3X3(Test)", 1);
+      AssertTestNXNState(test3X3_1TestCase, 1);
 
       Test3X3<TestingTestClass3X3,
          int, int, string,
@@ -240,7 +236,7 @@ namespace ZenUnit
             "1, 2, string(), 4, 5, string()",
             1, 2, string(),
             4, 5, string());
-      AssertTestNXNState(test3X3_2TestCases, "TESTS(Tests)\nTEST3X3(Test)", 2);
+      AssertTestNXNState(test3X3_2TestCases, 2);
 
       const vector<TestResult> testResults = test3X3_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 3);
@@ -269,7 +265,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass4X4::Test,
             "1, 2, 3, string()",
             1, 2, 3, string());
-      AssertTestNXNState(test4X4_1TestCase, "TESTS(Tests)\nTEST4X4(Test)", 1);
+      AssertTestNXNState(test4X4_1TestCase, 1);
 
       Test4X4<TestingTestClass4X4,
          int, int, int, string,
@@ -279,7 +275,7 @@ namespace ZenUnit
             "1, 2, 3, string(), 5, 6, 7, string()",
             1, 2, 3, string(),
             5, 6, 7, string());
-      AssertTestNXNState(test4X4_2TestCases, "TESTS(Tests)\nTEST4X4(Test)", 2);
+      AssertTestNXNState(test4X4_2TestCases, 2);
 
       const vector<TestResult> testResults = test4X4_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 4);
@@ -308,7 +304,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass5X5::Test,
             "1, 2, 3, 4, string()",
             1, 2, 3, 4, string());
-      AssertTestNXNState(test5X5_1TestCase, "TESTS(Tests)\nTEST5X5(Test)", 1);
+      AssertTestNXNState(test5X5_1TestCase, 1);
 
       Test5X5<TestingTestClass5X5,
          int, int, int, int, string,
@@ -318,7 +314,7 @@ namespace ZenUnit
             "1, 2, 3, 4, string(), 6, 7, 8, 9, string()",
             1, 2, 3, 4, string(),
             6, 7, 8, 9, string());
-      AssertTestNXNState(test5X5_2TestCases, "TESTS(Tests)\nTEST5X5(Test)", 2);
+      AssertTestNXNState(test5X5_2TestCases, 2);
 
       const vector<TestResult> testResults = test5X5_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 5);
@@ -347,7 +343,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass6X6::Test,
             "1, 2, 3, 4, 5, string()",
             1, 2, 3, 4, 5, string());
-      AssertTestNXNState(test6X6_1TestCase, "TESTS(Tests)\nTEST6X6(Test)", 1);
+      AssertTestNXNState(test6X6_1TestCase, 1);
 
       Test6X6<TestingTestClass6X6,
          int, int, int, int, int, string,
@@ -357,7 +353,7 @@ namespace ZenUnit
             "1, 2, 3, 4, 5, string(), 7, 8, 9, 10, 11, string()",
             1, 2, 3, 4, 5, string(),
             7, 8, 9, 10, 11, string());
-      AssertTestNXNState(test6X6_2TestCases, "TESTS(Tests)\nTEST6X6(Test)", 2);
+      AssertTestNXNState(test6X6_2TestCases, 2);
 
       const vector<TestResult> testResults = test6X6_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 6);
@@ -386,7 +382,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass7X7::Test,
             "1, 2, 3, 4, 5, 6, string()",
             1, 2, 3, 4, 5, 6, string());
-      AssertTestNXNState(test7X7_1TestCase, "TESTS(Tests)\nTEST7X7(Test)", 1);
+      AssertTestNXNState(test7X7_1TestCase, 1);
 
       Test7X7<TestingTestClass7X7,
          int, int, int, int, int, int, string,
@@ -396,7 +392,7 @@ namespace ZenUnit
             "1, 2, 3, 4, 5, 6, string(), 8, 9, 10, 11, 12, 13, string()",
             1, 2, 3, 4, 5, 6, string(),
             8, 9, 10, 11, 12, 13, string());
-      AssertTestNXNState(test7X7_2TestCases, "TESTS(Tests)\nTEST7X7(Test)", 2);
+      AssertTestNXNState(test7X7_2TestCases, 2);
 
       const vector<TestResult> testResults = test7X7_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 7);
@@ -425,7 +421,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass8X8::Test,
             "1, 2, 3, 4, 5, 6, 7, string()",
             1, 2, 3, 4, 5, 6, 7, string());
-      AssertTestNXNState(test8X8_1TestCase, "TESTS(Tests)\nTEST8X8(Test)", 1);
+      AssertTestNXNState(test8X8_1TestCase, 1);
 
       Test8X8<TestingTestClass8X8,
          int, int, int, int, int, int, int, string,
@@ -435,7 +431,7 @@ namespace ZenUnit
             "1, 2, 3, 4, 5, 6, 7, string(), 9, 10, 11, 12, 13, 14, 15, string()",
             1, 2, 3, 4, 5, 6, 7, string(),
             9, 10, 11, 12, 13, 14, 15, string());
-      AssertTestNXNState(test8X8_2TestCases, "TESTS(Tests)\nTEST8X8(Test)", 2);
+      AssertTestNXNState(test8X8_2TestCases, 2);
 
       const vector<TestResult> testResults = test8X8_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 8);
@@ -464,7 +460,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass9X9::Test,
             "1, 2, 3, 4, 5, 6, 7, 8, string()",
             1, 2, 3, 4, 5, 6, 7, 8, string());
-      AssertTestNXNState(test9X9_1TestCase, "TESTS(Tests)\nTEST9X9(Test)", 1);
+      AssertTestNXNState(test9X9_1TestCase, 1);
 
       Test9X9<TestingTestClass9X9,
          int, int, int, int, int, int, int, int, string,
@@ -474,7 +470,7 @@ namespace ZenUnit
             "1, 2, 3, 4, 5, 6, 7, 8, string(), 10, 11, 12, 13, 14, 15, 16, 17, string()",
             1, 2, 3, 4, 5, 6, 7, 8, string(),
             10, 11, 12, 13, 14, 15, 16, 17, string());
-      AssertTestNXNState(test9X9_2TestCases, "TESTS(Tests)\nTEST9X9(Test)", 2);
+      AssertTestNXNState(test9X9_2TestCases, 2);
 
       const vector<TestResult> testResults = test9X9_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 9);
@@ -505,7 +501,7 @@ namespace ZenUnit
             TestClassName, TestName, &TestingTestClass10X10::Test,
             "1, 2, 3, 4, 5, 6, 7, 8, 9, string()",
             1, 2, 3, 4, 5, 6, 7, 8, 9, string());
-      AssertTestNXNState(test10X10_1TestCase, "TESTS(Tests)\nTEST10X10(Test)", 1);
+      AssertTestNXNState(test10X10_1TestCase, 1);
 
       Test10X10<TestingTestClass10X10,
          int, int, int, int, int, int, int, int, int, string,
@@ -515,7 +511,7 @@ namespace ZenUnit
             "1, 2, 3, 4, 5, 6, 7, 8, 9, string(), 11, 12, 13, 14, 15, 16, 17, 18, 19, string()",
             1, 2, 3, 4, 5, 6, 7, 8, 9, string(),
             11, 12, 13, 14, 15, 16, 17, 18, 19, string());
-      AssertTestNXNState(test10X10_2TestCases, "TESTS(Tests)\nTEST10X10(Test)", 2);
+      AssertTestNXNState(test10X10_2TestCases, 2);
 
       const vector<TestResult> testResults = test10X10_2TestCases.RunTest();
       AssertTwoExpectedTestResults(testResults, 10);

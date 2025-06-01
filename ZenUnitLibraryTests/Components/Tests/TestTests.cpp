@@ -10,7 +10,7 @@
 namespace ZenUnit
 {
    TESTS(TestTests)
-   AFACT(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
+   AFACT(TwoArgConstructor_NewsComponents_NameFunctionReturnsTestName)
    FACTS(BaseRunTest_ConstructorFails_DoesNotCallSubsequentTestPhases_ReturnsTestResultConstructorFail)
    FACTS(BaseRunTest_ConstructorSucceeds_StartupFails_DoesNotCallTest_DoesNotCallCleanup_CallsDestructor_ReturnsTestResultStartupFail)
    AFACT(BaseRunTest_AllTestPhasesSucceed_ReturnsExpectedTestResult)
@@ -36,7 +36,7 @@ namespace ZenUnit
       _test->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }
 
-   TEST(TwoArgConstructor_NewsComponents_SetsFullName_NameFunctionReturnsTestName)
+   TEST(TwoArgConstructor_NewsComponents_NameFunctionReturnsTestName)
    {
       const string testClassName = Random<string>();
       const string testName = Random<string>();
@@ -48,9 +48,6 @@ namespace ZenUnit
 
       const char* const testNameValue = test.Name();
       ARE_EQUAL(testName.c_str(), testNameValue);
-
-      const string fullTestName = test.FullName();
-      ARE_EQUAL(fullTestName, test._protected_fullTestName.Value());
 
       test._protected_fileLine = FilePathLineNumber("FilePath", 1);
       ARE_EQUAL(test._protected_fileLine.ToString(), test.FilePathLineNumberString());
