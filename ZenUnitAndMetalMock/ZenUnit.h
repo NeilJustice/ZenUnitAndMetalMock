@@ -5034,15 +5034,15 @@ namespace ZenUnit
          TestClassRunner,
          bool(TestClassRunner::*)(const TestNameFilter&, const char*) const,
          const char*>;
-      std::unique_ptr<const TwoArgMemberAnyerType> _protected_twoArgMemberAnyer;
+      std::unique_ptr<const TwoArgMemberAnyerType> p_twoArgMemberAnyer;
       // Constant Components
-      std::unique_ptr<const Console> _protected_console;
+      std::unique_ptr<const Console> p_console;
    public:
       TestClassRunner() noexcept
          // Function Callers
-         : _protected_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
+         : p_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
          // Constant Components
-         , _protected_console(std::make_unique<Console>())
+         , p_console(std::make_unique<Console>())
       {
       }
 
@@ -5958,13 +5958,13 @@ Fatal Windows C++ Runtime Assertion
       std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
    protected:
-      FullTestName _protected_fullTestName;
-      FilePathLineNumber _protected_fileLine;
+      FullTestName p_fullTestName;
+      FilePathLineNumber p_fileLine;
    public:
       Test(const char* testClassName, const char* testName, unsigned char arity)
          : _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
-         , _protected_fullTestName(testClassName, testName, arity)
+         , p_fullTestName(testClassName, testName, arity)
       {
       }
 
@@ -5972,7 +5972,7 @@ Fatal Windows C++ Runtime Assertion
 
       virtual const char* Name() const
       {
-         return _protected_fullTestName.testName;
+         return p_fullTestName.testName;
       }
 
       virtual void WritePostTestNameMessage(const Console*) const
@@ -6029,7 +6029,7 @@ Fatal Windows C++ Runtime Assertion
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
             const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
-               _protected_fullTestName, constructorTestPhaseResult);
+               p_fullTestName, constructorTestPhaseResult);
             return constructorFailTestResult;
          }
          const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
@@ -6037,14 +6037,14 @@ Fatal Windows C++ Runtime Assertion
          {
             const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
             const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(
-               _protected_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
+               p_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
             return startupFailTestResult;
          }
          const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
          const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
          const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult = _testResultFactory->MakeFullTestResult(
-            _protected_fullTestName,
+            p_fullTestName,
             constructorTestPhaseResult,
             startupTestPhaseResult,
             testBodyTestPhaseResult,
@@ -6152,13 +6152,13 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(_protected_fullTestName, constructorTestPhaseResult);
+            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult);
             constructorFailTestResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
             std::vector<TestResult> testResults = { std::move(constructorFailTestResult) };
             return testResults;
          }
          const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(_protected_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(p_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
          testResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
          std::vector<TestResult> testResults = { std::move(testResult) };
          return testResults;
@@ -6317,25 +6317,25 @@ Fatal Windows C++ Runtime Assertion
 
       void PrintTestClassNameAndNumberOfNamedTests() const
       {
-         _protected_console->WriteColor("@", Color::Green);
-         _protected_console->WriteColor(_testClassName, Color::Green);
+         p_console->WriteColor("@", Color::Green);
+         p_console->WriteColor(_testClassName, Color::Green);
          const std::string spacePipeSpaceNumberOfNamedTests = String::ConcatValues(" | Running ", _tests.size(), _tests.size() == 1 ? " test" : " tests");
-         _protected_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
+         p_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
       TestResult ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(Test* testClassIsNewableAndDeletableTest) const
       {
-         _protected_console->Write("|TestClassIsNewableAndDeletable -> ");
+         p_console->Write("|TestClassIsNewableAndDeletable -> ");
          // testClassIsNewableAndDeletableTest->RunTest() registers NXN tests by operator newing the test class for the first time
          std::vector<TestResult> newableAndDeletableTestResults = testClassIsNewableAndDeletableTest->RunTest();
          ZENUNIT_ASSERT(newableAndDeletableTestResults.size() == 1);
          TestResult& newableAndDeletableTestResult = newableAndDeletableTestResults[0];
          if (newableAndDeletableTestResult.testOutcome == TestOutcome::Success)
          {
-            _protected_console->WriteColor("OK ", Color::Green);
+            p_console->WriteColor("OK ", Color::Green);
             const std::string twoDecimalPlaceMillisecondsString =
                _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(newableAndDeletableTestResult.elapsedMicroseconds);
-            _protected_console->WriteLine(twoDecimalPlaceMillisecondsString);
+            p_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return newableAndDeletableTestResult;
       }
@@ -6344,22 +6344,22 @@ Fatal Windows C++ Runtime Assertion
       {
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          const char* const testName = test->Name();
-         const bool testNameFilterMatchesTestName = zenUnitArgs.testNameFilters.empty() || _protected_twoArgMemberAnyer->TwoArgAny(
+         const bool testNameFilterMatchesTestName = zenUnitArgs.testNameFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
             zenUnitArgs.testNameFilters, this, &TestClassRunner::TestNameFilterMatchesTestName, testName);
          if (testNameFilterMatchesTestName)
          {
             const std::string barTestName = String::ConcatStrings("|", testName);
-            _protected_console->Write(barTestName);
-            test->WritePostTestNameMessage(_protected_console.get());
+            p_console->Write(barTestName);
+            test->WritePostTestNameMessage(p_console.get());
             std::vector<TestResult> testResults = test->RunTest();
-            test->WritePostTestCompletionMessage(_protected_console.get(), testResults[0]);
+            test->WritePostTestCompletionMessage(p_console.get(), testResults[0]);
             outTestClassResult->AddTestResults(std::move(testResults));
          }
       }
 
       void PrintTestClassResultLine(const TestClassResult* testClassResult) const
       {
-         testClassResult->PrintTestClassResultLine(_protected_console.get());
+         testClassResult->PrintTestClassResultLine(p_console.get());
       }
    };
 
@@ -6628,7 +6628,7 @@ Fatal Windows C++ Runtime Assertion
       size_t _currentTestCaseNumber;
       std::vector<TestResult> _testResults;
    protected:
-      const std::tuple<typename std::decay<TestCaseArgTypes>::type...> _protected_testCaseArgs;
+      const std::tuple<typename std::decay<TestCaseArgTypes>::type...> p_testCaseArgs;
    public:
       TestNXN(const char* testClassName, const char* testName, const char* testCaseArgsText, TestCaseArgTypes&&... testCaseArgs)
          : Test(testClassName, testName, N)
@@ -6644,7 +6644,7 @@ Fatal Windows C++ Runtime Assertion
          // Mutable Fields
          , _testCaseArgsText(testCaseArgsText)
          , _currentTestCaseNumber(1)
-         , _protected_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
+         , p_testCaseArgs(std::forward<TestCaseArgTypes>(testCaseArgs)...)
       {
          const size_t numberOfTestCases = sizeof...(TestCaseArgTypes) / N;
          _testResults.reserve(numberOfTestCases);
@@ -6707,7 +6707,7 @@ Fatal Windows C++ Runtime Assertion
    private:
       virtual void RunTestCaseIfNotFilteredOut(size_t testCaseNumber, const ZenUnitArgs& zenUnitArgs, const std::vector<std::string>& splitTestCaseArgs)
       {
-         const bool shouldRunTestCase = ShouldRunTestCase(zenUnitArgs, _protected_fullTestName, testCaseNumber);
+         const bool shouldRunTestCase = ShouldRunTestCase(zenUnitArgs, p_fullTestName, testCaseNumber);
          if (shouldRunTestCase)
          {
             RunTestCase(testCaseNumber, splitTestCaseArgs);
@@ -7019,7 +7019,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call1ArgMemberFunction(testClass, _test1X1MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call1ArgMemberFunction(testClass, _test1X1MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7039,7 +7039,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call2ArgMemberFunction(testClass, _test2X2MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call2ArgMemberFunction(testClass, _test2X2MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7059,7 +7059,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call3ArgMemberFunction(testClass, _test3X3MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call3ArgMemberFunction(testClass, _test3X3MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7079,7 +7079,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call4ArgMemberFunction(testClass, _test4X4MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call4ArgMemberFunction(testClass, _test4X4MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7099,7 +7099,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call5ArgMemberFunction(testClass, _test5X5MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call5ArgMemberFunction(testClass, _test5X5MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7119,7 +7119,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call6ArgMemberFunction(testClass, _test6X6MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call6ArgMemberFunction(testClass, _test6X6MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7139,7 +7139,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call7ArgMemberFunction(testClass, _test7X7MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call7ArgMemberFunction(testClass, _test7X7MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7159,7 +7159,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call8ArgMemberFunction(testClass, _test8X8MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call8ArgMemberFunction(testClass, _test8X8MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7179,7 +7179,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call9ArgMemberFunction(testClass, _test9X9MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call9ArgMemberFunction(testClass, _test9X9MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 
@@ -7200,7 +7200,7 @@ Fatal Windows C++ Runtime Assertion
 
       void RunNXNTestCase(TestClassType* testClass, size_t testCaseArgsIndex) override
       {
-         Tuple::Call10ArgMemberFunction(testClass, _test10X10MemberFunction, testCaseArgsIndex, this->_protected_testCaseArgs);
+         Tuple::Call10ArgMemberFunction(testClass, _test10X10MemberFunction, testCaseArgsIndex, this->p_testCaseArgs);
       }
    };
 

@@ -93,17 +93,17 @@ namespace ZenUnit
    {
       const TestNXN<TestingTestClass, 1, int> testNXN_1X1_1Arg(
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0);
-      ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg._protected_testCaseArgs);
+      ARE_EQUAL(tuple<int>(0), testNXN_1X1_1Arg.p_testCaseArgs);
 
       const TestNXN<TestingTestClass, 1, int, int> testNXN_1X1_2Args(
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), 0, 0);
       const tuple<int, int> expectedTestCaseArgs1(0, 0);
-      ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args._protected_testCaseArgs);
+      ARE_EQUAL(expectedTestCaseArgs1, testNXN_1X1_2Args.p_testCaseArgs);
 
       const TestNXN<TestingTestClass, 2, const string&, volatile int> testNXN_2X2_4Args(
          _testClassName.c_str(), _testName.c_str(), _testCaseArgsText.c_str(), string(), 100);
       const tuple<string, int> expectedTestCaseArgs2(string(), 100);
-      ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args._protected_testCaseArgs);
+      ARE_EQUAL(expectedTestCaseArgs2, testNXN_2X2_4Args.p_testCaseArgs);
    }
 
    TEST(NumberOfTestCases_ReturnsNumberOfTestCaseArgsDividedByN)
@@ -218,7 +218,7 @@ namespace ZenUnit
             0 // test case arg 1
          )
       {
-         _protected_fullTestName.testClassName = nonDefaultTestClassName.c_str();
+         p_fullTestName.testClassName = nonDefaultTestClassName.c_str();
       }
    private:
       const string nonDefaultTestClassName = ZenUnit::Random<string>();
@@ -235,7 +235,7 @@ namespace ZenUnit
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
       METALMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
-         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests._protected_fullTestName, testCaseNumber));
+         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
    }
 
    TEST(RunTestCaseIfNotFilteredOut_ShouldRunTestCase_CallsRunTestCase)
@@ -250,7 +250,7 @@ namespace ZenUnit
          RunTestCaseIfNotFilteredOut(testCaseNumber, args, splitTestCaseArgs);
       //
       METALMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.ShouldRunTestCaseMock.CalledOnceWith(
-         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests._protected_fullTestName, testCaseNumber));
+         args, test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.p_fullTestName, testCaseNumber));
       METALMOCK(test1X1SelfMocked_RunTestCaseIfNotFilteredOutTests.RunTestCaseMock.
          CalledOnceWith(testCaseNumber, splitTestCaseArgs));
    }

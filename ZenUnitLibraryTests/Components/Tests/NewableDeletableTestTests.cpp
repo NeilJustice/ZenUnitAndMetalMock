@@ -68,7 +68,7 @@ namespace ZenUnit
       METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
       METALMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
-         _newableDeletableTest->_protected_fullTestName, failedConstructorTestPhaseResult));
+         _newableDeletableTest->p_fullTestName, failedConstructorTestPhaseResult));
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       METALMOCK(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
@@ -99,7 +99,7 @@ namespace ZenUnit
       METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
          &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor))).Then(
       METALMOCKTHEN(_testResultFactoryMock->MakeConstructorDestructorSuccessMock.CalledOnceWith(
-         _newableDeletableTest->_protected_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult))).Then(
+         _newableDeletableTest->p_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult))).Then(
       METALMOCKTHEN(_stopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce()));
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);

@@ -20,9 +20,9 @@ namespace ZenUnit
    {
       TestClassRunner testClassRunner;
       // Function Callers
-      DELETE_TO_ASSERT_NEWED(testClassRunner._protected_twoArgMemberAnyer);
+      DELETE_TO_ASSERT_NEWED(testClassRunner.p_twoArgMemberAnyer);
       // Constant Components
-      DELETE_TO_ASSERT_NEWED(testClassRunner._protected_console);
+      DELETE_TO_ASSERT_NEWED(testClassRunner.p_console);
    }
 
    TEST(TestClassName_ReturnNullptr)

@@ -46,10 +46,10 @@ namespace ZenUnit
    using TwoArgMemberAnyerMockType = TwoArgMemberAnyerMock<
       std::vector<TestNameFilter>, TestClassRunner,
       bool(TestClassRunner::*)(const TestNameFilter&, const char*) const, const char*>;
-   TwoArgMemberAnyerMockType* _protected_twoArgMemberAnyerMock = nullptr;
+   TwoArgMemberAnyerMockType* p_twoArgMemberAnyerMock = nullptr;
 
    // Base Class Constant Components
-   ConsoleMock* _protected_consoleMock = nullptr;
+   ConsoleMock* p_consoleMock = nullptr;
 
    // Function Pointers
    METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
@@ -84,9 +84,9 @@ namespace ZenUnit
    {
       _specificTestClassRunner = make_unique<SpecificTestClassRunner<TestingTestClass>>(_testClassName.c_str());
       // Base Class Function Callers
-      _specificTestClassRunner->_protected_twoArgMemberAnyer.reset(_protected_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
+      _specificTestClassRunner->p_twoArgMemberAnyer.reset(p_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
       // Base Class Constant Components
-      _specificTestClassRunner->_protected_console.reset(_protected_consoleMock = new ConsoleMock);
+      _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);
       // Function Pointers
       _specificTestClassRunner->_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
       _specificTestClassRunner->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
@@ -105,9 +105,9 @@ namespace ZenUnit
    {
       SpecificTestClassRunner<TestingTestClass> specificTestClassRunner(_testClassName.c_str());
       // Protected Function Callers
-      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._protected_twoArgMemberAnyer);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner.p_twoArgMemberAnyer);
       // Protected Constant Components
-      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._protected_console);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner.p_console);
       // Function Pointers
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
       // Function Callers
@@ -293,25 +293,25 @@ namespace ZenUnit
       2ULL, true,
       3ULL, true)
    {
-      _protected_consoleMock->WriteColorMock.Expect();
-      _protected_consoleMock->WriteLineMock.Expect();
+      p_consoleMock->WriteColorMock.Expect();
+      p_consoleMock->WriteLineMock.Expect();
       _specificTestClassRunner->_testClassName = _testClassName.c_str();
       _specificTestClassRunner->_tests.resize(numberOfTests);
       //
       _specificTestClassRunner->PrintTestClassNameAndNumberOfNamedTests();
       //
-      METALMOCK(_protected_consoleMock->WriteColorMock.CalledNTimes(2));
-      METALMOCK(_protected_consoleMock->WriteColorMock.CalledWith("@", Color::Green));
-      METALMOCK(_protected_consoleMock->WriteColorMock.CalledWith(_testClassName.c_str(), Color::Green));
+      METALMOCK(p_consoleMock->WriteColorMock.CalledNTimes(2));
+      METALMOCK(p_consoleMock->WriteColorMock.CalledWith("@", Color::Green));
+      METALMOCK(p_consoleMock->WriteColorMock.CalledWith(_testClassName.c_str(), Color::Green));
       if (expectTestsPlural)
       {
          const string expectedRunningTestsMessage = String::ConcatValues(" | Running ", numberOfTests, " tests");
-         METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestsMessage));
+         METALMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestsMessage));
       }
       else
       {
          const string expectedRunningTestMessage = String::ConcatValues(" | Running ", numberOfTests, " test");
-         METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestMessage));
+         METALMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestMessage));
       }
    }
 
@@ -321,12 +321,12 @@ namespace ZenUnit
       TestOutcome::Exception, false,
       TestOutcome::Success, true)
    {
-      _protected_consoleMock->WriteMock.Expect();
+      p_consoleMock->WriteMock.Expect();
       string testResultThreeDecimalMillisecondsString;
       if (expectWriteLineOK)
       {
-         _protected_consoleMock->WriteColorMock.Expect();
-         _protected_consoleMock->WriteLineMock.Expect();
+         p_consoleMock->WriteColorMock.Expect();
+         p_consoleMock->WriteLineMock.Expect();
          testResultThreeDecimalMillisecondsString =
             _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
       }
@@ -342,12 +342,12 @@ namespace ZenUnit
       //
       if (expectWriteLineOK)
       {
-         METALMOCK(_protected_consoleMock->WriteColorMock.CalledOnceWith("OK ", Color::Green));
+         METALMOCK(p_consoleMock->WriteColorMock.CalledOnceWith("OK ", Color::Green));
          METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(
             newableAndDeletableTestResult.elapsedMicroseconds));
-         METALMOCK(_protected_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
+         METALMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }
-      METALMOCK(_protected_consoleMock->WriteMock.CalledOnceWith("|TestClassIsNewableAndDeletable -> "));
+      METALMOCK(p_consoleMock->WriteMock.CalledOnceWith("|TestClassIsNewableAndDeletable -> "));
       METALMOCK(testMock.RunTestMock.CalledOnce());
       ARE_EQUAL(newableAndDeletableTestResult, returnedNewableAndDeletableTestResult);
    }
@@ -363,7 +363,7 @@ namespace ZenUnit
       testMock->NameMock.Return(testName.c_str());
       const unique_ptr<Test> test(testMock);
 
-      _protected_twoArgMemberAnyerMock->TwoArgAnyMock.Return(false);
+      p_twoArgMemberAnyerMock->TwoArgAnyMock.Return(false);
 
       TestClassResultMock testClassResultMock;
       //
@@ -371,7 +371,7 @@ namespace ZenUnit
       //
       METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       METALMOCK(testMock->NameMock.CalledOnce());
-      METALMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+      METALMOCK(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
          zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
    }
 
@@ -385,7 +385,7 @@ namespace ZenUnit
       zenUnitArgs.testNameFilters.resize(testNameFiltersSize);
       _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
-      _protected_consoleMock->WriteMock.Expect();
+      p_consoleMock->WriteMock.Expect();
 
       TestMock* const testMock = new TestMock;
       const string testName = Random<string>();
@@ -399,7 +399,7 @@ namespace ZenUnit
       const unique_ptr<Test> test(testMock);
       if (expectAnyerCall)
       {
-         _protected_twoArgMemberAnyerMock->TwoArgAnyMock.Return(true);
+         p_twoArgMemberAnyerMock->TwoArgAnyMock.Return(true);
       }
       TestClassResultMock testClassResultMock;
       testClassResultMock.AddTestResultsMock.Expect();
@@ -410,16 +410,16 @@ namespace ZenUnit
       METALMOCK(testMock->NameMock.CalledOnce());
       if (expectAnyerCall)
       {
-         METALMOCK(_protected_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
+         METALMOCK(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
             zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
       }
       const string expectedBarTestName = String::ConcatStrings("|", testName);
-      METALMOCK(_protected_consoleMock->WriteMock.CalledOnceWith(expectedBarTestName));
-      METALMOCK(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->_protected_console.get()));
+      METALMOCK(p_consoleMock->WriteMock.CalledOnceWith(expectedBarTestName));
+      METALMOCK(testMock->WritePostTestNameMessageMock.CalledOnceWith(_specificTestClassRunner->p_console.get()));
       METALMOCK(testMock->RunTestMock.CalledOnce());
       METALMOCK(testClassResultMock.AddTestResultsMock.CalledOnceWith(TestResults));
       METALMOCK(testMock->WritePostTestCompletionMessageMock.CalledOnceWith(
-         _specificTestClassRunner->_protected_console.get(), test0));
+         _specificTestClassRunner->p_console.get(), test0));
    }
 
    TEST(PrintTestClassResultLine_CallsTestClassResultPrintResultLine)
@@ -429,7 +429,7 @@ namespace ZenUnit
       //
       _specificTestClassRunner->PrintTestClassResultLine(&testClassResultMock);
       //
-      METALMOCK(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(_protected_consoleMock));
+      METALMOCK(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(p_consoleMock));
    }
 
    RUN_TESTS(SpecificTestClassRunnerTests)
