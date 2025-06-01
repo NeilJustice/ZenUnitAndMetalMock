@@ -48,9 +48,6 @@ namespace ZenUnit
 
       const char* const testNameValue = test.Name();
       ARE_EQUAL(testName.c_str(), testNameValue);
-
-      test._protected_fileLine = FilePathLineNumber("FilePath", 1);
-      ARE_EQUAL(test._protected_fileLine.ToString(), test.FilePathLineNumberString());
    }
 
    TEST(WritePostTestNameMessage_DoesNotThrowException)

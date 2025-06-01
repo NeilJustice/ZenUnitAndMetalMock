@@ -9,7 +9,6 @@ public:
    }
 
    METALMOCK_NONVOID0_CONST(const char*, Name)
-   METALMOCK_NONVOID0_CONST(string, FilePathLineNumberString)
    METALMOCK_NONVOID0_CONST(size_t, NumberOfTestCases)
    METALMOCK_VOID1_CONST(WritePostTestNameMessage, const Console*)
    METALMOCK_NONVOID0(vector<TestResult>, RunTest)

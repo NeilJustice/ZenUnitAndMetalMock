@@ -64,7 +64,6 @@ namespace ZenUnit
             &TestingTestClass_SpecSectionTestNXNTests::TestFunction>());
       //
       ARE_EQUAL(testName, specifiedTestNXN.Name());
-      ARE_EQUAL("(0)", specifiedTestNXN.FilePathLineNumberString());
       const PmfToken* const expectedTestNXNPmfToken = ZenUnit::PmfToken::UniqueMemoryAddress<
          decltype(&TestingTestClass_SpecSectionTestNXNTests::TestFunction),
          &TestingTestClass_SpecSectionTestNXNTests::TestFunction>();

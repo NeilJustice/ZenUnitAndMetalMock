@@ -16,7 +16,6 @@ namespace ZenUnit
    void AssertTestNXNState(const TestNXNType& testNXN, size_t expectedNumberOfTestCases)
    {
       ARE_EQUAL("Test", testNXN.Name());
-      ARE_EQUAL("(0)", testNXN.FilePathLineNumberString());
       ARE_EQUAL(expectedNumberOfTestCases, testNXN.NumberOfTestCases());
    }
 

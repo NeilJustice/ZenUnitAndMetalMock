@@ -720,14 +720,6 @@ namespace ZenUnit
          return os;
       }
 
-      std::string ToString() const
-      {
-         std::ostringstream oss;
-         oss << filePath << '(' << lineNumber << ')';
-         std::string filePathAndLineNumber = oss.str();
-         return filePathAndLineNumber;
-      }
-
       static const char* File(const char* fileMacroValue) noexcept { return globalZenUnitMode.selfTest ? "File.cpp" : fileMacroValue; }
       static unsigned Line(unsigned lineMacroValue) noexcept { return globalZenUnitMode.selfTest ? 1U : lineMacroValue; }
    };
@@ -5981,12 +5973,6 @@ Fatal Windows C++ Runtime Assertion
       virtual const char* Name() const
       {
          return _protected_fullTestName.testName;
-      }
-
-      virtual std::string FilePathLineNumberString() const
-      {
-         std::string filePathAndLineNumber = _protected_fileLine.ToString();
-         return filePathAndLineNumber;
       }
 
       virtual void WritePostTestNameMessage(const Console*) const

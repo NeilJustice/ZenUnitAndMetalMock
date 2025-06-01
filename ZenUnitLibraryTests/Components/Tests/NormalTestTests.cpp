@@ -54,7 +54,6 @@ namespace ZenUnit
    {
       const NormalTest<TestingTestClass> normalTest(TestClassName.c_str(), TestName.c_str(), &TestingTestClass::TestFunction);
       ARE_EQUAL(TestName, normalTest.Name());
-      ARE_EQUAL("(0)", normalTest.FilePathLineNumberString());
       ARE_EQUAL(&TestingTestClass::TestFunction, normalTest._testMemberFunction);
       IS_NULLPTR(normalTest._testClass);
    }
