@@ -52,8 +52,10 @@ namespace ZenUnit
    AFACT(RandomFloatBetween_ReturnsRandomFloatBetweenInclusiveLowerBoundAndInclusiveUpperBound)
    AFACT(RandomDoubleBetween_ReturnsRandomDoubleBetweenInclusiveLowerBoundAndInclusiveUpperBound)
 
-   AFACT(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
-   FACTS(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue)
+   AFACT(RandomUnsignedLong_DoesSo)
+
+   AFACT(RandomUnsignedLongLong_DoesSo)
+   FACTS(RandomUnsignedLongLongBetween0AndValue_DoesSo)
    EVIDENCE
 
    enum struct EnumType
@@ -73,6 +75,7 @@ namespace ZenUnit
       Random<int>();
       Random<unsigned int>();
       Random<long long>();
+      Random<unsigned long>();
       Random<unsigned long long>();
       Random<size_t>();
    }
@@ -742,7 +745,20 @@ namespace ZenUnit
       IS_TRUE(randomBetweenReturned9);
    }
 
-   TEST(RandomUnsignedLongLong_ReturnsRandomUnsignedLongLongBetween0AndUnsignedLongLongMaxValue)
+   TEST(RandomUnsignedLong_DoesSo)
+   {
+      unordered_set<unsigned long> uniqueRandomValues;
+      //
+      for (size_t i = 0; i < 100; ++i)
+      {
+         const unsigned long randomUnsignedLong = ZenUnit::RandomUnsignedLong();
+         uniqueRandomValues.insert(randomUnsignedLong);
+      }
+      //
+      IS_TRUE(uniqueRandomValues.size() >= 2);
+   }
+
+   TEST(RandomUnsignedLongLong_DoesSo)
    {
       unordered_set<unsigned long long> uniqueRandomValues;
       //
@@ -755,7 +771,7 @@ namespace ZenUnit
       IS_TRUE(uniqueRandomValues.size() >= 2);
    }
 
-   TEST1X1(RandomUnsignedLongLongBetween0AndValue_ReturnsRandomUnsignedLongLongBetween0AndInclusiveMaxValue,
+   TEST1X1(RandomUnsignedLongLongBetween0AndValue_DoesSo,
       size_t inclusiveMaxValue,
       0ULL,
       1ULL,

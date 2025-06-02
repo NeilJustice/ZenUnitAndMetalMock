@@ -7840,6 +7840,14 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomValue;
    }
 
+   inline unsigned long RandomUnsignedLong()
+   {
+      constexpr unsigned long maximumUnsignedLong = std::numeric_limits<unsigned long>::max();
+      std::uniform_int_distribution<unsigned long> distribution(0, maximumUnsignedLong);
+      unsigned long randomUnsignedLong = distribution(RandomEngineForCurrentTestRun());
+      return randomUnsignedLong;
+   }
+
    inline unsigned long long RandomUnsignedLongLong()
    {
       constexpr unsigned long long maximumUnsignedLongLong = std::numeric_limits<unsigned long long>::max();
@@ -8156,6 +8164,11 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          std::unordered_set<typename T::key_type> randomUnorderedSet = RandomUnorderedSet<typename T::key_type>();
          return randomUnorderedSet;
+      }
+      else if constexpr (std::is_same_v<T, unsigned long>)
+      {
+         unsigned long randomUnsignedLong = RandomUnsignedLong();
+         return randomUnsignedLong;
       }
       else if constexpr (std::is_same_v<T, unsigned long long>)
       {
