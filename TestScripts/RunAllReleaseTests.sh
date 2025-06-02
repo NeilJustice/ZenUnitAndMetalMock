@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-./Release/MetalMockTests/MetalMockTests
-./Release/MetalMockExamples/MetalMockExamples
-./Release/ZenUnitLibraryTests/ZenUnitLibraryTests
-./Release/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
-./Release/ZenUnitExamples/ZenUnitExamples
+./RelWithDebInfo/MetalMockTests/MetalMockTests
+./RelWithDebInfo/MetalMockExamples/MetalMockExamples
+./RelWithDebInfo/ZenUnitLibraryTests/ZenUnitLibraryTests
+./RelWithDebInfo/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
+./RelWithDebInfo/ZenUnitExamples/ZenUnitExamples
 
