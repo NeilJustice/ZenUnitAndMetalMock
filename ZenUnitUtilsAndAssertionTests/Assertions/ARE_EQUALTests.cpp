@@ -53,15 +53,24 @@ namespace ZenUnit
    AFACT(ARE_EQUAL_Int32sAreEqual_DoesNotThrowException)
    AFACT(ARE_EQUAL_IntLiteralsAreNotEqual_ThrowsAnomaly)
    AFACT(ARE_EQUAL_IntVariablesAreNotEqual_ThrowsAnomaly__MessagesTestCase)
+
    AFACT(ARE_EQUAL_StdStringsAreNotEqual_ThrowsAnomaly)
+
    AFACT(ARE_EQUAL_StringViewsAreNotEqual_ThrowsAnomaly)
    AFACT(ARE_EQUAL_StringViewsAreEqual_DoesNotThrowException)
+
    AFACT(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNullptr_DoesNotThrowException)
    AFACT(ARE_EQUAL_LeftConstCharPointersIsNullptr_RightConstCharPointerIsNotNullptr_ThrowsAnomaly)
    AFACT(ARE_EQUAL_LeftConstCharPointersIsNotNullptr_RightConstCharPointerIsNullptr_ThrowsAnomaly)
+
    AFACT(ARE_EQUAL_int_unsigned_ExpectedIntIsNegative_ThrowsEqualizerException)
    AFACT(ARE_EQUAL_int_unsigned_ExpectedIntIs0OrPositiveAndEqualsActualValue_DoesNotThrowException)
    AFACT(ARE_EQUAL_int_unsigned_ExpectedIntIs0OrPositiveAndDoesNotEqualActualValue_ThrowsAnomaly)
+
+   AFACT(ARE_EQUAL_int_unsignedlong_ExpectedIntIsNegative_ThrowsEqualizerException)
+   AFACT(ARE_EQUAL_int_unsignedlong_ExpectedIntIs0OrPositiveAndEqualsActualValue_DoesNotThrowException)
+   AFACT(ARE_EQUAL_int_unsignedlong_ExpectedIntIs0OrPositiveAndDoesNotEqualActualValue_ThrowsAnomaly)
+
    AFACT(ARE_EQUAL_int_unsignedlonglong_ExpectedIntIsNegative_ThrowsEqualizerException)
    AFACT(ARE_EQUAL_int_unsignedlonglong_ExpectedIntIs0OrPositiveAndEqualsActualValue_DoesNotThrowException)
    AFACT(ARE_EQUAL_int_unsignedlonglong_ExpectedIntIs0OrPositiveAndDoesNotEqualActualValue_ThrowsAnomaly)
@@ -238,6 +247,35 @@ namespace ZenUnit
 "  Failed: ARE_EQUAL(expectedInt, actualUnsigned)",
 "Expected: " + to_string(expectedInt),
 "  Actual: " + to_string(actualUnsigned),
+"File.cpp(1)"));
+   }
+
+   TEST(ARE_EQUAL_int_unsignedlong_ExpectedIntIsNegative_ThrowsEqualizerException)
+   {
+      THROWS_EXCEPTION(ARE_EQUAL(-1, 1UL),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARE_EQUAL(-1, 1UL)",
+"Expected: -1",
+"  Actual: 1",
+"File.cpp(1)"));
+   }
+
+   TEST(ARE_EQUAL_int_unsignedlong_ExpectedIntIs0OrPositiveAndEqualsActualValue_DoesNotThrowException)
+   {
+      const int expectedInt = ZenUnit::RandomBetween<int>(0, 123);
+      const unsigned long actualUnsignedLong = static_cast<unsigned long>(expectedInt);
+      ARE_EQUAL(expectedInt, actualUnsignedLong);
+   }
+
+   TEST(ARE_EQUAL_int_unsignedlong_ExpectedIntIs0OrPositiveAndDoesNotEqualActualValue_ThrowsAnomaly)
+   {
+      const int expectedInt = ZenUnit::RandomBetween<int>(0, 123);
+      const unsigned long actualUnsignedLong = ZenUnit::RandomNotEqualTo<unsigned long>(static_cast<unsigned long>(expectedInt));
+      THROWS_EXCEPTION(ARE_EQUAL(expectedInt, actualUnsignedLong),
+         Anomaly, TestUtil::NewlineConcat("",
+"  Failed: ARE_EQUAL(expectedInt, actualUnsignedLong)",
+"Expected: " + to_string(expectedInt),
+"  Actual: " + to_string(actualUnsignedLong),
 "File.cpp(1)"));
    }
 
