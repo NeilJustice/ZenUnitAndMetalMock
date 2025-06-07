@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ZenUnitDevOpsPython", "ZenUnitDevOpsPython\ZenUnitDevOpsPython.pyproj", "{7442C4B6-4D10-4AEA-A009-421F7252D55E}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ZenUnitDevOpsPythonTests", "ZenUnitDevOpsPythonTests\ZenUnitDevOpsPythonTests.pyproj", "{5BE2BD06-B3D6-4E12-9D37-CB82AA0EF9D3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConfigurationFiles", "ConfigurationFiles", "{44A47100-0D78-43F8-BCC0-FC0E13AA0BC4}"
+	ProjectSection(SolutionItems) = preProject
+		.flake8 = .flake8
+		.pylintrc = .pylintrc
+		mypy.ini = mypy.ini
+		pytest.ini = pytest.ini
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7442C4B6-4D10-4AEA-A009-421F7252D55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7442C4B6-4D10-4AEA-A009-421F7252D55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE2BD06-B3D6-4E12-9D37-CB82AA0EF9D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE2BD06-B3D6-4E12-9D37-CB82AA0EF9D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0531A1BD-8CE9-4E65-A7A5-8BC342955F01}
+	EndGlobalSection
+EndGlobal
