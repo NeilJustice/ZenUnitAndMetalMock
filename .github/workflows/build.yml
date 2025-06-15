@@ -56,7 +56,7 @@ jobs:
             --cmake-definitions="-DFastLinuxDebugBuildMode=ON -DFastLinuxReleaseBuildMode=ON"
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
-          PYTHONPATH: .
+          PYTHONPATH: ZenUnitDevOpsPython
         if: ${{ matrix.cxx == 'clang++' || (matrix.cxx == 'g++' && matrix.cmake_build_type == 'Debug') }}
 
       - name: Run BuildAndTestZenUnitAndMetalMock.py in code coverage mode if g++ Release
@@ -66,7 +66,7 @@ jobs:
             --cmake-definitions="-DLCovCodeCoverageMode=ON"
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
-          PYTHONPATH: .
+          PYTHONPATH: ZenUnitDevOpsPython
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
 
       - name: Print .comment section of binary ZenUnitLibraryTests to confirm it was linked with LLD
