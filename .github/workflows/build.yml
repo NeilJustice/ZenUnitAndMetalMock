@@ -32,7 +32,7 @@ jobs:
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
 
       - name: Install pip packages
-        run: pip install --upgrade --upgrade-strategy eager -r dev-requirements.txt
+        run: pip install --upgrade --upgrade-strategy eager -r ZenUnitDevOpsPython/dev-requirements.txt
 
       - name: Mypy, Flake8, Pylint, then run unit tests with coverage and pytest if g++ Release
         working-directory: ZenUnitDevOpsPython
