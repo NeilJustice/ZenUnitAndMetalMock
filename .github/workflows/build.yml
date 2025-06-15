@@ -50,9 +50,8 @@ jobs:
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
 
       - name: Run BuildAndTestZenUnitAndMetalMock.py in non code coverage mode if clang++ Debug/Release or g++ Debug
-        working-directory: ZenUnitDevOpsPython
         run: |
-          python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
+          python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions="-DFastLinuxDebugBuildMode=ON -DFastLinuxReleaseBuildMode=ON"
         env:
@@ -61,9 +60,8 @@ jobs:
         if: ${{ matrix.cxx == 'clang++' || (matrix.cxx == 'g++' && matrix.cmake_build_type == 'Debug') }}
 
       - name: Run BuildAndTestZenUnitAndMetalMock.py in code coverage mode if g++ Release
-        working-directory: ZenUnitDevOpsPython
         run: |
-          python ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
+          python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
             --cmake-build-type="${{ matrix.cmake_build_type }}" \
             --cmake-definitions="-DLCovCodeCoverageMode=ON"
         env:
