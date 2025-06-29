@@ -2,7 +2,7 @@
 set -ev
 
 export CXX=/usr/bin/g++
-export PYTHONPATH=.
-python -u ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
+export PYTHONPATH=ZenUnitDevOpsPython
+python -u ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
    --cmake-build-type=Debug \
    --cmake-definitions="-DFastLinuxDebugBuildMode=ON"
