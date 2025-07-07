@@ -1,8 +1,0 @@
-constParameterPointer:ZenUnitAndMetalMock\ZenUnit.h:1729
-internalAstError:*
-missingIncludeSystem:*
-normalCheckLevelMaxBranches:*
-nullPointer:*
-returnDanglingLifetime:*
-unusedFunction:*
-useStlAlgorithm:*
