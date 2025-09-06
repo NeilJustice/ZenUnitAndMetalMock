@@ -7781,62 +7781,64 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    T RandomNon0()
    {
       static_assert(!std::is_same_v<T, std::string>);
-      T randomInteger = Random<T>();
-      static const T zeroValue{0};
-      while (randomInteger == zeroValue)
+      T randomNon0Integer = Random<T>();
+      static const T zeroValue{};
+      while (randomNon0Integer == zeroValue)
       {
-         randomInteger = Random<T>();
+         randomNon0Integer = Random<T>();
       }
-      return randomInteger;
+      return randomNon0Integer;
    }
 
-   template<std::signed_integral T>
+   template<typename T>
    T RandomNegative()
    {
-      T randomInteger = Random<T>();
+      static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+      T randomNegativeValue = Random<T>();
       static const T zeroValue{0};
-      while (randomInteger >= zeroValue)
+      while (randomNegativeValue >= zeroValue)
       {
-         randomInteger = Random<T>();
+         randomNegativeValue = Random<T>();
       }
-      return randomInteger;
+      return randomNegativeValue;
    }
 
-   template<std::integral T>
+   template<typename T>
    T RandomNonNegative()
    {
-      static_assert(!std::is_same_v<T, std::string>);
-      T randomInteger = Random<T>();
-      static const T zeroValue{0};
-      while (randomInteger < zeroValue)
+      static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+      T randomNonNegativeValue = Random<T>();
+      static const T zeroValue{};
+      while (randomNonNegativeValue < zeroValue)
       {
-         randomInteger = Random<T>();
+         randomNonNegativeValue = Random<T>();
       }
-      return randomInteger;
+      return randomNonNegativeValue;
    }
 
-   template<std::integral T>
+   template<typename T>
    T RandomPositive()
    {
-      T randomInteger = Random<T>();
-      static const T zeroValue{0};
-      while (randomInteger <= zeroValue)
+      static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+      T randomPositiveValue = Random<T>();
+      static const T zeroValue{};
+      while (randomPositiveValue <= zeroValue)
       {
-         randomInteger = Random<T>();
+         randomPositiveValue = Random<T>();
       }
-      return randomInteger;
+      return randomPositiveValue;
    }
 
    template<typename T>
    T RandomNon0NotEqualTo(const T& notEqualValue)
    {
-      static const T zeroTValue{0};
-      if (notEqualValue == zeroTValue)
+      static const T zeroValue{};
+      if (notEqualValue == zeroValue)
       {
-         throw std::invalid_argument("ZenUnit::RandomNon0NotEqualTo<T>(const T& notEqualValue) called with notEqualValue == T{0}");
+         throw std::invalid_argument("ZenUnit::RandomNon0NotEqualTo<T>(const T& notEqualValue) called with notEqualValue == T{}");
       }
       T randomValue = Random<T>();
-      while (randomValue == zeroTValue || randomValue == notEqualValue)
+      while (randomValue == zeroValue || randomValue == notEqualValue)
       {
          randomValue = Random<T>();
       }
