@@ -5725,7 +5725,7 @@ Fatal Windows C++ Runtime Assertion
       {
          SetNewRandomEngineForNewTestRun();
          SetCurrentTestRunNumber(testRunIndex);
-         const int zenUnitExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
+         int zenUnitExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
             this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs, testRunIndex);
          ZENUNIT_ASSERT(zenUnitExitCode == 0 || zenUnitExitCode == 1);
          _testRunResult->ResetStateInPreparationForNextTestRun();
