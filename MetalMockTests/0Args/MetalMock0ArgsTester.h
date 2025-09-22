@@ -169,7 +169,7 @@ namespace MetalMock
          const auto test = [](auto& metalMockObject)
          {
             const size_t numberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(numberOfFunctionCalls, [&]{ metalMockObject.MetalMockIt(); });
             //
@@ -189,7 +189,7 @@ namespace MetalMock
          {
             THROWS_EXCEPTION(metalMockObject.Called(),
                Anomaly, "\n"
-"  Failed: IS_NOT_EMPTY(_metalMockedFunctionCallHistory, this->metalMockedFunctionSignature)\n"
+"  Failed: IS_NOT_EMPTY(_metalMockedFunctionCallHistory, this->_metalMockedFunctionSignature)\n"
 "Expected: empty() == false\n"
 "  Actual: empty() == true\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
@@ -207,7 +207,7 @@ namespace MetalMock
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt();
             //
@@ -228,7 +228,7 @@ namespace MetalMock
       {
          const auto test = [](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt();
             //
@@ -246,7 +246,7 @@ namespace MetalMock
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt();
             //
@@ -284,7 +284,7 @@ namespace MetalMock
          const size_t numberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
          const auto test = [&](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(numberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(); });
             //
@@ -304,13 +304,13 @@ namespace MetalMock
          const size_t expectedNumberOfFunctionCalls = ZenUnit::RandomNon0NotEqualTo<size_t>(actualNumberOfFunctionCalls);
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(actualNumberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(); });
             //
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(expectedNumberOfFunctionCalls),
                Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedNumberOfFunctionCalls) + "\n"
 "  Actual: " + to_string(actualNumberOfFunctionCalls) + "\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"

@@ -22,9 +22,9 @@ namespace MetalMock
       const VoidFourArgumentMetalMocker<int, int, int, int> voidFourArgumentMetalMocker(metalMockedFunctionSignature);
       //
       IS_FALSE(voidFourArgumentMetalMocker.callInsteadFunction);
-      ARE_EQUAL(voidFourArgumentMetalMocker.metalMockedFunctionSignature, metalMockedFunctionSignature);
-      IS_FALSE(voidFourArgumentMetalMocker.wasExpected);
-      IS_FALSE(voidFourArgumentMetalMocker.wasAsserted);
+      ARE_EQUAL(voidFourArgumentMetalMocker._metalMockedFunctionSignature, metalMockedFunctionSignature);
+      IS_FALSE(voidFourArgumentMetalMocker._wasExpected);
+      IS_FALSE(voidFourArgumentMetalMocker._wasAsserted);
    }
 
    struct CallInsteadFunctionCallHistory
@@ -63,8 +63,8 @@ namespace MetalMock
    {
       _voidFourArgumentMetalMocker.CallInstead(std::bind(
          &VoidFourArgumentMetalMockerTests::CallInsteadFunction, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4));
-      IS_TRUE(_voidFourArgumentMetalMocker.wasExpected);
-      IS_TRUE(_voidFourArgumentMetalMocker.wasAsserted);
+      IS_TRUE(_voidFourArgumentMetalMocker._wasExpected);
+      IS_TRUE(_voidFourArgumentMetalMocker._wasAsserted);
       const int arg1 = ZenUnit::Random<int>();
       const int arg2 = ZenUnit::Random<int>();
       const int arg3 = ZenUnit::Random<int>();
@@ -77,12 +77,12 @@ namespace MetalMock
 
    TEST(Expect_SetsWasExpectedToTrue)
    {
-      IS_FALSE(_voidFourArgumentMetalMocker.wasExpected);
+      IS_FALSE(_voidFourArgumentMetalMocker._wasExpected);
       //
       _voidFourArgumentMetalMocker.Expect();
       //
-      IS_TRUE(_voidFourArgumentMetalMocker.wasExpected);
-      _voidFourArgumentMetalMocker.wasAsserted = true;
+      IS_TRUE(_voidFourArgumentMetalMocker._wasExpected);
+      _voidFourArgumentMetalMocker._wasAsserted = true;
    }
 
    RUN_TESTS(VoidFourArgumentMetalMockerTests)

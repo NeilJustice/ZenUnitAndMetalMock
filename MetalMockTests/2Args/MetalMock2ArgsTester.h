@@ -103,14 +103,14 @@ namespace MetalMock
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
             THROWS_EXCEPTION(metalMockObject.CalledOnceWith(0, 0), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
 "File.cpp(1)");
 
             THROWS_EXCEPTION(metalMockObject.CalledNTimesWith(1, 0, 0), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: 0\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
@@ -185,13 +185,13 @@ namespace MetalMock
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10);
             //
             THROWS_EXCEPTION(metalMockObject.CalledWith(10, 10),
                ZenUnit::Anomaly, R"(
-  Failed: IS_GREATER_THAN_OR_EQUAL(_metalMockedFunctionCallHistory.size(), 2ULL, this->metalMockedFunctionSignature)
+  Failed: IS_GREATER_THAN_OR_EQUAL(_metalMockedFunctionCallHistory.size(), 2ULL, this->_metalMockedFunctionSignature)
 Expected: 1
   Actual: 2
  Message: ")" + expectedFunctionSignature + R"("
@@ -209,7 +209,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10);
             metalMockObject.MetalMockIt(20, 20);
@@ -229,13 +229,13 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10);
             metalMockObject.MetalMockIt(20, 20);
             //
             const string expectedExceptionMessage = String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedTwoArgumentFunctionCall, nextActualTwoArgumentFunctionCall, this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage)
+  Failed: ARE_EQUAL(expectedTwoArgumentFunctionCall, nextActualTwoArgumentFunctionCall, this->_metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage)
 Expected: MetalMock::TwoArgumentFunctionCall:
 Argument1: 20
 Argument2: 20
@@ -263,13 +263,13 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10);
             metalMockObject.MetalMockIt(20, 20);
             //
             const string expectedExceptionMessage = String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedTwoArgumentFunctionCall, nextActualTwoArgumentFunctionCall, this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage)
+  Failed: ARE_EQUAL(expectedTwoArgumentFunctionCall, nextActualTwoArgumentFunctionCall, this->_metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage)
 Expected: MetalMock::TwoArgumentFunctionCall:
 Argument1: 30
 Argument2: 30
@@ -298,13 +298,13 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10);
             metalMockObject.MetalMockIt(20, 20);
             //
             const string expectedExceptionMessage = String::ConcatValues(R"(
-  Failed: IS_LESS_THAN(_currentCalledWithAssertionIndex, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: IS_LESS_THAN(_currentCalledWithAssertionIndex, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)
 Expected: 2
   Actual: 2
  Message: ")", expectedFunctionSignature, R"("
@@ -326,13 +326,13 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             for (size_t i = 0; i < numberOfFunctionCalls; ++i)
             {
                metalMockObject.MetalMockIt(0, 0);
             }
             const string expectedExceptionMessage = String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", expectedFunctionSignature, R"("
@@ -351,12 +351,12 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10);
             //
             const string expectedExceptionMessage = String::ConcatStrings(R"(
-  Failed: ARE_EQUAL(expectedArg1, _metalMockedFunctionCallHistory[0].arg1.value, this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedArg1, _metalMockedFunctionCallHistory[0].arg1.value, this->_metalMockedFunctionSignature)
 Expected: 20
   Actual: 10
  Message: ")", expectedFunctionSignature, R"("
@@ -376,7 +376,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10);
             //
@@ -394,7 +394,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             const int arg1 = ZenUnit::Random<int>();
             const int arg2 = ZenUnit::Random<int>();
             //
@@ -450,7 +450,7 @@ File.cpp(1))");
          const size_t actualNumberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
          const auto test = [&](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(actualNumberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(0, 0); });
             //
@@ -470,13 +470,13 @@ File.cpp(1))");
          const size_t expectedNumberOfFunctionCalls = ZenUnit::RandomNon0NotEqualTo<size_t>(actualNumberOfFunctionCalls);
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(actualNumberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(0, 0); });
             //
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(expectedNumberOfFunctionCalls),
                Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedNumberOfFunctionCalls) + "\n"
 "  Actual: " + to_string(actualNumberOfFunctionCalls) + "\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
@@ -494,13 +494,13 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             for (size_t i = 0; i < numberOfFunctionCalls; ++i)
             {
                metalMockObject.MetalMockIt(0, 0);
             }
             const string expectedExceptionMessage = String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)
 Expected: )", n, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", expectedFunctionSignature, R"("
@@ -520,7 +520,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             for (size_t i = 0; i < 9; ++i)
             {
@@ -549,7 +549,7 @@ File.cpp(1))");
       {
          const auto test = [&](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             for (size_t i = 0; i < n; ++i)
             {

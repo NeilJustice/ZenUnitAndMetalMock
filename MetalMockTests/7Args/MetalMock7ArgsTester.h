@@ -82,7 +82,7 @@ namespace MetalMock
          const size_t actualNumberOfFunctionCalls = ZenUnit::RandomBetween<size_t>(1, 2);
          const auto test = [&](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(actualNumberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(0, 0, 0, 0, 0, 0, 0); });
             //
@@ -102,13 +102,13 @@ namespace MetalMock
          const size_t expectedNumberOfFunctionCalls = ZenUnit::RandomNon0NotEqualTo<size_t>(actualNumberOfFunctionCalls);
          const auto test = [&](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             MetalMockTestUtils::CallNTimes(actualNumberOfFunctionCalls, [&] { metalMockObject.MetalMockIt(0, 0, 0, 0, 0, 0, 0); });
             //
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(expectedNumberOfFunctionCalls),
                Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedNumberOfFunctionCalls) + "\n"
 "  Actual: " + to_string(actualNumberOfFunctionCalls) + "\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
@@ -126,7 +126,7 @@ namespace MetalMock
       {
          const auto test = [](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(10, 10, 10, 10, 10, 10, 10);
             //
@@ -149,7 +149,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(20, 20, 20, 20, 20, 20, 20);
             metalMockObject.MetalMockIt(10, 10, 10, 10, 10, 10, 10);
@@ -169,13 +169,13 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             //
             metalMockObject.MetalMockIt(20, 20, 20, 20, 20, 20, 20);
             metalMockObject.MetalMockIt(30, 30, 30, 30, 30, 30, 30);
             //
             const string expectedExceptionMessage = String::ConcatValues(R"(
-  Failed: CONTAINS_ELEMENT(expectedSevenArgumentFunctionCall, actualSevenArgumentFunctionCalls, this->metalMockedFunctionSignature)
+  Failed: CONTAINS_ELEMENT(expectedSevenArgumentFunctionCall, actualSevenArgumentFunctionCalls, this->_metalMockedFunctionSignature)
 Expected: Collection contains element 'MetalMock::SevenArgumentFunctionCall:
 Argument1: 10
 Argument2: 10
@@ -202,7 +202,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             const int arg1 = ZenUnit::Random<int>();
             const int arg2 = ZenUnit::Random<int>();
             const int arg3 = ZenUnit::Random<int>();
@@ -232,7 +232,7 @@ File.cpp(1))");
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
-            metalMockObject.wasExpected = true;
+            metalMockObject._wasExpected = true;
             const int arg1 = ZenUnit::Random<int>();
             const int arg2 = ZenUnit::Random<int>();
             const int arg3 = ZenUnit::Random<int>();

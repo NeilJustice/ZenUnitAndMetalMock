@@ -25,11 +25,13 @@ namespace MetalMock
 
    TEST(OneArgConstructor_SetsFields)
    {
-      const ZeroArgumentMetalMocker<MetalMockExceptionThrowerMock> zeroArgumentMetalMocker(_metalMockedFunctionSignature);
+      const string metalMockedFunctionSignature = ZenUnit::Random<string>();
       //
-      ARE_EQUAL(_metalMockedFunctionSignature, zeroArgumentMetalMocker.metalMockedFunctionSignature);
-      IS_FALSE(zeroArgumentMetalMocker.wasExpected);
-      IS_FALSE(zeroArgumentMetalMocker.wasAsserted);
+      const ZeroArgumentMetalMocker<MetalMockExceptionThrowerMock> zeroArgumentMetalMocker(metalMockedFunctionSignature);
+      //
+      ARE_EQUAL(metalMockedFunctionSignature, zeroArgumentMetalMocker._metalMockedFunctionSignature);
+      IS_FALSE(zeroArgumentMetalMocker._wasExpected);
+      IS_FALSE(zeroArgumentMetalMocker._wasAsserted);
       IS_EMPTY(zeroArgumentMetalMocker._metalMockedFunctionCallHistory);
    }
 
@@ -43,13 +45,13 @@ namespace MetalMock
       //
       _zeroArgumentMetalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith(
          "MetalMock::TestingException", 2, argumentStringValue + to_string(argumentIntValue));
-      IS_TRUE(_zeroArgumentMetalMocker->wasExpected);
-      _zeroArgumentMetalMocker->wasAsserted = true;
+      IS_TRUE(_zeroArgumentMetalMocker->_wasExpected);
+      _zeroArgumentMetalMocker->_wasAsserted = true;
    }
 
    TEST(MetalMockIt_ExpectedIsFalse_ThrowsUnexpectedCallException)
    {
-      IS_FALSE(_zeroArgumentMetalMocker->wasExpected);
+      IS_FALSE(_zeroArgumentMetalMocker->_wasExpected);
       //
       const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature);
       THROWS_EXCEPTION(_zeroArgumentMetalMocker->MetalMockIt(),
@@ -59,7 +61,7 @@ namespace MetalMock
    TEST(MetalMockIt_ExpectedIsTrue_IncrementsNumberOfFunctionCalls_CallsMetalMockThrowIfExceptionSet)
    {
       const unsigned long long startingGlobalAtomicFunctionCallSequenceNumberAndSignature = MetalMock::_globalMetalMockedFunctionCallSequenceNumber;
-      _zeroArgumentMetalMocker->wasExpected = true;
+      _zeroArgumentMetalMocker->_wasExpected = true;
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       //
       _zeroArgumentMetalMocker->MetalMockIt();
@@ -82,7 +84,7 @@ namespace MetalMock
       if (expectAnomaly)
       {
          const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -94,7 +96,7 @@ File.cpp(1))");
          _zeroArgumentMetalMocker->CalledOnce();
       }
       //
-      IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
+      IS_TRUE(_zeroArgumentMetalMocker->_wasAsserted);
    }
 
    TEST(CalledNTimes_NIsZero_ThrowsUnsupportedCalledZeroTimesException)
@@ -120,7 +122,7 @@ File.cpp(1))");
       if (expectAnomaly)
       {
          const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)
 Expected: )", expectedNumberOfFunctionCalls, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -133,7 +135,7 @@ File.cpp(1))");
          _zeroArgumentMetalMocker->CalledNTimes(expectedNumberOfFunctionCalls);
       }
       //
-      IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
+      IS_TRUE(_zeroArgumentMetalMocker->_wasAsserted);
    }
 
    TEST(CallInstead_CallsCallInsteadFunctionWhenMetalMockedFunctionIsCalled)
@@ -146,7 +148,7 @@ File.cpp(1))");
       _zeroArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       //
       _zeroArgumentMetalMocker->CallInstead(callInsteadFunction);
-      IS_TRUE(_zeroArgumentMetalMocker->wasAsserted);
+      IS_TRUE(_zeroArgumentMetalMocker->_wasAsserted);
       _zeroArgumentMetalMocker->MetalMockIt();
       //
       METALMOCK(_zeroArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());

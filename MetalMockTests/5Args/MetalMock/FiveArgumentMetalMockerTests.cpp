@@ -22,34 +22,36 @@ namespace MetalMock
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
-      _metalMocker->wasAsserted = true;
+      _metalMocker->_wasAsserted = true;
    }
 
    TEST(Constructor_SetsFields)
    {
-      const MetalMockerType mocker(_metalMockedFunctionSignature);
+      const string metalMockedFunctionSignature = ZenUnit::Random<string>();
       //
-      ARE_EQUAL(_metalMockedFunctionSignature, mocker.metalMockedFunctionSignature);
-      IS_FALSE(mocker.wasExpected);
-      IS_FALSE(mocker.wasAsserted);
+      const MetalMockerType mocker(metalMockedFunctionSignature);
+      //
+      ARE_EQUAL(metalMockedFunctionSignature, mocker._metalMockedFunctionSignature);
+      IS_FALSE(mocker._wasExpected);
+      IS_FALSE(mocker._wasAsserted);
       IS_EMPTY(mocker._metalMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
-      IS_FALSE(_metalMocker->wasExpected);
+      IS_FALSE(_metalMocker->_wasExpected);
       _metalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
       _metalMocker->ThrowExceptionWhenCalled<TestingException>("argument", 100);
       //
       _metalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
-      IS_TRUE(_metalMocker->wasExpected);
+      IS_TRUE(_metalMocker->_wasExpected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(MetalMockIt_ExpectedFalse_Throws)
    {
-      IS_FALSE(_metalMocker->wasExpected);
+      IS_FALSE(_metalMocker->_wasExpected);
       const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 1, 2, 3, 4, 5);
       THROWS_EXCEPTION(_metalMocker->MetalMockIt(1, 2, 3, 4, 5),
          UnexpectedCallException, expectedExceptionMessage);
@@ -57,7 +59,7 @@ namespace MetalMock
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfFunctionCalls_CallsMetalMockThrowIfExceptionSet)
    {
-      _metalMocker->wasExpected = true;
+      _metalMocker->_wasExpected = true;
       _metalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       IS_EMPTY(_metalMocker->_metalMockedFunctionCallHistory);
       //

@@ -25,34 +25,36 @@ namespace MetalMock
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
-      _oneArgumentMetalMocker->wasAsserted = true;
+      _oneArgumentMetalMocker->_wasAsserted = true;
    }
 
    TEST(OneArgConstructor_SetsFields)
    {
-      const OneArgumentMetalMocker<int, MetalMockExceptionThrowerMock> oneArgumentMetalMocker(_metalMockedFunctionSignature);
+      const string metalMockedFunctionSignature = ZenUnit::Random<string>();
       //
-      ARE_EQUAL(_metalMockedFunctionSignature, oneArgumentMetalMocker.metalMockedFunctionSignature);
-      IS_FALSE(oneArgumentMetalMocker.wasExpected);
-      IS_FALSE(oneArgumentMetalMocker.wasAsserted);
+      const OneArgumentMetalMocker<int, MetalMockExceptionThrowerMock> oneArgumentMetalMocker(metalMockedFunctionSignature);
+      //
+      ARE_EQUAL(metalMockedFunctionSignature, oneArgumentMetalMocker._metalMockedFunctionSignature);
+      IS_FALSE(oneArgumentMetalMocker._wasExpected);
+      IS_FALSE(oneArgumentMetalMocker._wasAsserted);
       IS_EMPTY(oneArgumentMetalMocker._metalMockedFunctionCallHistory);
    }
 
    TEST(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
-      IS_FALSE(_oneArgumentMetalMocker->wasExpected);
+      IS_FALSE(_oneArgumentMetalMocker->_wasExpected);
       _oneArgumentMetalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
       _oneArgumentMetalMocker->ThrowExceptionWhenCalled<TestingException>("argument", 100);
       //
       _oneArgumentMetalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
-      IS_TRUE(_oneArgumentMetalMocker->wasExpected);
+      IS_TRUE(_oneArgumentMetalMocker->_wasExpected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(MetalMockIt_ExpectedFalse_Throws)
    {
-      IS_FALSE(_oneArgumentMetalMocker->wasExpected);
+      IS_FALSE(_oneArgumentMetalMocker->_wasExpected);
       const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 0);
       THROWS_EXCEPTION(_oneArgumentMetalMocker->MetalMockIt(0),
          UnexpectedCallException, expectedExceptionMessage);
@@ -60,7 +62,7 @@ namespace MetalMock
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfFunctionCalls_CallsMetalMockThrowIfExceptionSet)
    {
-      _oneArgumentMetalMocker->wasExpected = true;
+      _oneArgumentMetalMocker->_wasExpected = true;
       _oneArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       IS_EMPTY(_oneArgumentMetalMocker->_metalMockedFunctionCallHistory);
       //
@@ -81,7 +83,7 @@ namespace MetalMock
       1ULL, 0, 0, false, false,
       1ULL, 1, 1, false, false)
    {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      IS_FALSE(_oneArgumentMetalMocker->_wasAsserted);
       _oneArgumentMetalMocker->_metalMockedFunctionCallHistory.resize(numberOfFunctionCalls);
       if (numberOfFunctionCalls == 1)
       {
@@ -91,7 +93,7 @@ namespace MetalMock
       if (expectCallCountThrow)
       {
          THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: 1\n"
 "  Actual: " + to_string(numberOfFunctionCalls) + "\n"
 " Message: \"" + _metalMockedFunctionSignature + "\"\n"
@@ -102,7 +104,7 @@ namespace MetalMock
          if (expectArgEqualityThrow)
          {
             THROWS_EXCEPTION(_oneArgumentMetalMocker->CalledOnceWith(expectedArgument), Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedArgument, _metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedArgument, _metalMockedFunctionCallHistory[0].argument.value, this->_metalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedArgument) + "\n"
 "  Actual: " + to_string(actualArg) + "\n"
 " Message: \"" + _metalMockedFunctionSignature + "\"\n"
@@ -114,7 +116,7 @@ namespace MetalMock
          }
       }
       //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
+      IS_TRUE(_oneArgumentMetalMocker->_wasAsserted);
    }
 
    TEST(CalledNTimesWith_NIsZero_Throws)
@@ -134,13 +136,13 @@ namespace MetalMock
       2ULL, 2ULL, false,
       2ULL, 3ULL, true)
    {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      IS_FALSE(_oneArgumentMetalMocker->_wasAsserted);
       _oneArgumentMetalMocker->_metalMockedFunctionCallHistory.resize(numberOfFunctionCalls);
       //
       if (expectAnomaly)
       {
          const string expectedWhat = String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)
 Expected: )", expectedNumberOfFunctionCalls, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -152,7 +154,7 @@ File.cpp(1))");
          _oneArgumentMetalMocker->CalledNTimesWith(expectedNumberOfFunctionCalls, 0);
       }
       //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
+      IS_TRUE(_oneArgumentMetalMocker->_wasAsserted);
    }
 
    TEST5X5(CalledNTimesWith_SetsAssertedTrue_NEqualToNumberOfFunctionCalls_ThrowsIfArgsDoNotMatch,
@@ -165,7 +167,7 @@ File.cpp(1))");
       2ULL, 1, vector<OneArgumentFunctionCall<int>>{2, 1}, true, 0ULL,
       2ULL, 1, vector<OneArgumentFunctionCall<int>>{1, 2}, true, 1ULL)
    {
-      IS_FALSE(_oneArgumentMetalMocker->wasAsserted);
+      IS_FALSE(_oneArgumentMetalMocker->_wasAsserted);
       //
       _oneArgumentMetalMocker->_metalMockedFunctionCallHistory = actualArgs;
       if (expectAnomaly)
@@ -185,7 +187,7 @@ File.cpp(1))");
          _oneArgumentMetalMocker->CalledNTimesWith(expectedNumberOfFunctionCalls, expectedArgument);
       }
       //
-      IS_TRUE(_oneArgumentMetalMocker->wasAsserted);
+      IS_TRUE(_oneArgumentMetalMocker->_wasAsserted);
    }
 
    RUN_TESTS(OneArgumentMetalMockerTests)
