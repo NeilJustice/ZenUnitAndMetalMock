@@ -122,7 +122,7 @@ namespace MetalMock
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledWith_FunctionCalledOnce_ThrowsException()
+      void CalledWith_FunctionCalledOnlyOnce_ThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject)
          {
@@ -145,7 +145,7 @@ File.cpp(1))");
          test(_staticMockObject);
       }
 
-      void CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException()
+      void CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns()
       {
          const auto test = [](auto& metalMockObject)
          {
@@ -165,7 +165,7 @@ File.cpp(1))");
          test(_staticMockObject);
       }
 
-      void CalledWith_FunctionCalledTwiceWithMismatchingArgs_ThrowsAnomaly()
+      void CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgDoesNotMatch_ThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {
@@ -196,7 +196,7 @@ File.cpp(1))");
          test(_staticMockObject, _staticFunctionSignature);
       }
 
-      void CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException()
+      void CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_CalledWithCalledThreeTimes_ThrowsAnomaly()
       {
          const auto test = [](auto& metalMockObject, const string& expectedFunctionSignature)
          {

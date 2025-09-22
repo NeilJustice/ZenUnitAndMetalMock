@@ -1794,6 +1794,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       friend class OneArgumentMetalMockerTests;
    private:
       std::vector<OneArgumentFunctionCall<ArgType>> metalMockedFunctionCallHistory;
+      size_t _currentCalledWithAssertionIndex = 0;
    public:
       OneArgumentMetalMocker()
       {
@@ -1814,13 +1815,19 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       FunctionCallSequenceNumber CalledWith(const ArgType& expectedArgument)
       {
          this->MetalMockSetAsserted();
-         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL);
+         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL, this->metalMockedFunctionSignature);
+         IS_LESS_THAN(_currentCalledWithAssertionIndex, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
          const OneArgumentFunctionCallReference<ArgType> expectedOneArgumentFunctionCall(expectedArgument);
          const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls =
             MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
                OneArgumentFunctionCallReference<ArgType>,
                OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
-         CONTAINS_ELEMENT(expectedOneArgumentFunctionCall, actualOneArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         const auto& nextActualOneArgumentFunctionCall = actualOneArgumentFunctionCalls[_currentCalledWithAssertionIndex];
+         const std::string currentCalledWithAssertionIndexMessage =
+            "_currentCalledWithAssertionIndex=" + std::to_string(_currentCalledWithAssertionIndex);
+         ARE_EQUAL(expectedOneArgumentFunctionCall, nextActualOneArgumentFunctionCall,
+            this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage);
+         ++_currentCalledWithAssertionIndex;
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 

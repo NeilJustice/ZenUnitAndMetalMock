@@ -30,14 +30,18 @@ namespace MetalMock
    AFACT(ThrowExceptionWhenCalled_MakesMetalMockedFunctionThrowExceptionWithSpecifiedExceptionMessageWhenCalled)
    AFACT(MetalMockFunctionNotExpectedAndNotCalled_CalledOnceWithThrows_CalledNTimesWithThrows_CallsAsFollowsInAnyOrderThrowsAnomaly)
    AFACT(MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow)
-   AFACT(CalledWith_FunctionCalledOnce_ThrowsException)
-   AFACT(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
-   AFACT(CalledWith_FunctionCalledTwiceWithMismatchingArgs_ThrowsAnomaly)
-   AFACT(CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
+
+   AFACT(CalledWith_FunctionCalledOnlyOnce_ThrowsAnomaly)
+   AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns)
+   AFACT(CalledWith_FunctionCalledTwice_SecondArgAssertedBeforeFirstArg_ThrowsAnomaly)
+   AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgDoesNotMatch_ThrowsAnomaly)
+   AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_CalledWithCalledThreeTimes_ThrowsAnomaly)
+
    FACTS(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly)
    AFACT(CalledOnceWith_FunctionCalledOnceWithMistmatchingArg_ThrowsAnomaly)
    AFACT(CalledOnceWith_FunctionCalledOnceWithMatchingArg_DoesNotThrowException)
    AFACT(CalledOnceWith_CalledTwice_ThrowsException)
+
    AFACT(CalledNTimesWith_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
@@ -45,6 +49,7 @@ namespace MetalMock
    FACTS(CalledNTimesWith_NIs1OrGreater_FunctionWasNotCalledNTimes_ThrowsAnomaly)
    AFACT(CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesButNotWithExpectedArg_ThrowsAnomaly)
    FACTS(CalledNTimesWith_NIs1OrGreater_FunctionWasCalledNTimesWithArg_DoesNotThrowException)
+
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    EVIDENCE
@@ -108,24 +113,29 @@ namespace MetalMock
       _metalMock1ArgTester->MetalMockedFunctionExpectedThenCalledOnce_CalledOnceWithAndCalledNTimesWith1DoNotThrow_ThenMetalMockedFunctionCalledTwice_CalledNTimesWith2DoesNotThrow();
    }
 
-   TEST(CalledWith_FunctionCalledOnce_ThrowsException)
+   TEST(CalledWith_FunctionCalledOnlyOnce_ThrowsAnomaly)
    {
-      _metalMock1ArgTester->CalledWith_FunctionCalledOnce_ThrowsException();
+      _metalMock1ArgTester->CalledWith_FunctionCalledOnlyOnce_ThrowsAnomaly();
    }
 
-   TEST(CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException)
+   TEST(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns)
    {
-      _metalMock1ArgTester->CalledWith_FunctionCalledTwiceWithMatchingArgAndOnceWithMistmatchingArg_DoesNotThrowException();
+      _metalMock1ArgTester->CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns();
    }
 
-   TEST(CalledWith_FunctionCalledTwiceWithMismatchingArgs_ThrowsAnomaly)
+   TEST(CalledWith_FunctionCalledTwice_SecondArgAssertedBeforeFirstArg_ThrowsAnomaly)
    {
-      _metalMock1ArgTester->CalledWith_FunctionCalledTwiceWithMismatchingArgs_ThrowsAnomaly();
+      _metalMock1ArgTester->CalledWith_FunctionCalledTwice_SecondArgAssertedBeforeFirstArg_ThrowsAnomaly();
    }
 
-   TEST(CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException)
+   TEST(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgDoesNotMatch_ThrowsAnomaly)
    {
-      _metalMock1ArgTester->CalledWith_FunctionUnderTestCalledTwice_CalledWithCalledThreeTimes_ThrowsFunctionAssertedOneMoreTimeThanItWasCalledException();
+      _metalMock1ArgTester->CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgDoesNotMatch_ThrowsAnomaly();
+   }
+
+   TEST(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_CalledWithCalledThreeTimes_ThrowsAnomaly)
+   {
+      _metalMock1ArgTester->CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_CalledWithCalledThreeTimes_ThrowsAnomaly();
    }
 
    TEST1X1(CalledOnceWith_MetalMockedFunctionExpectedThenCalled0Or2Or3Times_ThrowsAnomaly,

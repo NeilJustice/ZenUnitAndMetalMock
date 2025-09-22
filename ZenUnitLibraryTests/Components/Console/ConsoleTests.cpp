@@ -279,7 +279,7 @@ namespace ZenUnit
       METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith(", "))).Then(
       METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith("Argument3"))).Then(
       METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith(", "))).Then(
-      METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith("Argument3")));
+      METALMOCKTHEN(_consoleWithWriteSelfMocked.WriteMock.CalledWith("Argument4")));
    }
 
    RUN_TESTS(ConsoleTests)
