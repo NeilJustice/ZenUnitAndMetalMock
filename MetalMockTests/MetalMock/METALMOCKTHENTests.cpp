@@ -51,7 +51,7 @@ namespace MetalMock
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
 "  Failed: METALMOCKTHEN(_classMock.FunctionAMock.CalledOnceWith(expectedMessage))",
 "Because of this ZenUnit::Anomaly:",
-"  Failed: ARE_EQUAL(expectedArgument, p_metalMockedFunctionCallHistory[0].argument.value, this->_metalMockedFunctionSignature)",
+"  Failed: ARE_EQUAL(expectedArgument, p_metalMockedFunctionCallHistory[0].argument.value, this->p_metalMockedFunctionSignature)",
 "Expected: \"mismatching_message\"",
 "  Actual: \"message\"",
 " Message: \"virtual void METALMOCKTHENTestingClass::FunctionA(string_view) const\"",
@@ -68,8 +68,8 @@ namespace MetalMock
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       //
-      const unsigned long long expectedSequenceNumberA = MetalMock::_globalMetalMockedFunctionCallSequenceNumber;
-      const unsigned long long expectedSequenceNumberB = MetalMock::_globalMetalMockedFunctionCallSequenceNumber + 1;
+      const unsigned long long expectedSequenceNumberA = MetalMock::g_metalMockedFunctionCallSequenceNumber;
+      const unsigned long long expectedSequenceNumberB = MetalMock::g_metalMockedFunctionCallSequenceNumber + 1;
       _classMock.FunctionA(messageA);
       _classMock.FunctionB(messageB);
       //

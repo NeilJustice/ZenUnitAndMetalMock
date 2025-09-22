@@ -23,7 +23,7 @@ namespace MetalMock
 
    void SetAssertedTrueToNotFailDueToExpectedButNotAsserted()
    {
-      _threeArgumentMetalMocker->_wasAsserted = true;
+      _threeArgumentMetalMocker->p_wasAsserted = true;
    }
 
    TEST(FunctionSignatureConstructor_SetsFields)
@@ -32,27 +32,27 @@ namespace MetalMock
       //
       const ThreeArgumentMetalMockerType threeArgumentMetalMocker(metalMockedFunctionSignature);
       //
-      ARE_EQUAL(metalMockedFunctionSignature, threeArgumentMetalMocker._metalMockedFunctionSignature);
-      IS_FALSE(threeArgumentMetalMocker._wasExpected);
-      IS_FALSE(threeArgumentMetalMocker._wasAsserted);
+      ARE_EQUAL(metalMockedFunctionSignature, threeArgumentMetalMocker.p_metalMockedFunctionSignature);
+      IS_FALSE(threeArgumentMetalMocker.p_wasExpected);
+      IS_FALSE(threeArgumentMetalMocker.p_wasAsserted);
       IS_EMPTY(threeArgumentMetalMocker.p_metalMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
    {
-      IS_FALSE(_threeArgumentMetalMocker->_wasExpected);
-      _threeArgumentMetalMocker->_exceptionThrower.ExpectCallToExpectAndThrowException();
+      IS_FALSE(_threeArgumentMetalMocker->p_wasExpected);
+      _threeArgumentMetalMocker->p_exceptionThrower.ExpectCallToExpectAndThrowException();
       //
       _threeArgumentMetalMocker->ThrowExceptionWhenCalled<TestingException>("argument", 100);
       //
-      _threeArgumentMetalMocker->_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
-      IS_TRUE(_threeArgumentMetalMocker->_wasExpected);
+      _threeArgumentMetalMocker->p_exceptionThrower.AssertExpectAndThrowExceptionCalledOnceWith("MetalMock::TestingException", 2, "argument100");
+      IS_TRUE(_threeArgumentMetalMocker->p_wasExpected);
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
 
    TEST(MetalMockIt_ExpectedFalse_Throws)
    {
-      IS_FALSE(_threeArgumentMetalMocker->_wasExpected);
+      IS_FALSE(_threeArgumentMetalMocker->p_wasExpected);
       const string expectedExceptionMessage = UnexpectedCallException::MakeExceptionMessage(_metalMockedFunctionSignature, 1, 2, 3);
       THROWS_EXCEPTION(_threeArgumentMetalMocker->MetalMockIt(1, 2, 3),
          UnexpectedCallException, expectedExceptionMessage);
@@ -60,15 +60,15 @@ namespace MetalMock
 
    TEST(MetalMockIt_ExpectedTrue_IncrementsNumberOfFunctionCalls_CallsMetalMockThrowIfExceptionSet)
    {
-      _threeArgumentMetalMocker->_wasExpected = true;
-      _threeArgumentMetalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
+      _threeArgumentMetalMocker->p_wasExpected = true;
+      _threeArgumentMetalMocker->p_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
       IS_EMPTY(_threeArgumentMetalMocker->p_metalMockedFunctionCallHistory);
       //
       _threeArgumentMetalMocker->MetalMockIt(1, 2, 3);
       //
       const vector<ThreeArgumentFunctionCall<int, int, int>> expectedCalls = { ThreeArgumentFunctionCall<int, int, int>(1, 2, 3) };
       VECTORS_ARE_EQUAL(expectedCalls, _threeArgumentMetalMocker->p_metalMockedFunctionCallHistory);
-      METALMOCK(_threeArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
+      METALMOCK(_threeArgumentMetalMocker->p_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_threeArgumentMetalMocker->CalledOnceWith(1, 2, 3));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();
    }
