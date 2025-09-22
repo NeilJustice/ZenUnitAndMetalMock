@@ -1358,17 +1358,6 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          : value(stringView) {}
    };
 
-   template<>
-   struct ArgumentStorage<std::wstring_view>
-   {
-      std::wstring value;
-
-      ArgumentStorage() = default;
-
-      explicit ArgumentStorage(std::wstring_view wideStringView)
-         : value(wideStringView) {}
-   };
-
    template<typename T>
    struct ArgumentStorage<std::unique_ptr<T>>
    {
