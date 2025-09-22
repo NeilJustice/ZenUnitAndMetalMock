@@ -2285,7 +2285,7 @@ namespace ZenUnit
 
       virtual ~ArgsParser() = default;
 
-      virtual ZenUnitArgs Parse(const std::vector<std::string>& stringArgs) const
+      virtual ZenUnitArgs ParseStringArgs(const std::vector<std::string>& stringArgs) const
       {
          ZenUnitArgs zenUnitArgs{};
          zenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
@@ -5690,7 +5690,7 @@ namespace ZenUnit
 #if defined _WIN32 && defined _DEBUG
          _call_CrtSetReportHook(FailFastInResponseToWindowsCrtAssertionFailure);
 #endif
-         _zenUnitArgs = _argsParser->Parse(stringArgs);
+         _zenUnitArgs = _argsParser->ParseStringArgs(stringArgs);
          _testClassRunnerRunner->ApplyTestNameFiltersIfAny(_zenUnitArgs.testNameFilters);
          const size_t numberOfTestRuns = _zenUnitArgs.testRuns < 0 ?
             std::numeric_limits<size_t>::max() : static_cast<size_t>(_zenUnitArgs.testRuns);

@@ -10,19 +10,19 @@ namespace ZenUnit
 {
    TESTS(ArgsParserTests)
    AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
-   AFACT(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
-   FACTS(Parse_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1)
-   AFACT(Parse_DashDashHelp_PrintsCommandLineUsageAndExits0)
-   AFACT(Parse_DashDashVersion_PrintsVersionAndExits0)
-   AFACT(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
-   AFACT(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
-   AFACT(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
-   FACTS(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndCommandLineUsageAndExits1)
-   AFACT(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndCommandLineUsageAndExits1)
-   AFACT(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
-   AFACT(Parse_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)
+   AFACT(ParseStringArgs_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
+   FACTS(ParseStringArgs_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1)
+   AFACT(ParseStringArgs_DashDashHelp_PrintsCommandLineUsageAndExits0)
+   AFACT(ParseStringArgs_DashDashVersion_PrintsVersionAndExits0)
+   AFACT(ParseStringArgs_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
+   AFACT(ParseStringArgs_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
+   AFACT(ParseStringArgs_ValidBoolArg_ReturnsExpectedZenUnitArgs)
+   AFACT(ParseStringArgs_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+   FACTS(ParseStringArgs_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndCommandLineUsageAndExits1)
+   AFACT(ParseStringArgs_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndCommandLineUsageAndExits1)
+   AFACT(ParseStringArgs_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+   AFACT(ParseStringArgs_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+   AFACT(ParseStringArgs_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)
    AFACT(GetSecondsSince1970RandomSeedIfNotAlreadySetByUser_RandomSeedCommandLineArgumentIsNotUnsignedMaxValue_ReturnsRandomSeedPotentiallySetByUser)
    AFACT(GetSecondsSince1970RandomSeedIfNotAlreadySetByUser_RandomSeedCommandLineArgumentIsUnsignedMaxValue_ReturnsSecondsSince1970)
    EVIDENCE
@@ -80,13 +80,13 @@ namespace ZenUnit
          &_argsParser, &ArgsParser::GetSecondsSince1970RandomSeedIfNotAlreadySetByUser, expectedRandomSeedPotentiallySetByUser));
    }
 
-   TEST(Parse_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
+   TEST(ParseStringArgs_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    {
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       vector<string> stringArgs{ _testProgramPath };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
+      const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
@@ -97,7 +97,7 @@ namespace ZenUnit
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
    }
 
-   TEST1X1(Parse_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1,
+   TEST1X1(ParseStringArgs_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1,
       const string& invalidArgument,
       "--abc",
       "--Always-exit-0",
@@ -107,34 +107,37 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, invalidArgument };
       //
-      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.ParseStringArgs(stringArgs),
+         WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(
          "ZenUnit command line usage error: Invalid argument \"" + invalidArgument + "\"\n"));
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
-   TEST(Parse_DashDashHelp_PrintsCommandLineUsageAndExits0)
+   TEST(ParseStringArgs_DashDashHelp_PrintsCommandLineUsageAndExits0)
    {
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, "--help" };
       //
-      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.ParseStringArgs(stringArgs),
+         WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 0));
    }
 
-   TEST(Parse_DashDashVersion_PrintsVersionAndExits0)
+   TEST(ParseStringArgs_DashDashVersion_PrintsVersionAndExits0)
    {
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, "--version" };
       //
-      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.ParseStringArgs(stringArgs),
+         WriteLineAndExitException, "");
       //
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith("v1.0.0", 0));
    }
 
-   TEST(Parse_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
+   TEST(ParseStringArgs_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
    {
       const int testruns = _call_String_ToIntMock.ReturnRandom();
       const unsigned randomSeedToUnsignedReturnValue = ZenUnit::Random<unsigned>();
@@ -156,7 +159,7 @@ namespace ZenUnit
          "--max-test-milliseconds=" + to_string(maxTestMilliseconds)
       };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
+      const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_call_String_ToUnsignedMock.CalledNTimes(2));
       METALMOCKTHEN(_call_String_ToIntMock.CalledOnceWith(to_string(testruns))).Then(
@@ -180,7 +183,7 @@ namespace ZenUnit
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
-   TEST(Parse_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
+   TEST(ParseStringArgs_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    {
       const unsigned randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock->CallConstMemberFunctionMock.ReturnRandom();
 
@@ -192,7 +195,7 @@ namespace ZenUnit
       const string runArgument = ZenUnit::Random<string>();
       const vector<string> stringArgs { ZenUnit::Random<string>(), "--run=" + runArgument };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
+      const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       const vector<string> splitRunArgument = String::Split(runArgument, ',');
@@ -205,7 +208,7 @@ namespace ZenUnit
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
-   TEST(Parse_ValidBoolArg_ReturnsExpectedZenUnitArgs)
+   TEST(ParseStringArgs_ValidBoolArg_ReturnsExpectedZenUnitArgs)
    {
       AssertArgSetsBoolField("--pause-before", &ZenUnitArgs::pauseBefore);
       Startup();
@@ -231,7 +234,7 @@ namespace ZenUnit
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
+      const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
@@ -242,13 +245,13 @@ namespace ZenUnit
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
-   TEST(Parse_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
+   TEST(ParseStringArgs_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
       _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const vector<string> stringArgs { _testProgramPath, "--always-exit-0", "--always-exit-0" };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
+      const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
@@ -259,7 +262,7 @@ namespace ZenUnit
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
-   TEST1X1(Parse_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndCommandLineUsageAndExits1,
+   TEST1X1(ParseStringArgs_ArgContainsEqualsSign_ValueIsEmptyString_PrintsErrorMessageAndCommandLineUsageAndExits1,
       const string& arg,
       "--test-runs=",
       "--test-runs===",
@@ -270,7 +273,8 @@ namespace ZenUnit
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
-      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.ParseStringArgs(stringArgs),
+         WriteLineAndExitException, "");
       //
       const string expectedErrorMessage =
          "ZenUnit command line usage error: " + string("String::Split(arg, '=') unexpectedly returned not 2 for arg = \"" + arg + "\"") + "\n";
@@ -278,7 +282,7 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
-   TEST(Parse_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndCommandLineUsageAndExits1)
+   TEST(ParseStringArgs_TimesEqualsArg_StringToUnsignedThrowsInvalidArgumentWhenProcessingValue_PrintsErrorMessageAndCommandLineUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
@@ -286,7 +290,8 @@ namespace ZenUnit
       const string invalidTestRunsArg = "--test-runs=-1_for_example";
       const vector<string> stringArgs { _testProgramPath, invalidTestRunsArg };
       //
-      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.ParseStringArgs(stringArgs),
+         WriteLineAndExitException, "");
       //
       METALMOCKTHEN(_call_String_ToIntMock.CalledOnceWith("-1_for_example")).Then(
       METALMOCKTHEN(_consoleMock->WriteLineMock.CalledOnceWith(
@@ -294,14 +299,14 @@ namespace ZenUnit
       METALMOCKTHEN(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1)));
    }
 
-   TEST(Parse_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
+   TEST(ParseStringArgs_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const int testRuns = _call_String_ToIntMock.ReturnRandom();
       const vector<string> stringArgs{ _testProgramPath, "--test-runs=" + to_string(testRuns) };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
+      const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_call_String_ToIntMock.CalledOnceWith(to_string(testRuns)));
@@ -313,14 +318,14 @@ namespace ZenUnit
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
-   TEST(Parse_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
+   TEST(ParseStringArgs_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       _watchMock->DateTimeNowMock.ReturnRandom();
       const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
       const unsigned randomSeedToUnsignedReturnValue = _call_String_ToUnsignedMock.ReturnRandom();
       const vector<string> stringArgs{ _testProgramPath, "--random-seed=" + to_string(randomSeed) };
       //
-      const ZenUnitArgs zenUnitArgs = _argsParser.Parse(stringArgs);
+      const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_call_String_ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
@@ -333,14 +338,15 @@ namespace ZenUnit
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
 
-   TEST(Parse_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)
+   TEST(ParseStringArgs_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)
    {
       _consoleMock->WriteLineMock.Expect();
       _consoleMock->WriteLineAndExitMock.ThrowExceptionWhenCalled<WriteLineAndExitException>();
       const string unrecognizedNameArg = String::ConcatStrings("-", ZenUnit::Random<string>(), "=", ZenUnit::Random<string>());
       const vector<string> stringArgs{ _testProgramPath, unrecognizedNameArg };
       //
-      THROWS_EXCEPTION(_argsParser.Parse(stringArgs), WriteLineAndExitException, "");
+      THROWS_EXCEPTION(_argsParser.ParseStringArgs(stringArgs),
+         WriteLineAndExitException, "");
       //
       const string expectedErrorMessage = String::ConcatStrings(
          "ZenUnit command line usage error: Unrecognized --name=value argument: ", unrecognizedNameArg, "\n");

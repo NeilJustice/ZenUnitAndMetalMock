@@ -169,7 +169,7 @@ namespace ZenUnit
 #endif
       ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       zenUnitArgs.testRuns = zenUnitArgsTestRuns;
-      _argsParserMock->ParseMock.Return(zenUnitArgs);
+      _argsParserMock->ParseStringArgsMock.Return(zenUnitArgs);
 
       _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
@@ -186,7 +186,7 @@ namespace ZenUnit
 #if defined _WIN32 && defined _DEBUG
       METALMOCK(_CrtSetReportHookMock.CalledOnceWith(ZenUnitTestRunner::FailFastInResponseToWindowsCrtAssertionFailure));
 #endif
-      METALMOCK(_argsParserMock->ParseMock.CalledOnceWith(commandLineArgs));
+      METALMOCK(_argsParserMock->ParseStringArgsMock.CalledOnceWith(commandLineArgs));
       METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
       METALMOCK(_nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.CalledOnceWith(
          expectedNumberOfTestRuns, &_zenUnitTestRunner, &ZenUnitTestRunner::RunTests));
