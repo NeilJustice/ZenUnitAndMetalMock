@@ -21,7 +21,7 @@ namespace MetalMock
       //
       const VoidFourArgumentMetalMocker<int, int, int, int> voidFourArgumentMetalMocker(metalMockedFunctionSignature);
       //
-      IS_FALSE(voidFourArgumentMetalMocker.callInsteadFunction);
+      IS_FALSE(voidFourArgumentMetalMocker._callInsteadFunction);
       ARE_EQUAL(voidFourArgumentMetalMocker._metalMockedFunctionSignature, metalMockedFunctionSignature);
       IS_FALSE(voidFourArgumentMetalMocker._wasExpected);
       IS_FALSE(voidFourArgumentMetalMocker._wasAsserted);

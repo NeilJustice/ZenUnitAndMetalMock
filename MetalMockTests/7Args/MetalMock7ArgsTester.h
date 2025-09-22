@@ -108,7 +108,7 @@ namespace MetalMock
             //
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(expectedNumberOfFunctionCalls),
                Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, p_metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedNumberOfFunctionCalls) + "\n"
 "  Actual: " + to_string(actualNumberOfFunctionCalls) + "\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
@@ -132,7 +132,7 @@ namespace MetalMock
             //
             THROWS_EXCEPTION(metalMockObject.CalledWith(10, 10, 10, 10, 10, 10, 10),
                ZenUnit::Anomaly, R"(
-  Failed: IS_GREATER_THAN_OR_EQUAL(_metalMockedFunctionCallHistory.size(), 2ULL)
+  Failed: IS_GREATER_THAN_OR_EQUAL(p_metalMockedFunctionCallHistory.size(), 2ULL)
 Expected: 1
   Actual: 2
 File.cpp(1))");

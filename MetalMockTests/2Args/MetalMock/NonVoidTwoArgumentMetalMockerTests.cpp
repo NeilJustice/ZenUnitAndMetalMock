@@ -29,7 +29,7 @@ namespace MetalMock
    TEST(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    {
       IS_FALSE(_nonVoidTwoArgumentMetalMocker->_wasExpected);
-      IS_FALSE(_nonVoidTwoArgumentMetalMocker->_baseVoidCallInsteadFunction);
+      IS_FALSE(_nonVoidTwoArgumentMetalMocker->p_baseVoidCallInsteadFunction);
       IS_FALSE(_nonVoidTwoArgumentMetalMocker->_derivedNonVoidCallInsteadFunction);
       //
       _nonVoidTwoArgumentMetalMocker->CallInstead(

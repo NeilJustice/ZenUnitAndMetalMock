@@ -189,7 +189,7 @@ namespace MetalMock
          {
             THROWS_EXCEPTION(metalMockObject.Called(),
                Anomaly, "\n"
-"  Failed: IS_NOT_EMPTY(_metalMockedFunctionCallHistory, this->_metalMockedFunctionSignature)\n"
+"  Failed: IS_NOT_EMPTY(p_metalMockedFunctionCallHistory, this->_metalMockedFunctionSignature)\n"
 "Expected: empty() == false\n"
 "  Actual: empty() == true\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
@@ -310,7 +310,7 @@ namespace MetalMock
             //
             THROWS_EXCEPTION(metalMockObject.CalledNTimes(expectedNumberOfFunctionCalls),
                Anomaly, "\n"
-"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
+"  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, p_metalMockedFunctionCallHistory.size(), this->_metalMockedFunctionSignature)\n"
 "Expected: " + to_string(expectedNumberOfFunctionCalls) + "\n"
 "  Actual: " + to_string(actualNumberOfFunctionCalls) + "\n"
 " Message: \"" + expectedFunctionSignature + "\"\n"
