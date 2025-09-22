@@ -2260,6 +2260,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticFunctionMockObjectType>
       friend class MetalMock3ArgsTester;
       friend class ThreeArgumentMetalMockerTests;
+   private:
+      size_t _currentCalledWithAssertionIndex = 0;
    public:
       std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>> metalMockedFunctionCallHistory;
 
@@ -2277,16 +2279,30 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockThrowExceptionIfExceptionSet();
       }
 
-      FunctionCallSequenceNumber CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2, const Arg3Type& expectedArg3)
+      FunctionCallSequenceNumber CalledWith(
+         const Arg1Type& expectedArg1,
+         const Arg2Type& expectedArg2,
+         const Arg3Type& expectedArg3)
       {
          this->MetalMockSetAsserted();
-         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL);
-         const ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type> expectedThreeArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3);
+         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL, this->metalMockedFunctionSignature);
+         IS_LESS_THAN(_currentCalledWithAssertionIndex, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+
+         const ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>
+            expectedThreeArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3);
          const std::vector<ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>> actualThreeArgumentFunctionCalls =
             MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
                ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>,
                ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>>(this->metalMockedFunctionCallHistory);
-         CONTAINS_ELEMENT(expectedThreeArgumentFunctionCall, actualThreeArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         const ThreeArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type>& nextActualThreeArgumentFunctionCall =
+            actualThreeArgumentFunctionCalls[_currentCalledWithAssertionIndex];
+
+         const std::string currentCalledWithAssertionIndexMessage =
+            "_currentCalledWithAssertionIndex=" + std::to_string(_currentCalledWithAssertionIndex);
+         ARE_EQUAL(expectedThreeArgumentFunctionCall, nextActualThreeArgumentFunctionCall,
+            this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage);
+         ++_currentCalledWithAssertionIndex;
+
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
