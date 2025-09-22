@@ -8668,31 +8668,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    };
 
-   template<typename KeyType, typename ValueType>
-   class RandomMapGenerator
-   {
-   public:
-      static const RandomMapGenerator<KeyType, ValueType>* Instance()
-      {
-         static const RandomMapGenerator<KeyType, ValueType> randomMapGenerator;
-         return &randomMapGenerator;
-      }
-
-      virtual ~RandomMapGenerator() = default;
-
-      virtual std::map<KeyType, ValueType> OrderedMap() const
-      {
-         std::map<KeyType, ValueType> randomOrderedMap = RandomOrderedMap<KeyType, ValueType>();
-         return randomOrderedMap;
-      }
-
-      virtual std::unordered_map<KeyType, ValueType> UnorderedMap() const
-      {
-         std::unordered_map<KeyType, ValueType> randomUnorderedMap = RandomUnorderedMap<KeyType, ValueType>();
-         return randomUnorderedMap;
-      }
-   };
-
    inline int RunTests(int argc, char* argv[])
    {
       const std::vector<std::string> stringArgs = VectorUtils::FromArgcArgv(argc, argv);

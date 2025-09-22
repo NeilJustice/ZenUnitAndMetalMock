@@ -3900,15 +3900,4 @@ namespace ZenUnit
       METALMOCK_NONVOID0_CONST(std::filesystem::path, FilesystemPath)
       METALMOCK_NONVOID0_CONST(std::vector<std::filesystem::path>, FilesystemPathVector)
    };
-
-   template<typename KeyType, typename ValueType>
-   class RandomMapGeneratorMock : public Metal::Mock<ZenUnit::RandomMapGenerator<KeyType, ValueType>>
-   {
-   public:
-      using MapType = std::map<KeyType, ValueType>;
-      METALMOCK_NONVOID0_CONST(MapType, Map)
-
-      using UnorderedMapType = std::unordered_map<KeyType, ValueType>;
-      METALMOCK_NONVOID0_CONST(UnorderedMapType, UnorderedMap)
-   };
 }
