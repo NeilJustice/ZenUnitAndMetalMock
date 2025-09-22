@@ -13,7 +13,7 @@ TEST(DefaultConstructor_SetsFunctionCallSequenceNumberValueToNextGlobalSequenceN
 {
    const MetalMock::FunctionCallSequenceNumber functionCallSequenceNumber{};
    //
-   ARE_EQUAL(MetalMock::g_metalMockedFunctionCallSequenceNumber - 1, functionCallSequenceNumber.sequenceNumber);
+   ARE_EQUAL(MetalMock::g_globalMetalMockedFunctionCallSequenceNumber - 1, functionCallSequenceNumber.sequenceNumber);
    IS_NULLPTR(functionCallSequenceNumber.metalMockedFunctionSignature);
 }
 

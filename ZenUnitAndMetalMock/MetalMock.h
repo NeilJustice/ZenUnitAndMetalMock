@@ -60,7 +60,7 @@ catch (const ZenUnit::Anomaly& metalMockWrappedAnomaly) \
 
 namespace MetalMock
 {
-   inline std::atomic<unsigned long long> g_metalMockedFunctionCallSequenceNumber;
+   inline std::atomic<unsigned long long> g_globalMetalMockedFunctionCallSequenceNumber;
 
    struct FunctionCallSequenceNumber
    {
@@ -68,7 +68,7 @@ namespace MetalMock
       const std::string* metalMockedFunctionSignature;
 
       FunctionCallSequenceNumber()
-         : sequenceNumber(g_metalMockedFunctionCallSequenceNumber++)
+         : sequenceNumber(g_globalMetalMockedFunctionCallSequenceNumber++)
          , metalMockedFunctionSignature(nullptr)
       {
       }
@@ -1219,7 +1219,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType>
-   class NonVoidZeroArgumentMetalMocker : public ZeroArgumentMetalMocker<MetalMockExceptionThrower>, protected ValueReturner<FunctionReturnType>
+   class NonVoidZeroArgumentMetalMocker :
+      public ZeroArgumentMetalMocker<MetalMockExceptionThrower>,
+      protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
@@ -1902,7 +1904,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType, typename ArgType>
-   class NonVoidOneArgumentMetalMocker : public OneArgumentMetalMocker<ArgType>, protected ValueReturner<FunctionReturnType>
+   class NonVoidOneArgumentMetalMocker :
+      public OneArgumentMetalMocker<ArgType>,
+      protected ValueReturner<FunctionReturnType>
    {
       friend class NonVoidOneArgumentMetalMockerTests;
    private:
@@ -2111,7 +2115,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type>
-   class NonVoidTwoArgumentMetalMocker : public TwoArgumentMetalMocker<Arg1Type, Arg2Type>, protected ValueReturner<FunctionReturnType>
+   class NonVoidTwoArgumentMetalMocker :
+      public TwoArgumentMetalMocker<Arg1Type, Arg2Type>,
+      protected ValueReturner<FunctionReturnType>
    {
       friend class NonVoidTwoArgumentMetalMockerTests;
    private:
@@ -2347,7 +2353,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type>
-   class NonVoidThreeArgumentMetalMocker : public ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>, protected ValueReturner<FunctionReturnType>
+   class NonVoidThreeArgumentMetalMocker :
+      public ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>,
+      protected ValueReturner<FunctionReturnType>
    {
       friend class NonVoidThreeArgumentMetalMockerTests;
    private:
@@ -2617,7 +2625,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
-   class NonVoidFourArgumentMetalMocker : public FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>, protected ValueReturner<FunctionReturnType>
+   class NonVoidFourArgumentMetalMocker :
+      public FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>,
+      protected ValueReturner<FunctionReturnType>
    {
       friend class NonVoidFourArgumentMetalMockerTests;
    private:
@@ -2870,7 +2880,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type>
-   class NonVoidFiveArgumentMetalMocker : public FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>, protected ValueReturner<FunctionReturnType>
+   class NonVoidFiveArgumentMetalMocker :
+      public FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>,
+      protected ValueReturner<FunctionReturnType>
    {
       friend class NonVoidFiveArgumentMetalMockerTests;
    private:
@@ -3131,7 +3143,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type>
-   class NonVoidSixArgumentMetalMocker : public SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>, protected ValueReturner<FunctionReturnType>
+   class NonVoidSixArgumentMetalMocker :
+      public SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>,
+      protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
@@ -3371,7 +3385,9 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    };
 
    template<typename FunctionReturnType, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type, typename Arg5Type, typename Arg6Type, typename Arg7Type>
-   class NonVoidSevenArgumentMetalMocker : public SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>, protected ValueReturner<FunctionReturnType>
+   class NonVoidSevenArgumentMetalMocker :
+      public SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>,
+      protected ValueReturner<FunctionReturnType>
    {
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;

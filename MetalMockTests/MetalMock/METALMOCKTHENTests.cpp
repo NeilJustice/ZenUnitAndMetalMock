@@ -68,8 +68,8 @@ namespace MetalMock
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       //
-      const unsigned long long expectedSequenceNumberA = MetalMock::g_metalMockedFunctionCallSequenceNumber;
-      const unsigned long long expectedSequenceNumberB = MetalMock::g_metalMockedFunctionCallSequenceNumber + 1;
+      const unsigned long long expectedSequenceNumberA = MetalMock::g_globalMetalMockedFunctionCallSequenceNumber;
+      const unsigned long long expectedSequenceNumberB = MetalMock::g_globalMetalMockedFunctionCallSequenceNumber + 1;
       _classMock.FunctionA(messageA);
       _classMock.FunctionB(messageB);
       //
