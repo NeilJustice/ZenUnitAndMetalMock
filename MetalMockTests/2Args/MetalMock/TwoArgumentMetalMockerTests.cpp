@@ -33,7 +33,7 @@ namespace MetalMock
       ARE_EQUAL(_metalMockedFunctionSignature, mocker.metalMockedFunctionSignature);
       IS_FALSE(mocker.wasExpected);
       IS_FALSE(mocker.wasAsserted);
-      IS_EMPTY(mocker.metalMockedFunctionCallHistory);
+      IS_EMPTY(mocker._metalMockedFunctionCallHistory);
    }
 
    TEST(ThrowException_CallsExceptionThrowerThrow_SetsExpectedTrue)
@@ -60,12 +60,12 @@ namespace MetalMock
    {
       _metalMocker->wasExpected = true;
       _metalMocker->_exceptionThrower.ExpectCallToMetalMockThrowExceptionIfExceptionSet();
-      IS_EMPTY(_metalMocker->metalMockedFunctionCallHistory);
+      IS_EMPTY(_metalMocker->_metalMockedFunctionCallHistory);
       //
       _metalMocker->MetalMockIt(1, 2);
       //
       const vector<TwoArgumentFunctionCall<int, int>> expectedCalls = { TwoArgumentFunctionCall<int, int>(1, 2) };
-      VECTORS_ARE_EQUAL(expectedCalls, _metalMocker->metalMockedFunctionCallHistory);
+      VECTORS_ARE_EQUAL(expectedCalls, _metalMocker->_metalMockedFunctionCallHistory);
       METALMOCK(_metalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
       DOES_NOT_THROW(_metalMocker->CalledOnceWith(1, 2));
       SetAssertedTrueToNotFailDueToExpectedButNotAsserted();

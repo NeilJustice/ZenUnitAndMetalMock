@@ -30,7 +30,7 @@ namespace MetalMock
       ARE_EQUAL(_metalMockedFunctionSignature, zeroArgumentMetalMocker.metalMockedFunctionSignature);
       IS_FALSE(zeroArgumentMetalMocker.wasExpected);
       IS_FALSE(zeroArgumentMetalMocker.wasAsserted);
-      IS_EMPTY(zeroArgumentMetalMocker.metalMockedFunctionCallHistory);
+      IS_EMPTY(zeroArgumentMetalMocker._metalMockedFunctionCallHistory);
    }
 
    TEST(ThrowExceptionWhenCalled_CallsExceptionThrowerThrow_SetsExpectedTrue)
@@ -66,7 +66,7 @@ namespace MetalMock
       //
       const unsigned long long endingGlobalAtomicFunctionCallSequenceNumberAndSignature = MetalMock::_globalMetalMockedFunctionCallSequenceNumber;
       IS_GREATER_THAN(endingGlobalAtomicFunctionCallSequenceNumberAndSignature, startingGlobalAtomicFunctionCallSequenceNumberAndSignature);
-      ARE_EQUAL(1, _zeroArgumentMetalMocker->metalMockedFunctionCallHistory.size());
+      ARE_EQUAL(1, _zeroArgumentMetalMocker->_metalMockedFunctionCallHistory.size());
       METALMOCK(_zeroArgumentMetalMocker->_exceptionThrower.AssertMetalMockThrowExceptionIfExceptionSetCalledOnce());
       _zeroArgumentMetalMocker->CalledOnce();
    }
@@ -77,12 +77,12 @@ namespace MetalMock
       1ULL, false,
       2ULL, true)
    {
-      _zeroArgumentMetalMocker->metalMockedFunctionCallHistory.resize(numberOfFunctionCalls);
+      _zeroArgumentMetalMocker->_metalMockedFunctionCallHistory.resize(numberOfFunctionCalls);
       //
       if (expectAnomaly)
       {
          const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
 Expected: 1
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("
@@ -115,12 +115,12 @@ File.cpp(1))");
       2ULL, 2ULL, false,
       3ULL, 2ULL, true)
    {
-      _zeroArgumentMetalMocker->metalMockedFunctionCallHistory.resize(numberOfFunctionCalls);
+      _zeroArgumentMetalMocker->_metalMockedFunctionCallHistory.resize(numberOfFunctionCalls);
       //
       if (expectAnomaly)
       {
          const string expectedExceptionMessage = ZenUnit::String::ConcatValues(R"(
-  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
+  Failed: ARE_EQUAL(expectedNumberOfFunctionCalls, _metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature)
 Expected: )", expectedNumberOfFunctionCalls, R"(
   Actual: )", numberOfFunctionCalls, R"(
  Message: ")", _metalMockedFunctionSignature, R"("

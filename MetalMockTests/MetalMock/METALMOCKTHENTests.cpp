@@ -51,7 +51,7 @@ namespace MetalMock
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
 "  Failed: METALMOCKTHEN(_classMock.FunctionAMock.CalledOnceWith(expectedMessage))",
 "Because of this ZenUnit::Anomaly:",
-"  Failed: ARE_EQUAL(expectedArgument, this->metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature)",
+"  Failed: ARE_EQUAL(expectedArgument, _metalMockedFunctionCallHistory[0].argument.value, this->metalMockedFunctionSignature)",
 "Expected: \"mismatching_message\"",
 "  Actual: \"message\"",
 " Message: \"virtual void METALMOCKTHENTestingClass::FunctionA(string_view) const\"",
