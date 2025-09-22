@@ -730,7 +730,7 @@ namespace MetalMock
       const std::string _exceptionMessage;
    public:
       template<typename... ArgTypes>
-      explicit UnexpectedCallException(const std::string& metalMockedFunctionSignature, ArgTypes&&... args)
+      explicit UnexpectedCallException(std::string_view metalMockedFunctionSignature, ArgTypes&&... args)
          : _exceptionMessage(MakeExceptionMessage(metalMockedFunctionSignature, std::forward<ArgTypes>(args)...))
       {
       }
@@ -738,7 +738,7 @@ namespace MetalMock
       virtual ~UnexpectedCallException() = default;
 
       template<typename... ArgTypes>
-      static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature, ArgTypes&&... args)
+      static std::string MakeExceptionMessage(std::string_view metalMockedFunctionSignature, ArgTypes&&... args)
       {
          std::ostringstream exceptionMessageBuilder;
          exceptionMessageBuilder << "Unexpected call to MetalMocked function:\n" << metalMockedFunctionSignature;
@@ -771,7 +771,7 @@ namespace MetalMock
    private:
       const std::string _exceptionMessage;
    public:
-      explicit ReturnValueMustBeSpecifiedException(const std::string& metalMockedFunctionSignature)
+      explicit ReturnValueMustBeSpecifiedException(std::string_view metalMockedFunctionSignature)
          : _exceptionMessage(MakeExceptionMessage(metalMockedFunctionSignature))
       {
       }
@@ -798,8 +798,7 @@ MetalMocked functions with non-void return types must have their return value or
    private:
       const std::string _exceptionMessage;
    public:
-      explicit FunctionAssertedOneMoreTimeThanItWasCalledException(
-         const std::string& metalMockedFunctionSignature, size_t metalMockedFunctionCallCount)
+      explicit FunctionAssertedOneMoreTimeThanItWasCalledException(std::string_view metalMockedFunctionSignature, size_t metalMockedFunctionCallCount)
          : _exceptionMessage(MakeExceptionMessage(metalMockedFunctionSignature, metalMockedFunctionCallCount))
       {
       }
@@ -825,14 +824,14 @@ MetalMocked functions with non-void return types must have their return value or
    private:
       const std::string _exceptionMessage;
    public:
-      explicit UnsupportedCalledZeroTimesException(const std::string& metalMockedFunctionSignature)
+      explicit UnsupportedCalledZeroTimesException(std::string_view metalMockedFunctionSignature)
          : _exceptionMessage(MakeExceptionMessage(metalMockedFunctionSignature))
       {
       }
 
       virtual ~UnsupportedCalledZeroTimesException() = default;
 
-      static std::string MakeExceptionMessage(const std::string& metalMockedFunctionSignature)
+      static std::string MakeExceptionMessage(std::string_view metalMockedFunctionSignature)
       {
          std::string exceptionMessage = ZenUnit::String::ConcatStrings(
             "For MetalMocked function \"", metalMockedFunctionSignature, R"(":
@@ -1172,7 +1171,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    protected:
       std::vector<ZeroArgumentFunctionCall> p_metalMockedFunctionCallHistory;
    public:
-      explicit ZeroArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit ZeroArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
@@ -1226,7 +1225,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
-      explicit NonVoidZeroArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidZeroArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : ZeroArgumentMetalMocker<MetalMockExceptionThrower>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -1274,7 +1273,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidZeroArgFunctionPointerMetalMocker : public NonVoidZeroArgumentMetalMocker<FunctionReturnType>
    {
    public:
-      explicit NonVoidZeroArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidZeroArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidZeroArgumentMetalMocker<FunctionReturnType>(metalMockedFunctionSignature)
       {
       }
@@ -1289,7 +1288,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidZeroArgumentMetalMocker : public ZeroArgumentMetalMocker<MetalMockExceptionThrower>
    {
    public:
-      explicit VoidZeroArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidZeroArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : ZeroArgumentMetalMocker<MetalMockExceptionThrower>(metalMockedFunctionSignature)
       {
       }
@@ -1303,7 +1302,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidZeroArgFunctionPointerMetalMocker : public VoidZeroArgumentMetalMocker
    {
    public:
-      explicit VoidZeroArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidZeroArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidZeroArgumentMetalMocker(metalMockedFunctionSignature)
       {
       }
@@ -1917,7 +1916,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      explicit NonVoidOneArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidOneArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : OneArgumentMetalMocker<ArgType>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -1977,7 +1976,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidOneArgFunctionPointerMetalMocker : public NonVoidOneArgumentMetalMocker<FunctionReturnType, Arg1Type>
    {
    public:
-      explicit NonVoidOneArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidOneArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidOneArgumentMetalMocker<FunctionReturnType, Arg1Type>(metalMockedFunctionSignature)
       {
       }
@@ -1993,7 +1992,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidOneArgFunctionPointerMetalMocker : public VoidOneArgumentMetalMocker<Arg1Type>
    {
    public:
-      explicit VoidOneArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidOneArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidOneArgumentMetalMocker<Arg1Type>(metalMockedFunctionSignature)
       {
       }
@@ -2039,7 +2038,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       std::function<void(Arg1Type, Arg2Type)> p_baseVoidCallInsteadFunction;
       std::vector<TwoArgumentFunctionCall<Arg1Type, Arg2Type>> p_metalMockedFunctionCallHistory;
    public:
-      explicit TwoArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit TwoArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
@@ -2124,7 +2123,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
       std::function<FunctionReturnType(Arg1Type, Arg2Type)> _derivedNonVoidCallInsteadFunction;
    public:
-      explicit NonVoidTwoArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidTwoArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : TwoArgumentMetalMocker<Arg1Type, Arg2Type>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -2184,7 +2183,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidTwoArgFunctionPointerMetalMocker : public NonVoidTwoArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type>
    {
    public:
-      explicit NonVoidTwoArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidTwoArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidTwoArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type>(metalMockedFunctionSignature)
       {
       }
@@ -2202,7 +2201,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidTwoArgumentMetalMocker : public TwoArgumentMetalMocker<Arg1Type, Arg2Type>
    {
    public:
-      explicit VoidTwoArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidTwoArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : TwoArgumentMetalMocker<Arg1Type, Arg2Type>(metalMockedFunctionSignature)
       {
       }
@@ -2224,7 +2223,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidTwoArgFunctionPointerMetalMocker : public VoidTwoArgumentMetalMocker<Arg1Type, Arg2Type>
    {
    public:
-      explicit VoidTwoArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidTwoArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidTwoArgumentMetalMocker<Arg1Type, Arg2Type>(metalMockedFunctionSignature)
       {
       }
@@ -2271,7 +2270,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    protected:
       std::vector<ThreeArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type>> p_metalMockedFunctionCallHistory;
    public:
-      explicit ThreeArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit ThreeArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
@@ -2362,7 +2361,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
       std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type)> _derivedNonVoidCallInsteadFunction;
    public:
-      explicit NonVoidThreeArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidThreeArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -2422,7 +2421,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidThreeArgFunctionPointerMetalMocker : public NonVoidThreeArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type>
    {
    public:
-      explicit NonVoidThreeArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidThreeArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidThreeArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type>(metalMockedFunctionSignature)
       {
       }
@@ -2442,7 +2441,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    protected:
       std::function<void(Arg1Type, Arg2Type, Arg3Type)> p_callInsteadFunction;
    public:
-      explicit VoidThreeArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidThreeArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : ThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>(metalMockedFunctionSignature)
       {
       }
@@ -2475,7 +2474,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidThreeArgFunctionPointerMetalMocker : public VoidThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>
    {
    public:
-      explicit VoidThreeArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidThreeArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidThreeArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type>(metalMockedFunctionSignature)
       {
       }
@@ -2526,7 +2525,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    protected:
       std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> p_metalMockedFunctionCallHistory;
    public:
-      explicit FourArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit FourArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
@@ -2634,7 +2633,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
       std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type, Arg4Type)> _callInsteadFunction;
    public:
-      explicit NonVoidFourArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidFourArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -2696,7 +2695,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidFourArgFunctionPointerMetalMocker : public NonVoidFourArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>
    {
    public:
-      explicit NonVoidFourArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidFourArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidFourArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>(metalMockedFunctionSignature)
       {
       }
@@ -2716,7 +2715,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidFourArgumentMetalMocker : public FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>
    {
    public:
-      explicit VoidFourArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidFourArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : FourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(metalMockedFunctionSignature)
       {
       }
@@ -2731,7 +2730,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidFourArgFunctionPointerMetalMocker : public VoidFourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>
    {
    public:
-      explicit VoidFourArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidFourArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidFourArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type>(metalMockedFunctionSignature)
       {
       }
@@ -2781,7 +2780,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    protected:
       std::vector<FiveArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>> p_metalMockedFunctionCallHistory;
    public:
-      explicit FiveArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit FiveArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
@@ -2889,7 +2888,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
       std::function<FunctionReturnType(Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type)> _callInsteadFunction;
    public:
-      explicit NonVoidFiveArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidFiveArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -2951,7 +2950,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidFiveArgFunctionPointerMetalMocker : public NonVoidFiveArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>
    {
    public:
-      explicit NonVoidFiveArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidFiveArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidFiveArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(metalMockedFunctionSignature)
       {
       }
@@ -2971,7 +2970,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidFiveArgumentMetalMocker : public FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>
    {
    public:
-      explicit VoidFiveArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidFiveArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : FiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(metalMockedFunctionSignature)
       {
       }
@@ -2986,7 +2985,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidFiveArgFunctionPointerMetalMocker : public VoidFiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>
    {
    public:
-      explicit VoidFiveArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidFiveArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidFiveArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type>(metalMockedFunctionSignature)
       {
       }
@@ -3037,7 +3036,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    protected:
       std::vector<SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> p_metalMockedFunctionCallHistory;
    public:
-      explicit SixArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit SixArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
@@ -3150,7 +3149,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
-      explicit NonVoidSixArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidSixArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -3200,7 +3199,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidSixArgFunctionPointerMetalMocker : public NonVoidSixArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>
    {
    public:
-      explicit NonVoidSixArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidSixArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidSixArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(metalMockedFunctionSignature)
       {
       }
@@ -3224,7 +3223,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidSixArgumentMetalMocker : public SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>
    {
    public:
-      explicit VoidSixArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidSixArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : SixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(metalMockedFunctionSignature)
       {
       }
@@ -3239,7 +3238,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidSixArgFunctionPointerMetalMocker : public VoidSixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>
    {
    public:
-      explicit VoidSixArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidSixArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidSixArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>(metalMockedFunctionSignature)
       {
       }
@@ -3289,7 +3288,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    protected:
       std::vector<SevenArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>> p_metalMockedFunctionCallHistory;
    public:
-      explicit SevenArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit SevenArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
       {
       }
@@ -3392,7 +3391,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    private:
       using DecayedFunctionReturnType = typename std::decay<FunctionReturnType>::type;
    public:
-      explicit NonVoidSevenArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidSevenArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(metalMockedFunctionSignature)
          , ValueReturner<FunctionReturnType>(metalMockedFunctionSignature)
       {
@@ -3448,7 +3447,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class NonVoidSevenArgFunctionPointerMetalMocker : public NonVoidSevenArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>
    {
    public:
-      explicit NonVoidSevenArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit NonVoidSevenArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : NonVoidSevenArgumentMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(metalMockedFunctionSignature)
       {
       }
@@ -3473,7 +3472,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidSevenArgumentMetalMocker : public SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type, MetalMockExceptionThrower>
    {
    public:
-      explicit VoidSevenArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidSevenArgumentMetalMocker(std::string_view metalMockedFunctionSignature)
          : SevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(metalMockedFunctionSignature)
       {
       }
@@ -3488,7 +3487,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    class VoidSevenArgFunctionPointerMetalMocker : public VoidSevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>
    {
    public:
-      explicit VoidSevenArgFunctionPointerMetalMocker(const std::string& metalMockedFunctionSignature)
+      explicit VoidSevenArgFunctionPointerMetalMocker(std::string_view metalMockedFunctionSignature)
          : VoidSevenArgumentMetalMocker<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type, Arg7Type>(metalMockedFunctionSignature)
       {
       }
