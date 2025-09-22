@@ -34,6 +34,7 @@ namespace MetalMock
 
    AFACT(CalledWith_FunctionCalledOnlyOnce_ThrowsAnomaly)
    AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns)
+   AFACT(CalledWith_FunctionCalledTwice_SecondArgAssertedBeforeFirstArg_ThrowsAnomaly)
    AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgDoesNotMatch_ThrowsAnomaly)
    AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_CalledWithCalledThreeTimes_ThrowsAnomaly)
 
@@ -107,6 +108,11 @@ namespace MetalMock
    TEST(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns)
    {
       _metalMock6ArgsTester->CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns();
+   }
+
+   TEST(CalledWith_FunctionCalledTwice_SecondArgAssertedBeforeFirstArg_ThrowsAnomaly)
+   {
+      _metalMock6ArgsTester->CalledWith_FunctionCalledTwice_SecondArgAssertedBeforeFirstArg_ThrowsAnomaly();
    }
 
    TEST(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgDoesNotMatch_ThrowsAnomaly)

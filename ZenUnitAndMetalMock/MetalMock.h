@@ -3020,6 +3020,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticFunctionMockObjectType>
       friend class MetalMock6ArgsTester;
       friend class SixArgumentMetalMockerTests;
+   private:
+      size_t _currentCalledWithAssertionIndex = 0;
    public:
       std::vector<SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> metalMockedFunctionCallHistory;
 
@@ -3050,13 +3052,29 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          const Arg6Type& expectedArg6)
       {
          this->MetalMockSetAsserted();
-         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL);
-         const SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> expectedSixArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3, expectedArg4, expectedArg5, expectedArg6);
+         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL, this->metalMockedFunctionSignature);
+         IS_LESS_THAN(_currentCalledWithAssertionIndex, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+
+         const SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type> expectedSixArgumentFunctionCall(
+            expectedArg1,
+            expectedArg2,
+            expectedArg3,
+            expectedArg4,
+            expectedArg5,
+            expectedArg6);
          const std::vector<SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>> actualSixArgumentFunctionCalls =
             MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
                SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>,
                SixArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>>(this->metalMockedFunctionCallHistory);
-         CONTAINS_ELEMENT(expectedSixArgumentFunctionCall, actualSixArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         const SixArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type, Arg5Type, Arg6Type>& nextActualSixArgumentFunctionCall =
+            actualSixArgumentFunctionCalls[_currentCalledWithAssertionIndex];
+
+         const std::string currentCalledWithAssertionIndexMessage =
+            "_currentCalledWithAssertionIndex=" + std::to_string(_currentCalledWithAssertionIndex);
+         ARE_EQUAL(expectedSixArgumentFunctionCall, nextActualSixArgumentFunctionCall,
+            this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage);
+         ++_currentCalledWithAssertionIndex;
+
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
