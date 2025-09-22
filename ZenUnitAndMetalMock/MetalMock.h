@@ -2515,6 +2515,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
    private:
       std::function<void(Arg1Type, Arg2Type, Arg3Type, Arg4Type)> callInsteadFunction;
       std::vector<FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> metalMockedFunctionCallHistory;
+      size_t _currentCalledWithAssertionIndex = 0;
    public:
       explicit FourArgumentMetalMocker(const std::string& metalMockedFunctionSignature)
          : MetalMocker<MockableExceptionThrowerType>(metalMockedFunctionSignature)
@@ -2550,13 +2551,23 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          const Arg4Type& expectedArg4)
       {
          this->MetalMockSetAsserted();
-         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL);
+         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL, this->metalMockedFunctionSignature);
+         IS_LESS_THAN(_currentCalledWithAssertionIndex, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+
          const FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type> expectedFourArgumentFunctionCall(expectedArg1, expectedArg2, expectedArg3, expectedArg4);
          const std::vector<FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>> actualFourArgumentFunctionCalls =
             MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
                FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>,
                FourArgumentFunctionCall<Arg1Type, Arg2Type, Arg3Type, Arg4Type>>(this->metalMockedFunctionCallHistory);
-         CONTAINS_ELEMENT(expectedFourArgumentFunctionCall, actualFourArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         const FourArgumentFunctionCallReferences<Arg1Type, Arg2Type, Arg3Type, Arg4Type>& nextActualFourArgumentFunctionCall =
+            actualFourArgumentFunctionCalls[_currentCalledWithAssertionIndex];
+
+         const std::string currentCalledWithAssertionIndexMessage =
+            "_currentCalledWithAssertionIndex=" + std::to_string(_currentCalledWithAssertionIndex);
+         ARE_EQUAL(expectedFourArgumentFunctionCall, nextActualFourArgumentFunctionCall,
+            this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage);
+         ++_currentCalledWithAssertionIndex;
+
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
