@@ -27,13 +27,16 @@ namespace MetalMock
 
    TESTS(MetalMockVoid6Tests)
    AFACT(MetalMockedFunction_NotExpected_ThrowsUnexpectedCallException)
+
    AFACT(CalledNTimes_NIs0_ThrowsUnsupportedCalledZeroTimesException)
    AFACT(CalledNTimes_FunctionCalledNTimes_DoesNotThrowException)
    AFACT(CalledNTimes_FunctionNotCalledNTimes_ThrowsException)
+
    AFACT(CalledWith_FunctionCalledOnlyOnce_ThrowsAnomaly)
    AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_Returns)
    AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgDoesNotMatch_ThrowsAnomaly)
    AFACT(CalledWith_FunctionCalledTwice_FirstArgMatches_SecondArgMatches_CalledWithCalledThreeTimes_ThrowsAnomaly)
+
    AFACT(Expect_MakesFunctionNotThrowWhenCalled_ExpectDoesNotThrowWhenCalledTwice)
    AFACT(MockedFunctions_CodeCoverage)
    AFACT(CalledOnceWith_CalledTwice_ThrowsException)

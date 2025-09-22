@@ -1817,16 +1817,20 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          this->MetalMockSetAsserted();
          IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL, this->metalMockedFunctionSignature);
          IS_LESS_THAN(_currentCalledWithAssertionIndex, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+
          const OneArgumentFunctionCallReference<ArgType> expectedOneArgumentFunctionCall(expectedArgument);
          const std::vector<OneArgumentFunctionCallReference<ArgType>> actualOneArgumentFunctionCalls =
             MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
                OneArgumentFunctionCallReference<ArgType>,
                OneArgumentFunctionCall<ArgType>>(this->metalMockedFunctionCallHistory);
-         const auto& nextActualOneArgumentFunctionCall = actualOneArgumentFunctionCalls[_currentCalledWithAssertionIndex];
+         const OneArgumentFunctionCallReference<ArgType>& nextActualOneArgumentFunctionCall =
+            actualOneArgumentFunctionCalls[_currentCalledWithAssertionIndex];
+
          const std::string currentCalledWithAssertionIndexMessage =
             "_currentCalledWithAssertionIndex=" + std::to_string(_currentCalledWithAssertionIndex);
          ARE_EQUAL(expectedOneArgumentFunctionCall, nextActualOneArgumentFunctionCall,
             this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage);
+
          ++_currentCalledWithAssertionIndex;
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
@@ -2024,6 +2028,8 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          typename StaticFunctionMockObjectType>
       friend class MetalMock2ArgsTester;
       friend class TwoArgumentMetalMockerTests;
+   private:
+      size_t _currentCalledWithAssertionIndex = 0;
    protected:
       std::function<void(Arg1Type, Arg2Type)> baseVoidCallInsteadFunction;
    public:
@@ -2048,13 +2054,23 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       FunctionCallSequenceNumber CalledWith(const Arg1Type& expectedArg1, const Arg2Type& expectedArg2)
       {
          this->MetalMockSetAsserted();
-         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL);
+         IS_GREATER_THAN_OR_EQUAL(this->metalMockedFunctionCallHistory.size(), 2ULL, this->metalMockedFunctionSignature);
+         IS_LESS_THAN(_currentCalledWithAssertionIndex, this->metalMockedFunctionCallHistory.size(), this->metalMockedFunctionSignature);
+
          const TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type> expectedTwoArgumentFunctionCall(expectedArg1, expectedArg2);
          const std::vector<TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>> actualTwoArgumentFunctionCalls =
             MetalMocker<MockableExceptionThrowerType>::template ConvertMetalMockFunctionCallsToMetalMockFunctionCallReferences<
                TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>,
                TwoArgumentFunctionCall<Arg1Type, Arg2Type>>(this->metalMockedFunctionCallHistory);
-         CONTAINS_ELEMENT(expectedTwoArgumentFunctionCall, actualTwoArgumentFunctionCalls, this->metalMockedFunctionSignature);
+         const TwoArgumentFunctionCallReferences<Arg1Type, Arg2Type>& nextActualTwoArgumentFunctionCall =
+            actualTwoArgumentFunctionCalls[_currentCalledWithAssertionIndex];
+
+         const std::string currentCalledWithAssertionIndexMessage =
+            "_currentCalledWithAssertionIndex=" + std::to_string(_currentCalledWithAssertionIndex);
+         ARE_EQUAL(expectedTwoArgumentFunctionCall, nextActualTwoArgumentFunctionCall,
+            this->metalMockedFunctionSignature, currentCalledWithAssertionIndexMessage);
+         ++_currentCalledWithAssertionIndex;
+
          return this->NextFunctionCallSequenceNumber(metalMockedFunctionCallHistory);
       }
 
