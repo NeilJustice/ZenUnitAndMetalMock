@@ -1381,6 +1381,18 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
          : value(argument) {}
    };
 
+   template<typename T>
+   struct ReferenceStorage<T&>
+   {
+      T& value;
+
+      ReferenceStorage()
+         : value() {}
+
+      explicit ReferenceStorage(const T& argument)
+         : value(const_cast<T&>(argument)) {}
+   };
+
    template<>
    struct ReferenceStorage<std::string_view>
    {
