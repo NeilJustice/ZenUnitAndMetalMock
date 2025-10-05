@@ -1908,9 +1908,10 @@ namespace ZenUnit
          FilePathLineNumber filePathLineNumber)
       {
          Anomaly anomaly;
-         // One line String::ConcatValues to fix apparent lcov/Codecov.io bug whereby line-breaked String::ConcatValue arguments are labeled as partially uncovered
-         anomaly.why = String::ConcatValues('\n', "  Failed: ", metalMockAssertExpression, '\n',
-            "Because of this ZenUnit::Anomaly:", metalMockWrappedAnomaly.why, '\n', filePathLineNumber);
+         anomaly.why = String::ConcatValues('\n',
+            "  Failed: ", metalMockAssertExpression, '\n',
+            "Because of this ZenUnit::Anomaly:", metalMockWrappedAnomaly.why, '\n',
+            filePathLineNumber);
          return anomaly;
       }
 
