@@ -70,10 +70,6 @@ RelWithDebInfo/
 *.vspx
 install_manifest.txt
 
-# Cppcheck
-Cppcheck/
-cppcheck_results.txt
-
 # VTune
 GPUCache/
 VTune Profiler Results/
