@@ -2359,7 +2359,7 @@ namespace ZenUnit
                   }
                   else if (argName == "--max-test-milliseconds")
                   {
-                     zenUnitArgs.maxTestMilliseconds = _call_String_ToUnsigned(argValueString);;
+                     zenUnitArgs.maxTestMilliseconds = _call_String_ToUnsigned(argValueString);
                   }
                   else
                   {
