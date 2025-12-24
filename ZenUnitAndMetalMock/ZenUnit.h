@@ -2081,7 +2081,7 @@ namespace ZenUnit
          return testNameFilter;
       }
 
-      static void ThrowInvalidArgumentDueToInvalidTestNameFilterString(std::string_view invalidTestNameFilterString)
+      [[noreturn]] static void ThrowInvalidArgumentDueToInvalidTestNameFilterString(std::string_view invalidTestNameFilterString)
       {
          const std::string exceptionMessage = String::ConcatStrings("Invalid test name filter string: ", invalidTestNameFilterString,
             ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
