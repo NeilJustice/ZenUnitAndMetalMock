@@ -2098,13 +2098,13 @@ namespace ZenUnit
       {
          const std::vector<std::string> stringArgs = [&]()
          {
-            std::vector<std::string> stringArgs;
-            stringArgs.reserve(static_cast<size_t>(argc));
+            std::vector<std::string> lambdaStringArgs;
+            lambdaStringArgs.reserve(static_cast<size_t>(argc));
             std::for_each(argv, argv + argc, [&](char* charPointerArg)
             {
-               stringArgs.emplace_back(charPointerArg);
+               lambdaStringArgs.emplace_back(charPointerArg);
             });
-            return stringArgs;
+            return lambdaStringArgs;
          }();
          return stringArgs;
       }
