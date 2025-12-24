@@ -735,7 +735,7 @@ namespace MetalMock
       {
       }
 
-      virtual ~UnexpectedCallException() = default;
+      virtual ~UnexpectedCallException() override = default;
 
       template<typename... ArgTypes>
       static std::string MakeExceptionMessage(std::string_view metalMockedFunctionSignature, ArgTypes&&... args)
@@ -776,7 +776,7 @@ namespace MetalMock
       {
       }
 
-      virtual ~ReturnValueMustBeSpecifiedException() = default;
+      virtual ~ReturnValueMustBeSpecifiedException() override = default;
 
       const char* what() const noexcept override
       {
