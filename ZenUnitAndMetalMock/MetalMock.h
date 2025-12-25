@@ -803,7 +803,7 @@ MetalMocked functions with non-void return types must have their return value or
       {
       }
 
-      virtual ~FunctionAssertedOneMoreTimeThanItWasCalledException() = default;
+      virtual ~FunctionAssertedOneMoreTimeThanItWasCalledException() override = default;
 
       const char* what() const noexcept override
       {
@@ -829,7 +829,7 @@ MetalMocked functions with non-void return types must have their return value or
       {
       }
 
-      virtual ~UnsupportedCalledZeroTimesException() = default;
+      virtual ~UnsupportedCalledZeroTimesException() override = default;
 
       static std::string MakeExceptionMessage(std::string_view metalMockedFunctionSignature)
       {
