@@ -2701,7 +2701,7 @@ MetalMocked Function Was Expected But Not Later Asserted As Having Been Called
       {
       }
 
-      virtual ~NonVoidFourArgFunctionPointerMetalMocker() = default;
+      virtual ~NonVoidFourArgFunctionPointerMetalMocker() override = default;
 
       static FunctionReturnType MetalMockItFunctionPointer(
          NonVoidFourArgFunctionPointerMetalMocker<FunctionReturnType, Arg1Type, Arg2Type, Arg3Type, Arg4Type>* functionMocker,
