@@ -2966,7 +2966,7 @@ namespace ZenUnit
       }
    }
 
-   NOINLINE inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
+   [[noreturn]] NOINLINE inline void ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL_ThrowAnomalyBecauseEqualizerThrewUnexpectedAnomaly(
       const char* typeName, const char* fieldName, const char* arbitraryNonDefaultFieldValueText,
       FilePathLineNumber filePathLineNumber, const Anomaly& becauseAnomaly)
    {
