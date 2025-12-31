@@ -459,7 +459,7 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 ### Console output when running ZenUnit type-parameterized tests
 
-![Console Output When Running ZenUnit Type-Parameterized Tests](Screenshots/Linux/ConsoleOutputWhenRunningZenUnitTypeParameterizedTests.png)
+![Console Output When Running ZenUnit Type-Parameterized Tests](Screenshots/ConsoleOutputWhenRunningZenUnitTypeParameterizedTests.png)
 
 ## ZenUnit assertions
 
@@ -1101,10 +1101,6 @@ sudo cmake --build . --target install
 cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
-ZenUnit.h and MetalMock.h as installed on Linux:
-
-![ZenUnit.h and MetalMock.h installed on Linux](Screenshots/Linux/ZenUnitDotHAndMetalMockDotHInstalledOnLinux.png)
-
 ### Steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h
 
 ```bash
@@ -1113,10 +1109,6 @@ cd ZenUnitAndMetalMock
 cmake . -G"Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 cmake --build . --target install
 ```
-
-ZenUnit.h and MetalMock.h as installed on Windows:
-
-![Installed ZenUnit.h and MetalMock.h on Windows](Screenshots/Windows/ZenUnitDotHAndMetalMockDotHOnWindows.png)
 
 ### Thanks to
 
