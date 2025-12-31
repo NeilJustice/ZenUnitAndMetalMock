@@ -1,12 +1,12 @@
 <p align="center"> 
-<img src="Screenshots/ZenUnitLogo.png" width="64%"><br>
+<img src="Screenshots/ZenUnitLogo.png" width="50%"><br>
 <img src="https://img.shields.io/badge/c%2B%2B-23-blue.svg"/>
 <a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg"></a>
 <a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"></a>
 <a href="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock"><img src="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2"></a>
 </p>
 <p align="center"> 
-<img src="Screenshots/MetalMockLogo.png" width="64%"><br>
+<img src="Screenshots/MetalMockLogo.png" width="50%"><br>
 </p>
 
 ZenUnit is a C++ single-header unit testing framework designed for test readability, error message clarity, value-parameterized tests, and template-parameterized test classes.
@@ -151,12 +151,8 @@ Absent the MetalMock design feature of requiring expected functions to be subseq
      * [MetalMocking free functions](#metalmocking-free-functions)
      * [Asserting the expected order of MetalMocked function calls](#asserting-the-expected-order-of-metalmocked-function-calls)
    * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
-   * [ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-code-on-linux)
-   * [ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows](#zenunit-and-metalmock-code-structure-as-it-appears-in-visual-studio-2022-on-windows)
-   * [Linux Jenkins jobs which build and statically analyze ZenUnit and MetalMock](#linux-jenkins-jobs-which-build-and-statically-analyze-zenunit-and-metalmock)
-   * [Windows Jenkins jobs which build and statically analyze ZenUnit and MetalMock](#windows-jenkins-jobs-which-build-and-statically-analyze-zenunit-and-metalmock)
-   * [6 steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h](#6-steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-install-zenunith-and-metalmockh)
-   * [4 steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h](#4-steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-install-zenunith-and-metalmockh)
+   * [Steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-install-zenunith-and-metalmockh)
+   * [Steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-install-zenunith-and-metalmockh)
    * [Thanks to](#Thanks-to)
 
 ### ZenUnit command line usage
@@ -1095,23 +1091,7 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomNonEmptyUnorderedSet<T>()`|Returns a a `std::unordered_set<T>` with size between 1 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSetWithSize<T>()`|Returns a a `std::unordered_set<T>` with size `size` with each element a `ZenUnit::Random<T>()` value.|
 
-### ZenUnit and MetalMock code structure as it appears in Visual Studio Code on Linux
-
-![ZenUnit and MetalMock Code Structure As It Appears In Visual Studio Code On Linux](Screenshots/Linux/ZenUnitAndMetalMockCodeStructureAsItAppearsInVSCode.png)
-
-### ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows
-
-![ZenUnit and MetalMock code structure as it appears in Visual Studio 2022 on Windows](Screenshots/ZenUnitAndMetalMockInVisualStudio2022.png)
-
-### Linux Jenkins jobs which build and statically analyze ZenUnit and MetalMock
-
-![Linux Jenkins Jobs](Screenshots/Linux/LinuxJenkinsJobs.png)
-
-### Windows Jenkins jobs which build and statically analyze ZenUnit and MetalMock
-
-![Windows Jenkins Jobs](Screenshots/Windows/WindowsJenkinsJobs.png)
-
-### 6 steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h
+### Steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -1125,7 +1105,7 @@ ZenUnit.h and MetalMock.h as installed on Linux:
 
 ![ZenUnit.h and MetalMock.h installed on Linux](Screenshots/Linux/ZenUnitDotHAndMetalMockDotHInstalledOnLinux.png)
 
-### 4 steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h
+### Steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -1152,3 +1132,4 @@ ZenUnit.h and MetalMock.h as installed on Windows:
 * [My colleagues at Quantlab](https://www.quantlab.com)
 * [My colleagues at Emerson](https://www.emerson.com/en-us/automation/deltav)
 * [Brandmark.io for the ZenUnit and MetalMock logos](https://brandmark.io)
+
