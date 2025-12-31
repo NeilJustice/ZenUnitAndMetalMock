@@ -1,15 +1,15 @@
-<p align="center"> 
+<p align="center">
 <img src="Screenshots/ZenUnitLogo.png" width="50%"><br>
-<img src="https://img.shields.io/badge/c%2B%2B-23-blue.svg"/>
-<a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg"></a>
-<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"></a>
-<a href="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock"><img src="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2"></a>
-</p>
-<p align="center"> 
 <img src="Screenshots/MetalMockLogo.png" width="50%"><br>
 </p>
 
-ZenUnit is a C++ single-header unit testing framework designed for test readability, error message clarity, value-parameterized tests, and template-parameterized test classes.
+|Build Type|Build Status|
+|----------|------------|
+|GitHub Actions Clang 18 and GCC 13|<a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/build.yml/badge.svg"></a>|
+|AppVeyor Visual Studio 2022|<a href="https://ci.appveyor.com/project/NeilJustice/ZenUnitAndMetalMock"><img src="https://ci.appveyor.com/api/projects/status/9m1224h38bk4lxn7?svg=true"></a>
+|Codecov.io GCC lcov code coverage|<a href="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock"><img src="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2"></a>
+
+ZenUnit is a C++23 single-header unit testing framework designed for test readability, error message clarity, value-parameterized tests, and template-parameterized test classes.
 
 Here is the ZenUnit syntax for specifying value-parameterized tests by way of typesafe variadic macro arguments:
 
