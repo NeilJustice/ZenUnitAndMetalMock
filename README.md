@@ -44,7 +44,7 @@ PredicateCounter<ContainerType, T> _predicateCounter;
 
 static bool IsEven(const T& element)
 {
-   const bool elementIsEven = element % 2 == 0;
+   bool elementIsEven = element % 2 == 0;
    return elementIsEven;
 }
 
@@ -107,17 +107,15 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 The above `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, and `THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit templated test class with unit tests to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
 
-MetalMock, a C++ single-header mocking framework powered by ZenUnit assertions, features a convenient arrange-act-assert syntax for setting mocked-out function return values, a specific exception to be thrown, or an alternative function to be called instead of the mocked-out function.
+MetalMock is a C++23 two-header (MetalMock.h and ZenUnit.h) mocking framework powered by ZenUnit assertions. MetalMock's key feature is its convenient arrange-act-assert style syntax for expecting calls to mocked functions and asserting that mocked functions were called with expected arguments in expected order.
 
-MetalMock supports the mocking of virtual functions, template functions, static functions, and global / free functions.
+MetalMock supports mocking virtual functions, template functions, static functions, and global/free functions.
 
-MetalMock is a so-called "double strict" mocking framework so as to be useful for rigorously confirming the correctness of function calls made in safety-critical and financially-critical environments.
+MetalMock is what I call a "double strict" mocking framework.
 
-A "single strict" mocking framework requires that all mocked-out functions be explicitly expected before being called, else an exception.
+A "single strict" mocking framework requires all mocked functions to be explicitly expected before being called, else an exception is thrown.
 
-A "double strict" mocking framework requires that all mocked-out functions be both explicitly expected and then explicitly asserted as having been called, else an exception.
-
-Absent the MetalMock design feature of requiring expected functions to be subsequently confirmed as having been called with expected arguments, there is the possibility of correctness-compromising extraneous function calls being present in the C++ program under test.
+A "double strict" mocking framework requires all mocked functions to be both explicitly expected and then explicitly asserted as having been called with expected arguments, else an exception is thrown. The double strictness boosts testing rigor by catching potentially correctness-compromising extraneous function calls at unit test time instead of acceptance test time or in production.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
@@ -151,8 +149,8 @@ Absent the MetalMock design feature of requiring expected functions to be subseq
      * [MetalMocking free functions](#metalmocking-free-functions)
      * [Asserting the expected order of MetalMocked function calls](#asserting-the-expected-order-of-metalmocked-function-calls)
    * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
-   * [Steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-and-install-zenunith-and-metalmockh)
-   * [Steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-and-install-zenunith-and-metalmockh)
+   * [Steps to build and run ZenUnit and MetalMock unit tests on Linux then install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-then-install-zenunith-and-metalmockh)
+   * [Steps to build and run ZenUnit and MetalMock unit tests on Windows then install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-then-install-zenunith-and-metalmockh)
    * [Thanks to](#Thanks-to)
 
 ### ZenUnit command line usage
@@ -1091,7 +1089,7 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::RandomNonEmptyUnorderedSet<T>()`|Returns a a `std::unordered_set<T>` with size between 1 and 3 with each element a `ZenUnit::Random<T>()` value.|
 |`ZenUnit::RandomUnorderedSetWithSize<T>()`|Returns a a `std::unordered_set<T>` with size `size` with each element a `ZenUnit::Random<T>()` value.|
 
-### Steps to build and run ZenUnit and MetalMock unit tests on Linux and install ZenUnit.h and MetalMock.h
+### Steps to build and run ZenUnit and MetalMock unit tests on Linux then install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
@@ -1101,7 +1099,7 @@ sudo cmake --build . --target install
 cd ..
 ./TestScripts/RunAllDebugTests.sh
 ```
-### Steps to build and run ZenUnit and MetalMock unit tests on Windows and install ZenUnit.h and MetalMock.h
+### Steps to build and run ZenUnit and MetalMock unit tests on Windows then install ZenUnit.h and MetalMock.h
 
 ```bash
 git clone https://github.com/NeilJustice/ZenUnitAndMetalMock
