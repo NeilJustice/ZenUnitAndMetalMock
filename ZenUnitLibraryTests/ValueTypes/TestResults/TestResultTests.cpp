@@ -5,7 +5,7 @@ namespace ZenUnit
 {
    TESTS(TestResultTests)
    AFACT(DefaultConstructor_SetsFieldsTo0_SetsWatchFunction)
-   FACTS(SixArgConstructor_SetsFields_SetsWatchFunction)
+   FACTS(SixArgConstructor_DoesSo)
    FACTS(ConstructorFail_ReturnsExpectedTestResult)
    FACTS(StartupFail_ReturnsExpectedTestResult)
    AFACT(ConstructorDestructorSuccess_ReturnsExpectedTestResult);
@@ -68,13 +68,14 @@ namespace ZenUnit
       ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
    }
 
-   TEST6X6(SixArgConstructor_SetsFields_SetsWatchFunction,
+   TEST6X6(SixArgConstructor_DoesSo,
       TestOutcome testBodyOutcome,
       TestOutcome cleanupOutcome,
       unsigned maxTestMilliseconds,
       int relativeMicroseconds,
       TestOutcome expectedOverallOutcome,
       TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
+
       TestOutcome::Success, TestOutcome::Success, 0u, 0, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, 0u, 1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, -1, TestOutcome::Success, nullptr,
@@ -135,7 +136,7 @@ namespace ZenUnit
       expectedTestResult.testOutcome = expectedOverallOutcome;
       expectedTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedTestResult.totalTestCases = 0;
-      expectedTestResult.elapsedMicroseconds = static_cast<unsigned>(MaxTestMilliseconds * 1000 + relativeMicroseconds);
+      expectedTestResult.elapsedMicroseconds = static_cast<unsigned>(static_cast<int>(MaxTestMilliseconds) * 1000 + relativeMicroseconds);
       ARE_EQUAL(expectedTestResult, testResult);
    }
 

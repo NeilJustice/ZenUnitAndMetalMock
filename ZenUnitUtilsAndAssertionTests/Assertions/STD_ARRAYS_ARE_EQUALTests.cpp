@@ -109,7 +109,7 @@ namespace ZenUnit
       const array<T, 2> expectedArray{ { randomElement1, randomElement1 } };
       const array<T, 2> actualArray{ { randomElement2, randomElement1 } };
       //
-#if defined __linux____linux__
+#if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
@@ -142,7 +142,7 @@ namespace ZenUnit
       const array<T, 2> expectedArray = { randomElement1, randomElement2 };
       const array<T, 2> actualArray = { randomElement1, randomElement3 };
       //
-#if defined __linux____linux__
+#if defined __linux__
       THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",

@@ -2,10 +2,9 @@
 
 struct DoublyPrintableUserType
 {
-   friend ostream& operator<<(ostream& os, const DoublyPrintableUserType&)
+   [[noreturn]] friend ostream& operator<<(ostream&, const DoublyPrintableUserType&)
    {
-      ZENUNIT_ASSERT(!"operator<< called when ZenUnit::Printer<T>::Print() should have been called");
-      return os;
+      throw logic_error("operator<< called when ZenUnit::Printer<T>::Print() should have been called");
    }
 };
 

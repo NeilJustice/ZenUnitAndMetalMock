@@ -1,9 +1,9 @@
 #include "pch.h"
 
 // Global free function to be MetalMocked
-int GlobalFreeFunction(int value)
+static int GlobalFreeFunction(int value)
 {
-   const int valuePlus1 = value + 1;
+   int valuePlus1 = value + 1;
    return valuePlus1;
 }
 
@@ -16,7 +16,7 @@ private:
 public:
    int FunctionUnderTest(int input)
    {
-      const int globalFreeFunctionReturnValue = _call_GlobalFreeFunction(input);
+      int globalFreeFunctionReturnValue = _call_GlobalFreeFunction(input);
       return globalFreeFunctionReturnValue;
    }
 };

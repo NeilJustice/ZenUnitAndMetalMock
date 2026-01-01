@@ -26,13 +26,13 @@ namespace ZenUnit
    static bool PredicateThatThrowsIfCalled(const T&, const Arg2Type&, const Arg3Type&)
    {
       throw invalid_argument("unexpected call");
-   };
+   }
 
    static bool AlwaysFalsePredicate(const T& element, const Arg2Type& arg2, const Arg3Type& arg3)
    {
       s_predicateArgs.emplace_back(element, arg2, arg3);
       return false;
-   };
+   }
 
    static bool ElementValueOneReturnsTruePredicate(const T& element, const Arg2Type& arg2, const Arg3Type& arg3)
    {
@@ -42,7 +42,7 @@ namespace ZenUnit
          return true;
       }
       return false;
-   };
+   }
 
    static bool ElementValueTwoReturnsTruePredicate(const T& element, const Arg2Type& arg2, const Arg3Type& arg3)
    {
@@ -52,7 +52,7 @@ namespace ZenUnit
          return true;
       }
       return false;
-   };
+   }
 
    const ThreeArgAnyer<CollectionType<T>,
       bool(*)(const T&, const Arg2Type&, const Arg3Type&),

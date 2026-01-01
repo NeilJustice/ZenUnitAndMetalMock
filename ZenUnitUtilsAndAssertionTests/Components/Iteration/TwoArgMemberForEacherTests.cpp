@@ -112,7 +112,7 @@ namespace ZenUnit
    {
       ClassType classType{};
       classType.TwoArgFunction(ElementType{}, Arg2Type{});
-   };
+   }
 
    RUN_TEMPLATE_TESTS(TwoArgMemberForEacherTests, int, int)
    THEN_RUN_TEMPLATE_TESTS(TwoArgMemberForEacherTests, double, char)

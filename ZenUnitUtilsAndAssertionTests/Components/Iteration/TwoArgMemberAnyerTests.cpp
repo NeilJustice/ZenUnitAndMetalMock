@@ -23,13 +23,13 @@ namespace ZenUnit
       bool PredicateThatThrowsIfCalled(const T&, const Arg2Type&) const
       {
          throw invalid_argument("unexpected call");
-      };
+      }
 
       bool AlwaysFalsePredicate(const T& element, const Arg2Type& arg2) const
       {
          predicateArgs.emplace_back(element, arg2);
          return false;
-      };
+      }
 
       bool ElementValueOneReturnsTruePredicate(const T& element, const Arg2Type& arg2) const
       {
@@ -39,7 +39,7 @@ namespace ZenUnit
             return true;
          }
          return false;
-      };
+      }
 
       bool ElementValueTwoReturnsTruePredicate(const T& element, const Arg2Type& arg2) const
       {
@@ -49,7 +49,7 @@ namespace ZenUnit
             return true;
          }
          return false;
-      };
+      }
    };
 
    Class _classInstance;

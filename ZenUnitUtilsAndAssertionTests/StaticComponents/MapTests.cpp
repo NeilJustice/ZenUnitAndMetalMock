@@ -58,7 +58,7 @@ namespace ZenUnit
       const pair<bool, bool> containsKeyValue = Map::ContainsKeyWithValue(_map, KeyType(), ValueType());
       //
       ARE_EQUAL(make_pair(false, false), containsKeyValue);
-   };
+   }
 
    TEST(ContainsKeyWithValue_MapContainsKeyWithMismatchingValue_ReturnsTrueAndFalse)
    {

@@ -24,7 +24,7 @@ namespace MetalMock
    {
       _callInsteadFunctionArguments.emplace_back(arg1, arg2, arg3, arg4, arg5);
       return _callInsteadFunctionReturnValue;
-   };
+   }
 
    TEST(CallInstead_SetsWasExpectedToTrue_SetsCallInsteadFunction)
    {
@@ -50,7 +50,7 @@ namespace MetalMock
       //
       const int returnValue = _nonVoidFiveArgumentMetalMocker->MetalMockItAndReturnValue(arg1, arg2, arg3, arg4, arg5);
       //
-      vector<tuple<int, int, int, int, int>> expectedCallInsteadFunctionArguments =
+      const vector<tuple<int, int, int, int, int>> expectedCallInsteadFunctionArguments =
       {
          { arg1, arg2, arg3, arg4, arg5 }
       };
