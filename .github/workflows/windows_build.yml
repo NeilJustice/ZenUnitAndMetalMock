@@ -1,0 +1,48 @@
+name: ZenUnitAndMetalMock
+on: push
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+         cmake_build_type: [Debug, RelWithDebInfo]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('ZenUnitAndMetalMockDevOpsPython/dev-requirements.txt') }}
+
+      - name: Install pip packages
+        run: pip install --upgrade --upgrade-strategy eager -r ZenUnitAndMetalMockDevOpsPython/dev-requirements.txt
+
+      - name: Mypy, Flake8, Pylint, then run unit tests with coverage and pytest if Release
+        working-directory: ZenUnitAndMetalMockDevOpsPython
+        run: python ZenUnitAndMetalMockDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py --run-tests-with-coverage-python-file=ZenUnitAndMetalMockDevOpsPythonTests/RunAllWithCoverage.py
+        env:
+          PYTHONPATH: .
+        if: ${{ matrix.cmake_build_type == 'Release' }}
+
+      - name: Run BuildAndInstallCPlusPlusProgram.py
+        run: |
+          curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/ZenUnit.h --create-dirs -o "ZenUnitAndMetalMock/ZenUnit.h"
+          curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/MetalMock.h --create-dirs -o "ZenUnitAndMetalMock/MetalMock.h"
+          python ZenUnitAndMetalMockDevOpsPython/ZenUnitAndMetalMockDevOpsPython/BuildAndInstallCPlusPlusProgram.py `
+            --solution-name=ZenUnitAndMetalMock `
+            --cmake-build-type="${{ matrix.cmake_build_type }}" `
+            --cmake-definitions="" `
+            --tests-project-name=libZenUnitAndMetalMockTests `
+            --no-install
+        env:
+          PYTHONPATH: ZenUnitAndMetalMockDevOpsPython
+
