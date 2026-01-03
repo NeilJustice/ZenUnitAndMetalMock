@@ -7623,7 +7623,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return static_cast<T>(inclusiveLowerBound);
       }
       std::uniform_int_distribution<int> uniformIntDistribution(1, 10);
-      const int randomIntBetween1And10 = uniformIntDistribution(RandomEngineForCurrentTestRun());
+      std::default_random_engine& randomEngineForCurrentTestRun = RandomEngineForCurrentTestRun();
+      const int randomIntBetween1And10 = uniformIntDistribution(randomEngineForCurrentTestRun);
       switch (randomIntBetween1And10)
       {
       case 1: return static_cast<T>(inclusiveLowerBound);
@@ -7636,7 +7637,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 8:
       {
          std::uniform_int_distribution<long long> uniformLongLongDistribution(inclusiveLowerBound, inclusiveUpperBound);
-         const long long randomIntegerAsLongLong = uniformLongLongDistribution(RandomEngineForCurrentTestRun());
+         const long long randomIntegerAsLongLong = uniformLongLongDistribution(randomEngineForCurrentTestRun);
          T randomIntegerAsT = static_cast<T>(randomIntegerAsLongLong);
          return randomIntegerAsT;
       }
@@ -7653,7 +7654,8 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return inclusiveLowerBound;
       }
       std::uniform_int_distribution<int> uniformIntDistribution(1, 10);
-      const int randomIntBetween1And10 = uniformIntDistribution(RandomEngineForCurrentTestRun());
+      std::default_random_engine& randomEngineForCurrentTestRun = RandomEngineForCurrentTestRun();
+      const int randomIntBetween1And10 = uniformIntDistribution(randomEngineForCurrentTestRun);
       switch (randomIntBetween1And10)
       {
       case 1: return inclusiveLowerBound;
@@ -7666,7 +7668,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       case 8:
       {
          std::uniform_int_distribution<size_t> uniformSizeTDistribution(inclusiveLowerBound, inclusiveUpperBound);
-         size_t randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformSizeTDistribution(RandomEngineForCurrentTestRun());
+         size_t randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound = uniformSizeTDistribution(randomEngineForCurrentTestRun);
          return randomSizeTBetweenInclusiveLowerBoundAndInclusiveUpperBound;
       }
       case 9: return inclusiveUpperBound - 1ULL;
