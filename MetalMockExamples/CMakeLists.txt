@@ -11,7 +11,7 @@ source_group("" FILES ${sourceFilePaths})
 add_executable(MetalMockExamples ${sourceFilePaths})
 
 if(UNIX)
-   target_precompile_headers(MetalMockExamples PRIVATE pch.h)
+   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode(MetalMockExamples 1)
 elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
    IfMSVCAddPostBuildStepToRunTests()

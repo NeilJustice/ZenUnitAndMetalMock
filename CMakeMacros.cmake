@@ -49,3 +49,16 @@ macro(IfMSVCAddPostBuildStepToRunTests)
 endmacro()
 
 set(ZenUnitIncludeDirectory "${CMAKE_SOURCE_DIR}/ZenUnit")
+
+function(IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode projectName unityBuildBatchSize)
+   if(UNIX)
+      if(NOT IncludeWhatYouUseMode AND NOT ClangTidyMode)
+         target_precompile_headers(${projectName} PRIVATE pch.h)
+         if(${unityBuildBatchSize} GREATER_EQUAL 2)
+            set_target_properties(${projectName} PROPERTIES UNITY_BUILD ON)
+            set_target_properties(${projectName} PROPERTIES UNITY_BUILD_BATCH_SIZE ${unityBuildBatchSize})
+         endif()
+      endif()
+   endif()
+endfunction()
+

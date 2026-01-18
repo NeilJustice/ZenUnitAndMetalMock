@@ -13,7 +13,7 @@ add_executable(ZenUnitCompileSpeedTests ${sourceFilePaths})
 target_link_libraries(ZenUnitCompileSpeedTests)
 
 if(UNIX)
-   target_precompile_headers(ZenUnitCompileSpeedTests PRIVATE pch.h)
+   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode(ZenUnitCompileSpeedTests 1)
 elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
 endif()
