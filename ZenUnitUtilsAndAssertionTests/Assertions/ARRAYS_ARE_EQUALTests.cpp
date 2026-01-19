@@ -13,16 +13,16 @@ namespace ZenUnit
 
    TEST(NumberOfElementsToCompareIs0_DoesNotThrowException)
    {
-      const T expectedArray[1] { ZenUnit::Random<T>() };
-      const T actualArray[1] { ZenUnit::Random<T>() };
+      const T expectedArray[1] { ZenUnit::Random<T>() }; // NOLINT
+      const T actualArray[1] { ZenUnit::Random<T>() }; // NOLINT
       //
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 0);
    }
 
    TEST(NumberOfElementsToCompareIs1_FirstElementsAreEqual_DoesNotThrowException)
    {
-      const T expectedArray[1] { ZenUnit::Random<T>() };
-      const T actualArray[1] { expectedArray[0] };
+      const T expectedArray[1] { ZenUnit::Random<T>() }; // NOLINT
+      const T actualArray[1] { expectedArray[0] }; // NOLINT
       //
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1);
    }
@@ -32,8 +32,8 @@ namespace ZenUnit
       const string typeName = *Type::GetName<T>();
       const T randomElement1 = ZenUnit::Random<T>();
       const T randomElement2 = ZenUnit::RandomNotEqualTo<T>(randomElement1);
-      const T expectedArray[1] { randomElement1 };
-      const T actualArray[1] { randomElement2 };
+      const T expectedArray[1] { randomElement1 }; // NOLINT
+      const T actualArray[1] { randomElement2 }; // NOLINT
       //
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1)",
@@ -45,14 +45,14 @@ namespace ZenUnit
          " Message: \"i=0\"",
          "File.cpp(1)",
          "File.cpp(1)");
-      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1),
+      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1), // NOLINT
          Anomaly, expectedExceptionMessage);
    }
 
    TEST(NumberOfElementsToCompareIs2_FirstElementsAreEqual_SecondElementsAreEqual_DoesNotThrowException)
    {
-      const T expectedArray[2] { ZenUnit::Random<T>(), ZenUnit::Random<T>() };
-      const T actualArray[2] { expectedArray[0], expectedArray[1] };
+      const T expectedArray[2] { ZenUnit::Random<T>(), ZenUnit::Random<T>() }; // NOLINT
+      const T actualArray[2] { expectedArray[0], expectedArray[1] }; // NOLINT
       //
       ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2);
    }
@@ -62,8 +62,8 @@ namespace ZenUnit
       const string typeName = *Type::GetName<T>();
       const T randomElement1 = ZenUnit::Random<T>();
       const T randomElement2 = ZenUnit::RandomNotEqualTo<T>(randomElement1);
-      const T expectedArray[2] { randomElement1, randomElement1 };
-      const T actualArray[2] { randomElement1, randomElement2 };
+      const T expectedArray[2] { randomElement1, randomElement1 }; // NOLINT
+      const T actualArray[2] { randomElement1, randomElement2 }; // NOLINT
       //
       const string expectedExceptionMessage = TestUtil::NewlineConcat("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2)",
@@ -75,7 +75,7 @@ namespace ZenUnit
          " Message: \"i=1\"",
          "File.cpp(1)",
          "File.cpp(1)");
-      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2),
+      THROWS_EXCEPTION(ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2), // NOLINT
          Anomaly, expectedExceptionMessage);
    }
 
@@ -90,8 +90,8 @@ namespace ZenUnit
 
    TEST(NonConstCharArraysAreEqual_Returns)
    {
-      char expectedNonConstCharArray[2]{ ZenUnit::Random<char>(), ZenUnit::Random<char>() };
-      char actualNonConstCharArray[2]{ ZenUnit::Random<char>(), ZenUnit::Random<char>() };
+      char expectedNonConstCharArray[2]{ ZenUnit::Random<char>(), ZenUnit::Random<char>() }; // NOLINT
+      char actualNonConstCharArray[2]{ ZenUnit::Random<char>(), ZenUnit::Random<char>() }; // NOLINT
       //
       ARRAYS_ARE_EQUAL(expectedNonConstCharArray, actualNonConstCharArray, 0);
    }

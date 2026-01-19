@@ -26,10 +26,10 @@ namespace ZenUnit
       static_assert(is_quoted_when_printed<const string_view>);
       static_assert(is_quoted_when_printed<const string_view&>);
 
-      static_assert(is_quoted_when_printed<char[1]>);
-      static_assert(is_quoted_when_printed<const char[1]>);
-      static_assert(is_quoted_when_printed<char[2]>);
-      static_assert(is_quoted_when_printed<const char[2]>);
+      static_assert(is_quoted_when_printed<char[1]>); // NOLINT
+      static_assert(is_quoted_when_printed<const char[1]>); // NOLINT
+      static_assert(is_quoted_when_printed<char[2]>); // NOLINT
+      static_assert(is_quoted_when_printed<const char[2]>); // NOLINT
    }
 
    TEST(is_quoted_when_printed_v_WideStringTypes_IsTrue)
@@ -50,10 +50,10 @@ namespace ZenUnit
       static_assert(is_quoted_when_printed<const wstring_view>);
       static_assert(is_quoted_when_printed<const wstring_view&>);
 
-      static_assert(is_quoted_when_printed<wchar_t[1]>);
-      static_assert(is_quoted_when_printed<const wchar_t[1]>);
-      static_assert(is_quoted_when_printed<wchar_t[2]>);
-      static_assert(is_quoted_when_printed<const wchar_t[2]>);
+      static_assert(is_quoted_when_printed<wchar_t[1]>); // NOLINT
+      static_assert(is_quoted_when_printed<const wchar_t[1]>); // NOLINT
+      static_assert(is_quoted_when_printed<wchar_t[2]>); // NOLINT
+      static_assert(is_quoted_when_printed<const wchar_t[2]>); // NOLINT
    }
 
    TEST(is_quoted_when_printed_v_NonNarrowOrWideStringTypes_IsFalse)

@@ -48,8 +48,8 @@ namespace ZenUnit
 
    TEST(PointerIsEmptyUniqueArrayPtr_ThrowsAnomaly)
    {
-      unique_ptr<const int[]> emptyUniqueArrayPtr = nullptr;
-      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr),
+      unique_ptr<const int[]> emptyUniqueArrayPtr = nullptr; // NOLINT
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr), // NOLINT
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr)",
 "Expected: not a nullptr",
@@ -59,7 +59,7 @@ namespace ZenUnit
 
    TEST(PointerIsNonNullRawPointer_DestructsEachElement)
    {
-      const DestructorCountingElement* const destructorCountingElements = new DestructorCountingElement[3];
+      const DestructorCountingElement* const destructorCountingElements = new DestructorCountingElement[3]; // NOLINT
       IS_ZERO(DestructorCountingElement::s_destructorCallCount);
       //
       ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(destructorCountingElements);
@@ -72,23 +72,23 @@ namespace ZenUnit
 
    TEST(PointerIsNonNullUniqueArrayPtr_DestructsEachElement_ThrowsWhenCalledTwice)
    {
-      unique_ptr<const DestructorCountingElement[]> nonNullUniqueArrayPtr(new DestructorCountingElement[5]);
+      unique_ptr<const DestructorCountingElement[]> nonNullUniqueArrayPtr(new DestructorCountingElement[5]); // NOLINT
       IS_ZERO(DestructorCountingElement::s_destructorCallCount);
       //
       ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr);
       //
       ARE_EQUAL(5, DestructorCountingElement::s_destructorCallCount);
 
-      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr),
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr), // NOLINT
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
 "File.cpp(1)"));
 
-      unique_ptr<const int[]> ints(new int[1]);
+      unique_ptr<const int[]> ints(new int[1]); // NOLINT
       ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints);
-      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints),
+      THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints), // NOLINT
          Anomaly, TestUtil::NewlineConcat("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints)",
 "Expected: not a nullptr",

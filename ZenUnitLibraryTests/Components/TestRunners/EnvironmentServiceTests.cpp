@@ -25,9 +25,9 @@ namespace ZenUnit
    {
       const string machineName = _environmentService.MachineName();
       //
-      char hostname[65]{};
-      gethostname(hostname, sizeof(hostname));
-      const string expectedMachineName(hostname);
+      array<char, 65> hostname{};
+      gethostname(hostname.data(), sizeof(hostname));
+      const string expectedMachineName(hostname.data());
       ARE_EQUAL(expectedMachineName, machineName);
    }
 

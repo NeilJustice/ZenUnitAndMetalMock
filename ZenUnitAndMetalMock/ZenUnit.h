@@ -4846,10 +4846,10 @@ namespace ZenUnit
 
       virtual std::string MachineName() const
       {
-         char hostname[65]{};
-         const int gethostnameResult = gethostname(hostname, sizeof(hostname));
+         std::array<char, 65> hostname{};
+         const int gethostnameResult = gethostname(hostname.data(), sizeof(hostname));
          ZENUNIT_ASSERT(gethostnameResult == 0);
-         std::string machineName(hostname);
+         std::string machineName(hostname.data());
          return machineName;
       }
 

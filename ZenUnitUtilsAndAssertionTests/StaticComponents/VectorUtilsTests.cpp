@@ -12,20 +12,20 @@ namespace ZenUnit
 
    TEST(ToArgcArgv_ReturnsArgsVector)
    {
-      const char* argvA[1] =
+      const char* argvA[1] // NOLINT
       {
          "ExePath"
       };
       ToArgcArgvTestCase(1, argvA, vector<string>{ "ExePath" });
 
-      const char* argvB[2] =
+      const char* argvB[2] // NOLINT
       {
          "ExePath",
          "Argument1"
       };
       ToArgcArgvTestCase(2, argvB, vector<string>{ "ExePath", "Argument1" });
 
-      const char* argvC[3] =
+      const char* argvC[3] // NOLINT
       {
          "ExePath",
          "Argument1",
@@ -33,7 +33,7 @@ namespace ZenUnit
       };
       ToArgcArgvTestCase(3, argvC, vector<string>{ "ExePath", "Argument1", "Argument2" });
    }
-   static void ToArgcArgvTestCase(int argc, const char* argv[], const vector<string>& expectedStringVector)
+   static void ToArgcArgvTestCase(int argc, const char* argv[], const vector<string>& expectedStringVector) // NOLINT
    {
       VECTORS_ARE_EQUAL(expectedStringVector, VectorUtils::FromArgcArgv(argc, const_cast<char**>(argv)));
    }

@@ -10,13 +10,11 @@ namespace ZenUnit
    struct ToStringerTestStruct
    {
       int value;
-      mutable int argValue;
-      mutable size_t numberOfFunctionCalls;
+      mutable int argValue = 0;
+      mutable size_t numberOfFunctionCalls = 0;
 
       explicit ToStringerTestStruct(int value)
          : value(value)
-         , argValue(0)
-         , numberOfFunctionCalls(0)
       {
       }
 
@@ -34,7 +32,7 @@ namespace ZenUnit
       }
    };
 
-   enum ClassicEnum { E0, E1 };
+   enum ClassicEnum { E0, E1 }; // NOLINT
    enum class EnumClass : long long
    {
       EC0,
@@ -277,11 +275,11 @@ namespace ZenUnit
    {
       ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<char*>(nullptr)));
 
-      const char chars[] { 0 };
-      ARE_EQUAL("\"\"", ToStringer::ToString(const_cast<char*>(chars)));
+      const array<char, 1> chars { 0 };
+      ARE_EQUAL("\"\"", ToStringer::ToString(const_cast<char*>(chars.data())));
 
-      const char charsABC[] { 'A', 'B', 'C', 0 };
-      ARE_EQUAL("\"ABC\"", ToStringer::ToString(const_cast<char*>(charsABC)));
+      const array<char, 4> charsABC { 'A', 'B', 'C', 0 };
+      ARE_EQUAL("\"ABC\"", ToStringer::ToString(const_cast<char*>(charsABC.data())));
 
       char* const charPointer = const_cast<char*>("abc");
       ARE_EQUAL("\"abc\"", ToStringer::ToString(charPointer));
@@ -300,11 +298,11 @@ namespace ZenUnit
 
    TEST(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    {
-      const wchar_t chars[]{ 0 };
-      ARE_EQUAL("\"\"", ToStringer::ToString(chars));
+      const array<wchar_t, 1> chars { 0 };
+      ARE_EQUAL("\"\"", ToStringer::ToString(chars.data()));
 
-      const wchar_t charsABC[]{ 'A', 'B', 'C', 0 };
-      ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC));
+      const array<wchar_t, 4> charsABC { 'A', 'B', 'C', 0 };
+      ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC.data()));
    }
 
    TEST(ToString_WideConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)

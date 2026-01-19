@@ -58,7 +58,7 @@ namespace ZenUnit
 "File.cpp(1)"));
    }
 
-   enum ClassicEnum
+   enum ClassicEnum // NOLINT
    {
       Zero,
       One,

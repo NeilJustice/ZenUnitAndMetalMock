@@ -33,11 +33,11 @@ namespace ZenUnit
       ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615ULL);
       //                           12345678901234567890
       constexpr size_t LengthOfSizeTMaxValue = 20;
-      char chars[LengthOfSizeTMaxValue + 1]{};
+      array<char, LengthOfSizeTMaxValue + 1> chars{};
       //
-      ZenUnit::WriteIntegerToCharArray(value, chars);
+      ZenUnit::WriteIntegerToCharArray(value, chars.data());
       //
-      ARE_EQUAL(expectedResultingOutChars, chars);
+      ARE_EQUAL(expectedResultingOutChars, chars.data());
    }
 
    TEST2X2(WriteIntegerToCharArray_Int_WritesExpectedNumberToOutCharsPointer,
@@ -65,11 +65,11 @@ namespace ZenUnit
       ZENUNIT_ASSERT(INT_MIN == -2147483648);
       //                        12345678901
       constexpr size_t LengthOfIntMaxValue = 11;
-      char chars[LengthOfIntMaxValue + 1]{};
+      array<char, LengthOfIntMaxValue + 1> chars{};
       //
-      ZenUnit::WriteIntegerToCharArray(value, chars);
+      ZenUnit::WriteIntegerToCharArray(value, chars.data());
       //
-      ARE_EQUAL(expectedResultingOutChars, chars);
+      ARE_EQUAL(expectedResultingOutChars, chars.data());
    }
 
    RUN_TESTS(WriteIntegerToCharArrayTests)

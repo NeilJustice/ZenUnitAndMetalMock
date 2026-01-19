@@ -20,6 +20,7 @@ if(UNIX)
          -Wno-float-equal \
          -Wno-global-constructors \
          -Wno-gnu-zero-variadic-macro-arguments \
+         -Wno-header-hygiene \
          -Wno-missing-include-dirs \
          -Wno-missing-noreturn \
          -Wno-missing-prototypes \
@@ -29,6 +30,7 @@ if(UNIX)
          -Wno-shadow-field-in-constructor \
          -Wno-switch-enum \
          -Wno-unsafe-buffer-usage \
+         -Wno-unused-template \
          -Wno-weak-vtables")
       if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 21.0.0)
          append(CMAKE_CXX_FLAGS "-Wno-nrvo")
@@ -47,6 +49,11 @@ if(UNIX)
    if(ClangTidyMode)
       set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
       message("ClangTidyMode enabled: CMAKE_EXPORT_COMPILE_COMMANDS set to ON")
+      include(ProcessorCount)
+      ProcessorCount(numberOfThreads)
+      add_custom_target(clang-tidy COMMAND
+         find -name "*.cpp" -not -path "*/CMakeFiles/*" -print0 | xargs -0 -n 1 -P ${numberOfThreads} -t clang-tidy -p ${CMAKE_BUILD_TYPE} -config-file=/code/CMakeUtils/clang-tidy-config.txt -extra-arg=-std=c++2b -extra-arg=-Wno-unknown-warning-option
+         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
    elseif(ClangUndefinedBehaviorSanitizerMode)
       replace(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g" "")
       replace(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2" "")
@@ -93,10 +100,3 @@ add_subdirectory(MetalMockTests)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;RelWithDebInfo")
 
-if(UNIX)
-   include(ProcessorCount)
-   ProcessorCount(numberOfThreads)
-   add_custom_target(clang-tidy COMMAND
-      find -name "*.cpp" -print0 | xargs -0 -n 1 -P ${numberOfThreads} -t clang-tidy -header-filter=.* -p ${CMAKE_BUILD_TYPE}
-      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} VERBATIM USES_TERMINAL)
-endif()

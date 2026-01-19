@@ -101,7 +101,7 @@ namespace ZenUnit
       IS_NOT_NULLPTR(randomSharedPtrToCharsVector);
    }
 
-   enum TestEnum
+   enum TestEnum // NOLINT
    {
       A,
       B,

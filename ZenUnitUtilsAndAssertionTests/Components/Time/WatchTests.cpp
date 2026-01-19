@@ -81,9 +81,9 @@ namespace ZenUnit
       //
       const string timeZone = watch.TimeZone(tmNow);
       //
-      char expectedTimeZoneChars[64];
-      strftime(expectedTimeZoneChars, sizeof(expectedTimeZoneChars), "%Z", &tmNow);
-      const string expectedTimeZone(expectedTimeZoneChars);
+      array<char, 64> expectedTimeZoneChars{};
+      strftime(expectedTimeZoneChars.data(), sizeof(expectedTimeZoneChars), "%Z", &tmNow);
+      const string expectedTimeZone(expectedTimeZoneChars.data());
       ARE_EQUAL(expectedTimeZone, timeZone);
    }
 
