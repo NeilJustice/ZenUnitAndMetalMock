@@ -41,7 +41,7 @@ namespace ZenUnit
    AFACT(RandomLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
    AFACT(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
 
-   AFACT(RandomStringWithLength_ReturnsRandomStringWithLength)
+   AFACT(RandomStringWithSize_ReturnsRandomStringWithSize)
    AFACT(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
 
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
@@ -580,11 +580,11 @@ namespace ZenUnit
       IS_TRUE(lowercaseLetterReturned);
    }
 
-   TEST(RandomStringWithLength_ReturnsRandomStringWithLength)
+   TEST(RandomStringWithSize_ReturnsRandomStringWithSize)
    {
       const size_t length = ZenUnit::RandomBetween<size_t>(0, 3);
       //
-      const string randomStringWithLength = ZenUnit::RandomStringWithLength(length);
+      const string randomStringWithLength = ZenUnit::RandomStringWithSize(length);
       //
       ARE_EQUAL(length, randomStringWithLength.size());
       for (size_t i = 0; i < length; ++i)

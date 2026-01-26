@@ -8414,9 +8414,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
-   inline std::string RandomStringWithLength(size_t length)
+   inline std::string RandomStringWithSize(size_t size)
    {
-      std::string randomStringWithLength(length, 0);
+      std::string randomStringWithLength(size, 0);
       std::generate(std::begin(randomStringWithLength), std::end(randomStringWithLength), []() { return RandomLetter(); });
       return randomStringWithLength;
    }
