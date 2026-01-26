@@ -42,7 +42,7 @@ namespace ZenUnit
    AFACT(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
 
    AFACT(RandomStringWithSize_ReturnsRandomStringWithSize)
-   AFACT(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
+   AFACT(RandomWideStringWithSize_ReturnsRandomWideStringWithSize)
 
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
 
@@ -582,29 +582,29 @@ namespace ZenUnit
 
    TEST(RandomStringWithSize_ReturnsRandomStringWithSize)
    {
-      const size_t length = ZenUnit::RandomBetween<size_t>(0, 3);
+      const size_t size = ZenUnit::RandomBetween<size_t>(0, 3);
       //
-      const string randomStringWithLength = ZenUnit::RandomStringWithSize(length);
+      const string randomStringWithSize = ZenUnit::RandomStringWithSize(size);
       //
-      ARE_EQUAL(length, randomStringWithLength.size());
-      for (size_t i = 0; i < length; ++i)
+      ARE_EQUAL(size, randomStringWithSize.size());
+      for (size_t i = 0; i < size; ++i)
       {
-         const char ithCharacter = randomStringWithLength[i];
+         const char ithCharacter = randomStringWithSize[i];
          IS_GREATER_THAN_OR_EQUAL(ithCharacter, 'A');
          IS_LESS_THAN_OR_EQUAL(ithCharacter, 'z');
       }
    }
 
-   TEST(RandomWideStringWithLength_ReturnsRandomWideStringWithLength)
+   TEST(RandomWideStringWithSize_ReturnsRandomWideStringWithSize)
    {
-      const size_t length = ZenUnit::RandomBetween<size_t>(1, 3);
+      const size_t size = ZenUnit::RandomBetween<size_t>(1, 3);
       //
-      const wstring randomWideStringWithLength = ZenUnit::RandomWideStringWithLength(length);
+      const wstring randomWideStringWithSize = ZenUnit::RandomWideStringWithSize(size);
       //
-      ARE_EQUAL(length, randomWideStringWithLength.size());
-      for (size_t i = 0; i < length; ++i)
+      ARE_EQUAL(size, randomWideStringWithSize.size());
+      for (size_t i = 0; i < size; ++i)
       {
-         const wchar_t ithWideCharacter = randomWideStringWithLength[i];
+         const wchar_t ithWideCharacter = randomWideStringWithSize[i];
          IS_GREATER_THAN_OR_EQUAL(ithWideCharacter, L'A');
          IS_LESS_THAN_OR_EQUAL(ithWideCharacter, L'z');
       }

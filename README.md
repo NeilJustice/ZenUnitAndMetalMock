@@ -1052,8 +1052,8 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::Random<const wchar_t*>()`|Returns `L"RandomWideConstCharPointer1"` with 10% probability, `L"RandomWideConstCharPointer2"` with 10% probability, ..., `L"RandomWideConstCharPointer10"` with 10% probability.|
 |`ZenUnit::Random<std::string>()`|Returns `"RandomString1"` with 10% probability, `"RandomString2"` with 10% probability, ..., `"RandomString10"` with 10% probability.|
 |`ZenUnit::Random<std::wstring>()`|Returns `L"RandomWString1"` with 10% probability, `L"RandomWString2"` with 10% probability, ..., `L"RandomWString10"` with 10% probability.|
-|`ZenUnit::RandomStringWithSize(size_t length)`|Returns a `std::string` with length `length` with each character a `ZenUnit::RandomLetter()`.|
-|`ZenUnit::RandomWideStringWithLength(size_t length)`|Returns a `std::wstring` with length `length` with each character a `ZenUnit::RandomWideLetter()`.|
+|`ZenUnit::RandomStringWithSize(size_t size)`|Returns a `std::string` with length `length` with each character a `ZenUnit::RandomLetter()`.|
+|`ZenUnit::RandomWideStringWithSize(size_t size)`|Returns a `std::wstring` with length `length` with each character a `ZenUnit::RandomWideLetter()`.|
 
 |Random character-generating functions|Behavior|
 |-------------------------------------|--------|

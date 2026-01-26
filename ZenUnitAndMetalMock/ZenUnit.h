@@ -861,13 +861,13 @@ namespace ZenUnit
       {
          std::string concatenatedString;
          std::string_view stringViews[] = { strings... };
-         size_t lengthOfAllStrings = 0;
+         size_t sizeOfAllStrings = 0;
          for (std::string_view stringView : stringViews)
          {
             const size_t stringViewSize = stringView.size();
-            lengthOfAllStrings += stringViewSize;
+            sizeOfAllStrings += stringViewSize;
          }
-         concatenatedString.reserve(lengthOfAllStrings);
+         concatenatedString.reserve(sizeOfAllStrings);
          for (std::string_view stringView : stringViews)
          {
             concatenatedString.append(stringView);
@@ -8416,16 +8416,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
 
    inline std::string RandomStringWithSize(size_t size)
    {
-      std::string randomStringWithLength(size, 0);
-      std::generate(std::begin(randomStringWithLength), std::end(randomStringWithLength), []() { return RandomLetter(); });
-      return randomStringWithLength;
+      std::string randomStringWithSize(size, 0);
+      std::generate(std::begin(randomStringWithSize), std::end(randomStringWithSize), []() { return RandomLetter(); });
+      return randomStringWithSize;
    }
 
-   inline std::wstring RandomWideStringWithLength(size_t length)
+   inline std::wstring RandomWideStringWithSize(size_t size)
    {
-      std::wstring randomWideStringWithLength(length, 0);
-      std::generate(std::begin(randomWideStringWithLength), std::end(randomWideStringWithLength), []() { return RandomWideLetter(); });
-      return randomWideStringWithLength;
+      std::wstring randomWideStringWithSize(size, 0);
+      std::generate(std::begin(randomWideStringWithSize), std::end(randomWideStringWithSize), []() { return RandomWideLetter(); });
+      return randomWideStringWithSize;
    }
 
    template<>
