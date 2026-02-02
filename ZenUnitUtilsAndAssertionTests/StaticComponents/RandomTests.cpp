@@ -42,7 +42,6 @@ namespace ZenUnit
    AFACT(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
 
    AFACT(RandomStringWithSize_ReturnsRandomStringWithSize)
-   AFACT(RandomWideStringWithSize_ReturnsRandomWideStringWithSize)
 
    AFACT(RandomBetween_ReturnsRandomValueBetweenInclusiveLowerBoundAndInclusiveUpperBound)
 
@@ -592,21 +591,6 @@ namespace ZenUnit
          const char ithCharacter = randomStringWithSize[i];
          IS_GREATER_THAN_OR_EQUAL(ithCharacter, 'A');
          IS_LESS_THAN_OR_EQUAL(ithCharacter, 'z');
-      }
-   }
-
-   TEST(RandomWideStringWithSize_ReturnsRandomWideStringWithSize)
-   {
-      const size_t size = ZenUnit::RandomBetween<size_t>(1, 3);
-      //
-      const wstring randomWideStringWithSize = ZenUnit::RandomWideStringWithSize(size);
-      //
-      ARE_EQUAL(size, randomWideStringWithSize.size());
-      for (size_t i = 0; i < size; ++i)
-      {
-         const wchar_t ithWideCharacter = randomWideStringWithSize[i];
-         IS_GREATER_THAN_OR_EQUAL(ithWideCharacter, L'A');
-         IS_LESS_THAN_OR_EQUAL(ithWideCharacter, L'z');
       }
    }
 

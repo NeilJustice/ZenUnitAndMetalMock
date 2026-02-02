@@ -1053,7 +1053,6 @@ Testing using random values instead of constant values renders test code immune 
 |`ZenUnit::Random<std::string>()`|Returns `"RandomString1"` with 10% probability, `"RandomString2"` with 10% probability, ..., `"RandomString10"` with 10% probability.|
 |`ZenUnit::Random<std::wstring>()`|Returns `L"RandomWString1"` with 10% probability, `L"RandomWString2"` with 10% probability, ..., `L"RandomWString10"` with 10% probability.|
 |`ZenUnit::RandomStringWithSize(size_t size)`|Returns a `std::string` with length `length` with each character a `ZenUnit::RandomLetter()`.|
-|`ZenUnit::RandomWideStringWithSize(size_t size)`|Returns a `std::wstring` with length `length` with each character a `ZenUnit::RandomWideLetter()`.|
 
 |Random character-generating functions|Behavior|
 |-------------------------------------|--------|

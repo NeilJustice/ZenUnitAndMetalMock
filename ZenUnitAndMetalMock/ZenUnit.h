@@ -8421,13 +8421,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomStringWithSize;
    }
 
-   inline std::wstring RandomWideStringWithSize(size_t size)
-   {
-      std::wstring randomWideStringWithSize(size, 0);
-      std::generate(std::begin(randomWideStringWithSize), std::end(randomWideStringWithSize), []() { return RandomWideLetter(); });
-      return randomWideStringWithSize;
-   }
-
    template<>
    inline std::filesystem::path Random<std::filesystem::path>()
    {
