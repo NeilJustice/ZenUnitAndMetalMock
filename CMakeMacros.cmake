@@ -44,7 +44,7 @@ endmacro()
 
 macro(IfMSVCAddPostBuildStepToRunTests)
    if(MSVC)
-      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND if not defined JENKINS_HOME $(TargetPath) --random --always-exit-0)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND if not defined JENKINS_HOME $(TargetPath) --always-exit-0)
    endif()
 endmacro()
 
@@ -61,4 +61,3 @@ function(IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUs
       endif()
    endif()
 endfunction()
-
