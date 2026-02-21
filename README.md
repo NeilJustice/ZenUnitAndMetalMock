@@ -6,7 +6,7 @@
 |Build Type|Build Status|
 |----------|------------|
 |Clang 18 and GCC 13 on ubuntu-latest|<a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/linux_build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/linux_build.yml/badge.svg"></a>|
-|VS2022 on windows-latest|<a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/windows_build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/windows_build.yml/badge.svg"></a>|
+|VS2026 on windows-latest|<a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/windows_build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/windows_build.yml/badge.svg"></a>|
 |GCC lcov code coverage|<a href="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock"><img src="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2"></a>|
 
 ZenUnit is a C++23 single-header unit testing framework designed for test readability, value-parameterized tests, and template-parameterized tests.
@@ -151,7 +151,7 @@ A "double strict" mocking framework requires all mocked functions to be both exp
    * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
    * [Steps to build and run ZenUnit and MetalMock unit tests on Linux then install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-then-install-zenunith-and-metalmockh)
    * [Steps to build and run ZenUnit and MetalMock unit tests on Windows then install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-then-install-zenunith-and-metalmockh)
-   * [Thanks to](#Thanks-to)
+   * [Acknowledgements](#acknowledgements)
 
 ### ZenUnit command line usage
 
@@ -1107,7 +1107,7 @@ cmake . -G"Visual Studio 18 2026" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 cmake --build . --target install
 ```
 
-### Thanks to
+### Acknowledgements
 
 * [Jason Turner, host of C++ Weekly](https://www.youtube.com/user/lefticus1/videos)
 * [Martin Moene, author of lest and much more](https://github.com/martinmoene/lest)
@@ -1121,4 +1121,3 @@ cmake --build . --target install
 * [My colleagues at Quantlab](https://www.quantlab.com)
 * [My colleagues at Emerson](https://www.emerson.com/en-us/automation/deltav)
 * [Brandmark.io for the ZenUnit and MetalMock logos](https://brandmark.io)
-
