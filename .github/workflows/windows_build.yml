@@ -3,7 +3,7 @@ on: push
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     strategy:
       matrix:
          cmake_build_type: [Debug, RelWithDebInfo]
