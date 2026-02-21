@@ -95,7 +95,7 @@ class BuildZenUnitTests(unittest.TestCase):
             #
             BuildAndTestZenUnitAndMetalMock.windows_cmake_build(self.cmakeBuildType, cmakeDefinitions)
             #
-            CMake.generate.assert_called_once_with('.', 'Visual Studio 17 2022', self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
+            CMake.generate.assert_called_once_with('.', 'Visual Studio 18 2026', self.cmakeBuildType, expectedCMakeDefinitionsArgument, '.')
             expectedCMakeBuildCommand = f'cmake.exe --build . --config {self.cmakeBuildType}'
             Process.fail_fast_run.assert_called_once_with(expectedCMakeBuildCommand)
       testcase('', '')

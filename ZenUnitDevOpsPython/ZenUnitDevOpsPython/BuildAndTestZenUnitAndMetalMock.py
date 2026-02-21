@@ -38,7 +38,7 @@ def linux_cmake_build(cmakeBuildType: str, cmakeDefinitions: str) -> None:
    Process.fail_fast_run('ninja -v')
 
 def windows_cmake_build(cmakeBuildType: str, cmakeDefinitions: str) -> None:
-   CMake.generate('.', 'Visual Studio 17 2022', cmakeBuildType, cmakeDefinitions, '.')
+   CMake.generate('.', 'Visual Studio 18 2026', cmakeBuildType, cmakeDefinitions, '.')
    cmakeBuildCommand = f'cmake.exe --build . --config {cmakeBuildType}'
    Process.fail_fast_run(cmakeBuildCommand)
 
