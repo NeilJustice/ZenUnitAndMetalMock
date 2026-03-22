@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7442c4b6-4d10-4aea-a009-421f7252d55e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>BuildAndTestZenUnitAndMetalMock.py</StartupFile>
+    <StartupFile>MypyFlake8PylintThenRunTestsWithCoverage.py</StartupFile>
     <SearchPath>..\</SearchPath>
     <OutputPath>.</OutputPath>
     <Name>ZenUnitDevOpsPython</Name>
@@ -14,7 +14,7 @@
     <CommandLineArguments>--cmake-build-type=Debug --cmake-definitions=""</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <WorkingDirectory>D:\Code\ZenUnitAndMetalMock</WorkingDirectory>
+    <WorkingDirectory>C:\Code\ZenUnitAndMetalMock\ZenUnitDevOpsPython</WorkingDirectory>
     <InterpreterId>
     </InterpreterId>
   </PropertyGroup>

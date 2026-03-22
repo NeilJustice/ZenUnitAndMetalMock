@@ -46,7 +46,5 @@ def windows_cmake_build(cmakeBuildType: str, cmakeDefinitions: str) -> None:
 if __name__ == "__main__": # pragma nocover
    sys.exit(main())
 
-# Example command line arguments:
+# C:\Code\ZenUnitAndMetalMock
 # --cmake-build-type=Debug --cmake-definitions=""
-# Working directory:
-# D:\Code\ZenUnitAndMetalMock
