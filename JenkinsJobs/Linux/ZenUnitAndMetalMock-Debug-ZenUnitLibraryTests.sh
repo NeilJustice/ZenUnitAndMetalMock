@@ -11,6 +11,7 @@ python -u ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMoc
 time valgrind --tool=callgrind \
    --cache-sim=yes \
    --branch-sim=yes \
-   Debug/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests \
-   --random-seed=0 2> callgrind_results.txt
-cat callgrind_results.txt
+   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests \
+   --random-seed=0 2> ZenUnitLibraryTests-CallgrindResults.txt
+cat ZenUnitLibraryTests-CallgrindResults.txt
+
