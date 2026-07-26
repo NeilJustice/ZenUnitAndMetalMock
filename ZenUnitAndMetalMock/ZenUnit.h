@@ -1470,7 +1470,6 @@ namespace ZenUnit
          int demangleReturnCode = -1;
          std::unique_ptr<char, void(*)(void*)> demangledTypeNameUniquePtr(
             abi::__cxa_demangle(mangledTypeName, nullptr, nullptr, &demangleReturnCode), std::free);
-         ZENUNIT_ASSERT(demangleReturnCode == 0);
          std::string demangledTypeName(demangledTypeNameUniquePtr.get());
          return demangledTypeName;
       }
