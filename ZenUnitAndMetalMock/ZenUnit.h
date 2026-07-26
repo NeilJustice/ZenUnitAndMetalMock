@@ -3654,7 +3654,6 @@ namespace ZenUnit
          const bool mapContainsValue = containsKeyValue.second;
          if (!mapContainsValue)
          {
-            ZENUNIT_ASSERT(containsKeyValue.first);
             const std::string whyBody = MAPS_ARE_EQUAL_MakeWhyBody_KeysEqualValuesNotEqual(expectedKey, expectedValue, actualMap);
             MAPS_ARE_EQUAL_ThrowAnomaly(" ", expectedMapText, actualMapText, whyBody,
                filePathLineNumber, "", messagesText, std::forward<MessageTypes>(messages)...);
@@ -4422,7 +4421,6 @@ namespace ZenUnit
          }
          case TestPhase::Cleanup:
          {
-            ZENUNIT_ASSERT(testPhase == TestPhase::Cleanup);
             testPhaseSuffix = " in CLEANUP function";
             break;
          }
@@ -4505,9 +4503,6 @@ namespace ZenUnit
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , totalTestCases(0)
       {
-         ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         ZENUNIT_ASSERT(startupTestPhaseResult.testOutcome == TestOutcome::Success);
-         ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          if (testBodyTestPhaseResult.testOutcome == TestOutcome::Exception)
          {
             this->testOutcome = TestOutcome::Exception;
@@ -4530,11 +4525,6 @@ namespace ZenUnit
          }
          else
          {
-            ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-            ZENUNIT_ASSERT(startupTestPhaseResult.testOutcome == TestOutcome::Success);
-            ZENUNIT_ASSERT(testBodyTestPhaseResult.testOutcome == TestOutcome::Success);
-            ZENUNIT_ASSERT(cleanupTestPhaseResult.testOutcome == TestOutcome::Success);
-            ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
             const ZenUnitArgs& zenUnitArgs = getZenUnitArgs();
             const unsigned maxtestmicroseconds = zenUnitArgs.maxTestMilliseconds * 1000;
             if (zenUnitArgs.maxTestMilliseconds == 0 || this->elapsedMicroseconds <= maxtestmicroseconds)
@@ -6331,7 +6321,6 @@ Fatal Windows C++ Runtime Assertion
          p_console->Write("|TestClassIsNewableAndDeletable -> ");
          // testClassIsNewableAndDeletableTest->RunTest() registers NXN tests by operator newing the test class for the first time
          std::vector<TestResult> newableAndDeletableTestResults = testClassIsNewableAndDeletableTest->RunTest();
-         ZENUNIT_ASSERT(newableAndDeletableTestResults.size() == 1);
          TestResult& newableAndDeletableTestResult = newableAndDeletableTestResults[0];
          if (newableAndDeletableTestResult.testOutcome == TestOutcome::Success)
          {
@@ -6412,7 +6401,6 @@ Fatal Windows C++ Runtime Assertion
 
       void NewTestClass() override
       {
-         ZENUNIT_ASSERT(_testClass == nullptr);
          _testClass = std::make_unique<TestClassType>();
       }
 
@@ -6510,9 +6498,8 @@ Fatal Windows C++ Runtime Assertion
    private:
       virtual const std::unique_ptr<Test>* PmfTokenToTest() const
       {
-         const std::unique_ptr<Test>* const testPointer = TestClassType::GetTestPointerForTestNXNPmfToken(
+         const std::unique_ptr<Test>* testPointer = TestClassType::GetTestPointerForTestNXNPmfToken(
             _testNXNPmfToken, Console::Instance(), ZenUnitTestRunner::Instance(), ExitCaller::Instance());
-         ZENUNIT_ASSERT(testPointer != nullptr);
          return testPointer;
       }
    };
@@ -6550,7 +6537,6 @@ Fatal Windows C++ Runtime Assertion
          {
             return std::numeric_limits<size_t>::max();
          }
-         ZENUNIT_ASSERT(_currentTestCaseNumber <= _maxTestCaseNumber);
          size_t nextTestCaseNumber = _currentTestCaseNumber++;
          return nextTestCaseNumber;
       }
@@ -6681,7 +6667,6 @@ Fatal Windows C++ Runtime Assertion
 
       std::vector<TestResult> RunTest() override
       {
-         ZENUNIT_ASSERT(_currentTestCaseNumber == 1);
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          const size_t numberOfTestCaseArgs = sizeof...(TestCaseArgTypes);
          const std::shared_ptr<ITestCaseNumberGenerator> testCaseNumberGenerator(
@@ -7224,8 +7209,7 @@ Fatal Windows C++ Runtime Assertion
          {
             std::unique_ptr<Test> newTestNXNPointer = testCreatingFunction();
             std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
-            const bool didEmplaceTestNXNPointer = testNXNPmfTokenToTestPointer.emplace(pmfToken, std::move(newTestNXNPointer)).second;
-            ZENUNIT_ASSERT(didEmplaceTestNXNPointer);
+            testNXNPmfTokenToTestPointer.emplace(pmfToken, std::move(newTestNXNPointer)).second;
          }
          return nullptr;
       }
@@ -8030,7 +8014,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
             ++numberOfIterations; // LCOV_EXCL_LINE
          }
       }
-      ZENUNIT_ASSERT(randomOrderedMap.size() == size);
       return randomOrderedMap;
    }
 
@@ -8064,7 +8047,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
             ++numberOfIterations; // LCOV_EXCL_LINE
          }
       }
-      ZENUNIT_ASSERT(randomUnorderedMap.size() == size);
       return randomUnorderedMap;
    }
 

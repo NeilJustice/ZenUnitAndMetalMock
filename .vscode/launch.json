@@ -5,7 +5,7 @@
          "name": "Launch GBD Debugger",
          "type": "cppdbg",
          "request": "launch",
-         "program": "${workspaceRoot}/Debug/ZenUnitLibraryTestsTests/ZenUnitLibraryTestsTests",
+         "program": "${workspaceRoot}/Debug/ZenUnitLibraryTests/ZenUnitLibraryTests",
          "args": [],
          "stopAtEntry": false,
          "cwd": "${fileDirname}",
