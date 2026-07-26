@@ -3748,11 +3748,10 @@ namespace ZenUnit
    template<std::integral IntegerType>
    inline void WriteIntegerToCharArray(IntegerType value, char* outChars)
    {
-      ZENUNIT_ASSERT(ULLONG_MAX == 18446744073709551615ULL);
-      //                           12345678901234567890
+      static_assert(ULLONG_MAX == 18446744073709551615ULL);
+      //                          12345678901234567890
       constexpr size_t LengthOfSizeTMaxValue = 20;
-      const std::to_chars_result toCharsResult = std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
-      ZENUNIT_ASSERT(toCharsResult.ec == std::errc{});
+      std::to_chars(outChars, outChars + LengthOfSizeTMaxValue + 1, value);
    }
 
    template<typename... TupleTypes>
@@ -4559,8 +4558,6 @@ namespace ZenUnit
          const TestPhaseResult& startupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult)
       {
-         ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          TestResult startupFailTestResult{};
          startupFailTestResult.fullTestName = fullTestName;
          startupFailTestResult.testOutcome = startupTestPhaseResult.testOutcome;
@@ -4580,8 +4577,6 @@ namespace ZenUnit
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult)
       {
-         ZENUNIT_ASSERT(constructorTestPhaseResult.testOutcome == TestOutcome::Success);
-         ZENUNIT_ASSERT(destructorTestPhaseResult.testOutcome == TestOutcome::Success);
          TestResult constructorAndDestructorSuccessTestResult{};
          constructorAndDestructorSuccessTestResult.fullTestName = fullTestName;
          constructorAndDestructorSuccessTestResult.testOutcome = TestOutcome::Success;
@@ -5358,7 +5353,6 @@ namespace ZenUnit
          const ZenUnitArgs& zenUnitArgs,
          size_t testRunIndex) const
       {
-         ZENUNIT_ASSERT(_numberOfFailedTestCases <= totalNumberOfTestCases);
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
          if (totalNumberOfTestCases == 0)
          {
@@ -5717,7 +5711,6 @@ Fatal Windows C++ Runtime Assertion
          SetCurrentTestRunNumber(testRunIndex);
          int zenUnitExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
             this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs, testRunIndex);
-         ZENUNIT_ASSERT(zenUnitExitCode == 0 || zenUnitExitCode == 1);
          _testRunResult->ResetStateInPreparationForNextTestRun();
          _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
             this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
@@ -6525,9 +6518,6 @@ Fatal Windows C++ Runtime Assertion
 
       void Initialize(size_t numberOfTestCaseArgs, size_t N) override
       {
-         ZENUNIT_ASSERT(N >= 1);
-         ZENUNIT_ASSERT(numberOfTestCaseArgs >= 1);
-         ZENUNIT_ASSERT(N <= numberOfTestCaseArgs);
          _maxTestCaseNumber = numberOfTestCaseArgs / N;
       }
 
@@ -6556,8 +6546,6 @@ Fatal Windows C++ Runtime Assertion
    public:
       void Initialize(size_t numberOfTestCaseArgs, size_t N) override
       {
-         ZENUNIT_ASSERT(N >= 1);
-         ZENUNIT_ASSERT(numberOfTestCaseArgs >= 1 && numberOfTestCaseArgs >= N);
          const size_t numberOfTestCases = numberOfTestCaseArgs / N;
          _randomTestCaseNumbers.reserve(numberOfTestCases);
          for (size_t testCaseNumber = 1; testCaseNumber <= numberOfTestCases; ++testCaseNumber)
@@ -6574,7 +6562,6 @@ Fatal Windows C++ Runtime Assertion
          {
             return std::numeric_limits<size_t>::max();
          }
-         ZENUNIT_ASSERT(_testCaseNumberIndex < _randomTestCaseNumbers.size());
          size_t nextTestCaseNumber = _randomTestCaseNumbers[_testCaseNumberIndex];
          ++_testCaseNumberIndex;
          return nextTestCaseNumber;
@@ -6741,7 +6728,6 @@ Fatal Windows C++ Runtime Assertion
 
       static bool TestNameFilterMatchesTestCase(const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
       {
-         ZENUNIT_ASSERT(testCaseNumber >= 1);
          bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(fullTestName.testClassName, fullTestName.testName, testCaseNumber);
          return testNameFilterMatchesTestCase;
       }
@@ -7684,7 +7670,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    T RandomLessThan(T exclusiveUpperBound)
    {
       constexpr T minTValue = std::numeric_limits<T>::min();
-      ZENUNIT_ASSERT(exclusiveUpperBound != minTValue);
       const int equivalenceClass1Or2 = RandomBetween<int>(1, 2);
       switch (equivalenceClass1Or2)
       {
@@ -7727,7 +7712,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    T RandomGreaterThan(T exclusiveLowerBound)
    {
       constexpr T maxTValue = std::numeric_limits<T>::max();
-      ZENUNIT_ASSERT(exclusiveLowerBound != maxTValue);
       const int equivalenceClass1Or2 = RandomBetween<int>(1, 2);
       switch (equivalenceClass1Or2)
       {
@@ -8358,16 +8342,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       const bool randomBool = Random<bool>();
       if (randomBool)
       {
-         ZENUNIT_ASSERT(65 == static_cast<int>('A'));
-         ZENUNIT_ASSERT(90 == static_cast<int>('Z'));
+         static_assert(static_cast<int>('A') == 65);
+         static_assert(static_cast<int>('Z') == 90);
          const int randomUppercaseLetterInt = RandomBetween<int>(65, 90);
          char randomUppercaseLetter = static_cast<char>(randomUppercaseLetterInt);
          return randomUppercaseLetter;
       }
       else
       {
-         ZENUNIT_ASSERT(97 == static_cast<int>('a'));
-         ZENUNIT_ASSERT(122 == static_cast<int>('z'));
+         static_assert(static_cast<int>('a') == 97);
+         static_assert(static_cast<int>('z') == 122);
          const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
          char randomLowercaseLetter = static_cast<char>(randomLowercaseLetterInt);
          return randomLowercaseLetter;
@@ -8379,16 +8363,16 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       const bool randomBool = Random<bool>();
       if (randomBool)
       {
-         ZENUNIT_ASSERT(65 == static_cast<int>(L'A'));
-         ZENUNIT_ASSERT(90 == static_cast<int>(L'Z'));
+         static_assert(static_cast<int>(L'A') == 65);
+         static_assert(static_cast<int>(L'Z') == 90);
          const int randomUppercaseLetterInt = RandomBetween<int>(65, 90);
          wchar_t randomUppercaseWideLetter = static_cast<wchar_t>(randomUppercaseLetterInt);
          return randomUppercaseWideLetter;
       }
       else
       {
-         ZENUNIT_ASSERT(97 == static_cast<int>(L'a'));
-         ZENUNIT_ASSERT(122 == static_cast<int>(L'z'));
+         static_assert(static_cast<int>(L'a') == 97);
+         static_assert(static_cast<int>(L'z') == 122);
          const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
          wchar_t randomLowercaseWideLetter = static_cast<wchar_t>(randomLowercaseLetterInt);
          return randomLowercaseWideLetter;
