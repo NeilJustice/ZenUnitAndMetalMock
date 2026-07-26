@@ -11,25 +11,25 @@ python -u ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMoc
 time valgrind --tool=callgrind \
    --cache-sim=yes \
    --branch-sim=yes \
-   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests \
+   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests --run=ZenUnitTestRunnerTests \
    --random-seed=0 2> /code/LinuxPerformanceTestResults/CallgrindResults/ZenUnitLibraryTests/ZenUnitLibraryTests-CallgrindResults1.txt
 
 time valgrind --tool=callgrind \
    --cache-sim=yes \
    --branch-sim=yes \
-   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests \
+   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests --run=ZenUnitTestRunnerTests \
    --random-seed=0 2> /code/LinuxPerformanceTestResults/CallgrindResults/ZenUnitLibraryTests/ZenUnitLibraryTests-CallgrindResults2.txt
 
 time valgrind --tool=callgrind \
    --cache-sim=yes \
    --branch-sim=yes \
-   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests \
+   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests --run=ZenUnitTestRunnerTests \
    --random-seed=0 2> /code/LinuxPerformanceTestResults/CallgrindResults/ZenUnitLibraryTests/ZenUnitLibraryTests-CallgrindResults3.txt
 
 time valgrind --tool=callgrind \
    --cache-sim=yes \
    --branch-sim=yes \
-   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests \
+   Debug/ZenUnitLibraryTests/ZenUnitLibraryTests --run=ZenUnitTestRunnerTests \
    --random-seed=0 2> /code/LinuxPerformanceTestResults/CallgrindResults/ZenUnitLibraryTests/ZenUnitLibraryTests-CallgrindResults4.txt
 
 cat /code/LinuxPerformanceTestResults/CallgrindResults/ZenUnitLibraryTests/ZenUnitLibraryTests-CallgrindResults1.txt
