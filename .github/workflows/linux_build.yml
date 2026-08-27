@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('ZenUnitDevOpsPython/dev-requirements.txt') }}
@@ -42,7 +42,7 @@ jobs:
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
 
       - name: Upload Python code coverage if g++ Release
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           files: ZenUnitDevOpsPython/ZenUnitDevOpsPythonTests/CoberturaCodeCoverageResults_ZenUnitDevOpsPythonTests.xml
           fail_ci_if_error: true
