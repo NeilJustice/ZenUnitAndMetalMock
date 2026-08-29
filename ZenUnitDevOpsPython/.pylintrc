@@ -1,8 +1,0 @@
-[FORMAT]
-indent-string='   '
-
-[MASTER]
-disable=invalid-name,line-too-long,missing-docstring,no-member,no-value-for-parameter
-
-[REPORTS]
-reports=no
