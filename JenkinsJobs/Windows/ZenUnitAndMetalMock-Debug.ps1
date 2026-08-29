@@ -1,3 +1,4 @@
-WindowsCPlusPlusBuilder.exe build-zenunit-and-metalmock `
+WindowsCPlusPlusBuilder.exe build-cpp-solution `
+   --solution-name=ZenUnitAndMetalMock `
    --configuration=Debug `
    --install=true
