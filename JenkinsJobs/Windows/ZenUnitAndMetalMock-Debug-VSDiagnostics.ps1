@@ -1,7 +1,7 @@
 AcceliTune.exe build-then-collect-vsdiagnostics `
    --working-dir="." `
    --solution="ZenUnitAndMetalMock" `
-   --program="ZenUnitLibraryTests.exe" `
+   --program="ZenUnitLibraryTests" `
    --configuration=Debug `
    --args-file="JenkinsJobs\Windows\VSDiagnosticsArgs.txt" `
    --session-id=40 `
