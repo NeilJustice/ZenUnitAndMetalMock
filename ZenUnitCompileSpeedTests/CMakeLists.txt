@@ -13,7 +13,7 @@ add_executable(ZenUnitCompileSpeedTests ${sourceFilePaths})
 target_link_libraries(ZenUnitCompileSpeedTests)
 
 if(UNIX)
-   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode(ZenUnitCompileSpeedTests 1)
+   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotClangTidyMode(ZenUnitCompileSpeedTests 1)
 elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
 endif()

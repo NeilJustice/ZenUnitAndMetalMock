@@ -11,7 +11,7 @@ source_group("" FILES ${sourceFilePaths})
 add_executable(MetalMockExamples ${sourceFilePaths})
 
 if(UNIX)
-   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode(MetalMockExamples 1)
+   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotClangTidyMode(MetalMockExamples 1)
 elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
    IfMSVCAddPostBuildStepToRunTests()

@@ -46,7 +46,7 @@ if(MSVC)
 endif()
 
 if(UNIX)
-   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode(MetalMockTests 20)
+   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotClangTidyMode(MetalMockTests 20)
 elseif(MSVC)
    set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD ON)
    set_target_properties(MetalMockTests PROPERTIES UNITY_BUILD_BATCH_SIZE 4)

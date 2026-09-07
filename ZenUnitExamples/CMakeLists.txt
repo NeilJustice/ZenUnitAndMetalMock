@@ -19,7 +19,7 @@ file(GLOB_RECURSE sourceFilePaths *.h *.cpp)
 
 add_executable(ZenUnitExamples ${sourceFilePaths})
 if(UNIX)
-   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode(ZenUnitExamples 1)
+   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotClangTidyMode(ZenUnitExamples 1)
 elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
    IfMSVCAddPostBuildStepToRunTests()

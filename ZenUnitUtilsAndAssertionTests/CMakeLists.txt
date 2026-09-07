@@ -35,7 +35,7 @@ if(MSVC)
 endif()
 
 if(UNIX)
-   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotIncludeWhatYouUseOrClangTidyMode(ZenUnitUtilsAndAssertionTests 30)
+   IfUNIXEnablePrecompiledHeaderAndPossiblyUnityBuildIfNotClangTidyMode(ZenUnitUtilsAndAssertionTests 30)
 elseif(MSVC)
    IfMSVCEnablePrecompiledHeaders()
    set_target_properties(ZenUnitUtilsAndAssertionTests PROPERTIES UNITY_BUILD ON)
