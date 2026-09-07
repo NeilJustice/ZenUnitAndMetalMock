@@ -15,19 +15,30 @@ jobs:
       - uses: dawidd6/action-download-artifact@v9
         with:
           repo: NeilJustice/WindowsCPlusPlusBuilder
-          github_token: ${{ secrets.WINDOWSCPLUSPLUSBUILDER_READ_PAT }}
+          github_token: ${{ secrets.CSHARP_AND_CPLUSPLUS_BUILDERS_READ_PAT }}
           workflow_search: true
           workflow_conclusion: success
           name: WindowsCPlusPlusBuilder
           use_unzip: true
           path: WindowsCPlusPlusBuilder/
 
-      - uses: ilammy/msvc-dev-cmd@v1 # Places MSBuild.exe on the PATH, which is invoked by WindowsCPlusPlusBuilder.exe
-      
-      - name: Run WindowsCPlusPlusBuilder
+      - name: Download ZenUnit.h and MetalMock.h
         run: |
-           WindowsCPlusPlusBuilder/WindowsCPlusPlusBuilder.exe build-cpp-solution `
-              --solution-name=ZenUnitAndMetalMock `
-              --configuration="${{ matrix.cmake_build_type }}" `
-              --cmake-definitions="" `
-              --install=false
+          curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/ZenUnit.h --create-dirs -o "C:\include\ZenUnitAndMetalMock\ZenUnitAndMetalMock\ZenUnit.h"
+          curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/MetalMock.h --create-dirs -o "C:\include\ZenUnitAndMetalMock\ZenUnitAndMetalMock\MetalMock.h"
+          
+      - name: Prebuild tree $GITHUB_WORKSPACE
+        run: tree $GITHUB_WORKSPACE /F
+        
+      - uses: ilammy/msvc-dev-cmd@v1 # Places MSBuild.exe on the PATH, which is invoked by WindowsCPlusPlusBuilder.exe
+
+      - name: Build with WindowsCPlusPlusBuilder
+        run: |
+          WindowsCPlusPlusBuilder/WindowsCPlusPlusBuilder.exe build-cpp-solution `
+            --solution-name=ZenUnitAndMetalMock `
+            --configuration="${{ matrix.cmake_build_type }}" `
+            --cmake-definitions="" `
+            --install=false
+
+      - name: Postbuild tree $GITHUB_WORKSPACE
+        run: tree $GITHUB_WORKSPACE /F

@@ -1,76 +1,65 @@
 name: ZenUnitAndMetalMock
-on: [push]
+on: push
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-         cxx: [clang++, g++]
-         cmake_build_type: [Debug, Release]
-
-    runs-on: ubuntu-latest
-
+        cxx: [clang++, g++]
+        cmake_build_type: [Debug, RelWithDebInfo]
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-python@v7
+          
+      - name: Download LinuxCPlusPlusBuilder
+        uses: dawidd6/action-download-artifact@v9
         with:
-          python-version: '3.13'
+          repo: NeilJustice/LinuxCPlusPlusBuilder
+          github_token: ${{ secrets.CSHARP_AND_CPLUSPLUS_BUILDERS_READ_PAT }}
+          workflow_search: true
+          workflow_conclusion: success
+          name: LinuxCPlusPlusBuilder
+          use_unzip: true
+          path: LinuxCPlusPlusBuilder/
 
-      - uses: actions/cache@v6
-        with:
-          path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('ZenUnitDevOpsPython/dev-requirements.txt') }}
-
-      - name: Install lld and ninja-build
-        run: sudo apt-get install lld ninja-build
-
+      - name: Download ZenUnit.h and MetalMock.h
+        run: |
+          curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/ZenUnit.h --create-dirs -o "$GITHUB_WORKSPACE/ZenUnitAndMetalMock/ZenUnit.h"
+          curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/MetalMock.h --create-dirs -o "$GITHUB_WORKSPACE/ZenUnitAndMetalMock/MetalMock.h"
+        
+      - name: Install lld, ninja-build, and libtbb-dev
+        run: sudo apt-get install lld ninja-build libtbb-dev
+        
       - name: Install lcov Perl dependencies if g++ Release
         run: sudo apt-get install libcapture-tiny-perl libdatetime-perl
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
-
-      - name: Install pip packages
-        run: pip install --upgrade --upgrade-strategy eager -r ZenUnitDevOpsPython/dev-requirements.txt
-
-      - name: Mypy, Flake8, Pylint, then run unit tests with coverage and pytest if g++ Release
-        working-directory: ZenUnitDevOpsPython
-        run: python ZenUnitDevOpsPython/MypyFlake8PylintThenRunTestsWithCoverage.py --run-tests-with-coverage-python-file=ZenUnitDevOpsPythonTests/RunAllWithCoverage.py
-        env:
-          PYTHONPATH: "."
-        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
-
-      - name: Upload Python code coverage if g++ Release
-        uses: codecov/codecov-action@v7
-        with:
-          files: ZenUnitDevOpsPython/ZenUnitDevOpsPythonTests/CoberturaCodeCoverageResults_ZenUnitDevOpsPythonTests.xml
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
-
-      - name: Run BuildAndTestZenUnitAndMetalMock.py in non code coverage mode if clang++ Debug/Release or g++ Debug
+          
+      - name: Prebuild tree $GITHUB_WORKSPACE
+        run: tree $GITHUB_WORKSPACE
+        
+      - name: Build with LinuxCPlusPlusBuilder in non-code-coverage mode if Clang Debug, Clang RelWithDebInfo, or GCC Debug
         run: |
-          python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
-            --cmake-build-type="${{ matrix.cmake_build_type }}" \
-            --cmake-definitions="-DFastLinuxDebugBuildMode=ON -DFastLinuxReleaseBuildMode=ON"
+          LinuxCPlusPlusBuilder/LinuxCPlusPlusBuilder build-cpp-solution \
+            --solution-name=ZenUnitAndMetalMock \
+            --configuration="${{ matrix.cmake_build_type }}" \
+            --cmake-definitions="-DFastLinuxDebugBuildMode=ON -DFastLinuxReleaseBuildMode=ON" \
+            --install=false
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
-          PYTHONPATH: ZenUnitDevOpsPython
         if: ${{ matrix.cxx == 'clang++' || (matrix.cxx == 'g++' && matrix.cmake_build_type == 'Debug') }}
 
-      - name: Run BuildAndTestZenUnitAndMetalMock.py in code coverage mode if g++ Release
+      - name: Build with LinuxCPlusPlusBuilder in code coverage mode if GCC RelWithDebInfo
         run: |
-          python ZenUnitDevOpsPython/ZenUnitDevOpsPython/BuildAndTestZenUnitAndMetalMock.py \
-            --cmake-build-type="${{ matrix.cmake_build_type }}" \
-            --cmake-definitions="-DLCovCodeCoverageMode=ON"
+           LinuxCPlusPlusBuilder/LinuxCPlusPlusBuilder build-cpp-solution \
+             --solution-name=ZenUnitAndMetalMock \
+             --configuration=RelWithDebInfo \
+             --cmake-definitions="-DLCovCodeCoverageMode=ON" \
+             --install=false
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
-          PYTHONPATH: ZenUnitDevOpsPython
-        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
-
-      - name: Print .comment section of binary ZenUnitLibraryTests to confirm it was linked with LLD
-        run: readelf --string-dump .comment "${{matrix.cmake_build_type}}/ZenUnitLibraryTests/ZenUnitLibraryTests"
+        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'RelWithDebInfo' }}
 
       - name: Install and run lcov 2.5 then upload to Codecov.io if g++ Release
         run: |
@@ -82,3 +71,9 @@ jobs:
           lcov_2.5/bin/lcov --list coverage.info
           bash <(curl -s https://codecov.io/bash) -f coverage.info -t ${{ secrets.CODECOV_TOKEN }} || echo "Codecov did not collect coverage reports"
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
+
+      - name: Print .comment section of binary libZenUnitAndMetalMockTests to confirm it was linked with LLD
+        run: readelf --string-dump .comment "${{matrix.cmake_build_type}}/libZenUnitAndMetalMockTests/libZenUnitAndMetalMockTests"
+
+      - name: Postbuild tree $GITHUB_WORKSPACE
+        run: tree $GITHUB_WORKSPACE
