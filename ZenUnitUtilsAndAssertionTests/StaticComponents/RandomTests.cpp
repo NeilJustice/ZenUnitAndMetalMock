@@ -21,7 +21,7 @@ namespace ZenUnit
    AFACT(RandomPositive_DoesSo)
 
    AFACT(RandomNotEqualTo_DoesSo)
-   AFACT(RandomNotEqualToEither_DoesSo)
+   AFACT(RandomNotEqualToEither2_DoesSo)
 
    AFACT(RandomNon0NotEqualTo_NotEqualValueIs0_ThrowsInvalidArgument)
    AFACT(RandomNon0NotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualTo0AndNotEqualToTheExceptValue)
@@ -260,17 +260,17 @@ namespace ZenUnit
       ARE_NOT_EQUAL(unsignedLongLong1, unsignedLongLong2);
    }
 
-   TEST(RandomNotEqualToEither_DoesSo)
+   TEST(RandomNotEqualToEither2_DoesSo)
    {
       const char char1 = ZenUnit::Random<char>();
       const char char2 = ZenUnit::Random<char>();
-      const char char3 = ZenUnit::RandomNotEqualToEither<char>(char1, char2);
+      const char char3 = ZenUnit::RandomNotEqualToEither2<char>(char1, char2);
       ARE_NOT_EQUAL(char1, char3);
       ARE_NOT_EQUAL(char2, char3);
 
       const int int1 = ZenUnit::Random<int>();
       const int int2 = ZenUnit::Random<int>();
-      const int int3 = ZenUnit::RandomNotEqualToEither<int>(int1, int2);
+      const int int3 = ZenUnit::RandomNotEqualToEither2<int>(int1, int2);
       ARE_NOT_EQUAL(int1, int3);
       ARE_NOT_EQUAL(int2, int3);
    }

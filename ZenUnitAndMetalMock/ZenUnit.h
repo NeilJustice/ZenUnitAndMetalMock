@@ -7830,7 +7830,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename T>
-   T RandomNotEqualToEither(const T& notValue1, const T& notValue2)
+   T RandomNotEqualToEither2(const T& notValue1, const T& notValue2)
    {
       while (true)
       {
