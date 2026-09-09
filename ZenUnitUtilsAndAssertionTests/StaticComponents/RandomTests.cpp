@@ -20,10 +20,12 @@ namespace ZenUnit
    AFACT(RandomNonNegative_DoesSo)
    AFACT(RandomPositive_DoesSo)
 
-   AFACT(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)
+   AFACT(RandomNotEqualTo_DoesSo)
+   AFACT(RandomNotEqualToEither_DoesSo)
 
    AFACT(RandomNon0NotEqualTo_NotEqualValueIs0_ThrowsInvalidArgument)
    AFACT(RandomNon0NotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualTo0AndNotEqualToTheExceptValue)
+
    AFACT(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeOneValueTestCase)
    AFACT(RandomEnumNotEqualTo_ReturnsEnumBetween0AndEnumMaxValueThatIsNotEqualToNotEqualEnum__EnumTypeTwoValueTestCase)
 
@@ -223,7 +225,7 @@ namespace ZenUnit
       IS_GREATER_THAN(doubleValue, 0.0);
    }
 
-   TEST(RandomNotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualToTheExceptValue)
+   TEST(RandomNotEqualTo_DoesSo)
    {
       const char char1 = ZenUnit::Random<char>();
       const char char2 = ZenUnit::RandomNotEqualTo<char>(char1);
@@ -256,6 +258,21 @@ namespace ZenUnit
       const unsigned long long unsignedLongLong1 = ZenUnit::Random<unsigned long long>();
       const unsigned long long unsignedLongLong2 = ZenUnit::RandomNotEqualTo<unsigned long long>(unsignedLongLong1);
       ARE_NOT_EQUAL(unsignedLongLong1, unsignedLongLong2);
+   }
+
+   TEST(RandomNotEqualToEither_DoesSo)
+   {
+      const char char1 = ZenUnit::Random<char>();
+      const char char2 = ZenUnit::Random<char>();
+      const char char3 = ZenUnit::RandomNotEqualToEither<char>(char1, char2);
+      ARE_NOT_EQUAL(char1, char3);
+      ARE_NOT_EQUAL(char2, char3);
+
+      const int int1 = ZenUnit::Random<int>();
+      const int int2 = ZenUnit::Random<int>();
+      const int int3 = ZenUnit::RandomNotEqualToEither<int>(int1, int2);
+      ARE_NOT_EQUAL(int1, int3);
+      ARE_NOT_EQUAL(int2, int3);
    }
 
    TEST(RandomNon0NotEqualTo_NotEqualValueIs0_ThrowsInvalidArgument)

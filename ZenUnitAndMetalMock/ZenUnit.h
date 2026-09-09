@@ -7829,6 +7829,24 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       return randomValue;
    }
 
+   template<typename T>
+   T RandomNotEqualToEither(const T& notValue1, const T& notValue2)
+   {
+      while (true)
+      {
+         T randomValue = Random<T>();
+         if (randomValue == notValue1)
+         {
+            continue;
+         }
+         if (randomValue == notValue2)
+         {
+            continue;
+         }
+         return randomValue;
+      }
+   }
+
    inline unsigned long RandomUnsignedLong()
    {
       constexpr unsigned long maximumUnsignedLong = std::numeric_limits<unsigned long>::max();
