@@ -7847,6 +7847,96 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
+   template<typename T>
+   T RandomNotEqualToEither3(
+      const T& notValue1,
+      const T& notValue2,
+      const T& notValue3)
+   {
+      while (true)
+      {
+         T randomValue = Random<T>();
+         if (randomValue == notValue1)
+         {
+            continue;
+         }
+         if (randomValue == notValue2)
+         {
+            continue;
+         }
+         if (randomValue == notValue3)
+         {
+            continue;
+         }
+         return randomValue;
+      }
+   }
+
+   template<typename T>
+   T RandomNotEqualToEither4(
+      const T& notValue1,
+      const T& notValue2,
+      const T& notValue3,
+      const T& notValue4)
+   {
+      while (true)
+      {
+         T randomValue = Random<T>();
+         if (randomValue == notValue1)
+         {
+            continue;
+         }
+         if (randomValue == notValue2)
+         {
+            continue;
+         }
+         if (randomValue == notValue3)
+         {
+            continue;
+         }
+         if (randomValue == notValue4)
+         {
+            continue;
+         }
+         return randomValue;
+      }
+   }
+
+   template<typename T>
+   T RandomNotEqualToEither5(
+      const T& notValue1,
+      const T& notValue2,
+      const T& notValue3,
+      const T& notValue4,
+      const T& notValue5)
+   {
+      while (true)
+      {
+         T randomValue = Random<T>();
+         if (randomValue == notValue1)
+         {
+            continue;
+         }
+         if (randomValue == notValue2)
+         {
+            continue;
+         }
+         if (randomValue == notValue3)
+         {
+            continue;
+         }
+         if (randomValue == notValue4)
+         {
+            continue;
+         }
+         if (randomValue == notValue5)
+         {
+            continue;
+         }
+         return randomValue;
+      }
+   }
+
    inline unsigned long RandomUnsignedLong()
    {
       constexpr unsigned long maximumUnsignedLong = std::numeric_limits<unsigned long>::max();

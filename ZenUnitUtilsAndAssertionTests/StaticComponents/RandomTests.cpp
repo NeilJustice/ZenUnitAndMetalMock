@@ -22,6 +22,9 @@ namespace ZenUnit
 
    AFACT(RandomNotEqualTo_DoesSo)
    AFACT(RandomNotEqualToEither2_DoesSo)
+   AFACT(RandomNotEqualToEither3_DoesSo)
+   AFACT(RandomNotEqualToEither4_DoesSo)
+   AFACT(RandomNotEqualToEither5_DoesSo)
 
    AFACT(RandomNon0NotEqualTo_NotEqualValueIs0_ThrowsInvalidArgument)
    AFACT(RandomNon0NotEqualTo_ReturnsRandomValueBetweenMinAndMaxForTypeTNotEqualTo0AndNotEqualToTheExceptValue)
@@ -267,12 +270,45 @@ namespace ZenUnit
       const char char3 = ZenUnit::RandomNotEqualToEither2<char>(char1, char2);
       ARE_NOT_EQUAL(char1, char3);
       ARE_NOT_EQUAL(char2, char3);
+   }
 
-      const int int1 = ZenUnit::Random<int>();
-      const int int2 = ZenUnit::Random<int>();
-      const int int3 = ZenUnit::RandomNotEqualToEither2<int>(int1, int2);
-      ARE_NOT_EQUAL(int1, int3);
-      ARE_NOT_EQUAL(int2, int3);
+   TEST(RandomNotEqualToEither3_DoesSo)
+   {
+      const char char1 = ZenUnit::Random<char>();
+      const char char2 = ZenUnit::Random<char>();
+      const char char3 = ZenUnit::Random<char>();
+      const char char4 = ZenUnit::RandomNotEqualToEither3<char>(char1, char2, char3);
+      ARE_NOT_EQUAL(char1, char4);
+      ARE_NOT_EQUAL(char2, char4);
+      ARE_NOT_EQUAL(char3, char4);
+   }
+
+   TEST(RandomNotEqualToEither4_DoesSo)
+   {
+      const char char1 = ZenUnit::Random<char>();
+      const char char2 = ZenUnit::Random<char>();
+      const char char3 = ZenUnit::Random<char>();
+      const char char4 = ZenUnit::Random<char>();
+      const char char5 = ZenUnit::RandomNotEqualToEither4<char>(char1, char2, char3, char4);
+      ARE_NOT_EQUAL(char1, char5);
+      ARE_NOT_EQUAL(char2, char5);
+      ARE_NOT_EQUAL(char3, char5);
+      ARE_NOT_EQUAL(char4, char5);
+   }
+
+   TEST(RandomNotEqualToEither5_DoesSo)
+   {
+      const char char1 = ZenUnit::Random<char>();
+      const char char2 = ZenUnit::Random<char>();
+      const char char3 = ZenUnit::Random<char>();
+      const char char4 = ZenUnit::Random<char>();
+      const char char5 = ZenUnit::Random<char>();
+      const char char6 = ZenUnit::RandomNotEqualToEither5<char>(char1, char2, char3, char4, char5);
+      ARE_NOT_EQUAL(char1, char6);
+      ARE_NOT_EQUAL(char2, char6);
+      ARE_NOT_EQUAL(char3, char6);
+      ARE_NOT_EQUAL(char4, char6);
+      ARE_NOT_EQUAL(char5, char6);
    }
 
    TEST(RandomNon0NotEqualTo_NotEqualValueIs0_ThrowsInvalidArgument)
