@@ -7,3 +7,5 @@ LinuxCPlusPlusBuilder build-cpp-solution \
    --configuration=RelWithDebInfo \
    --cmake-definitions="-DClangAddressSanitizerMode=ON -DFastLinuxReleaseBuildMode=ON" \
    --install=false
+
+./TestScripts/RunAllRelWithDebInfoTests.sh

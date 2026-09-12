@@ -7,3 +7,5 @@ LinuxCPlusPlusBuilder build-cpp-solution \
    --configuration=Debug \
    --cmake-definitions="-DClangAddressSanitizerMode=ON" \
    --install=false
+
+./TestScripts/RunAllDebugTests.sh

@@ -7,3 +7,5 @@ LinuxCPlusPlusBuilder build-cpp-solution \
    --configuration=Debug \
    --cmake-definitions="-DFastLinuxDebugBuildMode=ON" \
    --install=true
+
+./TestScripts/RunAllDebugTests.sh
