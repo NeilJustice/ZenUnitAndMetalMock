@@ -29,8 +29,8 @@ jobs:
           curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/ZenUnit.h --create-dirs -o "$GITHUB_WORKSPACE/ZenUnitAndMetalMock/ZenUnit.h"
           curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/MetalMock.h --create-dirs -o "$GITHUB_WORKSPACE/ZenUnitAndMetalMock/MetalMock.h"
         
-      - name: Install lld, ninja-build, and libtbb-dev
-        run: sudo apt-get install lld ninja-build libtbb-dev
+      - name: Install ninja-build
+        run: sudo apt-get install ninja-build
         
       - name: Install lcov Perl dependencies if g++ Release
         run: sudo apt-get install libcapture-tiny-perl libdatetime-perl
@@ -74,9 +74,6 @@ jobs:
           lcov_2.5/bin/lcov --list coverage.info
           bash <(curl -s https://codecov.io/bash) -f coverage.info -t ${{ secrets.CODECOV_TOKEN }} || echo "Codecov did not collect coverage reports"
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
-
-      - name: Print .comment section of binary libZenUnitAndMetalMockTests to confirm it was linked with LLD
-        run: readelf --string-dump .comment "${{matrix.cmake_build_type}}/libZenUnitAndMetalMockTests/libZenUnitAndMetalMockTests"
 
       - name: Postbuild tree $GITHUB_WORKSPACE
         run: tree $GITHUB_WORKSPACE
