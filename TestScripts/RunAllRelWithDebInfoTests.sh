@@ -6,4 +6,3 @@ set -e
 ./RelWithDebInfo/ZenUnitLibraryTests/ZenUnitLibraryTests
 ./RelWithDebInfo/ZenUnitUtilsAndAssertionTests/ZenUnitUtilsAndAssertionTests
 ./RelWithDebInfo/ZenUnitExamples/ZenUnitExamples
-
