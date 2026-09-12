@@ -32,9 +32,9 @@ jobs:
       - name: Install ninja-build
         run: sudo apt-get install ninja-build
         
-      - name: Install lcov Perl dependencies if g++ Release
+      - name: Install lcov Perl dependencies if g++ RelWithDebInfo
         run: sudo apt-get install libcapture-tiny-perl libdatetime-perl
-        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
+        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'RelWithDebInfo' }}
           
       - name: Prebuild tree $GITHUB_WORKSPACE
         run: tree $GITHUB_WORKSPACE
@@ -64,7 +64,7 @@ jobs:
       - name: Run all Debug or RelWithDebInfo tests
         run: "TestScripts/RunAll${{matrix.cmake_build_type}}Tests.sh"
 
-      - name: Install and run lcov 2.5 then upload to Codecov.io if g++ Release
+      - name: Install and run lcov 2.5 then upload to Codecov.io if g++ RelWithDebInfo
         run: |
           mkdir -p lcov_2.5
           wget https://github.com/linux-test-project/lcov/releases/download/v2.5/lcov-2.5.tar.gz --output-document="lcov_2.5/lcov-2.5.tar.gz"
@@ -73,7 +73,7 @@ jobs:
           lcov_2.5/bin/lcov --directory . --capture --no-external --ignore-errors inconsistent --output-file coverage.info
           lcov_2.5/bin/lcov --list coverage.info
           bash <(curl -s https://codecov.io/bash) -f coverage.info -t ${{ secrets.CODECOV_TOKEN }} || echo "Codecov did not collect coverage reports"
-        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'Release' }}
+        if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'RelWithDebInfo' }}
 
       - name: Postbuild tree $GITHUB_WORKSPACE
         run: tree $GITHUB_WORKSPACE
