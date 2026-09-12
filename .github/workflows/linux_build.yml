@@ -60,6 +60,9 @@ jobs:
         env:
           CXX: "/usr/bin/${{ matrix.cxx }}"
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'RelWithDebInfo' }}
+        
+      - name: Run all Debug or RelWithDebInfo tests
+        run: "TestScripts/RunAll${{matrix.cmake_build_type}}Tests.sh"
 
       - name: Install and run lcov 2.5 then upload to Codecov.io if g++ Release
         run: |
