@@ -7195,7 +7195,7 @@ Fatal Windows C++ Runtime Assertion
          {
             std::unique_ptr<Test> newTestNXNPointer = testCreatingFunction();
             std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
-            testNXNPmfTokenToTestPointer.emplace(pmfToken, std::move(newTestNXNPointer)).second;
+            testNXNPmfTokenToTestPointer.emplace(pmfToken, std::move(newTestNXNPointer));
          }
          return nullptr;
       }
