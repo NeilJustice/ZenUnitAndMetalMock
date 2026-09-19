@@ -1141,7 +1141,7 @@ namespace ZenUnit
       {
          const tm tmNow = TMNow();
          const std::string timeZone = TimeZone(tmNow);
-         char localTimeWithTimeZoneChars[128];
+         char localTimeWithTimeZoneChars[128]{};
          strftime(localTimeWithTimeZoneChars, sizeof(localTimeWithTimeZoneChars), "%F %r ", &tmNow);
          std::string localTimeWithTimeZone = std::string(localTimeWithTimeZoneChars) + timeZone;
          return localTimeWithTimeZone;
@@ -1171,8 +1171,8 @@ namespace ZenUnit
                0, millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.find_first_of('.') + 3);
 
          // Example: "[0.12ms]"
-         std::string twoDecimalPlaceMillisecondsString =
-            String::ConcatStrings("[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
+         std::string twoDecimalPlaceMillisecondsString = String::ConcatStrings(
+            "[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
          return twoDecimalPlaceMillisecondsString;
       }
    private:
@@ -1287,7 +1287,9 @@ namespace ZenUnit
       }
 
       virtual void WriteStringsCommaSeparated(
-         const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
+         const std::vector<std::string>& strings,
+         size_t startIndex,
+         size_t numberOfStringsToWrite) const
       {
          DoWriteStringsCommaSeparated(strings, startIndex, numberOfStringsToWrite);
       }
@@ -1327,11 +1329,14 @@ namespace ZenUnit
    private:
       static int GetCharFromStandardInput() // LCOV_EXCL_LINE
       {
-         const int c = std::cin.get(); // LCOV_EXCL_LINE
+         int c = std::cin.get(); // LCOV_EXCL_LINE
          return c; // LCOV_EXCL_LINE
       }
 
-      virtual void DoWriteStringsCommaSeparated(const std::vector<std::string>& strings, size_t startIndex, size_t numberOfStringsToWrite) const
+      virtual void DoWriteStringsCommaSeparated(
+         const std::vector<std::string>& strings,
+         size_t startIndex,
+         size_t numberOfStringsToWrite) const
       {
          const size_t endIndex = startIndex + numberOfStringsToWrite - 1;
          for (size_t i = startIndex; i <= endIndex; ++i)
@@ -1429,14 +1434,14 @@ namespace ZenUnit
       template<typename T>
       static const std::string* GetName(T&& variable)
       {
-         const std::string* const typeName = GetTypeNameFromTypeInfo(typeid(std::forward<T>(variable)));
+         const std::string* typeName = GetTypeNameFromTypeInfo(typeid(std::forward<T>(variable)));
          return typeName;
       }
 
       template<typename T>
       static const std::string* GetName()
       {
-         const std::string* const typeName = GetTypeNameFromTypeInfo(typeid(T));
+         const std::string* typeName = GetTypeNameFromTypeInfo(typeid(T));
          return typeName;
       }
    private:
@@ -1450,17 +1455,16 @@ namespace ZenUnit
       {
          const char* const mangledTypeName = typeInfo.name();
          std::unordered_map<const char*, std::string>& mangledToDemangledTypeNameCache = GetMangledToDemangledTypeNameCache();
-         const std::unordered_map<const char*, std::string>::const_iterator findIter =
-            mangledToDemangledTypeNameCache.find(mangledTypeName);
+         const std::unordered_map<const char*, std::string>::const_iterator findIter = mangledToDemangledTypeNameCache.find(mangledTypeName);
          if (findIter == mangledToDemangledTypeNameCache.end())
          {
             const std::string demangledTypeName = DemangleTypeName(mangledTypeName);
             const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
                emplaceResult = mangledToDemangledTypeNameCache.emplace(mangledTypeName, demangledTypeName);
-            const std::string* const newlyCachedDemangledTypeName = &emplaceResult.first->second;
+            const std::string* newlyCachedDemangledTypeName = &emplaceResult.first->second;
             return newlyCachedDemangledTypeName;
          }
-         const std::string* const cachedDemangledTypeName = &findIter->second;
+         const std::string* cachedDemangledTypeName = &findIter->second;
          return cachedDemangledTypeName;
       }
 
@@ -1468,8 +1472,12 @@ namespace ZenUnit
       static std::string DemangleTypeName(const char* mangledTypeName)
       {
          int demangleReturnCode = -1;
-         std::unique_ptr<char, void(*)(void*)> demangledTypeNameUniquePtr(
-            abi::__cxa_demangle(mangledTypeName, nullptr, nullptr, &demangleReturnCode), std::free);
+         std::unique_ptr<char, void(*)(void*)> demangledTypeNameUniquePtr(abi::__cxa_demangle(
+            mangledTypeName,
+            nullptr,
+            nullptr,
+            &demangleReturnCode),
+            std::free);
          std::string demangledTypeName(demangledTypeNameUniquePtr.get());
          return demangledTypeName;
       }
@@ -1596,7 +1604,6 @@ namespace ZenUnit
          {
             if constexpr (is_quoted_when_printed<T>)
             {
-               // std::quoted not called here because std::quoted escapes backslashes in addition to quoting
                oss << '\"';
             }
             oss << value;
@@ -1667,8 +1674,8 @@ namespace ZenUnit
          return pointerAddressString;
       }
 
-      template<typename FunctionReturnType, typename... ArgumentTypes>
-      static const char* ToString(const std::function<FunctionReturnType(ArgumentTypes...)>& stdFunction)
+      template<typename FunctionReturnType, typename... ArgTypes>
+      static const char* ToString(const std::function<FunctionReturnType(ArgTypes...)>& stdFunction)
       {
          if (stdFunction)
          {
@@ -2082,7 +2089,8 @@ namespace ZenUnit
 
       [[noreturn]] static void ThrowInvalidArgumentDueToInvalidTestNameFilterString(std::string_view invalidTestNameFilterString)
       {
-         const std::string exceptionMessage = String::ConcatStrings("Invalid test name filter string: ", invalidTestNameFilterString,
+         const std::string exceptionMessage = String::ConcatStrings(
+            "Invalid test name filter string: ", invalidTestNameFilterString,
             ". This is the test name filter string format: TestClassName[::TestName[/TestCaseNumber]]");
          throw std::invalid_argument(exceptionMessage);
       }
@@ -5503,7 +5511,8 @@ namespace ZenUnit
          const std::string leadingZeros(numberOfLeadingMillisecondZeros, '0');
 
          // Example elapsedSecondsWithMillisecondResolution: "0.001"
-         std::string elapsedSecondsWithMillisecondResolution = String::ConcatValues(elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
+         std::string elapsedSecondsWithMillisecondResolution = String::ConcatValues(
+            elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
          return elapsedSecondsWithMillisecondResolution;
       }
    };
@@ -5572,16 +5581,11 @@ namespace ZenUnit
       friend class ZenUnitTestRunnerTests;
    private:
       // Function Callers
-      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>>
-         _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
-      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>
-         _caller_RunTestClasses;
-      std::unique_ptr<const VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>
-         _caller_SetNextGlobalZenUnitModeRandomSeed;
-      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>
-         _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused;
-      std::unique_ptr<const NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>
-         _nTimesMemberFunctionAccumulator_RunTests;
+      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>> _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
+      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>> _caller_RunTestClasses;
+      std::unique_ptr<const VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>> _caller_SetNextGlobalZenUnitModeRandomSeed;
+      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused;
+      std::unique_ptr<const NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>> _nTimesMemberFunctionAccumulator_RunTests;
       // Function Pointers
 #if defined _WIN32 && defined _DEBUG
       using CRT_REPORT_HOOK_FunctionType = int(*)(int, char*, int*);
@@ -5603,16 +5607,11 @@ namespace ZenUnit
    public:
       ZenUnitTestRunner() noexcept
          // Function Callers
-         : _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(
-            std::make_unique<NonVoidTwoArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>>())
-         , _caller_RunTestClasses(
-            std::make_unique<VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>())
-         , _caller_SetNextGlobalZenUnitModeRandomSeed(
-            std::make_unique<VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>())
-         , _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(
-            std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
-         , _nTimesMemberFunctionAccumulator_RunTests(
-            std::make_unique<NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>())
+         : _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(std::make_unique<NonVoidTwoArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>>())
+         , _caller_RunTestClasses(std::make_unique<VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>())
+         , _caller_SetNextGlobalZenUnitModeRandomSeed(std::make_unique<VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>())
+         , _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
+         , _nTimesMemberFunctionAccumulator_RunTests(std::make_unique<NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>())
          // Function Pointers
 #if defined _WIN32 && defined _DEBUG
          , _call_CrtSetReportHook(_CrtSetReportHook)
@@ -5784,8 +5783,7 @@ Fatal Windows C++ Runtime Assertion
       // Function Pointers
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
       // Function Callers
-      std::unique_ptr<const VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>
-         _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess;
+      std::unique_ptr<const VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
@@ -5798,8 +5796,7 @@ Fatal Windows C++ Runtime Assertion
          // Function Pointers
          : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          // Function Callers
-         , _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(std::make_unique<
-            VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
+         , _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(std::make_unique<VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
@@ -6041,7 +6038,9 @@ Fatal Windows C++ Runtime Assertion
    };
 
    inline TestPhaseResult TestPhaseRunner::RunTestPhase(
-      void(*testPhaseFunction)(Test*), Test* test, TestPhase testPhase) const
+      void(*testPhaseFunction)(Test*),
+      Test* test,
+      TestPhase testPhase) const
    {
       _testPhaseStopwatch->Start();
       TestPhaseResult testPhaseResult(testPhase);
@@ -6065,24 +6064,24 @@ Fatal Windows C++ Runtime Assertion
             FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup("ZenUnit::Anomaly", zenUnitArgs);
          }
       }
-      catch (const std::exception& ex)
+      catch (const std::exception& stdException)
       {
-         PopulateTestPhaseResultWithExceptionInformation(ex, &testPhaseResult);
+         PopulateTestPhaseResultWithExceptionInformation(stdException, &testPhaseResult);
          _console->WriteColor("\n==================\nUncaught Exception\n==================", Color::Red);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          _console->Write(testPhaseSuffix);
-         const std::string exceptionTypeNameAndException = String::ConcatStrings("\n",
-            "  Type: ", *Type::GetName(ex), "\n",
-            "what(): \"", ex.what(), "\"");
-         _console->WriteLine(exceptionTypeNameAndException);
+         const std::string exceptionTypeNameAndMessage = String::ConcatStrings("\n",
+            "  Type: ", *Type::GetName(stdException), "\n",
+            "what(): \"", stdException.what(), "\"");
+         _console->WriteLine(exceptionTypeNameAndMessage);
          if (testPhase != TestPhase::TestBody)
          {
             FailFastDueToAnomalyOrExceptionThrownFromTestClassConstructorOrStartupOrCleanup("std::exception or std::exception subclass", zenUnitArgs);
          }
       }
-      catch (const MetalMockException& ex)
+      catch (const MetalMockException& metalMockException)
       {
-         const std::string exceptionTypeName = *Type::GetName(ex);
+         const std::string exceptionTypeName = *Type::GetName(metalMockException);
          const char* const testPhaseSuffix = _testPhaseTranslator->TestPhaseToTestPhaseSuffix(testPhase);
          const size_t equalsSignsLength = exceptionTypeName.size() + strlen(testPhaseSuffix);
          const std::string equalsSigns(equalsSignsLength, '=');
@@ -6091,17 +6090,18 @@ Fatal Windows C++ Runtime Assertion
             exceptionTypeName, testPhaseSuffix, "\n",
             equalsSigns);
          _console->WriteLineColor(exceptionTypeNameFourLines, Color::Red);
-         PopulateTestPhaseResultWithExceptionInformation(ex, &testPhaseResult);
-         const std::string testPhaseSuffixAndExceptionWhatLine = String::ConcatStrings("what(): \"", ex.what(), "\"");
-         _console->WriteLine(testPhaseSuffixAndExceptionWhatLine);
+         PopulateTestPhaseResultWithExceptionInformation(metalMockException, &testPhaseResult);
+         const std::string testPhaseSuffixAndExceptionMessageLine = String::ConcatStrings("what(): \"", metalMockException.what(), "\"");
+         _console->WriteLine(testPhaseSuffixAndExceptionMessageLine);
       }
       catch (...)
       {
          FailFastDueToDotDotDotException(zenUnitArgs, testPhase);
-         return TestPhaseResult();
+         return TestPhaseResult{};
       }
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess->CallConstMemberFunction(
-         this, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess, testPhaseResult.testOutcome, zenUnitArgs);
+         this, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
+         testPhaseResult.testOutcome, zenUnitArgs);
       return testPhaseResult;
    }
 
@@ -6169,7 +6169,8 @@ Fatal Windows C++ Runtime Assertion
       virtual size_t SumNumberOfTestCases(const std::vector<std::unique_ptr<Test>>* tests) const
       {
          const size_t numberOfTestResults = std::accumulate(
-            tests->cbegin(), tests->cend(), 0ULL, [](size_t runningSumOfTestResults, const std::unique_ptr<Test>& test)
+            tests->cbegin(), tests->cend(),
+            0ULL, [](size_t runningSumOfTestResults, const std::unique_ptr<Test>& test)
             {
                const size_t numberOfTestCases = test->NumberOfTestCases();
                size_t newRunningSumOfTestResults = runningSumOfTestResults + numberOfTestCases;
@@ -6293,11 +6294,15 @@ Fatal Windows C++ Runtime Assertion
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          if (zenUnitArgs.randomTestOrdering)
          {
-            _twoArgMemberForEacher->RandomTwoArgMemberForEach(&_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult, globalZenUnitMode.randomSeed);
+            _twoArgMemberForEacher->RandomTwoArgMemberForEach(
+               &_tests, this, &SpecificTestClassRunner::RunTest,
+               &_testClassResult, globalZenUnitMode.randomSeed);
          }
          else
          {
-            _twoArgMemberForEacher->TwoArgMemberForEach(&_tests, this, &SpecificTestClassRunner::RunTest, &_testClassResult);
+            _twoArgMemberForEacher->TwoArgMemberForEach(
+               &_tests, this, &SpecificTestClassRunner::RunTest,
+               &_testClassResult);
          }
       }
 
@@ -6330,7 +6335,8 @@ Fatal Windows C++ Runtime Assertion
          const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
          const char* const testName = test->Name();
          const bool testNameFilterMatchesTestName = zenUnitArgs.testNameFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
-            zenUnitArgs.testNameFilters, this, &TestClassRunner::TestNameFilterMatchesTestName, testName);
+            zenUnitArgs.testNameFilters,
+            this, &TestClassRunner::TestNameFilterMatchesTestName, testName);
          if (testNameFilterMatchesTestName)
          {
             const std::string barTestName = String::ConcatStrings("|", testName);
@@ -6436,6 +6442,7 @@ Fatal Windows C++ Runtime Assertion
    {
       friend class ExitCallerTests;
    private:
+      // Function Pointers
       std::function<void(int)> _call_exit;
    public:
       ExitCaller()
@@ -6462,6 +6469,7 @@ Fatal Windows C++ Runtime Assertion
    {
       friend class SpecSectionTestNXNTests;
    private:
+      // Constant Fields
       const PmfToken* const _testNXNPmfToken;
    public:
       SpecSectionTestNXN(const char* testClassName, const char* testName, const PmfToken* pmfToken)
@@ -6492,7 +6500,10 @@ Fatal Windows C++ Runtime Assertion
       virtual const std::unique_ptr<Test>* PmfTokenToTest() const
       {
          const std::unique_ptr<Test>* testPointer = TestClassType::GetTestPointerForTestNXNPmfToken(
-            _testNXNPmfToken, Console::Instance(), ZenUnitTestRunner::Instance(), ExitCaller::Instance());
+            _testNXNPmfToken,
+            Console::Instance(),
+            ZenUnitTestRunner::Instance(),
+            ExitCaller::Instance());
          return testPointer;
       }
    };
@@ -6501,16 +6512,18 @@ Fatal Windows C++ Runtime Assertion
    {
    public:
       static std::shared_ptr<ITestCaseNumberGenerator> FactoryNew(bool randomMode);
+      virtual ~ITestCaseNumberGenerator() = default;
+
       virtual void Initialize(size_t numberOfTestCaseArgs, size_t N) = 0;
       virtual size_t NextTestCaseNumber() = 0;
       virtual void ResetTestCaseNumber() = 0;
-      virtual ~ITestCaseNumberGenerator() = default;
    };
 
    class SequentialTestCaseNumberGenerator : public ITestCaseNumberGenerator
    {
       friend class SequentialTestCaseNumberGeneratorTests;
    private:
+      // Mutable Fields
       size_t _maxTestCaseNumber = 0;
       size_t _currentTestCaseNumber = 1;
    public:
@@ -6541,6 +6554,7 @@ Fatal Windows C++ Runtime Assertion
    {
       friend class RandomTestCaseNumberGeneratorTests;
    private:
+      // Mutable Fields
       std::vector<size_t> _randomTestCaseNumbers;
       size_t _testCaseNumberIndex = 0;
    public:
@@ -6593,7 +6607,10 @@ Fatal Windows C++ Runtime Assertion
       std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
       std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
       using CallerOfTestNameFilterMatchesTestCaseType = ThreeArgAnyer<
-         std::vector<TestNameFilter>, bool(*)(const TestNameFilter&, const FullTestName&, size_t), const FullTestName&, size_t>;
+         std::vector<TestNameFilter>,
+         bool(*)(const TestNameFilter&, const FullTestName&, size_t),
+         const FullTestName&,
+         size_t>;
       // Function Callers
       std::unique_ptr<CallerOfTestNameFilterMatchesTestCaseType> _callerOfTestNameFilterMatchesTestCase;
       // Constant Components
@@ -6680,7 +6697,10 @@ Fatal Windows C++ Runtime Assertion
          _testClass.reset();
       }
    private:
-      virtual void RunTestCaseIfNotFilteredOut(size_t testCaseNumber, const ZenUnitArgs& zenUnitArgs, const std::vector<std::string>& splitTestCaseArgs)
+      virtual void RunTestCaseIfNotFilteredOut(
+         size_t testCaseNumber,
+         const ZenUnitArgs& zenUnitArgs,
+         const std::vector<std::string>& splitTestCaseArgs)
       {
          const bool shouldRunTestCase = ShouldRunTestCase(zenUnitArgs, p_fullTestName, testCaseNumber);
          if (shouldRunTestCase)
@@ -6715,20 +6735,32 @@ Fatal Windows C++ Runtime Assertion
          }
       }
 
-      virtual bool ShouldRunTestCase(const ZenUnitArgs& zenUnitArgs, const FullTestName& fullTestName, size_t testCaseNumber) const
+      virtual bool ShouldRunTestCase(
+         const ZenUnitArgs& zenUnitArgs,
+         const FullTestName& fullTestName,
+         size_t testCaseNumber) const
       {
          if (zenUnitArgs.testNameFilters.empty())
          {
             return true;
          }
          bool anyTestNameFilterMatchesThisTestCase = _callerOfTestNameFilterMatchesTestCase->ThreeArgAny(
-            zenUnitArgs.testNameFilters, TestNameFilterMatchesTestCase, fullTestName, testCaseNumber);
+            zenUnitArgs.testNameFilters,
+            TestNameFilterMatchesTestCase,
+            fullTestName,
+            testCaseNumber);
          return anyTestNameFilterMatchesThisTestCase;
       }
 
-      static bool TestNameFilterMatchesTestCase(const TestNameFilter& testNameFilter, const FullTestName& fullTestName, size_t testCaseNumber)
+      static bool TestNameFilterMatchesTestCase(
+         const TestNameFilter& testNameFilter,
+         const FullTestName& fullTestName,
+         size_t testCaseNumber)
       {
-         bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(fullTestName.testClassName, fullTestName.testName, testCaseNumber);
+         bool testNameFilterMatchesTestCase = testNameFilter.MatchesTestCase(
+            fullTestName.testClassName,
+            fullTestName.testName,
+            testCaseNumber);
          return testNameFilterMatchesTestCase;
       }
 
@@ -7209,11 +7241,14 @@ Fatal Windows C++ Runtime Assertion
       }
 
       static const std::unique_ptr<Test>* GetTestPointerForTestNXNPmfToken(
-         const PmfToken* pmfToken, const Console* console, const ZenUnitTestRunner* zenUnitTestRunner, const ExitCaller* exitCaller)
+         const PmfToken* pmfToken,
+         const Console* console,
+         const ZenUnitTestRunner* zenUnitTestRunner,
+         const ExitCaller* exitCaller)
       {
          const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>& testNXNPmfTokenToTestPointer = GetTestNXNPmfTokenToTestMap();
          const std::unordered_map<const PmfToken*, std::unique_ptr<Test>>::const_iterator findIter = testNXNPmfTokenToTestPointer.find(pmfToken);
-         if (findIter == testNXNPmfTokenToTestPointer.end())
+         if (findIter == testNXNPmfTokenToTestPointer.cend())
          {
             console->WriteLineColor("=======================================================\nZenUnit Test Declaration Test Definition Mismatch Error\n=======================================================", Color::Red);
             const ZenUnitArgs& zenUnitArgs = zenUnitTestRunner->VirtualGetZenUnitArgs();
@@ -7481,7 +7516,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       template<typename SetType, typename T>
       static bool Contains(const SetType& s, const T& element)
       {
-         const bool setContainsElement = s.find(element) != s.end();
+         bool setContainsElement = s.find(element) != s.cend();
          return setContainsElement;
       }
    };
@@ -7552,10 +7587,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    {
    public:
       static void AssertEqual(
-         const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& expectedStdUnorderedMap,
-         const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& actualStdUnorderedMap)
+         const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& expectedUnorderedMap,
+         const std::unordered_map<KeyType, ValueType, HasherType, KeyEqualityComparator, AllocatorType>& actualUnorderedMap)
       {
-         MAPS_ARE_EQUAL(expectedStdUnorderedMap, actualStdUnorderedMap);
+         MAPS_ARE_EQUAL(expectedUnorderedMap, actualUnorderedMap);
       }
    };
 
@@ -7744,7 +7779,7 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       default:
       {
          std::uniform_int_distribution<T> uniformTDistribution(inclusiveLowerBound, maxTValue);
-         const T randomIntegerBetweenInclusiveLowerBoundAndMaxValue = uniformTDistribution(RandomEngineForCurrentTestRun());
+         T randomIntegerBetweenInclusiveLowerBoundAndMaxValue = uniformTDistribution(RandomEngineForCurrentTestRun());
          return randomIntegerBetweenInclusiveLowerBoundAndMaxValue;
       }
       }
@@ -8615,16 +8650,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          return randomUnsignedVector;
       }
 
-      // Example Enum(int exclusiveEnumMaxValue) usage:
-      // enum class Color
-      // {
-      //    Red,
-      //    White,
-      //    Blue,
-      //    MaxValue
-      // };
-      // const ZenUnit::RandomGenerator* const zenUnitRandomGenerator = ZenUnit::RandomGenerator::Instance();
-      // const Color randomColor = static_cast<Color>(zenUnitRandomGenerator->Enum(static_cast<int>(Color::MaxValue)));
       virtual int Enum(int exclusiveEnumMaxValue) const
       {
          const int inclusiveEnumMaxValue = exclusiveEnumMaxValue - 1;
