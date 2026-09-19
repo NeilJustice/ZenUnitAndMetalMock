@@ -42,7 +42,7 @@ jobs:
       - name: Build with LinuxCPlusPlusBuilder in non-code-coverage mode if Clang Debug, Clang RelWithDebInfo, or GCC Debug
         run: |
           LinuxCPlusPlusBuilder/LinuxCPlusPlusBuilder build-cpp-solution \
-            --solution-name=ZenUnitAndMetalMock \
+            --solution=ZenUnitAndMetalMock \
             --configuration="${{ matrix.cmake_build_type }}" \
             --cmake-definitions="-DFastLinuxDebugBuildMode=ON -DFastLinuxReleaseBuildMode=ON" \
             --install=false
@@ -53,7 +53,7 @@ jobs:
       - name: Build with LinuxCPlusPlusBuilder in code coverage mode if GCC RelWithDebInfo
         run: |
            LinuxCPlusPlusBuilder/LinuxCPlusPlusBuilder build-cpp-solution \
-             --solution-name=ZenUnitAndMetalMock \
+             --solution=ZenUnitAndMetalMock \
              --configuration=RelWithDebInfo \
              --cmake-definitions="-DLCovCodeCoverageMode=ON" \
              --install=false

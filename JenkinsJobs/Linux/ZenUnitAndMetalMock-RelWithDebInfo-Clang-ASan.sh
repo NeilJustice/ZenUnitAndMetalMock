@@ -3,7 +3,7 @@ set -ev
 
 export CXX=clang++
 LinuxCPlusPlusBuilder build-cpp-solution \
-   --solution-name=ZenUnitAndMetalMock \
+   --solution=ZenUnitAndMetalMock \
    --configuration=RelWithDebInfo \
    --cmake-definitions="-DClangAddressSanitizerMode=ON -DFastLinuxReleaseBuildMode=ON" \
    --install=false

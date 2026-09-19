@@ -1,5 +1,5 @@
 WindowsCPlusPlusBuilder.exe build-cpp-solution `
-   --solution-name=ZenUnitAndMetalMock `
+   --solution=ZenUnitAndMetalMock `
    --configuration=RelWithDebInfo `
    --cmake-definitions="" `
    --install=false

@@ -35,7 +35,7 @@ jobs:
       - name: Build with WindowsCPlusPlusBuilder
         run: |
           WindowsCPlusPlusBuilder/WindowsCPlusPlusBuilder.exe build-cpp-solution `
-            --solution-name=ZenUnitAndMetalMock `
+            --solution=ZenUnitAndMetalMock `
             --configuration="${{ matrix.cmake_build_type }}" `
             --cmake-definitions="" `
             --install=false
