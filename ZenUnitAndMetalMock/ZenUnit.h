@@ -6308,9 +6308,11 @@ Fatal Windows C++ Runtime Assertion
 
       void PrintTestClassNameAndNumberOfNamedTests() const
       {
-         p_console->WriteColor("@", Color::Green);
-         p_console->WriteColor(_testClassName, Color::Green);
-         const std::string spacePipeSpaceNumberOfNamedTests = String::ConcatValues(" | Running ", _tests.size(), _tests.size() == 1 ? " test" : " tests");
+         const std::string atSignTestClassName = String::ConcatStrings("@", _testClassName);
+         p_console->WriteColor(atSignTestClassName, Color::Green);
+
+         const std::string spacePipeSpaceNumberOfNamedTests = String::ConcatStrings(
+            " | Running ", std::to_string(_tests.size()), _tests.size() == 1 ? " test" : " tests");
          p_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 
