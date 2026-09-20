@@ -1,4 +1,7 @@
 #include "pch.h"
+#ifdef __linux__
+#include "callgrind.h"
+#endif
 
 int main(int argc, char* argv[])
 {
