@@ -13,7 +13,6 @@ namespace ZenUnit
 #include <charconv>
 #include <concepts>
 #include <filesystem>
-#include <flat_map>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -1446,21 +1445,21 @@ namespace ZenUnit
          return typeName;
       }
    private:
-      static std::flat_map<const char*, std::string>& GetMangledToDemangledTypeNameCache()
+      static std::unordered_map<const char*, std::string>& GetMangledToDemangledTypeNameCache()
       {
-         static std::flat_map<const char*, std::string> mangledToDemangledTypeNameCache;
+         static std::unordered_map<const char*, std::string> mangledToDemangledTypeNameCache;
          return mangledToDemangledTypeNameCache;
       }
 
       static const std::string* GetTypeNameFromTypeInfo(const std::type_info& typeInfo)
       {
          const char* const mangledTypeName = typeInfo.name();
-         std::flat_map<const char*, std::string>& mangledToDemangledTypeNameCache = GetMangledToDemangledTypeNameCache();
-         const std::flat_map<const char*, std::string>::const_iterator findIter = mangledToDemangledTypeNameCache.find(mangledTypeName);
-         if (findIter == mangledToDemangledTypeNameCache.cend())
+         std::unordered_map<const char*, std::string>& mangledToDemangledTypeNameCache = GetMangledToDemangledTypeNameCache();
+         const std::unordered_map<const char*, std::string>::const_iterator findIter = mangledToDemangledTypeNameCache.find(mangledTypeName);
+         if (findIter == mangledToDemangledTypeNameCache.end())
          {
             const std::string demangledTypeName = DemangleTypeName(mangledTypeName);
-            const std::pair<std::flat_map<const char*, std::string>::const_iterator, bool>
+            const std::pair<std::unordered_map<const char*, std::string>::const_iterator, bool>
                emplaceResult = mangledToDemangledTypeNameCache.emplace(mangledTypeName, demangledTypeName);
             const std::string* newlyCachedDemangledTypeName = &emplaceResult.first->second;
             return newlyCachedDemangledTypeName;
