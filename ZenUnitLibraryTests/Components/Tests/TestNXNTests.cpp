@@ -486,25 +486,30 @@ namespace ZenUnit
       IS_TRUE(TestingTestClass::s_destructorHasBeenCalled);
    }
 
-   TEST3X3(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow,
-      size_t testCaseNumber, size_t expectedTestCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
-      1ULL, 1ULL, 0ULL,
-      2ULL, 2ULL, 1ULL,
-      3ULL, 3ULL, 2ULL)
+   TEST2X2(PrintTestCaseNumberThenArgsThenArrow_WritesTestCaseNumberArrow,
+      size_t testCaseNumber, size_t expectedTestCaseArgsPrintingStartIndex,
+      1ULL, 0ULL,
+      2ULL, 1ULL,
+      3ULL, 2ULL)
    {
       _consoleMock->WriteMock.Expect();
-      _consoleMock->WriteSizeTMock.Expect();
       _consoleMock->WriteStringsCommaSeparatedMock.Expect();
       const vector<string> splitTestCaseArgs = { "Arg0", "Argument1" };
       //
       _testNXN->PrintTestCaseNumberThenArgsThenArrow(testCaseNumber, splitTestCaseArgs);
       //
-      METALMOCK(_consoleMock->WriteMock.CalledNTimes(3));
-      METALMOCKTHEN(_consoleMock->WriteMock.CalledWith(" [")).Then(
-      METALMOCKTHEN(_consoleMock->WriteSizeTMock.CalledOnceWith(expectedTestCaseNumber))).Then(
-      METALMOCKTHEN(_consoleMock->WriteMock.CalledWith("] ("))).Then(
-      METALMOCKTHEN(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N))).Then(
-      METALMOCKTHEN(_consoleMock->WriteMock.CalledWith(") -> ")));
+      const string expectedFirstPartOfMessage = String::ConcatStrings(" [", std::to_string(testCaseNumber), "] (");
+
+      METALMOCK(_consoleMock->WriteMock.CalledNTimes(2));
+
+      METALMOCKTHEN(_consoleMock->WriteMock.CalledWith(
+         expectedFirstPartOfMessage)).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteStringsCommaSeparatedMock.CalledOnceWith(
+         splitTestCaseArgs, expectedTestCaseArgsPrintingStartIndex, N))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteMock.CalledWith(
+         ") -> ")));
    }
 
    TEST(WriteLineOKIfSuccessOrSuccessButPastDeadline_CallsTestResultWriteLineOKIfSuccessOrSuccessButPastDeadline)
