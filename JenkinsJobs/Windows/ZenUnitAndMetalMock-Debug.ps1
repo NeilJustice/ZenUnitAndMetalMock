@@ -3,3 +3,4 @@ WindowsCPlusPlusBuilder.exe build-cpp-solution `
    --configuration=Debug `
    --cmake-definitions="" `
    --install=true
+exit $LastExitCode
