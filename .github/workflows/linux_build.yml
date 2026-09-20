@@ -28,9 +28,9 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/ZenUnit.h --create-dirs -o "$GITHUB_WORKSPACE/ZenUnitAndMetalMock/ZenUnit.h"
           curl https://raw.githubusercontent.com/NeilJustice/ZenUnitAndMetalMock/main/ZenUnitAndMetalMock/MetalMock.h --create-dirs -o "$GITHUB_WORKSPACE/ZenUnitAndMetalMock/MetalMock.h"
-        
+
       - name: Install ninja-build and valgrind
-        run: sudo apt-get install ninja-build valgrind
+        run: sudo apt-get update && sudo apt-get install ninja-build valgrind
         
       - name: Install lcov Perl dependencies if g++ RelWithDebInfo
         run: sudo apt-get install libcapture-tiny-perl libdatetime-perl
