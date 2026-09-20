@@ -6773,7 +6773,6 @@ Fatal Windows C++ Runtime Assertion
          _console->WriteStringsCommaSeparated(splitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
 
          _console->Write(") -> ");
-
       }
 
       virtual void WriteLineOKIfSuccessOrSuccessButPastDeadline(const TestResult& testResult) const
