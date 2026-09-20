@@ -9,9 +9,9 @@
 |VS2026 on windows-2025-vs2026|<a href="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/windows_build.yml"><img src="https://github.com/NeilJustice/ZenUnitAndMetalMock/actions/workflows/windows_build.yml/badge.svg"></a>|
 |GCC lcov code coverage|<a href="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock"><img src="https://codecov.io/gh/NeilJustice/ZenUnitAndMetalMock/branch/master/graph/badge.svg?token=XBROZzZXP2"></a>|
 
-ZenUnit is a C++23 single-header unit testing framework designed for test readability, value-parameterized tests, and template-parameterized tests.
+ZenUnit is a C++ single-header unit testing framework designed for test and assertion readability, value-parameterized tests, template-parameterized tests, and high-readability error messages.
 
-Here is the ZenUnit syntax for specifying value-parameterized tests by way of typesafe variadic macro arguments:
+Here is the ZenUnit syntax for a "three by three" value-parameterized test:
 
 ```cpp
 TEST3X3(Add_ReturnsSumOfArguments,
@@ -27,7 +27,7 @@ TEST3X3(Add_ReturnsSumOfArguments,
 
 The above `TEST3X3` syntax defines three independent test cases for function `Calculator::Add(int x, int y)`, with test case values processed "three by three" for a total of three unit tests.
 
-Here is the ZenUnit syntax for specifying template-parameterized test classes:
+Here is the ZenUnit syntax for a template-parameterized test class:
 
 ```cpp
 template<
@@ -107,7 +107,9 @@ THEN_RUN_TEMPLATE_TESTS(PredicateCounterTests, std::unordered_set, unsigned long
 
 The above `TEMPLATE_TESTS`, `RUN_TEMPLATE_TESTS`, and `THEN_RUN_TEMPLATE_TESTS` syntax defines a ZenUnit templated test class with unit tests to be run first with template arguments `std::vector, int`, then `std::vector, unsigned long long`, then `std::unordered_set, int`, then `std::unordered_set, unsigned long long`.
 
-MetalMock is a C++23 two-header (MetalMock.h and ZenUnit.h) mocking framework powered by ZenUnit assertions. MetalMock's key feature is its convenient arrange-act-assert style syntax for expecting calls to mocked functions and asserting that mocked functions were called with expected arguments in expected order.
+MetalMock is a C++ two-header (MetalMock.h and ZenUnit.h) mocking framework powered by ZenUnit assertions.
+
+MetalMock's key feature is its arrange-act-assert style syntax for first expecting a mocked-out function call, then making the mocked-out function call, then asserting that the mocked-out function was called with expected arguments.
 
 MetalMock supports mocking virtual functions, template functions, static functions, and global/free functions.
 
@@ -115,7 +117,9 @@ MetalMock is what I call a "double strict" mocking framework.
 
 A "single strict" mocking framework requires all mocked functions to be explicitly expected before being called, else an exception is thrown.
 
-A "double strict" mocking framework requires all mocked functions to be both explicitly expected and then explicitly asserted as having been called with expected arguments, else an exception is thrown. The double strictness boosts testing rigor by catching potentially correctness-compromising extraneous function calls at unit test time instead of acceptance test time or in production.
+A "double strict" mocking framework requires all mocked functions to be both explicitly expected and then explicitly asserted as having been called with expected arguments, else an exception is thrown.
+
+This double strictness boosts testing rigor by catching potentially correctness-compromising extraneous function calls at unit test time instead of at acceptance test time or production time.
 
    * [ZenUnit command line usage](#zenunit-command-line-usage)
    * [How to unit test FizzBuzz with ZenUnit's value-parameterized test syntax](#how-to-unit-test-fizzbuzz-with-zenunits-value-parameterized-test-syntax)
