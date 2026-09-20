@@ -13,7 +13,7 @@ namespace ZenUnit
       TestPhaseResult expectedDefaultTestPhaseResult;
       expectedDefaultTestPhaseResult.testPhase = TestPhase::Unset;
       expectedDefaultTestPhaseResult.testOutcome = TestOutcome::Success;
-      expectedDefaultTestPhaseResult.elapsedMicroseconds = 0;
+      expectedDefaultTestPhaseResult.elapsedMilliseconds = 0;
       expectedDefaultTestPhaseResult.anomalyOrException = nullptr;
       ARE_EQUAL(expectedDefaultTestPhaseResult, defaultTestPhaseResult);
    }
@@ -24,7 +24,7 @@ namespace ZenUnit
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::Constructor;
       expectedTestPhaseResult.testOutcome = TestOutcome::Success;
-      expectedTestPhaseResult.elapsedMicroseconds = 0;
+      expectedTestPhaseResult.elapsedMilliseconds = 0;
       expectedTestPhaseResult.anomalyOrException = nullptr;
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }

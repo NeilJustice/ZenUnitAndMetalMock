@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ZenUnitLibraryTests/Components/Args/MetalMock/TestNameFilterMock.h"
 #include "ZenUnitTestUtils/EqualizersAndRandoms/TestNameFilterEqualizerAndRandom.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestClassResultEqualizerAndRandom.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestClassRunnerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TransformerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberAnyerMock.h"
@@ -255,7 +254,7 @@ namespace ZenUnit
       ZenUnitArgs zenUnitArgs;
       zenUnitArgs.randomTestOrdering = true;
 
-      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      const unsigned short globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned short>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);

@@ -52,7 +52,7 @@ namespace ZenUnit
    ConsoleMock* p_consoleMock = nullptr;
 
    // Function Pointers
-   METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MillisecondsToBracketedMillisecondsString, unsigned)
    METALMOCK_NONVOID0_STATIC_OR_FREE(const ZenUnitArgs&, _call_ZenUnitTestRunner_GetZenUnitArgs)
 
    // Function Callers
@@ -88,7 +88,7 @@ namespace ZenUnit
       // Base Class Constant Components
       _specificTestClassRunner->p_console.reset(p_consoleMock = new ConsoleMock);
       // Function Pointers
-      _specificTestClassRunner->_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
+      _specificTestClassRunner->_call_Watch_MillisecondsToBracketedMillisecondsString = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MillisecondsToBracketedMillisecondsStringMock);
       _specificTestClassRunner->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
       // Function Callers
       _specificTestClassRunner->_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests.reset(
@@ -111,7 +111,7 @@ namespace ZenUnit
       // Function Pointers
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
       // Function Callers
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString, specificTestClassRunner._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(Watch::MillisecondsToBracketedMillisecondsString, specificTestClassRunner._call_Watch_MillisecondsToBracketedMillisecondsString);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgTestAnyer);
@@ -263,7 +263,7 @@ namespace ZenUnit
       {
          _twoArgMemberForEacherMock->TwoArgMemberForEachMock.Expect();
       }
-      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      const unsigned short globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned short>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       _specificTestClassRunner->DoRunTests();
@@ -327,12 +327,12 @@ namespace ZenUnit
          p_consoleMock->WriteColorMock.Expect();
          p_consoleMock->WriteLineMock.Expect();
          testResultThreeDecimalMillisecondsString =
-            _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+            _call_Watch_MillisecondsToBracketedMillisecondsStringMock.ReturnRandom();
       }
       TestMock testMock;
       TestResult newableAndDeletableTestResult;
       newableAndDeletableTestResult.testOutcome = newableDeletableTestOutcome;
-      newableAndDeletableTestResult.elapsedMicroseconds = ZenUnit::Random<unsigned>();
+      newableAndDeletableTestResult.elapsedMilliseconds = ZenUnit::Random<unsigned short>();
       const vector<TestResult> newableAndDeletableTestResults{ newableAndDeletableTestResult };
       testMock.RunTestMock.Return(newableAndDeletableTestResults);
       //
@@ -342,8 +342,8 @@ namespace ZenUnit
       if (expectWriteLineOK)
       {
          METALMOCK(p_consoleMock->WriteColorMock.CalledOnceWith("OK ", Color::Green));
-         METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(
-            newableAndDeletableTestResult.elapsedMicroseconds));
+         METALMOCK(_call_Watch_MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(
+            newableAndDeletableTestResult.elapsedMilliseconds));
          METALMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }
       METALMOCK(p_consoleMock->WriteMock.CalledOnceWith("|TestClassIsNewableAndDeletable -> "));

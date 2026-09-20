@@ -96,7 +96,7 @@ namespace ZenUnit
       int testRuns = 1;
       bool randomTestOrdering = false;
       bool globalRandomSeedSetByUser = false;
-      unsigned maxTestMilliseconds = 0;
+      unsigned short maxTestMilliseconds = 0;
 
       static inline const std::string CommandLineUsage = "C++ Unit Testing Framework ZenUnit " + std::string(Version) + R"(
 Usage: <ZenUnitTestsBinaryName> [Options...]
@@ -681,7 +681,7 @@ namespace ZenUnit
    struct ZenUnitMode
    {
       bool selfTest = false;
-      unsigned randomSeed = 0;
+      unsigned short randomSeed = 0;
       std::unique_ptr<std::default_random_engine> randomEngineForCurrentTestRun;
       size_t currentTestRunNumber = 0;
    };
@@ -767,7 +767,7 @@ namespace ZenUnit
       {
          int intValue{};
          std::from_chars_result fromCharsResult = std::from_chars(str.data(), str.data() + str.size(), intValue, 10);
-         if (fromCharsResult.ec != std::errc{})
+         [[unlikely]] if (fromCharsResult.ec != std::errc{})
          {
             const std::string exceptionMessage = String::ConcatStrings(
                "ZenUnit::String::ToInt(std::string_view str) called with str not converted to int: \"", str, "\"");
@@ -776,17 +776,18 @@ namespace ZenUnit
          return intValue;
       }
 
-      static unsigned ToUnsigned(std::string_view str)
+      static unsigned short ToUnsignedShort(std::string_view str)
       {
-         unsigned unsignedValue{};
-         std::from_chars_result fromCharsResult = std::from_chars(str.data(), str.data() + str.size(), unsignedValue, 10);
-         if (fromCharsResult.ec != std::errc{})
+         unsigned short unsignedShortValue = 0;
+         std::from_chars_result fromCharsResult = std::from_chars(
+            str.data(), str.data() + str.size(), unsignedShortValue, 10);
+         [[unlikely]] if (fromCharsResult.ec != std::errc{})
          {
             const std::string exceptionMessage = String::ConcatStrings(
-               "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"", str, "\"");
+               "ZenUnit::String::ToUnsignedShort(std::string_view str) called with str not converted to unsigned short: \"", str, "\"");
             throw std::invalid_argument(exceptionMessage);
          }
-         return unsignedValue;
+         return unsignedShortValue;
       }
 
       static std::vector<std::string> SplitOnNonQuotedCommas(std::string_view text)
@@ -1147,33 +1148,17 @@ namespace ZenUnit
          return localTimeWithTimeZone;
       }
 
-      virtual unsigned SecondsSince1970() const
+      virtual unsigned short SecondsSince1970StaticCastToUnsignedShort() const
       {
          const long long secondsSince1970 = std::chrono::system_clock::now().time_since_epoch().count();
-         unsigned secondsSince1970AsUnsigned = static_cast<unsigned>(secondsSince1970);
-         return secondsSince1970AsUnsigned;
+         unsigned short secondsSince1970StaticCastToUnsignedShort = static_cast<unsigned short>(secondsSince1970);
+         return secondsSince1970StaticCastToUnsignedShort;
       }
 
-      static std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds)
+      static std::string MillisecondsToBracketedMillisecondsString(unsigned short milliseconds)
       {
-         const double unroundedMilliseconds = static_cast<double>(microseconds) / 1000.0;
-
-         // Example: 0.1200000000001
-         const double millisecondsRoundedToTwoDecimalPlaces = std::floor(unroundedMilliseconds * 100 + 0.5) / 100;
-
-         // Example: "0.120000"
-         const std::string millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString =
-            std::to_string(millisecondsRoundedToTwoDecimalPlaces);
-
-         // Example: "0.12"
-         const std::string millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString =
-            millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.substr(
-               0, millisecondsRoundedToTwoDecimalPlacesAsSixDecimalPlaceString.find_first_of('.') + 3);
-
-         // Example: "[0.12ms]"
-         std::string twoDecimalPlaceMillisecondsString = String::ConcatStrings(
-            "[", millisecondsRoundedToTwoDecimalPlacesAsTwoDecimalPlacesString, "ms]");
-         return twoDecimalPlaceMillisecondsString;
+         std::string bracketedMillisecondsString = String::ConcatStrings("[", std::to_string(milliseconds), "ms]");
+         return bracketedMillisecondsString;
       }
    private:
       virtual std::string TimeZone(const tm& tmNow) const
@@ -1233,9 +1218,9 @@ namespace ZenUnit
          return &staticConsoleInstance;
       }
 
-      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
+      virtual std::string MillisecondsToBracketedMillisecondsString(unsigned short milliseconds) const
       {
-         return Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
+         return Watch::MillisecondsToBracketedMillisecondsString(milliseconds);
       }
 
       virtual void Write(std::string_view message) const
@@ -2001,7 +1986,9 @@ namespace ZenUnit
       }
 
       virtual std::vector<TransformedElementType> RandomTransform(
-         std::vector<ElementType>* shuffableElements, TransformedElementType(*transformFunction)(const ElementType&), unsigned randomSeed) const
+         std::vector<ElementType>* shuffableElements,
+         TransformedElementType(*transformFunction)(const ElementType&),
+         unsigned short randomSeed) const
       {
          std::shuffle(shuffableElements->begin(), shuffableElements->end(), std::default_random_engine(randomSeed));
          const size_t elementsSize = shuffableElements->size();
@@ -2043,14 +2030,15 @@ namespace ZenUnit
    {
       friend class TestNameFilterStringParserTests;
    private:
-      std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
-      std::unique_ptr<const MemberFunctionTransformer<
-         TestNameFilterStringParser, std::string, TestNameFilter>> _memberFunctionTransformer;
+      // Function Pointers
+      std::function<unsigned short(std::string_view)> _call_String_ToUnsignedShort;
+      // Function Callers
+      using _memberFunctionTransformerType = MemberFunctionTransformer<TestNameFilterStringParser, std::string, TestNameFilter>;
+      std::unique_ptr<const _memberFunctionTransformerType> _memberFunctionTransformer;
    public:
       TestNameFilterStringParser() noexcept
-         : _call_String_ToUnsigned(String::ToUnsigned)
-         , _memberFunctionTransformer(std::make_unique<
-            MemberFunctionTransformer<TestNameFilterStringParser, std::string, TestNameFilter>>())
+         : _call_String_ToUnsignedShort(String::ToUnsignedShort)
+         , _memberFunctionTransformer(std::make_unique<_memberFunctionTransformerType>())
       {
       }
 
@@ -2081,7 +2069,7 @@ namespace ZenUnit
             if (testNameAndTestCaseNumber.size() == 2)
             {
                const std::string& testCaseNumberString = testNameAndTestCaseNumber[1];
-               testNameFilter.testCaseNumber = static_cast<size_t>(_call_String_ToUnsigned(testCaseNumberString));
+               testNameFilter.testCaseNumber = static_cast<size_t>(_call_String_ToUnsignedShort(testCaseNumberString));
             }
          }
          return testNameFilter;
@@ -2268,10 +2256,10 @@ namespace ZenUnit
    private:
       // Function Pointers
       std::function<int(std::string_view)> _call_String_ToInt;
-      std::function<unsigned(std::string_view)> _call_String_ToUnsigned;
+      std::function<unsigned short(std::string_view)> _call_String_ToUnsignedShort;
       // Function Callers
-      std::unique_ptr<const NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>
-         _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser;
+      using _caller_GetSecondsSince1970RandomSeedIfNotSetByUserType = NonVoidOneArgMemberFunctionCaller<unsigned short, ArgsParser, unsigned short>;
+      std::unique_ptr<_caller_GetSecondsSince1970RandomSeedIfNotSetByUserType> _caller_GetSecondsSince1970RandomSeedIfNotSetByUser;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestNameFilterStringParser> _testNameFilterStringParser;
@@ -2280,10 +2268,9 @@ namespace ZenUnit
       ArgsParser() noexcept
          // Function Pointers
          : _call_String_ToInt(String::ToInt)
-         , _call_String_ToUnsigned(String::ToUnsigned)
+         , _call_String_ToUnsignedShort(String::ToUnsignedShort)
          // Function Callers
-         , _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(
-            std::make_unique<NonVoidOneArgMemberFunctionCaller<unsigned, ArgsParser, unsigned>>())
+         , _caller_GetSecondsSince1970RandomSeedIfNotSetByUser(std::make_unique<_caller_GetSecondsSince1970RandomSeedIfNotSetByUserType>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testNameFilterStringParser(std::make_unique<TestNameFilterStringParser>())
@@ -2297,7 +2284,7 @@ namespace ZenUnit
       {
          ZenUnitArgs zenUnitArgs{};
          zenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
-         unsigned randomSeedArgument = std::numeric_limits<unsigned>::max();
+         unsigned short randomSeedArgument = std::numeric_limits<unsigned short>::max();
          const size_t numberOfArgs = stringArgs.size();
          for (size_t argIndex = 1; argIndex < numberOfArgs; ++argIndex)
          {
@@ -2361,12 +2348,12 @@ namespace ZenUnit
                   }
                   else if (argName == "--random-seed")
                   {
-                     randomSeedArgument = _call_String_ToUnsigned(argValueString);
+                     randomSeedArgument = _call_String_ToUnsignedShort(argValueString);
                      zenUnitArgs.globalRandomSeedSetByUser = true;
                   }
                   else if (argName == "--max-test-milliseconds")
                   {
-                     zenUnitArgs.maxTestMilliseconds = _call_String_ToUnsigned(argValueString);
+                     zenUnitArgs.maxTestMilliseconds = _call_String_ToUnsignedShort(argValueString);
                   }
                   else
                   {
@@ -2380,18 +2367,19 @@ namespace ZenUnit
             }
          }
          zenUnitArgs.startDateTime = _watch->DateTimeNow();
-         globalZenUnitMode.randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser->CallConstMemberFunction(
-            this, &ArgsParser::GetSecondsSince1970RandomSeedIfNotAlreadySetByUser, randomSeedArgument);
+         globalZenUnitMode.randomSeed =
+            _caller_GetSecondsSince1970RandomSeedIfNotSetByUser->CallConstMemberFunction(
+               this, &ArgsParser::GetSecondsSince1970RandomSeedIfNotSetByUser, randomSeedArgument);
          return zenUnitArgs;
       }
    private:
-      unsigned GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(unsigned randomSeedArgument) const
+      unsigned short GetSecondsSince1970RandomSeedIfNotSetByUser(unsigned short randomSeedArgument) const
       {
-         if (randomSeedArgument != std::numeric_limits<unsigned>::max())
+         if (randomSeedArgument != std::numeric_limits<unsigned short>::max())
          {
             return randomSeedArgument;
          }
-         const unsigned secondsSince1970RandomSeed = _watch->SecondsSince1970();
+         unsigned short secondsSince1970RandomSeed = _watch->SecondsSince1970StaticCastToUnsignedShort();
          return secondsSince1970RandomSeed;
       }
 
@@ -4444,7 +4432,7 @@ namespace ZenUnit
    {
       TestPhase testPhase = TestPhase::Unset;
       TestOutcome testOutcome = TestOutcome::Success;
-      unsigned elapsedMicroseconds = 0;
+      unsigned short elapsedMilliseconds = 0;
       std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
       TestPhaseResult()
@@ -4454,7 +4442,7 @@ namespace ZenUnit
       explicit TestPhaseResult(TestPhase testPhase) noexcept
          : testPhase(testPhase)
          , testOutcome(TestOutcome::Success)
-         , elapsedMicroseconds(0)
+         , elapsedMilliseconds(0)
       {
       }
    };
@@ -4477,7 +4465,7 @@ namespace ZenUnit
 #pragma warning(pop)
 #endif
       TestOutcome testOutcome = TestOutcome::Unset;
-      unsigned elapsedMicroseconds = 0;
+      unsigned short elapsedMilliseconds = 0;
       size_t testCaseNumber = std::numeric_limits<size_t>::max();
       size_t totalTestCases = 0;
 
@@ -4501,12 +4489,12 @@ namespace ZenUnit
          , destructorTestPhaseResult(destructorTestPhaseResult)
          , responsibleTestPhaseResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
-         , elapsedMicroseconds(
-            constructorTestPhaseResult.elapsedMicroseconds +
-            startupTestPhaseResult.elapsedMicroseconds +
-            testBodyTestPhaseResult.elapsedMicroseconds +
-            cleanupTestPhaseResult.elapsedMicroseconds +
-            destructorTestPhaseResult.elapsedMicroseconds)
+         , elapsedMilliseconds(static_cast<unsigned short>(
+            constructorTestPhaseResult.elapsedMilliseconds +
+            startupTestPhaseResult.elapsedMilliseconds +
+            testBodyTestPhaseResult.elapsedMilliseconds +
+            cleanupTestPhaseResult.elapsedMilliseconds +
+            destructorTestPhaseResult.elapsedMilliseconds))
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , totalTestCases(0)
       {
@@ -4533,8 +4521,7 @@ namespace ZenUnit
          else
          {
             const ZenUnitArgs& zenUnitArgs = getZenUnitArgs();
-            const unsigned maxtestmicroseconds = zenUnitArgs.maxTestMilliseconds * 1000;
-            if (zenUnitArgs.maxTestMilliseconds == 0 || this->elapsedMicroseconds <= maxtestmicroseconds)
+            if (zenUnitArgs.maxTestMilliseconds == 0 || this->elapsedMilliseconds <= zenUnitArgs.maxTestMilliseconds)
             {
                this->testOutcome = TestOutcome::Success;
             }
@@ -4555,7 +4542,7 @@ namespace ZenUnit
          constructorFailTestResult.fullTestName = fullTestName;
          constructorFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorFailTestResult.testOutcome = constructorTestPhaseResult.testOutcome;
-         constructorFailTestResult.elapsedMicroseconds = constructorTestPhaseResult.elapsedMicroseconds;
+         constructorFailTestResult.elapsedMilliseconds = constructorTestPhaseResult.elapsedMilliseconds;
          constructorFailTestResult.responsibleTestPhaseResultField = &TestResult::constructorTestPhaseResult;
          return constructorFailTestResult;
       }
@@ -4572,10 +4559,10 @@ namespace ZenUnit
          startupFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          startupFailTestResult.startupTestPhaseResult = startupTestPhaseResult;
          startupFailTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         startupFailTestResult.elapsedMicroseconds =
-            constructorTestPhaseResult.elapsedMicroseconds +
-            startupTestPhaseResult.elapsedMicroseconds +
-            destructorTestPhaseResult.elapsedMicroseconds;
+         startupFailTestResult.elapsedMilliseconds =
+            static_cast<unsigned short>(constructorTestPhaseResult.elapsedMilliseconds +
+            startupTestPhaseResult.elapsedMilliseconds +
+            destructorTestPhaseResult.elapsedMilliseconds);
          startupFailTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
          return startupFailTestResult;
       }
@@ -4590,8 +4577,8 @@ namespace ZenUnit
          constructorAndDestructorSuccessTestResult.testOutcome = TestOutcome::Success;
          constructorAndDestructorSuccessTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorAndDestructorSuccessTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         constructorAndDestructorSuccessTestResult.elapsedMicroseconds =
-            constructorTestPhaseResult.elapsedMicroseconds + destructorTestPhaseResult.elapsedMicroseconds;
+         constructorAndDestructorSuccessTestResult.elapsedMilliseconds =
+            static_cast<unsigned short>(constructorTestPhaseResult.elapsedMilliseconds + destructorTestPhaseResult.elapsedMilliseconds);
          constructorAndDestructorSuccessTestResult.responsibleTestPhaseResultField = nullptr;
          return constructorAndDestructorSuccessTestResult;
       }
@@ -4601,15 +4588,15 @@ namespace ZenUnit
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string twoDecimalPlaceMillisecondsString = console->MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
-            console->WriteLine(twoDecimalPlaceMillisecondsString);
+            const std::string bracketedMillisecondsString = console->MillisecondsToBracketedMillisecondsString(this->elapsedMilliseconds);
+            console->WriteLine(bracketedMillisecondsString);
          }
          else if (testOutcome == TestOutcome::SuccessButPastDeadline)
          {
             console->WriteColor("OK ", Color::Green);
             console->WriteColor("but took longer than --max-test-milliseconds ", Color::Red);
-            const std::string twoDecimalPlaceMillisecondsString = console->MicrosecondsToTwoDecimalPlaceMillisecondsString(this->elapsedMicroseconds);
-            console->WriteLine(twoDecimalPlaceMillisecondsString);
+            const std::string bracketedMillisecondsString = console->MillisecondsToBracketedMillisecondsString(this->elapsedMilliseconds);
+            console->WriteLine(bracketedMillisecondsString);
          }
       }
 
@@ -4660,9 +4647,8 @@ namespace ZenUnit
             const std::string fullTestNameString = fullTestName.Value();
             console->Write(fullTestNameString);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
-            const unsigned elapsedMilliseconds = this->elapsedMicroseconds / 1000U;
             const std::string errorMessage = String::ConcatValues(
-               "\nTest succeeded but took ", elapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
+               "\nTest succeeded but took ", this->elapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
             console->WriteLine(errorMessage);
             break;
          }
@@ -4699,13 +4685,13 @@ namespace ZenUnit
       friend class TestClassResultTests;
    private:
       // Function Callers
-      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned short)> _call_Watch_MillisecondsToBracketedMillisecondsString;
    public:
       // Mutable Fields
       std::vector<TestResult> _testResults;
 
       TestClassResult() noexcept
-         : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
+         : _call_Watch_MillisecondsToBracketedMillisecondsString(Watch::MillisecondsToBracketedMillisecondsString)
       {
       }
 
@@ -4749,26 +4735,27 @@ namespace ZenUnit
          }
       }
 
-      virtual std::string MicrosecondsToTwoDecimalPlaceMillisecondsString(unsigned microseconds) const
+      virtual std::string MillisecondsToBracketedMillisecondsString(unsigned short milliseconds) const
       {
-         std::string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
-         return twoDecimalPlaceMillisecondsString;
+         std::string bracketedMillisecondsString = _call_Watch_MillisecondsToBracketedMillisecondsString(milliseconds);
+         return bracketedMillisecondsString;
       }
 
       virtual size_t NumberOfFailedTestCases() const
       {
-         const ptrdiff_t numberOfFailedTestCases = std::count_if(_testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
-         {
-            return testResult.testOutcome != TestOutcome::Success;
-         });
+         const ptrdiff_t numberOfFailedTestCases = std::count_if(
+            _testResults.cbegin(), _testResults.cend(), [](const TestResult& testResult)
+            {
+               return testResult.testOutcome != TestOutcome::Success;
+            });
          return static_cast<size_t>(numberOfFailedTestCases);
       }
 
       virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
-         const unsigned sumOfTestResultMicroseconds = SumOfTestResultMicroseconds();
-         const std::string twoDecimalPlaceMillisecondsString = MicrosecondsToTwoDecimalPlaceMillisecondsString(sumOfTestResultMicroseconds);
+         const unsigned short sumOfTestResultMilliseconds = SumOfTestResultMilliseconds();
+         const std::string twoDecimalPlaceMillisecondsString = MillisecondsToBracketedMillisecondsString(sumOfTestResultMilliseconds);
          if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
@@ -4798,14 +4785,21 @@ namespace ZenUnit
          _testResults.reserve(numberOfTestResults);
       }
 
-      virtual unsigned SumOfTestResultMicroseconds() const
+      virtual unsigned short SumOfTestResultMilliseconds() const
       {
-         const unsigned sumOfTestResultMicroseconds = std::accumulate(_testResults.cbegin(), _testResults.cend(), 0U,
-            [](unsigned runningSum, const TestResult& testResult) { return runningSum + testResult.elapsedMicroseconds; });
-         return sumOfTestResultMicroseconds;
+         unsigned short sumOfTestResultMilliseconds = std::accumulate(
+            _testResults.cbegin(), _testResults.cend(), static_cast<unsigned short>(0),
+            [](unsigned short runningSum, const TestResult& testResult)
+            {
+               return static_cast<unsigned short>(runningSum + testResult.elapsedMilliseconds);
+            });
+         return sumOfTestResultMilliseconds;
       }
    private:
-      static void PrintTestResultIfFailure(const TestResult& testResult, const Console* console, TestFailureNumberer* testFailureNumberer)
+      static void PrintTestResultIfFailure(
+         const TestResult& testResult,
+         const Console* console,
+         TestFailureNumberer* testFailureNumberer)
       {
          testResult.PrintIfFailure(console, testFailureNumberer);
       }
@@ -5022,18 +5016,18 @@ namespace ZenUnit
       friend class TestClassRunnerTests;
    protected:
       // Function Callers
-      using TwoArgMemberAnyerType = TwoArgMemberAnyer<
+      using p_twoArgMemberAnyerType = TwoArgMemberAnyer<
          std::vector<TestNameFilter>,
          TestClassRunner,
          bool(TestClassRunner::*)(const TestNameFilter&, const char*) const,
          const char*>;
-      std::unique_ptr<const TwoArgMemberAnyerType> p_twoArgMemberAnyer;
+      std::unique_ptr<const p_twoArgMemberAnyerType> p_twoArgMemberAnyer;
       // Constant Components
       std::unique_ptr<const Console> p_console;
    public:
       TestClassRunner() noexcept
          // Function Callers
-         : p_twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
+         : p_twoArgMemberAnyer(std::make_unique<p_twoArgMemberAnyerType>())
          // Constant Components
          , p_console(std::make_unique<Console>())
       {
@@ -5066,6 +5060,7 @@ namespace ZenUnit
    class NoOpTestClassRunner : public TestClassRunner
    {
    public:
+      virtual ~NoOpTestClassRunner() = default;
       const char* TestClassName() const override { return "NoOpTestClassRunner"; }
       TestClassResult RunTests() override { return TestClassResult(); }
    };
@@ -5460,10 +5455,13 @@ namespace ZenUnit
    {
       friend class StopwatchTests;
    private:
+      // Function Pointers
       std::function<std::chrono::time_point<std::chrono::high_resolution_clock>()> _call_high_resolution_clock_now;
+      // Mutable Fields
       std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
    public:
       Stopwatch() noexcept
+         // Function Pointers
          : _call_high_resolution_clock_now(std::chrono::high_resolution_clock::now)
       {
       }
@@ -5475,39 +5473,36 @@ namespace ZenUnit
          _startTime = _call_high_resolution_clock_now();
       }
 
-      virtual unsigned GetElapsedMicrosecondsThenResetStopwatch()
+      virtual unsigned short GetElapsedMillisecondsThenResetStopwatch()
       {
-         if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
+         [[unlikely]] if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
-            return 0U;
+            return 0;
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_high_resolution_clock_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         unsigned elapsedMicroseconds = static_cast<unsigned>(std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count());
+         const unsigned short elapsedMilliseconds = static_cast<unsigned short>(
+            std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count());
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
-         return elapsedMicroseconds;
+         return elapsedMilliseconds;
       }
 
       virtual std::string StopAndGetElapsedSeconds()
       {
-         // Example elapsedMicroseconds: 1000
-         const unsigned elapsedMicroseconds = GetElapsedMicrosecondsThenResetStopwatch();
+         // Example elapsedMilliseconds: 1234
+         const unsigned short elapsedMilliseconds = GetElapsedMillisecondsThenResetStopwatch();
 
-         // Example elapsedMilliseconds: 1
-         const unsigned elapsedMilliseconds = elapsedMicroseconds / 1000U;
+         // Example elapsedSeconds: 1
+         const unsigned short elapsedSeconds = static_cast<unsigned short>(elapsedMilliseconds / 1000);
 
-         // Example elapsedMillisecondsMod1000: 1
-         const unsigned elapsedMillisecondsMod1000 = elapsedMilliseconds % 1000U;
-
-         // Example elapsedSeconds: 0
-         const unsigned elapsedSeconds = elapsedMilliseconds / 1000U;
+         // Example elapsedMillisecondsMod1000: 234
+         const unsigned short elapsedMillisecondsMod1000 = static_cast<unsigned short>(elapsedMilliseconds % 1000);
 
          const size_t numberOfLeadingMillisecondZeros =
-            elapsedMillisecondsMod1000 < 10 ? 2ULL : // 3 -> 0.003
-            elapsedMillisecondsMod1000 < 100 ? 1ULL : // 33 -> 0.033
+            elapsedMillisecondsMod1000 < static_cast<unsigned short>(10) ? 2ULL : // 3 -> 0.003
+            elapsedMillisecondsMod1000 < static_cast<unsigned short>(100) ? 1ULL : // 33 -> 0.033
             0ULL; // 333 -> 0.333
 
-         // Example leadingZeros: "00"
          const std::string leadingZeros(numberOfLeadingMillisecondZeros, '0');
 
          // Example elapsedSecondsWithMillisecondResolution: "0.001"
@@ -5524,7 +5519,9 @@ namespace ZenUnit
       using AccumulationFunctionType = ReturnType(ClassType::*)(size_t, size_t);
 
       virtual ReturnType AccumulateNonConstMemberFunctionNTimes(
-         size_t n, ClassType* nonConstClassInstance, const AccumulationFunctionType& nonConstMemberFunction) const
+         size_t n,
+         ClassType* nonConstClassInstance,
+         const AccumulationFunctionType& nonConstMemberFunction) const
       {
          ReturnType accumulatedReturnValue{};
          for (size_t i = 0; i < n; ++i)
@@ -5742,7 +5739,7 @@ Fatal Windows C++ Runtime Assertion
       {
          if (!randomSeedSetByUser)
          {
-            globalZenUnitMode.randomSeed = _watch->SecondsSince1970();
+            globalZenUnitMode.randomSeed = _watch->SecondsSince1970StaticCastToUnsignedShort();
          }
       }
 
@@ -5870,7 +5867,7 @@ Fatal Windows C++ Runtime Assertion
       template<typename ExceptionType>
       void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& ex, TestPhaseResult* outTestPhaseResult) const
       {
-         outTestPhaseResult->elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         outTestPhaseResult->elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
          const std::string* const exceptionTypeName = Type::GetName(ex);
          const char* const exceptionMessage = ex.what();
          outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, exceptionMessage);
@@ -6048,11 +6045,11 @@ Fatal Windows C++ Runtime Assertion
       try
       {
          testPhaseFunction(test);
-         testPhaseResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         testPhaseResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
       }
       catch (const Anomaly& anomaly)
       {
-         testPhaseResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         testPhaseResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
          testPhaseResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          testPhaseResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n================\nFailed Assertion\n================", Color::Red);
@@ -6139,13 +6136,13 @@ Fatal Windows C++ Runtime Assertion
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
             TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult);
-            constructorFailTestResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+            constructorFailTestResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
             std::vector<TestResult> testResults = { std::move(constructorFailTestResult) };
             return testResults;
          }
          const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
          TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(p_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
-         testResult.elapsedMicroseconds = _testPhaseStopwatch->GetElapsedMicrosecondsThenResetStopwatch();
+         testResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
          std::vector<TestResult> testResults = { std::move(testResult) };
          return testResults;
       }
@@ -6186,7 +6183,7 @@ Fatal Windows C++ Runtime Assertion
       friend class SpecificTestClassRunnerTests;
    private:
       // Function Pointers
-      std::function<std::string(unsigned)> _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString;
+      std::function<std::string(unsigned short)> _call_Watch_MillisecondsToBracketedMillisecondsString;
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
 
       // Function Callers
@@ -6221,7 +6218,7 @@ Fatal Windows C++ Runtime Assertion
    public:
       explicit SpecificTestClassRunner(const char* testClassName)
          // Function Pointers
-         : _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString)
+         : _call_Watch_MillisecondsToBracketedMillisecondsString(Watch::MillisecondsToBracketedMillisecondsString)
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          // Function Callers
          , _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
@@ -6326,7 +6323,7 @@ Fatal Windows C++ Runtime Assertion
          {
             p_console->WriteColor("OK ", Color::Green);
             const std::string twoDecimalPlaceMillisecondsString =
-               _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString(newableAndDeletableTestResult.elapsedMicroseconds);
+               _call_Watch_MillisecondsToBracketedMillisecondsString(newableAndDeletableTestResult.elapsedMilliseconds);
             p_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return newableAndDeletableTestResult;

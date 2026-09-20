@@ -9,7 +9,6 @@
 namespace ZenUnit
 {
    TESTS(ArgsParserTests)
-   AFACT(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
    AFACT(ParseStringArgs_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    FACTS(ParseStringArgs_InvalidArgument_PrintsErrorMessageAndCommandLineUsageAndExits1)
    AFACT(ParseStringArgs_DashDashHelp_PrintsCommandLineUsageAndExits0)
@@ -23,8 +22,8 @@ namespace ZenUnit
    AFACT(ParseStringArgs_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    AFACT(ParseStringArgs_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    AFACT(ParseStringArgs_UnrecognizedEqualsSignArgName_PrintsCommandLineUsageAndExits1)
-   AFACT(GetSecondsSince1970RandomSeedIfNotAlreadySetByUser_RandomSeedCommandLineArgumentIsNotUnsignedMaxValue_ReturnsRandomSeedPotentiallySetByUser)
-   AFACT(GetSecondsSince1970RandomSeedIfNotAlreadySetByUser_RandomSeedCommandLineArgumentIsUnsignedMaxValue_ReturnsSecondsSince1970)
+   AFACT(GetSecondsSince1970RandomSeedIfNotSetByUser_RandomSeedCommandLineArgumentIsNotUnsignedMaxValue_ReturnsRandomSeedPotentiallySetByUser)
+   AFACT(GetSecondsSince1970RandomSeedIfNotSetByUser_RandomSeedCommandLineArgumentIsUnsignedMaxValue_ReturnsSecondsSince1970)
    EVIDENCE
 
    const string _testProgramPath = Random<string>();
@@ -32,9 +31,10 @@ namespace ZenUnit
    ArgsParser _argsParser;
    // Function Pointers
    METALMOCK_NONVOID1_STATIC_OR_FREE(int, _call_String_ToInt, std::string_view)
-   METALMOCK_NONVOID1_STATIC_OR_FREE(unsigned, _call_String_ToUnsigned, std::string_view)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(unsigned short, _call_String_ToUnsignedShort, std::string_view)
    // Function Callers
-   NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>* _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = nullptr;
+   using _caller_GetSecondsSince1970RandomSeedIfNotSetByUserMockType = NonVoidOneArgMemberFunctionCallerMock<unsigned short, ArgsParser, unsigned short>;
+   _caller_GetSecondsSince1970RandomSeedIfNotSetByUserMockType* _caller_GetSecondsSince1970RandomSeedIfNotSetByUserMock = nullptr;
    // Constant Components
    ConsoleMock* _consoleMock = nullptr;
    TestNameFilterStringParserMock* _testNameFilterStringParserMock = nullptr;
@@ -44,52 +44,38 @@ namespace ZenUnit
    {
       // Function Pointers
       _argsParser._call_String_ToInt = BIND_1ARG_METALMOCK_OBJECT(_call_String_ToIntMock);
-      _argsParser._call_String_ToUnsigned = BIND_1ARG_METALMOCK_OBJECT(_call_String_ToUnsignedMock);
+      _argsParser._call_String_ToUnsignedShort = BIND_1ARG_METALMOCK_OBJECT(_call_String_ToUnsignedShortMock);
       // Function Callers
-      _argsParser._caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser.reset(_caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock = new NonVoidOneArgMemberFunctionCallerMock<unsigned, ArgsParser, unsigned>);
+      _argsParser._caller_GetSecondsSince1970RandomSeedIfNotSetByUser.reset(_caller_GetSecondsSince1970RandomSeedIfNotSetByUserMock = new _caller_GetSecondsSince1970RandomSeedIfNotSetByUserMockType);
       // Constant Components
       _argsParser._console.reset(_consoleMock = new ConsoleMock);
       _argsParser._testNameFilterStringParser.reset(_testNameFilterStringParserMock = new TestNameFilterStringParserMock);
       _argsParser._watch.reset(_watchMock = new WatchMock);
    }
 
-   TEST(DefaultConstructor_NewsComponents_SetsStringToUnsignedFunction)
+   unsigned short ExpectCallToGetSecondsSince1970RandomSeedIfNotSetByUser()
    {
-      ArgsParser argsParser;
-      // Function Pointers
-      STD_FUNCTION_TARGETS(String::ToInt, argsParser._call_String_ToInt);
-      STD_FUNCTION_TARGETS(String::ToUnsigned, argsParser._call_String_ToUnsigned);
-      // Function Callers
-      DELETE_TO_ASSERT_NEWED(argsParser._caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUser);
-      // Constant Components
-      DELETE_TO_ASSERT_NEWED(argsParser._console);
-      DELETE_TO_ASSERT_NEWED(argsParser._testNameFilterStringParser);
-      DELETE_TO_ASSERT_NEWED(argsParser._watch);
-   }
-
-   unsigned ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser()
-   {
-      const unsigned randomSeed = ZenUnit::Random<unsigned>();
-      _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock->CallConstMemberFunctionMock.Return(randomSeed);
+      const unsigned short randomSeed = ZenUnit::Random<unsigned short>();
+      _caller_GetSecondsSince1970RandomSeedIfNotSetByUserMock->CallConstMemberFunctionMock.Return(randomSeed);
       return randomSeed;
    }
 
-   void AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(unsigned expectedRandomSeedPotentiallySetByUser)
+   void AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(unsigned short expectedRandomSeedPotentiallySetByUser)
    {
-      METALMOCK(_caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock->CallConstMemberFunctionMock.CalledOnceWith(
-         &_argsParser, &ArgsParser::GetSecondsSince1970RandomSeedIfNotAlreadySetByUser, expectedRandomSeedPotentiallySetByUser));
+      METALMOCK(_caller_GetSecondsSince1970RandomSeedIfNotSetByUserMock->CallConstMemberFunctionMock.CalledOnceWith(
+         &_argsParser, &ArgsParser::GetSecondsSince1970RandomSeedIfNotSetByUser, expectedRandomSeedPotentiallySetByUser));
    }
 
    TEST(ParseStringArgs_ArgsOnlyExePath_ReturnsDefaultZenUnitArgsWithCommandLineAndTestProgramNameSet)
    {
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
-      const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
+      const unsigned short randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotSetByUser();
       vector<string> stringArgs{ _testProgramPath };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
+      AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(numeric_limits<unsigned short>::max());
       ZenUnitArgs expectedZenUnitArgs{};
       expectedZenUnitArgs.commandLine = _testProgramPath;
       expectedZenUnitArgs.startDateTime = startDateTime;
@@ -140,10 +126,14 @@ namespace ZenUnit
    TEST(ParseStringArgs_AllArgumentsSpecifiedExpectForTestNameFilter_ReturnsZenUnitArgsWithAllFieldsSet)
    {
       const int testruns = _call_String_ToIntMock.ReturnRandom();
-      const unsigned randomSeedToUnsignedReturnValue = ZenUnit::Random<unsigned>();
-      const unsigned maxTestMilliseconds = ZenUnit::Random<unsigned>();
-      _call_String_ToUnsignedMock.ReturnValues(randomSeedToUnsignedReturnValue, maxTestMilliseconds);
-      const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
+
+      const unsigned short randomSeedToUnsignedShortReturnValue = ZenUnit::Random<unsigned short>();
+      const unsigned short maxTestMilliseconds = ZenUnit::Random<unsigned short>();
+      _call_String_ToUnsignedShortMock.ReturnValues(
+         randomSeedToUnsignedShortReturnValue,
+         maxTestMilliseconds);
+
+      const unsigned short randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotSetByUser();
       const string startDateTime = _watchMock->DateTimeNowMock.ReturnRandom();
       const vector<string> stringArgs =
       {
@@ -161,12 +151,12 @@ namespace ZenUnit
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
-      METALMOCK(_call_String_ToUnsignedMock.CalledNTimes(2));
+      METALMOCK(_call_String_ToUnsignedShortMock.CalledNTimes(2));
       METALMOCKTHEN(_call_String_ToIntMock.CalledOnceWith(to_string(testruns))).Then(
-      METALMOCKTHEN(_call_String_ToUnsignedMock.CalledWith(to_string(randomSeed)))).Then(
-      METALMOCKTHEN(_call_String_ToUnsignedMock.CalledWith(to_string(maxTestMilliseconds)))).Then(
+      METALMOCKTHEN(_call_String_ToUnsignedShortMock.CalledWith(to_string(randomSeed)))).Then(
+      METALMOCKTHEN(_call_String_ToUnsignedShortMock.CalledWith(to_string(maxTestMilliseconds)))).Then(
       METALMOCKTHEN(_watchMock->DateTimeNowMock.CalledOnce()));
-      AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(randomSeedToUnsignedReturnValue);
+      AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(randomSeedToUnsignedShortReturnValue);
       ZenUnitArgs expectedZenUnitArgs{};
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.pauseBefore = true;
@@ -185,7 +175,8 @@ namespace ZenUnit
 
    TEST(ParseStringArgs_DashDashRun_ReturnsZenUnitArgsWithExpectedTestNameFilters)
    {
-      const unsigned randomSeed = _caller_GetSecondsSince1970RandomSeedIfNotAlreadySetByUserMock->CallConstMemberFunctionMock.ReturnRandom();
+      const unsigned short randomSeed =
+         _caller_GetSecondsSince1970RandomSeedIfNotSetByUserMock->CallConstMemberFunctionMock.ReturnRandom();
 
       const vector<TestNameFilter> testNameFilters = { Random<TestNameFilter>() };
       _testNameFilterStringParserMock->ParseTestNameFilterStringsMock.Return(testNameFilters);
@@ -200,8 +191,8 @@ namespace ZenUnit
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       const vector<string> splitRunArgument = String::Split(runArgument, ',');
       METALMOCK(_testNameFilterStringParserMock->ParseTestNameFilterStringsMock.CalledOnceWith(splitRunArgument));
-      AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
-      ZenUnitArgs expectedZenUnitArgs{};
+      AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(numeric_limits<unsigned short>::max());
+      ZenUnitArgs expectedZenUnitArgs;
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.testNameFilters = testNameFilters;
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
@@ -231,13 +222,13 @@ namespace ZenUnit
    void AssertArgSetsBoolField(const string& arg, bool ZenUnitArgs::* expectedFieldToBeSet)
    {
       _watchMock->DateTimeNowMock.ReturnRandom();
-      const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
+      const unsigned short randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotSetByUser();
       const vector<string> stringArgs { _testProgramPath, arg };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
+      AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(numeric_limits<unsigned short>::max());
       ZenUnitArgs expectedZenUnitArgs{};
       expectedZenUnitArgs.commandLine = _testProgramPath + " " + arg;
       (expectedZenUnitArgs.*expectedFieldToBeSet) = true;
@@ -248,13 +239,13 @@ namespace ZenUnit
    TEST(ParseStringArgs_ValidBoolArgSpecifiedTwice_ReturnsExpectedZenUnitArgs)
    {
       _watchMock->DateTimeNowMock.ReturnRandom();
-      const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
+      const unsigned short randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotSetByUser();
       const vector<string> stringArgs { _testProgramPath, "--always-exit-0", "--always-exit-0" };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
-      AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
+      AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(numeric_limits<unsigned short>::max());
       ZenUnitArgs expectedZenUnitArgs{};
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.alwaysExit0 = true;
@@ -302,7 +293,7 @@ namespace ZenUnit
    TEST(ParseStringArgs_TimesEqualsArg_ValidUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       _watchMock->DateTimeNowMock.ReturnRandom();
-      const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
+      const unsigned short randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotSetByUser();
       const int testRuns = _call_String_ToIntMock.ReturnRandom();
       const vector<string> stringArgs{ _testProgramPath, "--test-runs=" + to_string(testRuns) };
       //
@@ -310,7 +301,7 @@ namespace ZenUnit
       //
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       METALMOCK(_call_String_ToIntMock.CalledOnceWith(to_string(testRuns)));
-      AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(numeric_limits<unsigned>::max());
+      AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(numeric_limits<unsigned short>::max());
       ZenUnitArgs expectedZenUnitArgs{};
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.testRuns = testRuns;
@@ -321,19 +312,19 @@ namespace ZenUnit
    TEST(ParseStringArgs_RandomEqualsArg_ValidRandomUnsignedValue_ReturnsExpectedZenUnitArgs)
    {
       _watchMock->DateTimeNowMock.ReturnRandom();
-      const unsigned randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser();
-      const unsigned randomSeedToUnsignedReturnValue = _call_String_ToUnsignedMock.ReturnRandom();
+      const unsigned short randomSeed = ExpectCallToGetSecondsSince1970RandomSeedIfNotSetByUser();
+      const unsigned short randomSeedToUnsignedReturnValue = _call_String_ToUnsignedShortMock.ReturnRandom();
       const vector<string> stringArgs{ _testProgramPath, "--random-seed=" + to_string(randomSeed) };
       //
       const ZenUnitArgs zenUnitArgs = _argsParser.ParseStringArgs(stringArgs);
       //
-      METALMOCK(_call_String_ToUnsignedMock.CalledOnceWith(to_string(randomSeed)));
+      METALMOCK(_call_String_ToUnsignedShortMock.CalledOnceWith(to_string(randomSeed)));
       METALMOCK(_watchMock->DateTimeNowMock.CalledOnce());
       ZenUnitArgs expectedZenUnitArgs{};
       expectedZenUnitArgs.commandLine = VectorUtils::JoinWithSeparator(stringArgs, ' ');
       expectedZenUnitArgs.randomTestOrdering = false;
       expectedZenUnitArgs.globalRandomSeedSetByUser = true;
-      AssertCallToGetSecondsSince1970RandomSeedIfNotAlreadySetByUser(randomSeedToUnsignedReturnValue);
+      AssertCallToGetSecondsSince1970RandomSeedIfNotSetByUser(randomSeedToUnsignedReturnValue);
       ARE_EQUAL(expectedZenUnitArgs, zenUnitArgs);
       ARE_EQUAL(randomSeed, ZenUnit::globalZenUnitMode.randomSeed);
    }
@@ -354,23 +345,23 @@ namespace ZenUnit
       METALMOCK(_consoleMock->WriteLineAndExitMock.CalledOnceWith(ExpectedCommandLineUsage, 1));
    }
 
-   TEST(GetSecondsSince1970RandomSeedIfNotAlreadySetByUser_RandomSeedCommandLineArgumentIsNotUnsignedMaxValue_ReturnsRandomSeedPotentiallySetByUser)
+   TEST(GetSecondsSince1970RandomSeedIfNotSetByUser_RandomSeedCommandLineArgumentIsNotUnsignedMaxValue_ReturnsRandomSeedPotentiallySetByUser)
    {
-      const unsigned randomSeedCommandLineArgument = ZenUnit::RandomNotEqualTo<unsigned>(numeric_limits<unsigned>::max());
+      const unsigned short randomSeedCommandLineArgument = ZenUnit::RandomNotEqualTo<unsigned short>(numeric_limits<unsigned short>::max());
       //
-      const unsigned randomSeed = _argsParser.GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(randomSeedCommandLineArgument);
+      const unsigned short randomSeed = _argsParser.GetSecondsSince1970RandomSeedIfNotSetByUser(randomSeedCommandLineArgument);
       //
       ARE_EQUAL(randomSeedCommandLineArgument, randomSeed);
    }
 
-   TEST(GetSecondsSince1970RandomSeedIfNotAlreadySetByUser_RandomSeedCommandLineArgumentIsUnsignedMaxValue_ReturnsSecondsSince1970)
+   TEST(GetSecondsSince1970RandomSeedIfNotSetByUser_RandomSeedCommandLineArgumentIsUnsignedMaxValue_ReturnsSecondsSince1970)
    {
-      const unsigned secondsSince1970 = _watchMock->SecondsSince1970Mock.ReturnRandom();
-      constexpr unsigned randomSeedCommandLineArgument = numeric_limits<unsigned>::max();
+      const unsigned short secondsSince1970 = _watchMock->SecondsSince1970StaticCastToUnsignedShortMock.ReturnRandom();
+      constexpr unsigned short randomSeedCommandLineArgument = numeric_limits<unsigned short>::max();
       //
-      const unsigned randomSeed = _argsParser.GetSecondsSince1970RandomSeedIfNotAlreadySetByUser(randomSeedCommandLineArgument);
+      const unsigned short randomSeed = _argsParser.GetSecondsSince1970RandomSeedIfNotSetByUser(randomSeedCommandLineArgument);
       //
-      METALMOCK(_watchMock->SecondsSince1970Mock.CalledOnce());
+      METALMOCK(_watchMock->SecondsSince1970StaticCastToUnsignedShortMock.CalledOnce());
       ARE_EQUAL(secondsSince1970, randomSeed);
    }
 

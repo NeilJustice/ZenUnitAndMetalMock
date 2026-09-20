@@ -282,11 +282,11 @@ namespace ZenUnit
 
    TEST(SetNextGlobalZenUnitModeRandomSeed_RandomSeedSetByUserIsFalse_SetsGlobalZenUnitModeRandomSeedToSecondsSince1970)
    {
-      const unsigned secondSince1970 = _watchMock->SecondsSince1970Mock.ReturnRandom();
+      const unsigned secondSince1970 = _watchMock->SecondsSince1970StaticCastToUnsignedShortMock.ReturnRandom();
       //
       _zenUnitTestRunner.SetNextGlobalZenUnitModeRandomSeed(false);
       //
-      METALMOCK(_watchMock->SecondsSince1970Mock.CalledOnce());
+      METALMOCK(_watchMock->SecondsSince1970StaticCastToUnsignedShortMock.CalledOnce());
       ARE_EQUAL(secondSince1970, globalZenUnitMode.randomSeed);
    }
 

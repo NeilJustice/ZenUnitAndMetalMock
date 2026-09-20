@@ -5,9 +5,9 @@ namespace ZenUnit
    TESTS(StopwatchTests)
    AFACT(Constructor_SetsNowFunctionToHighResolutionClockNow)
    AFACT(Start_SetsStartTimeToNow)
-   AFACT(StopAndGetElapsedMicroseconds_StartNotPreviouslyCalled_Returns0)
-   AFACT(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
-   FACTS(StopAndGetElapsedSeconds_StartPreviouslyCalled_SetsStartTimeBackToDefault_ReturnsElapsedSecondsWithMillisecondResolution)
+   AFACT(StopAndGetElapsedMilliseconds_StartNotPreviouslyCalled_Returns0)
+   AFACT(StopAndGetElapsedMilliseconds_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
+   FACTS(StopAndGetElapsedSecondsString_StartPreviouslyCalled_SetsStartTimeToDefaultValue_ReturnsElapsedSecondsString)
    EVIDENCE
 
    Stopwatch _stopwatch;
@@ -36,57 +36,42 @@ namespace ZenUnit
       ARE_EQUAL(nonDefaultTimePoint, _stopwatch._startTime);
    }
 
-   TEST(StopAndGetElapsedMicroseconds_StartNotPreviouslyCalled_Returns0)
+   TEST(StopAndGetElapsedMilliseconds_StartNotPreviouslyCalled_Returns0)
    {
-      IS_ZERO(_stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
-      IS_ZERO(_stopwatch.GetElapsedMicrosecondsThenResetStopwatch());
+      IS_ZERO(_stopwatch.GetElapsedMillisecondsThenResetStopwatch());
+      IS_ZERO(_stopwatch.GetElapsedMillisecondsThenResetStopwatch());
    }
 
-   TEST(StopAndGetElapsedMicroseconds_StartPreviouslyCalled_ReturnsElapsedMicroseconds)
+   TEST(StopAndGetElapsedMilliseconds_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
    {
       chrono::time_point<chrono::high_resolution_clock> startDateTime;
       startDateTime += chrono::milliseconds(RandomNon0<unsigned>());
-      const unsigned randomMicrosecondDuration = RandomNon0<unsigned>();
-      const chrono::time_point<chrono::high_resolution_clock> stopTime = startDateTime + chrono::microseconds(randomMicrosecondDuration);
+      const unsigned short randomMilliseconds = RandomNon0<unsigned short>();
+      const chrono::time_point<chrono::high_resolution_clock> stopTime = startDateTime + chrono::milliseconds(randomMilliseconds);
       _call_high_resolution_clock_nowMock.Return(stopTime);
       _stopwatch._startTime = startDateTime;
       //
-      const long long elapsedMicroseconds = _stopwatch.GetElapsedMicrosecondsThenResetStopwatch();
+      const unsigned short elapsedMilliseconds = _stopwatch.GetElapsedMillisecondsThenResetStopwatch();
       //
       METALMOCK(_call_high_resolution_clock_nowMock.CalledOnce());
-      ARE_EQUAL(randomMicrosecondDuration, elapsedMicroseconds);
+      ARE_EQUAL(randomMilliseconds, elapsedMilliseconds);
    }
 
-   TEST2X2(StopAndGetElapsedSeconds_StartPreviouslyCalled_SetsStartTimeBackToDefault_ReturnsElapsedSecondsWithMillisecondResolution,
-      long long elapsedMilliseconds, const string& expectedReturnValue,
-      0, "0.000",
-      1, "0.001",
-      9, "0.009",
-      10, "0.010",
-      11, "0.011",
-      99, "0.099",
-      100, "0.100",
-      101, "0.101",
-      999, "0.999",
-      1000, "1.000",
-      1001, "1.001",
-      1099, "1.099",
-      1100, "1.100",
-      1101, "1.101",
-      1999, "1.999",
-      10000, "10.000",
-      100000, "100.000",
-      1234567, "1234.567")
+   TEST2X2(StopAndGetElapsedSecondsString_StartPreviouslyCalled_SetsStartTimeToDefaultValue_ReturnsElapsedSecondsString,
+      unsigned short elapsedMilliseconds, const string& expectedReturnValue,
+      static_cast<unsigned short>(0), "0.000",
+      static_cast<unsigned short>(1), "0.001",
+      static_cast<unsigned short>(1234), "1.234",
+      numeric_limits<unsigned short>::max(), "65.535")
    {
       chrono::time_point<chrono::high_resolution_clock> startTime;
-      const int random1To3MicrosecondOffsetFromDefaultStartTimeValue = ZenUnit::RandomBetween<int>(1, 3);
-      startTime += chrono::microseconds(random1To3MicrosecondOffsetFromDefaultStartTimeValue);
+      const int random1To3MillisecondOffsetFromDefaultStartTimeValue = ZenUnit::RandomBetween<int>(1, 3);
+      startTime += chrono::milliseconds(random1To3MillisecondOffsetFromDefaultStartTimeValue);
       _stopwatch._startTime = startTime;
 
-      const long long elapsedMicroseconds = elapsedMilliseconds * 1000;
       const chrono::time_point<chrono::high_resolution_clock>
-         stopTimeThatIsElapsedMicrosecondsAheadOfStartTime = startTime + chrono::microseconds(elapsedMicroseconds);
-      _call_high_resolution_clock_nowMock.Return(stopTimeThatIsElapsedMicrosecondsAheadOfStartTime);
+         stopTimeThatIsElapsedMillisecondsAheadOfStartTime = startTime + chrono::milliseconds(elapsedMilliseconds);
+      _call_high_resolution_clock_nowMock.Return(stopTimeThatIsElapsedMillisecondsAheadOfStartTime);
       //
       const string elapsedSeconds = _stopwatch.StopAndGetElapsedSeconds();
       //

@@ -23,7 +23,7 @@ namespace ZenUnit
    TESTS(WatchTests)
    FACTS(DateTimeNow_ReturnsLocalDateTimeNow)
    AFACT(TimeZone_ReturnTimeZoneOfExecutingProcess)
-   FACTS(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces)
+   FACTS(MillisecondsToBracketedMillisecondsString_DoesSo)
    EVIDENCE
 
    class WatchSelfMocked : public Metal::Mock<ZenUnit::Watch>
@@ -87,27 +87,15 @@ namespace ZenUnit
       ARE_EQUAL(expectedTimeZone, timeZone);
    }
 
-   TEST2X2(MicrosecondsToTwoDecimalPlaceMillisecondsString_ReturnsMicrosecondsAsMillisecondsRoundedToThreePlaces,
-      unsigned microseconds, const string& expectedReturnValue,
-      0U, "[0.00ms]",
-      1U, "[0.00ms]",
-      2U, "[0.00ms]",
-      10U, "[0.01ms]",
-      12U, "[0.01ms]",
-      100U, "[0.10ms]",
-      120U, "[0.12ms]",
-      123U, "[0.12ms]",
-      1000U, "[1.00ms]",
-      1234U, "[1.23ms]",
-      12345U, "[12.35ms]",
-      123456U, "[123.46ms]",
-      1234567U, "[1234.57ms]",
-      12345678U, "[12345.68ms]",
-      123456789U, "[123456.79ms]",
-      1234567890U, "[1234567.89ms]")
+   TEST2X2(MillisecondsToBracketedMillisecondsString_DoesSo,
+      unsigned short milliseconds, const string& expectedReturnValue,
+      static_cast<unsigned short>(0), "[0ms]",
+      static_cast<unsigned short>(1), "[1ms]",
+      static_cast<unsigned short>(2), "[2ms]",
+      numeric_limits<unsigned short>::max(), "[65535ms]")
    {
-      const string twoDecimalPlaceMillisecondsString = Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString(microseconds);
-      ARE_EQUAL(expectedReturnValue, twoDecimalPlaceMillisecondsString);
+      const string bracketedMillisecondsString = Watch::MillisecondsToBracketedMillisecondsString(milliseconds);
+      ARE_EQUAL(expectedReturnValue, bracketedMillisecondsString);
    }
 
    RUN_TESTS(WatchTests)

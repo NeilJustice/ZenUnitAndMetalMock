@@ -23,7 +23,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, testRuns, ZenUnit::RandomNon0<int>());
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, randomTestOrdering, true);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, globalRandomSeedSetByUser, true);
-      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, ZenUnit::RandomNon0<unsigned>());
+      ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(ZenUnitArgs, maxTestMilliseconds, ZenUnit::RandomNon0<unsigned short>());
    }
 
    TEST(TestableRandomZenUnitArgs_ReturnsZenUnitArgsWithAllRandomFields)
@@ -45,18 +45,26 @@ namespace ZenUnit
       const bool randomTestOrdering = ZenUnit::Random<bool>();
       const bool globalRandomSeedSetByUser = ZenUnit::Random<bool>();
       randomGeneratorMock.BoolMock.ReturnValues(
-         pauseBefore, pauseAfter, alwaysExit0, failFast, exit1IfTestsSkipped, randomTestOrdering, globalRandomSeedSetByUser);
+         pauseBefore,
+         pauseAfter,
+         alwaysExit0,
+         failFast,
+         exit1IfTestsSkipped,
+         randomTestOrdering,
+         globalRandomSeedSetByUser);
 
       const int testRuns = randomGeneratorMock.IntMock.ReturnRandom();
 
-      const unsigned maxTestMilliseconds = randomGeneratorMock.UnsignedMock.ReturnRandom();
+      const unsigned short maxTestMilliseconds = randomGeneratorMock.UnsignedShortMock.ReturnRandom();
       //
-      const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(&randomGeneratorMock, &zenUnitTestingRandomGeneratorMock);
+      const ZenUnitArgs randomZenUnitArgs = TestableRandomZenUnitArgs(
+         &randomGeneratorMock,
+         &zenUnitTestingRandomGeneratorMock);
       //
       METALMOCK(randomGeneratorMock.StringMock.CalledNTimes(2));
       METALMOCK(randomGeneratorMock.BoolMock.CalledNTimes(7));
       METALMOCK(randomGeneratorMock.IntMock.CalledOnce());
-      METALMOCK(randomGeneratorMock.UnsignedMock.CalledOnce());
+      METALMOCK(randomGeneratorMock.UnsignedShortMock.CalledOnce());
       METALMOCK(zenUnitTestingRandomGeneratorMock.RandomTestNameFiltersVectorMock.CalledOnce());
       ZenUnitArgs expectedRandomZenUnitArgs;
       expectedRandomZenUnitArgs.startDateTime = startDateTime;

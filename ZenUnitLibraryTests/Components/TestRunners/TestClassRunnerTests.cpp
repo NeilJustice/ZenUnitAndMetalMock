@@ -5,7 +5,6 @@
 namespace ZenUnit
 {
    TESTS(TestClassRunnerTests)
-   AFACT(DefaultConstructor_NewsConsoleAndNewArgMemberAnyer)
    AFACT(TestClassName_ReturnNullptr)
    AFACT(NumberOfTestCases_Returns0)
    AFACT(HasTestThatMatchesTestNameFilter_ReturnsFalse)
@@ -15,15 +14,6 @@ namespace ZenUnit
    EVIDENCE
 
    TestClassRunner _testClassRunner;
-
-   TEST(DefaultConstructor_NewsConsoleAndNewArgMemberAnyer)
-   {
-      TestClassRunner testClassRunner;
-      // Function Callers
-      DELETE_TO_ASSERT_NEWED(testClassRunner.p_twoArgMemberAnyer);
-      // Constant Components
-      DELETE_TO_ASSERT_NEWED(testClassRunner.p_console);
-   }
 
    TEST(TestClassName_ReturnNullptr)
    {

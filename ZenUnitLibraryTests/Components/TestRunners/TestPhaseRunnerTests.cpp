@@ -6,7 +6,6 @@
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/WatchMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/ZenUnitArgsEqualizerAndRandom.h"
 
 namespace ZenUnit
 {
@@ -40,7 +39,7 @@ namespace ZenUnit
    // Test-Only Component
    unique_ptr<TestMock> _testMock;
 
-   const unsigned _elapsedMicroseconds = ZenUnit::Random<unsigned>();
+   const unsigned short _elapsedMilliseconds = ZenUnit::Random<unsigned short>();
    const string _testPhaseSuffix = ZenUnit::Random<string>();
 
    static int s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException;
@@ -91,13 +90,13 @@ namespace ZenUnit
    void ExpectStopwatchStartAndStopCalls()
    {
       _testPhaseStopwatchMock->StartMock.Expect();
-      _testPhaseStopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.Return(_elapsedMicroseconds);
+      _testPhaseStopwatchMock->GetElapsedMillisecondsThenResetStopwatchMock.Return(_elapsedMilliseconds);
    }
 
    void AssertStopwatchStartAndStopCalled()
    {
       METALMOCK(_testPhaseStopwatchMock->StartMock.CalledOnce());
-      METALMOCK(_testPhaseStopwatchMock->GetElapsedMicrosecondsThenResetStopwatchMock.CalledOnce());
+      METALMOCK(_testPhaseStopwatchMock->GetElapsedMillisecondsThenResetStopwatchMock.CalledOnce());
    }
 
    static void FunctionThatDoesNotThrowAnException(Test* test)
@@ -128,7 +127,7 @@ namespace ZenUnit
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::Startup;
       expectedTestPhaseResult.testOutcome = TestOutcome::Success;
-      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
+      expectedTestPhaseResult.elapsedMilliseconds = _elapsedMilliseconds;
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -161,7 +160,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult{};
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
-      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
+      expectedTestPhaseResult.elapsedMilliseconds = _elapsedMilliseconds;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(s_anomaly);
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
 
@@ -221,7 +220,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = testPhase;
-      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
+      expectedTestPhaseResult.elapsedMilliseconds = _elapsedMilliseconds;
       expectedTestPhaseResult.testOutcome = TestOutcome::Anomaly;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(s_anomaly);
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
@@ -259,7 +258,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::TestBody;
-      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
+      expectedTestPhaseResult.elapsedMilliseconds = _elapsedMilliseconds;
       expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<runtime_error>(), s_stdExceptionMessage.c_str());
@@ -316,7 +315,7 @@ namespace ZenUnit
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = testPhase;
-      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
+      expectedTestPhaseResult.elapsedMilliseconds = _elapsedMilliseconds;
       expectedTestPhaseResult.testOutcome = TestOutcome::Exception;
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<runtime_error>(), s_stdExceptionMessage.c_str());
@@ -377,7 +376,7 @@ namespace ZenUnit
       expectedTestPhaseResult.anomalyOrException = make_shared<AnomalyOrException>(
          Type::GetName<MetalMock::UnexpectedCallException>(),
          MetalMock::UnexpectedCallException::MakeExceptionMessage("MetalMockedFunctionSignature").c_str());
-      expectedTestPhaseResult.elapsedMicroseconds = _elapsedMicroseconds;
+      expectedTestPhaseResult.elapsedMilliseconds = _elapsedMilliseconds;
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }
 
@@ -415,10 +414,13 @@ namespace ZenUnit
 
       const TestPhase testPhase = ZenUnit::RandomEnum<TestPhase>();
 
-      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      const unsigned short globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned short>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
-      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(ThrowInt, _testMock.get(), testPhase);
+      const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(
+         ThrowInt,
+         _testMock.get(),
+         testPhase);
       //
       ZenUnitTestRunner* const zenUnitTestRunner = ZenUnit::ZenUnitTestRunner::Instance();
       const std::string testRunNumberLine = String::ConcatValues(
@@ -486,7 +488,7 @@ namespace ZenUnit
       zenUnitArgs.failFast = true;
       zenUnitArgs.alwaysExit0 = alwaysExit0;
 
-      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      const unsigned short globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned short>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       //
       _testPhaseRunner.FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(testOutcome, zenUnitArgs);

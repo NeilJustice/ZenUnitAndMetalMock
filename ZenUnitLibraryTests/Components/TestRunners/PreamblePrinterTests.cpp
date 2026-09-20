@@ -7,28 +7,21 @@
 namespace ZenUnit
 {
    TESTS(PreamblePrinterTests)
-   AFACT(DefaultConstructor_NewsComponents)
    AFACT(PrintPreambleLines_PrintsPreambleLines_ReturnsStartDateTime)
    EVIDENCE
 
    PreamblePrinter _preamblePrinter;
+   // Constant Components
    const ConsoleMock* _consoleMock = nullptr;
    const EnvironmentServiceMock* _environmentServiceMock = nullptr;
    const WatchMock* _watchMock = nullptr;
 
    STARTUP
    {
+      // Constant Components
       _preamblePrinter._console.reset(_consoleMock = new ConsoleMock);
       _preamblePrinter._environmentService.reset(_environmentServiceMock = new EnvironmentServiceMock);
       _preamblePrinter._watch.reset(_watchMock = new WatchMock);
-   }
-
-   TEST(DefaultConstructor_NewsComponents)
-   {
-      PreamblePrinter preamblePrinter;
-      DELETE_TO_ASSERT_NEWED(preamblePrinter._console);
-      DELETE_TO_ASSERT_NEWED(preamblePrinter._environmentService);
-      DELETE_TO_ASSERT_NEWED(preamblePrinter._watch);
    }
 
    TEST(PrintPreambleLines_PrintsPreambleLines_ReturnsStartDateTime)
@@ -49,7 +42,7 @@ namespace ZenUnit
       [[maybe_unused]] const size_t numberOfTestClassesToBeRun = testClassRunnerRunnerMock.NumberOfTestClassesToBeRunMock.ReturnRandom();
 
       const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
-      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      const unsigned short globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned short>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       const size_t testRunIndex = ZenUnit::RandomBetween<size_t>(0, 3);
       //

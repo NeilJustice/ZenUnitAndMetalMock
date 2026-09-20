@@ -22,8 +22,8 @@ namespace ZenUnit
    FACTS(PrintTestClassResultLine_1OrMoreFailedTests_WritesFailedInRed)
    AFACT(PrintTestResultIfFailure_CallsTestResultPrintIfFailure)
    AFACT(ReserveVectorCapacityForNumberOfTestResults_ReservesTestResultsVector)
-   AFACT(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
-   AFACT(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
+   AFACT(SumOfTestResultMilliseconds_EmptyTestResultsVector_Returns0)
+   AFACT(SumOfTestResultMilliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
    EVIDENCE
 
    TestClassResult _testClassResult;
@@ -32,22 +32,22 @@ namespace ZenUnit
    {
    public:
       METALMOCK_NONVOID0_CONST(size_t, NumberOfFailedTestCases)
-      METALMOCK_NONVOID0_CONST(unsigned, SumOfTestResultMicroseconds)
+      METALMOCK_NONVOID0_CONST(unsigned short, SumOfTestResultMilliseconds)
    } _testClassResultSelfMocked;
 
-   METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString, unsigned)
+   METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MillisecondsToBracketedMillisecondsString, unsigned short)
 
    STARTUP
    {
-      _testClassResultSelfMocked._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString
-         = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock);
+      _testClassResultSelfMocked._call_Watch_MillisecondsToBracketedMillisecondsString
+         = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MillisecondsToBracketedMillisecondsStringMock);
    }
 
    TEST(DefaultConstructor_SetsWatchFunction)
    {
       TestClassResult testClassResult;
-      STD_FUNCTION_TARGETS(Watch::MicrosecondsToTwoDecimalPlaceMillisecondsString,
-         testClassResult._call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsString);
+      STD_FUNCTION_TARGETS(Watch::MillisecondsToBracketedMillisecondsString,
+         testClassResult._call_Watch_MillisecondsToBracketedMillisecondsString);
    }
 
    TEST(CopyConstructor_CopiesForEacherAndTestResults)
@@ -194,9 +194,9 @@ namespace ZenUnit
    TEST(PrintTestClassResultLine_0FailedTestCases_WritesOKInGreen)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(0ull);
-      const unsigned sumOfTestResultMicroseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
+      const unsigned short sumOfTestResultMilliseconds = _testClassResultSelfMocked.SumOfTestResultMillisecondsMock.ReturnRandom();
 
-      const string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+      const string twoDecimalPlaceMillisecondsString = _call_Watch_MillisecondsToBracketedMillisecondsStringMock.ReturnRandom();
 
       ConsoleMock consoleMock;
       consoleMock.WriteMock.Expect();
@@ -208,8 +208,8 @@ namespace ZenUnit
       const std::string expected_closingBracket_milliseconds_newline = String::ConcatStrings(
          "  ] ", twoDecimalPlaceMillisecondsString, "\n");
       METALMOCK(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
-      METALMOCK(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
-      METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(sumOfTestResultMicroseconds));
+      METALMOCK(_testClassResultSelfMocked.SumOfTestResultMillisecondsMock.CalledOnce());
+      METALMOCK(_call_Watch_MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(sumOfTestResultMilliseconds));
       METALMOCK(consoleMock.WriteMock.CalledOnceWith("[  "));
       METALMOCK(consoleMock.WriteColorMock.CalledOnceWith("OK", Color::Green));
       METALMOCK(consoleMock.WriteLineMock.CalledOnceWith(expected_closingBracket_milliseconds_newline));
@@ -222,9 +222,9 @@ namespace ZenUnit
       3ULL)
    {
       _testClassResultSelfMocked.NumberOfFailedTestCasesMock.Return(numberOfFailedTestCases);
-      const unsigned microseconds = _testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.ReturnRandom();
+      const unsigned short milliseconds = _testClassResultSelfMocked.SumOfTestResultMillisecondsMock.ReturnRandom();
 
-      const string twoDecimalPlaceMillisecondsString = _call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
+      const string bracketedMillisecondsString = _call_Watch_MillisecondsToBracketedMillisecondsStringMock.ReturnRandom();
 
       ConsoleMock consoleMock;
       consoleMock.WriteLineColorMock.Expect();
@@ -232,10 +232,10 @@ namespace ZenUnit
       _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
       //
       const std::string expected_testClassFailed_milliseconds_newline = String::ConcatStrings(
-         "[TestClass Failed] ", twoDecimalPlaceMillisecondsString, "\n");
+         "[TestClass Failed] ", bracketedMillisecondsString, "\n");
       METALMOCK(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce());
-      METALMOCK(_testClassResultSelfMocked.SumOfTestResultMicrosecondsMock.CalledOnce());
-      METALMOCK(_call_Watch_MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(microseconds));
+      METALMOCK(_testClassResultSelfMocked.SumOfTestResultMillisecondsMock.CalledOnce());
+      METALMOCK(_call_Watch_MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(milliseconds));
       METALMOCK(consoleMock.WriteLineColorMock.CalledOnceWith(expected_testClassFailed_milliseconds_newline, Color::Red));
    }
 
@@ -261,28 +261,28 @@ namespace ZenUnit
       ARE_EQUAL(numberOfTestResults, _testClassResult._testResults.capacity());
    }
 
-   TEST(SumOfTestResultMicroseconds_EmptyTestResultsVector_Returns0)
+   TEST(SumOfTestResultMilliseconds_EmptyTestResultsVector_Returns0)
    {
       IS_ZERO(_testClassResult._testResults.size());
       //
-      const unsigned microseconds = _testClassResult.SumOfTestResultMicroseconds();
+      const unsigned short sumOfTestResultMilliseconds = _testClassResult.SumOfTestResultMilliseconds();
       //
-      IS_ZERO(microseconds);
+      IS_ZERO(sumOfTestResultMilliseconds);
    }
 
-   TEST(SumOfTestResultMicroseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMicroseconds)
+   TEST(SumOfTestResultMilliseconds_NonEmptyTestResultsVector_ReturnsSumOfTestResultMilliseconds)
    {
       TestResult testResultA;
-      testResultA.elapsedMicroseconds = ZenUnit::RandomBetween<unsigned>(0, 100);
+      testResultA.elapsedMilliseconds = ZenUnit::RandomBetween<unsigned short>(0, 100);
 
       TestResult testResultB;
-      testResultB.elapsedMicroseconds = ZenUnit::RandomBetween<unsigned>(0, 1000);
+      testResultB.elapsedMilliseconds = ZenUnit::RandomBetween<unsigned short>(0, 1000);
 
       _testClassResult._testResults = { testResultA, testResultB };
       //
-      const unsigned elapsedMicroseconds = _testClassResult.SumOfTestResultMicroseconds();
+      const unsigned short elapsedMilliseconds = _testClassResult.SumOfTestResultMilliseconds();
       //
-      ARE_EQUAL(testResultA.elapsedMicroseconds + testResultB.elapsedMicroseconds, elapsedMicroseconds);
+      ARE_EQUAL(testResultA.elapsedMilliseconds + testResultB.elapsedMilliseconds, elapsedMilliseconds);
    }
 
    RUN_TESTS(TestClassResultTests)

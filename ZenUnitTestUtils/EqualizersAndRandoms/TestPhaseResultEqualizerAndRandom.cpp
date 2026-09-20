@@ -9,7 +9,7 @@ namespace ZenUnit
    {
       FIELDS_ARE_EQUAL(expectedTestPhaseResult, actualTestPhaseResult, testPhase);
       FIELDS_ARE_EQUAL(expectedTestPhaseResult, actualTestPhaseResult, testOutcome);
-      FIELDS_ARE_EQUAL(expectedTestPhaseResult, actualTestPhaseResult, elapsedMicroseconds);
+      FIELDS_ARE_EQUAL(expectedTestPhaseResult, actualTestPhaseResult, elapsedMilliseconds);
       POINTEES_ARE_EQUAL(expectedTestPhaseResult.anomalyOrException, actualTestPhaseResult.anomalyOrException);
    }
 
@@ -18,7 +18,7 @@ namespace ZenUnit
       TestPhaseResult randomTestPhaseResult;
       randomTestPhaseResult.testPhase = static_cast<TestPhase>(randomGenerator->Enum(static_cast<int>(TestPhase::MaxValue)));
       randomTestPhaseResult.testOutcome = static_cast<TestOutcome>(randomGenerator->Enum(static_cast<int>(TestOutcome::MaxValue)));
-      randomTestPhaseResult.elapsedMicroseconds = randomGenerator->Unsigned();
+      randomTestPhaseResult.elapsedMilliseconds = randomGenerator->UnsignedShort();
       randomTestPhaseResult.anomalyOrException = nullptr;
       return randomTestPhaseResult;
    }

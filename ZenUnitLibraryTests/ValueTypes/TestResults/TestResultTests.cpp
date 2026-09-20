@@ -30,7 +30,7 @@ namespace ZenUnit
    TestPhaseResult DestructorTestPhaseResult;
    const FullTestName FullTestNameValue = FullTestName("ClassName", "TestClassName", ZenUnit::Random<unsigned char>());
 
-   const unsigned MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
+   const unsigned short MaxTestMilliseconds = 1 + 2 + 3 + 4 + 5;
 
    class TestResult_WriteTestCaseNumberIfAnyMocked : public Metal::Mock<TestResult>
    {
@@ -42,11 +42,11 @@ namespace ZenUnit
    {
       // Testing Fields
       ConstructorTestPhaseResult = TestPhaseResult(TestPhase::Constructor);
-      ConstructorTestPhaseResult.elapsedMicroseconds = 1000;
+      ConstructorTestPhaseResult.elapsedMilliseconds = 1;
       StartupTestPhaseResult = TestPhaseResult(TestPhase::Startup);
-      StartupTestPhaseResult.elapsedMicroseconds = 2000;
+      StartupTestPhaseResult.elapsedMilliseconds = 2;
       DestructorTestPhaseResult = TestPhaseResult(TestPhase::Destructor);
-      DestructorTestPhaseResult.elapsedMicroseconds = 3000;
+      DestructorTestPhaseResult.elapsedMilliseconds = 3;
       _testResult.fullTestName = FullTestNameValue;
    }
 
@@ -64,20 +64,20 @@ namespace ZenUnit
       expectedDefaultTestResult.testOutcome = TestOutcome::Unset;
       expectedDefaultTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedDefaultTestResult.totalTestCases = 0;
-      expectedDefaultTestResult.elapsedMicroseconds = 0;
+      expectedDefaultTestResult.elapsedMilliseconds = 0;
       ARE_EQUAL(expectedDefaultTestResult, defaultTestResult);
    }
 
    TEST6X6(SixArgConstructor_DoesSo,
       TestOutcome testBodyOutcome,
       TestOutcome cleanupOutcome,
-      unsigned maxTestMilliseconds,
-      int relativeMicroseconds,
+      unsigned short maxTestMilliseconds,
+      int relativeMilliseconds,
       TestOutcome expectedOverallOutcome,
       TestPhaseResult TestResult::* expectedResponsibleTestPhaseResultField,
 
-      TestOutcome::Success, TestOutcome::Success, 0u, 0, TestOutcome::Success, nullptr,
-      TestOutcome::Success, TestOutcome::Success, 0u, 1, TestOutcome::Success, nullptr,
+      TestOutcome::Success, TestOutcome::Success, static_cast<unsigned short>(0), 0, TestOutcome::Success, nullptr,
+      TestOutcome::Success, TestOutcome::Success, static_cast<unsigned short>(0), 1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, -1, TestOutcome::Success, nullptr,
       TestOutcome::Success, TestOutcome::Success, MaxTestMilliseconds, 0, TestOutcome::Success, nullptr,
 
@@ -97,10 +97,10 @@ namespace ZenUnit
    {
       TestPhaseResult testBodyTestPhaseResult(TestPhase::TestBody);
       testBodyTestPhaseResult.testOutcome = testBodyOutcome;
-      testBodyTestPhaseResult.elapsedMicroseconds = 4000;
+      testBodyTestPhaseResult.elapsedMilliseconds = 4;
       TestPhaseResult cleanupTestPhaseResult(TestPhase::Cleanup);
       cleanupTestPhaseResult.testOutcome = cleanupOutcome;
-      cleanupTestPhaseResult.elapsedMicroseconds = static_cast<unsigned>(5000 + relativeMicroseconds);
+      cleanupTestPhaseResult.elapsedMilliseconds = static_cast<unsigned short>(5 + relativeMilliseconds);
 
       METALMOCK_NONVOID0_STATIC_OR_FREE(const ZenUnitArgs&, _call_ZenUnitArgs_GetArgs)
 
@@ -136,7 +136,7 @@ namespace ZenUnit
       expectedTestResult.testOutcome = expectedOverallOutcome;
       expectedTestResult.testCaseNumber = numeric_limits<size_t>::max();
       expectedTestResult.totalTestCases = 0;
-      expectedTestResult.elapsedMicroseconds = static_cast<unsigned>(static_cast<int>(MaxTestMilliseconds) * 1000 + relativeMicroseconds);
+      expectedTestResult.elapsedMilliseconds = static_cast<unsigned short>(MaxTestMilliseconds + relativeMilliseconds);
       ARE_EQUAL(expectedTestResult, testResult);
    }
 
@@ -154,7 +154,7 @@ namespace ZenUnit
       expectedTestResult.constructorTestPhaseResult = ConstructorTestPhaseResult;
       expectedTestResult.responsibleTestPhaseResultField = &TestResult::constructorTestPhaseResult;
       expectedTestResult.testOutcome = expectedTestResultOutcome;
-      expectedTestResult.elapsedMicroseconds = ConstructorTestPhaseResult.elapsedMicroseconds;
+      expectedTestResult.elapsedMilliseconds = ConstructorTestPhaseResult.elapsedMilliseconds;
       ARE_EQUAL(expectedTestResult, constructorFailTestResult);
    }
 
@@ -166,7 +166,10 @@ namespace ZenUnit
       StartupTestPhaseResult.testOutcome = startupOutcome;
       //
       const TestResult startupFailTestResult = TestResult::StartupFail(
-         FullTestNameValue, ConstructorTestPhaseResult, StartupTestPhaseResult, DestructorTestPhaseResult);
+         FullTestNameValue,
+         ConstructorTestPhaseResult,
+         StartupTestPhaseResult,
+         DestructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
@@ -175,28 +178,33 @@ namespace ZenUnit
       expectedTestResult.destructorTestPhaseResult = DestructorTestPhaseResult;
       expectedTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
       expectedTestResult.testOutcome = expectedTestResultOutcome;
-      expectedTestResult.elapsedMicroseconds =
-         ConstructorTestPhaseResult.elapsedMicroseconds +
-         StartupTestPhaseResult.elapsedMicroseconds +
-         DestructorTestPhaseResult.elapsedMicroseconds;
+      expectedTestResult.elapsedMilliseconds = static_cast<unsigned short>(
+         ConstructorTestPhaseResult.elapsedMilliseconds +
+         StartupTestPhaseResult.elapsedMilliseconds +
+         DestructorTestPhaseResult.elapsedMilliseconds);
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
    TEST(ConstructorDestructorSuccess_ReturnsExpectedTestResult)
    {
       TestPhaseResult constructorTestPhaseResult(TestPhase::Constructor);
-      constructorTestPhaseResult.elapsedMicroseconds = 10;
+      constructorTestPhaseResult.elapsedMilliseconds = 10;
       TestPhaseResult destructorTestPhaseResult(TestPhase::Destructor);
-      destructorTestPhaseResult.elapsedMicroseconds = 20;
+      destructorTestPhaseResult.elapsedMilliseconds = 20;
       //
-      const TestResult testResult = TestResult::ConstructorDestructorSuccess(FullTestNameValue, constructorTestPhaseResult, destructorTestPhaseResult);
+      const TestResult testResult = TestResult::ConstructorDestructorSuccess(
+         FullTestNameValue,
+         constructorTestPhaseResult,
+         destructorTestPhaseResult);
       //
       TestResult expectedTestResult;
       expectedTestResult.fullTestName = FullTestNameValue;
       expectedTestResult.testOutcome = TestOutcome::Success;
       expectedTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
       expectedTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-      expectedTestResult.elapsedMicroseconds = constructorTestPhaseResult.elapsedMicroseconds + destructorTestPhaseResult.elapsedMicroseconds;
+      expectedTestResult.elapsedMilliseconds = static_cast<unsigned short>(
+         constructorTestPhaseResult.elapsedMilliseconds +
+         destructorTestPhaseResult.elapsedMilliseconds);
       expectedTestResult.responsibleTestPhaseResultField = nullptr;
       ARE_EQUAL(expectedTestResult, testResult);
    }
@@ -206,14 +214,14 @@ namespace ZenUnit
       _testResult.testOutcome = TestOutcome::Success;
       _consoleMock.WriteColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
-      const string twoDecimalPlaceMillisecondsString = _consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
-      const unsigned elapsedMicroseconds = ZenUnit::Random<unsigned>();
-      _testResult.elapsedMicroseconds = elapsedMicroseconds;
+      const string twoDecimalPlaceMillisecondsString = _consoleMock.MillisecondsToBracketedMillisecondsStringMock.ReturnRandom();
+      const unsigned short elapsedMilliseconds = ZenUnit::Random<unsigned short>();
+      _testResult.elapsedMilliseconds = elapsedMilliseconds;
       //
       _testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(&_consoleMock);
       //
       METALMOCKTHEN(_consoleMock.WriteColorMock.CalledOnceWith("OK ", Color::Green)).Then(
-      METALMOCKTHEN(_consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(elapsedMicroseconds))).Then(
+      METALMOCKTHEN(_consoleMock.MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(elapsedMilliseconds))).Then(
       METALMOCKTHEN(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString)));
    }
 
@@ -222,15 +230,15 @@ namespace ZenUnit
       _testResult.testOutcome = TestOutcome::SuccessButPastDeadline;
       _consoleMock.WriteColorMock.Expect();
       _consoleMock.WriteLineMock.Expect();
-      const string twoDecimalPlaceMillisecondsString = _consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.ReturnRandom();
-      const unsigned elapsedMicroseconds = ZenUnit::Random<unsigned>();
-      _testResult.elapsedMicroseconds = elapsedMicroseconds;
+      const string twoDecimalPlaceMillisecondsString = _consoleMock.MillisecondsToBracketedMillisecondsStringMock.ReturnRandom();
+      const unsigned short elapsedMilliseconds = ZenUnit::Random<unsigned short>();
+      _testResult.elapsedMilliseconds = elapsedMilliseconds;
       //
       _testResult.WriteLineOKIfSuccessOrSuccessButPastDeadline(&_consoleMock);
       //
       METALMOCKTHEN(_consoleMock.WriteColorMock.CalledWith("OK ", Color::Green)).Then(
       METALMOCKTHEN(_consoleMock.WriteColorMock.CalledWith("but took longer than --max-test-milliseconds ", Color::Red))).Then(
-      METALMOCKTHEN(_consoleMock.MicrosecondsToTwoDecimalPlaceMillisecondsStringMock.CalledOnceWith(elapsedMicroseconds))).Then(
+      METALMOCKTHEN(_consoleMock.MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(elapsedMilliseconds))).Then(
       METALMOCKTHEN(_consoleMock.WriteLineMock.CalledOnceWith(twoDecimalPlaceMillisecondsString)));
    }
 
@@ -345,7 +353,7 @@ namespace ZenUnit
    {
       _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName = ZenUnit::Random<FullTestName>();
       _testResult_WriteTestCaseNumberIfAnyMocked.testOutcome = TestOutcome::SuccessButPastDeadline;
-      _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMicroseconds = ZenUnit::Random<unsigned>();
+      _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMilliseconds = ZenUnit::Random<unsigned short>();
 
       const string numberedTestFailureArrow = _testFailureNumbererMock.NextNumberedTestFailureArrowMock.ReturnRandom();
 
@@ -359,7 +367,7 @@ namespace ZenUnit
       _testResult_WriteTestCaseNumberIfAnyMocked.PrintIfFailure(&_consoleMock, &_testFailureNumbererMock);
       //
       const string expectedFullTestNameString = _testResult_WriteTestCaseNumberIfAnyMocked.fullTestName.Value();
-      const unsigned expectedElapsedMilliseconds = _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMicroseconds / 1000U;
+      const unsigned short expectedElapsedMilliseconds = _testResult_WriteTestCaseNumberIfAnyMocked.elapsedMilliseconds;
       const std::string expectedErrorMessage = String::ConcatValues(
          "\nTest succeeded but took ", expectedElapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
       METALMOCKTHEN(_testFailureNumbererMock.NextNumberedTestFailureArrowMock.CalledOnce()).Then(

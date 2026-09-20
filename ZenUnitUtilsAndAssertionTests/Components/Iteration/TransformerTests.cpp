@@ -73,7 +73,7 @@ namespace ZenUnit
       vector<ElementType> emptyElements = { 1, 2, 3 };
       //
       const vector<TransformedElementType> transformedElements = _transformer.RandomTransform(&emptyElements, PlusOne,
-         static_cast<unsigned>(chrono::system_clock::now().time_since_epoch().count()));
+         static_cast<unsigned short>(chrono::system_clock::now().time_since_epoch().count()));
       //
       const vector<TransformedElementType> expectedTransformedElements = { 2, 3, 4 };
       INDEXABLES_ARE_EQUAL_IN_ANY_ORDER(expectedTransformedElements, transformedElements);

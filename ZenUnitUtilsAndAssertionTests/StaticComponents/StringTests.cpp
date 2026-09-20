@@ -7,15 +7,18 @@ namespace ZenUnit
    AFACT(ConcatStrings_ReturnedConcatenatedStrings)
    AFACT(ConcatValues_ReturnedOStringStreamConcatenatedValues)
    FACTS(CommaSplitExceptQuotedCommas_ReturnsStringSplitOnCommasWithQuotedCommasIgnored)
+
    AFACT(ToInt_EmptyString_ThrowsInvalidArgument)
    FACTS(ToInt_StringNotConvertibleToInt_ThrowsInvalidArgument)
    FACTS(ToInt_StringIsValueLessThanThanIntMin_ThrowsInvalidArgument)
    FACTS(ToInt_StringIsValueGreaterThanIntMax_ThrowsInvalidArgument)
    FACTS(ToInt_StringIsValidInt_ReturnsInt)
-   AFACT(ToUnsigned_EmptyString_ThrowsInvalidArgument)
-   FACTS(ToUnsigned_StringNotConvertibleToUnsigned_ThrowsInvalidArgument)
-   FACTS(ToUnsigned_StringIsValueGreaterThanUnsignedMax_ThrowsInvalidArgument)
-   FACTS(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber)
+
+   AFACT(ToUnsignedShort_EmptyString_ThrowsInvalidArgument)
+   FACTS(ToUnsignedShort_StringNotConvertibleToUnsignedShort_ThrowsInvalidArgument)
+   FACTS(ToUnsignedShort_StrIsUnsignedNumber_ReturnsNumber)
+   FACTS(ToUnsignedShort_StringIsValueGreaterThanUnsignedShortMax_ThrowsInvalidArgument)
+
    FACTS(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult)
    FACTS(CaseInsensitiveStartsWith_ReturnsExpected)
    EVIDENCE
@@ -154,13 +157,13 @@ namespace ZenUnit
       ARE_EQUAL(expectedReturnValue, String::ToInt(str));
    }
 
-   TEST(ToUnsigned_EmptyString_ThrowsInvalidArgument)
+   TEST(ToUnsignedShort_EmptyString_ThrowsInvalidArgument)
    {
-      THROWS_EXCEPTION(String::ToUnsigned(""), invalid_argument,
-         "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"\"");
+      THROWS_EXCEPTION(String::ToUnsignedShort(""),
+         invalid_argument, "ZenUnit::String::ToUnsignedShort(std::string_view str) called with str not converted to unsigned short: \"\"");
    }
 
-   TEST1X1(ToUnsigned_StringNotConvertibleToUnsigned_ThrowsInvalidArgument,
+   TEST1X1(ToUnsignedShort_StringNotConvertibleToUnsignedShort_ThrowsInvalidArgument,
       string_view str,
       " ",
       "a",
@@ -168,31 +171,33 @@ namespace ZenUnit
       " 0")
    {
       const std::string expectedExceptionMessage = String::ConcatStrings(
-         "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"", str, "\"");
-      THROWS_EXCEPTION(String::ToUnsigned(str), invalid_argument, expectedExceptionMessage);
+         "ZenUnit::String::ToUnsignedShort(std::string_view str) called with str not converted to unsigned short: \"", str, "\"");
+      THROWS_EXCEPTION(String::ToUnsignedShort(str),
+         invalid_argument, expectedExceptionMessage);
    }
 
-   TEST1X1(ToUnsigned_StringIsValueGreaterThanUnsignedMax_ThrowsInvalidArgument,
+   TEST2X2(ToUnsignedShort_StrIsUnsignedNumber_ReturnsNumber,
+      unsigned short expectedReturnValue, string_view str,
+      static_cast<unsigned short>(0), "0",
+      static_cast<unsigned short>(1), "1",
+      static_cast<unsigned short>(12), "12",
+      static_cast<unsigned short>(123), "123",
+      static_cast<unsigned short>(123), "0123",
+      static_cast<unsigned short>(1230), "1230",
+      numeric_limits<unsigned short>::max(), to_string(numeric_limits<unsigned short>::max()))
+   {
+      ARE_EQUAL(expectedReturnValue, String::ToUnsignedShort(str));
+   }
+
+   TEST1X1(ToUnsignedShort_StringIsValueGreaterThanUnsignedShortMax_ThrowsInvalidArgument,
       string_view str,
-      to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 1ull),
-      to_string(static_cast<unsigned long long>(numeric_limits<unsigned int>::max()) + 2ull))
+      to_string(numeric_limits<unsigned short>::max() + 1),
+      to_string(numeric_limits<unsigned short>::max() + 2))
    {
       const std::string expectedExceptionMessage = String::ConcatStrings(
-         "ZenUnit::String::ToUnsigned(std::string_view str) called with str not converted to unsigned: \"", str, "\"");
-      THROWS_EXCEPTION(String::ToUnsigned(str), invalid_argument, expectedExceptionMessage);
-   }
-
-   TEST2X2(ToUnsigned_StrIsUnsignedNumber_ReturnsNumber,
-      unsigned expectedReturnValue, string_view str,
-      0u, "0",
-      1u, "1",
-      12u, "12",
-      123u, "123",
-      123u, "0123",
-      1230u, "1230",
-      numeric_limits<unsigned int>::max(), to_string(numeric_limits<unsigned int>::max()))
-   {
-      ARE_EQUAL(expectedReturnValue, String::ToUnsigned(str));
+         "ZenUnit::String::ToUnsignedShort(std::string_view str) called with str not converted to unsigned short: \"", str, "\"");
+      THROWS_EXCEPTION(String::ToUnsignedShort(str),
+         invalid_argument, expectedExceptionMessage);
    }
 
    TEST3X3(CaseInsensitiveStrcmp_ReturnsCrossPlatformCaseInsensitiveStrcmpResult,

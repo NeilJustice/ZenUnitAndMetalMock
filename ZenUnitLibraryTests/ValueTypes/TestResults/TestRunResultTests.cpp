@@ -249,7 +249,7 @@ namespace ZenUnit
       const string testRunElapsedSeconds = ZenUnit::Random<string>();
       const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
 
-      const unsigned globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned>();
+      const unsigned short globalZenUnitModeRandomSeed = ZenUnit::Random<unsigned short>();
       globalZenUnitMode.randomSeed = globalZenUnitModeRandomSeed;
       const size_t testRunIndex = ZenUnit::RandomBetween<size_t>(0, 3);
       //

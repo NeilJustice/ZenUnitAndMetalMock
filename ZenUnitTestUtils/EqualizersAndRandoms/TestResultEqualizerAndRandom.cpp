@@ -18,7 +18,7 @@ namespace ZenUnit
       FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, testOutcome);
       FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, testCaseNumber);
       FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, totalTestCases);
-      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, elapsedMicroseconds);
+      FIELDS_ARE_EQUAL(expectedTestResult, actualTestResult, elapsedMilliseconds);
    }
 
    TestResult TestableRandomTestResult(const RandomGenerator* randomGenerator, const ZenUnitTestingRandomGenerator* zenUnitTestingRandomGenerator)
@@ -32,7 +32,7 @@ namespace ZenUnit
       randomTestResult.destructorTestPhaseResult = zenUnitTestingRandomGenerator->RandomTestPhaseResult();
       randomTestResult.responsibleTestPhaseResultField = nullptr;
       randomTestResult.testOutcome = static_cast<TestOutcome>(randomGenerator->Enum(static_cast<int>(TestOutcome::MaxValue)));
-      randomTestResult.elapsedMicroseconds = randomGenerator->Unsigned();
+      randomTestResult.elapsedMilliseconds = randomGenerator->UnsignedShort();
       randomTestResult.testCaseNumber = randomGenerator->SizeT();
       randomTestResult.totalTestCases = randomGenerator->SizeT();
       return randomTestResult;

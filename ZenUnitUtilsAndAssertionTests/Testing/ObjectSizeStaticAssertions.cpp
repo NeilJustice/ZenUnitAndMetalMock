@@ -84,9 +84,9 @@ namespace ZenUnit
 
    #ifdef _WIN32
       #ifdef _DEBUG
-         static_assert(sizeof(TestResult) == 184);
+         static_assert(sizeof(TestResult) == 176);
       #else
-         static_assert(sizeof(TestResult) == 184);
+         static_assert(sizeof(TestResult) == 176);
       #endif
    #elifdef __linux__
       static_assert(sizeof(TestResult) == 184);
@@ -94,11 +94,11 @@ namespace ZenUnit
 
    #ifdef _WIN32
       #if defined _DEBUG
-         static_assert(sizeof(ZenUnitArgs) == 136);
+         static_assert(sizeof(ZenUnitArgs) == 128);
       #else
-         static_assert(sizeof(ZenUnitArgs) == 112);
+         static_assert(sizeof(ZenUnitArgs) == 104);
       #endif
    #elifdef __linux__
-      static_assert(sizeof(ZenUnitArgs) == 112);
+      static_assert(sizeof(ZenUnitArgs) == 104);
    #endif
 }
