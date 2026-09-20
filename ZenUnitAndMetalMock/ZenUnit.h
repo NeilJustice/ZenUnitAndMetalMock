@@ -6766,11 +6766,12 @@ Fatal Windows C++ Runtime Assertion
 
       virtual void PrintTestCaseNumberThenArgsThenArrow(size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs) const
       {
-         _console->Write(" [");
-         _console->WriteSizeT(testCaseNumber);
-         _console->Write("] (");
+         const std::string firstPartOfMessage = String::ConcatStrings(" [", std::to_string(testCaseNumber), "] (");
+         _console->Write(firstPartOfMessage);
+
          const size_t testCaseArgsPrintingStartIndex = (testCaseNumber - 1) * N;
          _console->WriteStringsCommaSeparated(splitTestCaseArgs, testCaseArgsPrintingStartIndex, N);
+
          _console->Write(") -> ");
       }
 
