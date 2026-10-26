@@ -5060,7 +5060,7 @@ namespace ZenUnit
    class NoOpTestClassRunner : public TestClassRunner
    {
    public:
-      virtual ~NoOpTestClassRunner() = default;
+      virtual ~NoOpTestClassRunner() override = default;
       const char* TestClassName() const override { return "NoOpTestClassRunner"; }
       TestClassResult RunTests() override { return TestClassResult(); }
    };
