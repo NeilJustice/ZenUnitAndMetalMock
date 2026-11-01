@@ -9,8 +9,8 @@ namespace ZenUnit
    AFACT(Random_TIsAPair_ReturnsRandomPair)
    AFACT(Random_TIsASpan_ReturnsRandomSpanOfTWithSizeLessThanOrEqualTo3)
    AFACT(Random_TIsAVector_ReturnsRandomVectorOfTWithSizeLessThanOrEqualTo3)
+
    AFACT(Random_TIsAnUnorderedMap_ReturnsRandomUnorderedMap)
-   AFACT(Random_TIsAnOrderedSet_ReturnsRandomOrderedSet)
    AFACT(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)
 
    AFACT(RandomNon0_ReturnsNon0RandomValueBetweenMinAndMaxForTypeT)
@@ -135,15 +135,6 @@ namespace ZenUnit
 
       [[maybe_unused]]
       const unordered_map<string, double> stringDoubleUnorderedMap = Random<unordered_map<string, double>>();
-   }
-
-   TEST(Random_TIsAnOrderedSet_ReturnsRandomOrderedSet)
-   {
-      [[maybe_unused]]
-      const set<int> orderedIntSet = Random<set<int>>();
-
-      [[maybe_unused]]
-      const set<string> orderedStringSet = Random<set<string>>();
    }
 
    TEST(Random_TIsAnUnorderedSet_ReturnsRandomUnorderedSet)

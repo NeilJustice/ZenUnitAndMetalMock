@@ -1382,10 +1382,6 @@ namespace ZenUnit
    template<typename KeyType, typename ValueType>
    constexpr bool is_unordered_map_v<std::unordered_map<KeyType, ValueType>> = true;
 
-   template<typename T> constexpr bool is_set_v = false;
-   template<typename ElementType>
-   constexpr bool is_set_v<std::set<ElementType>> = true;
-
    template<typename T> constexpr bool is_unordered_set_v = false;
    template<typename ElementType>
    constexpr bool is_unordered_set_v<std::unordered_set<ElementType>> = true;
@@ -8408,11 +8404,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       {
          std::unordered_map<typename T::key_type, typename T::mapped_type> randomUnorderedMap = RandomUnorderedMap<typename T::key_type, typename T::mapped_type>();
          return randomUnorderedMap;
-      }
-      else if constexpr (is_set_v<T>)
-      {
-         std::set<typename T::key_type> randomOrderedSet = RandomOrderedSet<typename T::key_type>();
-         return randomOrderedSet;
       }
       else if constexpr (is_unordered_set_v<T>)
       {
