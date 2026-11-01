@@ -5216,39 +5216,49 @@ namespace ZenUnit
 
       virtual ~PreamblePrinter() = default;
 
-      virtual void PrintPreambleLines(const ZenUnitArgs& zenUnitArgs, size_t testRunIndex, const TestClassRunnerRunner* testClassRunnerRunner) const
+      virtual void PrintPreambleLines(
+         const ZenUnitArgs& zenUnitArgs,
+         size_t testRunIndex,
+         const TestClassRunnerRunner* testClassRunnerRunner) const
       {
          const std::string zenUnitVersionLine = String::ConcatStrings("[C++ Unit Testing Framework ZenUnit ", Version, "]");
          _console->WriteLineColor(zenUnitVersionLine, Color::Green);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         _console->WriteLine("     Running: " + zenUnitArgs.commandLine);
+         const std::string runningLine = String::ConcatStrings("     Running: ", zenUnitArgs.commandLine);
+         _console->WriteLine(runningLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string currentDirectoryPath = _environmentService->CurrentDirectoryPath();
-         _console->WriteLine("   Directory: " + currentDirectoryPath);
+         const std::string directoryLine = String::ConcatStrings("   Directory: ", currentDirectoryPath);
+         _console->WriteLine(directoryLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string machineName = _environmentService->MachineName();
-         _console->WriteLine(" MachineName: " + machineName);
+         const std::string machineNameLine = String::ConcatStrings(" MachineName: ", machineName);
+         _console->WriteLine(machineNameLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string userName = _environmentService->UserName();
-         _console->WriteLine("    UserName: " + userName);
+         const std::string userNameLine = String::ConcatStrings("    UserName: ", userName);
+         _console->WriteLine(userNameLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         _console->WriteLine("  RandomSeed: --random-seed=" + std::to_string(globalZenUnitMode.randomSeed));
+         const std::string randomSeedLine = String::ConcatStrings("  RandomSeed: --random-seed=", std::to_string(globalZenUnitMode.randomSeed));
+         _console->WriteLine(randomSeedLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const size_t numberOfTestClassesToBeRun = testClassRunnerRunner->NumberOfTestClassesToBeRun();
-         _console->WriteLine(" TestClasses: " + std::to_string(numberOfTestClassesToBeRun));
+         const std::string testClassesLine = String::ConcatStrings(" TestClasses: ", std::to_string(numberOfTestClassesToBeRun));
+         _console->WriteLine(testClassesLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
          const std::string startDateTime = _watch->DateTimeNow();
-         _console->WriteLine("   StartTime: " + startDateTime);
+         const std::string startTimeLine = String::ConcatStrings("   StartTime: ", startDateTime);
+         _console->WriteLine(startTimeLine);
 
          _console->WriteColor("[ZenUnit]", Color::Green);
-         const std::string testRunLine = "     TestRun: " + std::to_string(testRunIndex + 1) + " of " + std::to_string(zenUnitArgs.testRuns) + "\n";
+         const std::string testRunLine = String::ConcatStrings("     TestRun: ", std::to_string(testRunIndex + 1), " of ", std::to_string(zenUnitArgs.testRuns), "\n");
          _console->WriteLine(testRunLine);
       }
    };
@@ -5505,10 +5515,9 @@ namespace ZenUnit
 
          const std::string leadingZeros(numberOfLeadingMillisecondZeros, '0');
 
-         // Example elapsedSecondsWithMillisecondResolution: "0.001"
-         std::string elapsedSecondsWithMillisecondResolution = String::ConcatValues(
+         std::string elapsedSecondsWithThreeDecimalPlaceMilliseconds = String::ConcatValues(
             elapsedSeconds, '.', leadingZeros, elapsedMillisecondsMod1000);
-         return elapsedSecondsWithMillisecondResolution;
+         return elapsedSecondsWithThreeDecimalPlaceMilliseconds;
       }
    };
 
@@ -5674,8 +5683,9 @@ namespace ZenUnit
          _testClassRunnerRunner->ApplyTestNameFiltersIfAny(_zenUnitArgs.testNameFilters);
          const size_t numberOfTestRuns = _zenUnitArgs.testRuns < 0 ?
             std::numeric_limits<size_t>::max() : static_cast<size_t>(_zenUnitArgs.testRuns);
-         int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTests->
-            AccumulateNonConstMemberFunctionNTimes(numberOfTestRuns, this, &ZenUnitTestRunner::RunTests);
+         int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTests->AccumulateNonConstMemberFunctionNTimes(
+            numberOfTestRuns,
+            this, &ZenUnitTestRunner::RunTests);
          _exitCodeLinePrinter->PrintExitCodeLine(zenUnitExitCode, _zenUnitArgs.alwaysExit0);
          _console->WaitForEnterKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
          return zenUnitExitCode;
@@ -5706,7 +5716,8 @@ Fatal Windows C++ Runtime Assertion
          SetNewRandomEngineForNewTestRun();
          SetCurrentTestRunNumber(testRunIndex);
          int zenUnitExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
-            this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines, _zenUnitArgs, testRunIndex);
+            this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines,
+            _zenUnitArgs, testRunIndex);
          _testRunResult->ResetStateInPreparationForNextTestRun();
          _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
             this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
@@ -5718,7 +5729,8 @@ Fatal Windows C++ Runtime Assertion
       {
          _preamblePrinter->PrintPreambleLines(zenUnitArgs, testRunIndex, _testClassRunnerRunner.get());
          _havePaused = _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused->CallConstMemberFunction(
-            this, &ZenUnitTestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused, zenUnitArgs.pauseBefore, _havePaused);
+            this, &ZenUnitTestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused,
+            zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();
          _caller_RunTestClasses->CallNonConstMemberFunction(this, &ZenUnitTestRunner::RunTestClasses);
          _testRunResult->PrintTestFailuresAndSkips();
