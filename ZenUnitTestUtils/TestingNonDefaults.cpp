@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
 #include "ZenUnitTestUtils/TestingNonDefaults.h"
 
 namespace ZenUnit
@@ -13,7 +14,8 @@ namespace ZenUnit
    TestClassResult TestingNonDefaultTestClassResult()
    {
       TestClassResult testClassResult;
-      testClassResult._testResults.resize(1);
+      TestResult randomTestResult = ZenUnit::Random<TestResult>();
+      testClassResult.AddTestResult(randomTestResult);
       return testClassResult;
    }
 }

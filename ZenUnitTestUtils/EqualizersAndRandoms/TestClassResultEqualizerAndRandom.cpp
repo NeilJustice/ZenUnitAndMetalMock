@@ -14,7 +14,8 @@ namespace ZenUnit
    TestClassResult Random()
    {
       TestClassResult randomTestClassResult;
-      randomTestClassResult._testResults = ZenUnit::RandomNonEmptyVector<TestResult>();
+      const vector<TestResult> randomNonEmptyTestResults = ZenUnit::RandomNonEmptyVector<TestResult>();
+      randomTestClassResult.AddTestResults(randomNonEmptyTestResults);
       return randomTestClassResult;
    }
 }

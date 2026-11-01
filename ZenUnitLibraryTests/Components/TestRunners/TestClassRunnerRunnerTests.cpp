@@ -269,13 +269,14 @@ namespace ZenUnit
    TEST(RunTestClassRunner_ReturnsCallToTestClassRunnerRunTests)
    {
       TestClassRunnerMock* testClassRunnerMock = new TestClassRunnerMock;
-      testClassRunnerMock->RunTestsMock.Return(TestingNonDefaultTestClassResult());
+      const TestClassResult randomTestClassResult = TestingNonDefaultTestClassResult();
+      testClassRunnerMock->RunTestsMock.Return(randomTestClassResult);
       const unique_ptr<TestClassRunner> testClassRunnerReallyAMock(testClassRunnerMock);
       //
       const TestClassResult testClassResult = TestClassRunnerRunner::RunTestClassRunner(testClassRunnerReallyAMock);
       //
       METALMOCK(testClassRunnerMock->RunTestsMock.CalledOnce());
-      ARE_EQUAL(TestingNonDefaultTestClassResult(), testClassResult);
+      ARE_EQUAL(randomTestClassResult, testClassResult);
    }
 
    RUN_TESTS(TestClassRunnerRunnerTests)

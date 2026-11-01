@@ -4685,15 +4685,16 @@ namespace ZenUnit
    class TestClassResult
    {
       friend class TestClassResultTests;
+      friend class Equalizer<TestClassResult>;
+      friend class SpecificTestClassRunnerTests;
+      friend class TestClassResultEqualizerAndRandomTests;
    private:
       // Function Pointers
       std::function<std::string(unsigned short)> _call_Watch_MillisecondsToBracketedMillisecondsString;
       // Mutable Fields
       unsigned short _elapsedMilliseconds;
-   public:
-      // Mutable Fields
       std::vector<TestResult> _testResults;
-
+   public:
       TestClassResult() noexcept
          // Function Pointers
          : _call_Watch_MillisecondsToBracketedMillisecondsString(Watch::MillisecondsToBracketedMillisecondsString)

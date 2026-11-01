@@ -81,32 +81,35 @@ namespace ZenUnit
    TEST(AssignmentOperator_SelfAssignment_NothingHappens)
    {
       TestClassResult testClassResult = TestingNonDefaultTestClassResult();
+      TestClassResult copyOfTestClassResult = testClassResult;
       //
       testClassResult = testClassResult;
       //
-      ARE_EQUAL(TestingNonDefaultTestClassResult(), testClassResult);
+      ARE_EQUAL(copyOfTestClassResult, testClassResult);
    }
    #endif
 
    TEST(MoveConstructor_MovesForEacherAndTestResults)
    {
       TestClassResult testClassResult = TestingNonDefaultTestClassResult();
+      TestClassResult copyOfTestClassResult = testClassResult;
       //
       const TestClassResult moved(std::move(testClassResult));
       //
-      ARE_EQUAL(TestClassResult(), testClassResult);
-      ARE_EQUAL(TestingNonDefaultTestClassResult(), moved);
+      IS_DEFAULT_VALUE(testClassResult);
+      ARE_EQUAL(copyOfTestClassResult, moved);
    }
 
    TEST(MoveAssignmentOperator_MovesForEacherAndTestResults)
    {
-      TestClassResult testClassResult = TestingNonDefaultTestClassResult();
+      TestClassResult randomTestClassResult = TestingNonDefaultTestClassResult();
+      TestClassResult copyOfRandomTestClassResult = randomTestClassResult;
       TestClassResult movedTestClassResult;
       //
-      movedTestClassResult = std::move(testClassResult);
+      movedTestClassResult = std::move(randomTestClassResult);
       //
-      ARE_EQUAL(TestClassResult(), testClassResult);
-      ARE_EQUAL(TestingNonDefaultTestClassResult(), movedTestClassResult);
+      IS_DEFAULT_VALUE(randomTestClassResult);
+      ARE_EQUAL(copyOfRandomTestClassResult, movedTestClassResult);
    }
 
    TEST(AddTestResult_EmplacesBackMovedTestResult)
