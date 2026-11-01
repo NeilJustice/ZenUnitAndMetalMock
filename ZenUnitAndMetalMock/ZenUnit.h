@@ -4472,7 +4472,7 @@ namespace ZenUnit
 #pragma warning(pop)
 #endif
       TestOutcome testOutcome = TestOutcome::Unset;
-      unsigned short elapsedMilliseconds = 0;
+      unsigned short elapsedTestMilliseconds = 0;
       size_t testCaseNumber = std::numeric_limits<size_t>::max();
       size_t totalTestCases = 0;
 
@@ -4487,7 +4487,7 @@ namespace ZenUnit
          const TestPhaseResult& testBodyTestPhaseResult,
          const TestPhaseResult& cleanupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
-         unsigned short elapsedMilliseconds,
+         unsigned short elapsedTestMilliseconds,
          const std::function<const ZenUnitArgs&()>& getZenUnitArgs)
          : fullTestName(fullTestName)
          , constructorTestPhaseResult(constructorTestPhaseResult)
@@ -4497,7 +4497,7 @@ namespace ZenUnit
          , destructorTestPhaseResult(destructorTestPhaseResult)
          , responsibleTestPhaseResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
-         , elapsedMilliseconds(elapsedMilliseconds)
+         , elapsedTestMilliseconds(elapsedTestMilliseconds)
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , totalTestCases(0)
       {
@@ -4524,7 +4524,7 @@ namespace ZenUnit
          else
          {
             const ZenUnitArgs& zenUnitArgs = getZenUnitArgs();
-            if (zenUnitArgs.maxTestMilliseconds == 0 || this->elapsedMilliseconds <= zenUnitArgs.maxTestMilliseconds)
+            if (zenUnitArgs.maxTestMilliseconds == 0 || this->elapsedTestMilliseconds <= zenUnitArgs.maxTestMilliseconds)
             {
                this->testOutcome = TestOutcome::Success;
             }
@@ -4540,13 +4540,13 @@ namespace ZenUnit
       static TestResult ConstructorFail(
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
-         unsigned short elapsedMilliseconds) noexcept
+         unsigned short elapsedTestMilliseconds) noexcept
       {
          TestResult constructorFailTestResult{};
          constructorFailTestResult.fullTestName = fullTestName;
          constructorFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorFailTestResult.testOutcome = constructorTestPhaseResult.testOutcome;
-         constructorFailTestResult.elapsedMilliseconds = elapsedMilliseconds;
+         constructorFailTestResult.elapsedTestMilliseconds = elapsedTestMilliseconds;
          constructorFailTestResult.responsibleTestPhaseResultField = &TestResult::constructorTestPhaseResult;
          return constructorFailTestResult;
       }
@@ -4556,7 +4556,7 @@ namespace ZenUnit
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& startupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
-         unsigned short elapsedMilliseconds)
+         unsigned short elapsedTestMilliseconds)
       {
          TestResult startupFailTestResult{};
          startupFailTestResult.fullTestName = fullTestName;
@@ -4564,7 +4564,7 @@ namespace ZenUnit
          startupFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          startupFailTestResult.startupTestPhaseResult = startupTestPhaseResult;
          startupFailTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         startupFailTestResult.elapsedMilliseconds = elapsedMilliseconds;
+         startupFailTestResult.elapsedTestMilliseconds = elapsedTestMilliseconds;
          startupFailTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
          return startupFailTestResult;
       }
@@ -4573,14 +4573,14 @@ namespace ZenUnit
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
-         unsigned short elapsedMilliseconds)
+         unsigned short elapsedTestMilliseconds)
       {
          TestResult constructorAndDestructorSuccessTestResult{};
          constructorAndDestructorSuccessTestResult.fullTestName = fullTestName;
          constructorAndDestructorSuccessTestResult.testOutcome = TestOutcome::Success;
          constructorAndDestructorSuccessTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorAndDestructorSuccessTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         constructorAndDestructorSuccessTestResult.elapsedMilliseconds = elapsedMilliseconds;
+         constructorAndDestructorSuccessTestResult.elapsedTestMilliseconds = elapsedTestMilliseconds;
          constructorAndDestructorSuccessTestResult.responsibleTestPhaseResultField = nullptr;
          return constructorAndDestructorSuccessTestResult;
       }
@@ -4590,14 +4590,14 @@ namespace ZenUnit
          if (testOutcome == TestOutcome::Success)
          {
             console->WriteColor("OK ", Color::Green);
-            const std::string bracketedMillisecondsString = console->MillisecondsToBracketedMillisecondsString(this->elapsedMilliseconds);
+            const std::string bracketedMillisecondsString = console->MillisecondsToBracketedMillisecondsString(this->elapsedTestMilliseconds);
             console->WriteLine(bracketedMillisecondsString);
          }
          else if (testOutcome == TestOutcome::SuccessButPastDeadline)
          {
             console->WriteColor("OK ", Color::Green);
             console->WriteColor("but took longer than --max-test-milliseconds ", Color::Red);
-            const std::string bracketedMillisecondsString = console->MillisecondsToBracketedMillisecondsString(this->elapsedMilliseconds);
+            const std::string bracketedMillisecondsString = console->MillisecondsToBracketedMillisecondsString(this->elapsedTestMilliseconds);
             console->WriteLine(bracketedMillisecondsString);
          }
       }
@@ -4650,7 +4650,7 @@ namespace ZenUnit
             console->Write(fullTestNameString);
             WriteTestCaseNumberIfAny(console, testCaseNumber);
             const std::string errorMessage = String::ConcatValues(
-               "\nTest succeeded but took ", this->elapsedMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
+               "\nTest succeeded but took ", this->elapsedTestMilliseconds, " ms to run which exceeds the --max-test-milliseconds deadline\n");
             console->WriteLine(errorMessage);
             break;
          }
@@ -4800,7 +4800,7 @@ namespace ZenUnit
             _testResults.cbegin(), _testResults.cend(), static_cast<unsigned short>(0),
             [](unsigned short runningSum, const TestResult& testResult)
             {
-               unsigned short newRunningSum = static_cast<unsigned short>(runningSum + testResult.elapsedMilliseconds);
+               unsigned short newRunningSum = static_cast<unsigned short>(runningSum + testResult.elapsedTestMilliseconds);
                return newRunningSum;
             });
          return sumOfTestResultMilliseconds;
@@ -5514,22 +5514,22 @@ namespace ZenUnit
          }
          const std::chrono::time_point<std::chrono::high_resolution_clock> stopTime = _call_high_resolution_clock_now();
          const std::chrono::duration<long long, std::nano> elapsedTime = stopTime - _startTime;
-         const unsigned short elapsedMilliseconds = static_cast<unsigned short>(
+         const unsigned short elapsedTestMilliseconds = static_cast<unsigned short>(
             std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count());
          _startTime = std::chrono::time_point<std::chrono::high_resolution_clock>();
-         return elapsedMilliseconds;
+         return elapsedTestMilliseconds;
       }
 
       virtual std::string StopAndGetElapsedSecondsString()
       {
-         // Example elapsedMilliseconds: 1234
-         const unsigned short elapsedMilliseconds = StopAndGetElapsedMilliseconds();
+         // Example elapsedTestMilliseconds: 1234
+         const unsigned short elapsedTestMilliseconds = StopAndGetElapsedMilliseconds();
 
          // Example elapsedSeconds: 1
-         const unsigned short elapsedSeconds = static_cast<unsigned short>(elapsedMilliseconds / 1000);
+         const unsigned short elapsedSeconds = static_cast<unsigned short>(elapsedTestMilliseconds / 1000);
 
          // Example elapsedMillisecondsMod1000: 234
-         const unsigned short elapsedMillisecondsMod1000 = static_cast<unsigned short>(elapsedMilliseconds % 1000);
+         const unsigned short elapsedMillisecondsMod1000 = static_cast<unsigned short>(elapsedTestMilliseconds % 1000);
 
          const size_t numberOfLeadingMillisecondZeros =
             elapsedMillisecondsMod1000 < static_cast<unsigned short>(10) ? 2ULL : // 3 -> 0.003
@@ -5936,12 +5936,12 @@ Fatal Windows C++ Runtime Assertion
       virtual TestResult MakeConstructorFail(
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
-         unsigned short elapsedMilliseconds) const
+         unsigned short elapsedTestMilliseconds) const
       {
          TestResult testResult = TestResult::ConstructorFail(
             fullTestName,
             constructorTestPhaseResult,
-            elapsedMilliseconds);
+            elapsedTestMilliseconds);
          return testResult;
       }
 
@@ -5950,14 +5950,14 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& startupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
-         unsigned short elapsedMilliseconds) const
+         unsigned short elapsedTestMilliseconds) const
       {
          TestResult testResult = TestResult::StartupFail(
             fullTestName,
             constructorTestPhaseResult,
             startupTestPhaseResult,
             destructorTestPhaseResult,
-            elapsedMilliseconds);
+            elapsedTestMilliseconds);
          return testResult;
       }
 
@@ -5965,13 +5965,13 @@ Fatal Windows C++ Runtime Assertion
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
-         unsigned short elapsedMilliseconds) const
+         unsigned short elapsedTestMilliseconds) const
       {
          TestResult testResult = TestResult::ConstructorDestructorSuccess(
             fullTestName,
             constructorTestPhaseResult,
             destructorTestPhaseResult,
-            elapsedMilliseconds);
+            elapsedTestMilliseconds);
          return testResult;
       }
 
@@ -5982,7 +5982,7 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult& testBodyTestPhaseResult,
          const TestPhaseResult& cleanupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
-         unsigned short elapsedMilliseconds) const
+         unsigned short elapsedTestMilliseconds) const
       {
          TestResult testResult(
             fullTestName,
@@ -5991,7 +5991,7 @@ Fatal Windows C++ Runtime Assertion
             testBodyTestPhaseResult,
             cleanupTestPhaseResult,
             destructorTestPhaseResult,
-            elapsedMilliseconds,
+            elapsedTestMilliseconds,
             ZenUnitTestRunner::GetZenUnitArgs);
          return testResult;
       }
@@ -6085,9 +6085,9 @@ Fatal Windows C++ Runtime Assertion
             _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
+            const unsigned short elapsedTestMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
             const TestResult constructorFailTestResult =
-               _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult, elapsedMilliseconds);
+               _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult, elapsedTestMilliseconds);
             return constructorFailTestResult;
          }
          const TestPhaseResult startupTestPhaseResult =
@@ -6096,13 +6096,13 @@ Fatal Windows C++ Runtime Assertion
          {
             const TestPhaseResult destructorTestPhaseResult =
                _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-            const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
+            const unsigned short elapsedTestMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
             const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(
                p_fullTestName,
                constructorTestPhaseResult,
                startupTestPhaseResult,
                destructorTestPhaseResult,
-               elapsedMilliseconds);
+               elapsedTestMilliseconds);
             return startupFailTestResult;
          }
          const TestPhaseResult testBodyTestPhaseResult =
@@ -6114,7 +6114,7 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult destructorTestPhaseResult =
             _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
 
-         const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
+         const unsigned short elapsedTestMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
          TestResult testResult = _testResultFactory->MakeFullTestResult(
             p_fullTestName,
             constructorTestPhaseResult,
@@ -6122,7 +6122,7 @@ Fatal Windows C++ Runtime Assertion
             testBodyTestPhaseResult,
             cleanupTestPhaseResult,
             destructorTestPhaseResult,
-            elapsedMilliseconds);
+            elapsedTestMilliseconds);
          return testResult;
       }
    };
@@ -6223,22 +6223,22 @@ Fatal Windows C++ Runtime Assertion
             _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
+            const unsigned short elapsedTestMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
             TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
                p_fullTestName,
                constructorTestPhaseResult,
-               elapsedMilliseconds);
+               elapsedTestMilliseconds);
             std::vector<TestResult> testResults = { std::move(constructorFailTestResult) };
             return testResults;
          }
          const TestPhaseResult destructorTestPhaseResult =
             _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
+         const unsigned short elapsedTestMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
          TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(
             p_fullTestName,
             constructorTestPhaseResult,
             destructorTestPhaseResult,
-            elapsedMilliseconds);
+            elapsedTestMilliseconds);
          std::vector<TestResult> testResults = { std::move(testResult) };
          return testResults;
       }
@@ -6400,10 +6400,10 @@ Fatal Windows C++ Runtime Assertion
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
 
-         const unsigned short elapsedMilliseconds = _stopwatch->StopAndGetElapsedMilliseconds();
+         const unsigned short elapsedTestMilliseconds = _stopwatch->StopAndGetElapsedMilliseconds();
          _caller_PrintTestClassResultLine->CallConstMemberFunction(
             this, &SpecificTestClassRunner::PrintTestClassResultLine,
-            &_testClassResult, elapsedMilliseconds);
+            &_testClassResult, elapsedTestMilliseconds);
          return std::move(_testClassResult);
       }
    private:
@@ -6445,7 +6445,7 @@ Fatal Windows C++ Runtime Assertion
          {
             p_console->WriteColor("OK ", Color::Green);
             const std::string twoDecimalPlaceMillisecondsString =
-               _call_Watch_MillisecondsToBracketedMillisecondsString(newableAndDeletableTestResult.elapsedMilliseconds);
+               _call_Watch_MillisecondsToBracketedMillisecondsString(newableAndDeletableTestResult.elapsedTestMilliseconds);
             p_console->WriteLine(twoDecimalPlaceMillisecondsString);
          }
          return newableAndDeletableTestResult;

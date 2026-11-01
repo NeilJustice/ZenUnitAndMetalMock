@@ -160,7 +160,9 @@ namespace ZenUnit
          _specificTestClassRunner->HasTestThatMatchesTestNameFilter(testNameFilter);
       //
       METALMOCK(_twoArgTestAnyerMock->TwoArgAnyMock.CalledOnceWith(
-         &_specificTestClassRunner->_tests, SpecificTestClassRunner<TestingTestClass>::TestNameFilterMatchesTestName, testNameFilter));
+         &_specificTestClassRunner->_tests,
+         SpecificTestClassRunner<TestingTestClass>::TestNameFilterMatchesTestName,
+         testNameFilter));
       ARE_EQUAL(twoArgAnyerReturnValue, hasTestThatMatchesTestNameFilter);
    }
 
@@ -177,8 +179,8 @@ namespace ZenUnit
       const bool returnedTestNameFilterMatchesTestName =
          _specificTestClassRunner->TestNameFilterMatchesTestName(test, testNameFilterMock);
       //
-      METALMOCK(testMock->NameMock.CalledOnce());
-      METALMOCK(testNameFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
+      METALMOCKTHEN(testMock->NameMock.CalledOnce()).Then(
+      METALMOCKTHEN(testNameFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str())));
       ARE_EQUAL(testNameFilterMatchesTestName, returnedTestNameFilterMatchesTestName);
    }
 
@@ -201,9 +203,9 @@ namespace ZenUnit
       //
       const size_t numberOfTestCases = _specificTestClassRunner->NumberOfTestCases();
       //
-      METALMOCK(testMockA->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testMockB->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testMockC->NumberOfTestCasesMock.CalledOnce());
+      METALMOCKTHEN(testMockA->NumberOfTestCasesMock.CalledOnce()).Then(
+      METALMOCKTHEN(testMockB->NumberOfTestCasesMock.CalledOnce())).Then(
+      METALMOCKTHEN(testMockC->NumberOfTestCasesMock.CalledOnce()));
       ARE_EQUAL(30, numberOfTestCases);
    }
 
@@ -230,7 +232,7 @@ namespace ZenUnit
          _voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.Expect();
       }
 
-      const unsigned short elapsedMilliseconds = _stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
+      const unsigned short elapsedTestClassMilliseconds = _stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
       _caller_PrintTestClassResultLineMock->CallConstMemberFunctionMock.Expect();
 
       _specificTestClassRunner->_testClassResult = TestingNonDefaultTestClassResult();
@@ -263,7 +265,7 @@ namespace ZenUnit
       METALMOCKTHEN(_stopwatchMock->StopAndGetElapsedMillisecondsMock.CalledOnce()).Then(
       METALMOCKTHEN(_caller_PrintTestClassResultLineMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
-         &_specificTestClassRunner->_testClassResult, elapsedMilliseconds)));
+         &_specificTestClassRunner->_testClassResult, elapsedTestClassMilliseconds)));
 
       ARE_EQUAL(expectedResultingTestClassResult, testClassResult);
       IS_DEFAULT_VALUE(_specificTestClassRunner->_testClassResult); // Assertion that _testClassResult was std::moved from
@@ -354,7 +356,7 @@ namespace ZenUnit
       TestMock testMock;
       TestResult newableAndDeletableTestResult;
       newableAndDeletableTestResult.testOutcome = newableDeletableTestOutcome;
-      newableAndDeletableTestResult.elapsedMilliseconds = ZenUnit::Random<unsigned short>();
+      newableAndDeletableTestResult.elapsedTestMilliseconds = ZenUnit::Random<unsigned short>();
       const vector<TestResult> newableAndDeletableTestResults{ newableAndDeletableTestResult };
       testMock.RunTestMock.Return(newableAndDeletableTestResults);
       //
@@ -365,7 +367,7 @@ namespace ZenUnit
       {
          METALMOCK(p_consoleMock->WriteColorMock.CalledOnceWith("OK ", Color::Green));
          METALMOCK(_call_Watch_MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(
-            newableAndDeletableTestResult.elapsedMilliseconds));
+            newableAndDeletableTestResult.elapsedTestMilliseconds));
          METALMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(testResultThreeDecimalMillisecondsString));
       }
       METALMOCK(p_consoleMock->WriteMock.CalledOnceWith("|TestClassIsNewableAndDeletable -> "));

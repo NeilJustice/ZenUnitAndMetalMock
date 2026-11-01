@@ -60,7 +60,7 @@ namespace ZenUnit
       failedConstructorTestPhaseResult.testOutcome = nonSuccessOutcome;
       _testPhaseRunnerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
+      const unsigned short elapsedTestMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
 
       TestResult constructorFailTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
@@ -77,7 +77,7 @@ namespace ZenUnit
       METALMOCKTHEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName,
          failedConstructorTestPhaseResult,
-         elapsedMilliseconds)));
+         elapsedTestMilliseconds)));
 
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
@@ -95,7 +95,7 @@ namespace ZenUnit
          successConstructorTestPhaseResult,
          destructorTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
+      const unsigned short elapsedTestMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
 
       TestResult sixArgCtorTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeConstructorDestructorSuccessMock.Return(sixArgCtorTestResult);
@@ -118,7 +118,7 @@ namespace ZenUnit
          _newableDeletableTest->p_fullTestName,
          successConstructorTestPhaseResult,
          destructorTestPhaseResult,
-         elapsedMilliseconds)));
+         elapsedTestMilliseconds)));
 
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);

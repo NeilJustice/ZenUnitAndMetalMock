@@ -31,61 +31,61 @@ namespace ZenUnit
 
    TEST(MakeConstructorFail_ReturnsTestResultConstructorFail)
    {
-      const unsigned short elapsedMilliseconds = ZenUnit::Random<unsigned short>();
+      const unsigned short elapsedTestMilliseconds = ZenUnit::Random<unsigned short>();
       //
       const TestResult constructorFailTestResult = _testResultFactory.MakeConstructorFail(
          _fullTestNameValue,
          ConstructorTestPhaseResult,
-         elapsedMilliseconds);
+         elapsedTestMilliseconds);
       //
       const TestResult expectedTestResult = TestResult::ConstructorFail(
          _fullTestNameValue,
          ConstructorTestPhaseResult,
-         elapsedMilliseconds);
+         elapsedTestMilliseconds);
       ARE_EQUAL(expectedTestResult, constructorFailTestResult);
    }
 
    TEST(MakeStartupFail_ReturnsTestResultStartupFail)
    {
-      const unsigned short elapsedMilliseconds = ZenUnit::Random<unsigned short>();
+      const unsigned short elapsedTestMilliseconds = ZenUnit::Random<unsigned short>();
       //
       const TestResult startupFailTestResult = _testResultFactory.MakeStartupFail(
          _fullTestNameValue,
          ConstructorTestPhaseResult,
          StartupTestPhaseResult,
          DestructorTestPhaseResult,
-         elapsedMilliseconds);
+         elapsedTestMilliseconds);
       //
       const TestResult expectedTestResult = TestResult::StartupFail(
          _fullTestNameValue,
          ConstructorTestPhaseResult,
          StartupTestPhaseResult,
          DestructorTestPhaseResult,
-         elapsedMilliseconds);
+         elapsedTestMilliseconds);
       ARE_EQUAL(expectedTestResult, startupFailTestResult);
    }
 
    TEST(MakeConstructorDestructorSuccess_ReturnsTestResultConstructorDestructorSuccess)
    {
-      const unsigned short elapsedMilliseconds = ZenUnit::Random<unsigned short>();
+      const unsigned short elapsedTestMilliseconds = ZenUnit::Random<unsigned short>();
       //
       const TestResult ctorDtorSuccessResult = _testResultFactory.MakeConstructorDestructorSuccess(
          _fullTestNameValue,
          ConstructorTestPhaseResult,
          DestructorTestPhaseResult,
-         elapsedMilliseconds);
+         elapsedTestMilliseconds);
       //
       const TestResult expectedTestResult = TestResult::ConstructorDestructorSuccess(
          _fullTestNameValue,
          ConstructorTestPhaseResult,
          DestructorTestPhaseResult,
-         elapsedMilliseconds);
+         elapsedTestMilliseconds);
       ARE_EQUAL(expectedTestResult, ctorDtorSuccessResult);
    }
 
    TEST(MakeFullTestResult_ReturnsTestResultSixArgCtor)
    {
-      const unsigned short elapsedMilliseconds = ZenUnit::Random<unsigned short>();
+      const unsigned short elapsedTestMilliseconds = ZenUnit::Random<unsigned short>();
       //
       const TestResult testResult = _testResultFactory.MakeFullTestResult(
          _fullTestNameValue,
@@ -94,7 +94,7 @@ namespace ZenUnit
          TestBodyTestPhaseResult,
          CleanupTestPhaseResult,
          DestructorTestPhaseResult,
-         elapsedMilliseconds);
+         elapsedTestMilliseconds);
       //
       const TestResult expectedTestResult(
          _fullTestNameValue,
@@ -103,7 +103,7 @@ namespace ZenUnit
          TestBodyTestPhaseResult,
          CleanupTestPhaseResult,
          DestructorTestPhaseResult,
-         elapsedMilliseconds,
+         elapsedTestMilliseconds,
          ZenUnitTestRunner::GetZenUnitArgs);
       ARE_EQUAL(expectedTestResult, testResult);
    }

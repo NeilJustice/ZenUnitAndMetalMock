@@ -71,7 +71,7 @@ namespace ZenUnit
       const TestPhaseResult constructorFailTestPhaseResult = TestPhaseResultWithOutcome(constructorOutcome);
       _tryCatchCallerMock->RunTestPhaseMock.Return(constructorFailTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
+      const unsigned short elapsedTestMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
 
       const TestResult constructorFailTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
@@ -88,7 +88,7 @@ namespace ZenUnit
       METALMOCKTHEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _test->p_fullTestName,
          constructorFailTestPhaseResult,
-         elapsedMilliseconds)));
+         elapsedTestMilliseconds)));
 
       ARE_EQUAL(constructorFailTestResult, testResult);
    }
@@ -108,7 +108,7 @@ namespace ZenUnit
          startupFailTestPhaseResult,
          destructorTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
+      const unsigned short elapsedTestMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
 
       const TestResult startupFailTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeStartupFailMock.Return(startupFailTestResult);
@@ -138,7 +138,7 @@ namespace ZenUnit
          constructorSuccessTestPhaseResult,
          startupFailTestPhaseResult,
          destructorTestPhaseResult,
-         elapsedMilliseconds)));
+         elapsedTestMilliseconds)));
       ARE_EQUAL(startupFailTestResult, testResult);
    }
 
@@ -149,7 +149,7 @@ namespace ZenUnit
       const TestPhaseResult successTestPhaseResult = TestPhaseResultWithOutcome(TestOutcome::Success);
       _tryCatchCallerMock->RunTestPhaseMock.Return(successTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
+      const unsigned short elapsedTestMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
 
       const TestResult sixArgTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeFullTestResultMock.Return(sixArgTestResult);
@@ -187,7 +187,7 @@ namespace ZenUnit
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
          TestPhaseResultWithOutcome(TestOutcome::Success),
-         elapsedMilliseconds)));
+         elapsedTestMilliseconds)));
       ARE_EQUAL(testResult, sixArgTestResult);
    }
 
