@@ -155,7 +155,7 @@ This double strictness boosts testing rigor by catching potentially correctness-
    * [Maximizing mutation coverage by testing with random values](#maximizing-mutation-coverage-by-testing-with-random-values)
    * [Steps to build and run ZenUnit and MetalMock unit tests on Linux then install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-linux-then-install-zenunith-and-metalmockh)
    * [Steps to build and run ZenUnit and MetalMock unit tests on Windows then install ZenUnit.h and MetalMock.h](#steps-to-build-and-run-zenunit-and-metalmock-unit-tests-on-windows-then-install-zenunith-and-metalmockh)
-   * [Acknowledgements](#acknowledgements)
+   * [Thanks to](#thanks-to)
 
 ### ZenUnit command line usage
 
@@ -1111,7 +1111,7 @@ cmake . -G"Visual Studio 18 2026" -A x64 -DCMAKE_INSTALL_PREFIX=C:\
 cmake --build . --target install
 ```
 
-### Acknowledgements
+### Thanks to
 
 * [Jason Turner, host of C++ Weekly](https://www.youtube.com/user/lefticus1/videos)
 * [Martin Moene, author of lest and much more](https://github.com/martinmoene/lest)
