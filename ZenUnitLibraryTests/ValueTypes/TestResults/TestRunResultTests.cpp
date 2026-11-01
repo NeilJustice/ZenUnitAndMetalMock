@@ -141,9 +141,9 @@ namespace ZenUnit
       SetState(numberOfFailedTestCases, numberOfSkippedTests, numberOfSkippedTestClasses);
       const ZenUnitArgs args;
       //
-      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
+      const int exitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, exitCode);
    }
 
    TEST4X4(DetermineZenUnitExitCode_Exit0True_AlwaysReturns0,
@@ -160,9 +160,9 @@ namespace ZenUnit
       ZenUnitArgs args;
       args.alwaysExit0 = true;
       //
-      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
+      const int exitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, exitCode);
    }
 
    TEST4X4(DetermineZenUnitExitCode_Exit0True_noskipsTrue_AlwaysReturns0,
@@ -180,9 +180,9 @@ namespace ZenUnit
       args.alwaysExit0 = true;
       args.exit1IfTestsSkipped = true;
       //
-      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
+      const int exitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, exitCode);
    }
 
    TEST4X4(DetermineZenUnitExitCode_noskipsTrue_Returns1IfAnyTestsOrTestClassesSkipped,
@@ -204,9 +204,9 @@ namespace ZenUnit
       ZenUnitArgs args;
       args.exit1IfTestsSkipped = true;
       //
-      const int zenUnitExitCode = _testRunResult.DetermineZenUnitExitCode(args);
+      const int exitCode = _testRunResult.DetermineZenUnitExitCode(args);
       //
-      ARE_EQUAL(expectedZenUnitExitCode, zenUnitExitCode);
+      ARE_EQUAL(expectedZenUnitExitCode, exitCode);
    }
 
    TEST(PrintConclusionLines_0TotalNumberOfTests_PrintsZeroTestClassesRegisteredToRun)

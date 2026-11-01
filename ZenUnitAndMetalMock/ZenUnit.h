@@ -5059,13 +5059,12 @@ namespace ZenUnit
       }
 
       friend bool operator<(
-         const std::unique_ptr<TestClassRunner>& leftTestClassRunner,
-         const std::unique_ptr<TestClassRunner>& rightTestClassRunner)
+         const std::unique_ptr<TestClassRunner>& leftTestClassRunner, const std::unique_ptr<TestClassRunner>& rightTestClassRunner)
       {
          const char* leftTestClassName = leftTestClassRunner->TestClassName();
          const char* rightTestClassName = rightTestClassRunner->TestClassName();
-         const int caseInsensitiveComparisonResult = String::CaseInsensitiveStrcmp(leftTestClassName, rightTestClassName);
-         bool isLessThan = caseInsensitiveComparisonResult < 0;
+         const int caseInsensitiveStrcmpResult = String::CaseInsensitiveStrcmp(leftTestClassName, rightTestClassName);
+         bool isLessThan = caseInsensitiveStrcmpResult < 0;
          return isLessThan;
       }
    };
@@ -5446,8 +5445,8 @@ namespace ZenUnit
          {
             return 1;
          }
-         int zenUnitExitCode = _numberOfFailedTestCases > 0 ? 1 : 0;
-         return zenUnitExitCode;
+         int exitCode = _numberOfFailedTestCases > 0 ? 1 : 0;
+         return exitCode;
       }
 
       virtual void ResetStateInPreparationForNextTestRun()
@@ -5582,7 +5581,7 @@ namespace ZenUnit
 
       virtual ~ExitCodeLinePrinter() = default;
 
-      virtual void PrintExitCodeLine(int zenUnitExitCode, bool alwaysExit0) const
+      virtual void PrintExitCodeLine(int exitCode, bool alwaysExit0) const
       {
          if (alwaysExit0)
          {
@@ -5591,7 +5590,7 @@ namespace ZenUnit
          }
          else
          {
-            if (zenUnitExitCode == 0)
+            if (exitCode == 0)
             {
                _console->WriteColor("[ZenUnit]", Color::Green);
                _console->WriteLine("   ExitCode: 0");
@@ -5599,7 +5598,7 @@ namespace ZenUnit
             else
             {
                _console->WriteColor(">>------>", Color::Red);
-               _console->WriteLine("   ExitCode: " + std::to_string(zenUnitExitCode));
+               _console->WriteLine("   ExitCode: " + std::to_string(exitCode));
             }
          }
       }
@@ -5714,14 +5713,16 @@ namespace ZenUnit
 #endif
          _zenUnitArgs = _argsParser->ParseStringArgs(stringArgs);
          _testClassRunnerRunner->ApplyTestNameFiltersIfAny(_zenUnitArgs.testNameFilters);
+
          const size_t numberOfTestRuns = _zenUnitArgs.testRuns < 0 ?
             std::numeric_limits<size_t>::max() : static_cast<size_t>(_zenUnitArgs.testRuns);
-         int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTests->AccumulateNonConstMemberFunctionNTimes(
+         int exitCode = _nTimesMemberFunctionAccumulator_RunTests->AccumulateNonConstMemberFunctionNTimes(
             numberOfTestRuns,
             this, &ZenUnitTestRunner::RunTests);
-         _exitCodeLinePrinter->PrintExitCodeLine(zenUnitExitCode, _zenUnitArgs.alwaysExit0);
+
+         _exitCodeLinePrinter->PrintExitCodeLine(exitCode, _zenUnitArgs.alwaysExit0);
          _console->WaitForEnterKeyIfDebuggerPresentOrValueTrue(_zenUnitArgs.pauseAfter);
-         return zenUnitExitCode;
+         return exitCode;
       }
 
       virtual std::string StopTestRunStopwatchAndGetElapsedSeconds()
@@ -5749,7 +5750,7 @@ Fatal Windows C++ Runtime Assertion
          SetNewRandomEngineForNewTestRun();
          SetCurrentTestRunNumber(testRunIndex);
 
-         int zenUnitExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
+         int exitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
             this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines,
             _zenUnitArgs, testRunIndex);
 
@@ -5757,7 +5758,7 @@ Fatal Windows C++ Runtime Assertion
          _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
             this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
          _console->WriteNewLineIfValuesAreNotEqual(testRunIndex, numberOfTestRuns - 1ULL);
-         return zenUnitExitCode;
+         return exitCode;
       }
 
       int PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(const ZenUnitArgs& zenUnitArgs, size_t testRunIndex)
@@ -5774,8 +5775,8 @@ Fatal Windows C++ Runtime Assertion
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSecondsString();
          _testRunResult->PrintConclusionLines(numberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
-         int zenUnitExitCode = _testRunResult->DetermineZenUnitExitCode(zenUnitArgs);
-         return zenUnitExitCode;
+         int exitCode = _testRunResult->DetermineZenUnitExitCode(zenUnitArgs);
+         return exitCode;
       }
 
       void RunTestClasses()
@@ -6288,6 +6289,10 @@ Fatal Windows C++ Runtime Assertion
       std::unique_ptr<const _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>
          _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests;
 
+      using _caller_PrintTestClassResultLineType = VoidOneArgMemberFunctionCaller<
+         SpecificTestClassRunner<TestClassType>, const TestClassResult*>;
+      std::unique_ptr<const _caller_PrintTestClassResultLineType> _caller_PrintTestClassResultLine;
+
       using _twoArgTestAnyerType = TwoArgAnyer<
          const std::vector<std::unique_ptr<Test>>,
          bool(*)(const std::unique_ptr<Test>&,
@@ -6304,10 +6309,6 @@ Fatal Windows C++ Runtime Assertion
 
       using _voidZeroArgMemberFunctionCallerType = VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>;
       std::unique_ptr<const _voidZeroArgMemberFunctionCallerType> _voidZeroArgMemberFunctionCaller;
-
-      using _voidOneArgMemberFunctionCallerType = VoidOneArgMemberFunctionCaller<
-         SpecificTestClassRunner<TestClassType>, const TestClassResult*>;
-      std::unique_ptr<const _voidOneArgMemberFunctionCallerType> _voidOneArgMemberFunctionCaller;
       // Constant Components
       std::unique_ptr<const TestCasesAccumulator> _testCasesAccumulator;
       // Mutable Fields
@@ -6322,10 +6323,10 @@ Fatal Windows C++ Runtime Assertion
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          // Function Callers
          , _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(std::make_unique<_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>())
+         , _caller_PrintTestClassResultLine(std::make_unique<_caller_PrintTestClassResultLineType>())
          , _twoArgTestAnyer(std::make_unique<_twoArgTestAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          , _voidZeroArgMemberFunctionCaller(std::make_unique<_voidZeroArgMemberFunctionCallerType>())
-         , _voidOneArgMemberFunctionCaller(std::make_unique<_voidOneArgMemberFunctionCallerType>())
          // Constant Components
          , _testCasesAccumulator(std::make_unique<TestCasesAccumulator>())
          // Mutable Fields
@@ -6371,6 +6372,8 @@ Fatal Windows C++ Runtime Assertion
 
       TestClassResult RunTests() override
       {
+
+
          _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(
             this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
 
@@ -6389,7 +6392,7 @@ Fatal Windows C++ Runtime Assertion
          {
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(
+         _caller_PrintTestClassResultLine->CallConstMemberFunction(
             this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          return std::move(_testClassResult);
       }
@@ -6416,8 +6419,9 @@ Fatal Windows C++ Runtime Assertion
          const std::string atSignTestClassName = String::ConcatStrings("@", _testClassName);
          p_console->WriteColor(atSignTestClassName, Color::Green);
 
+         const std::string testOrTests = _tests.size() == 1 ? " test" : " tests";
          const std::string spacePipeSpaceNumberOfNamedTests = String::ConcatStrings(
-            " | Running ", std::to_string(_tests.size()), _tests.size() == 1 ? " test" : " tests");
+            " | Running ", std::to_string(_tests.size()), testOrTests);
          p_console->WriteLine(spacePipeSpaceNumberOfNamedTests);
       }
 

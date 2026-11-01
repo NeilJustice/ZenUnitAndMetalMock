@@ -28,11 +28,11 @@ namespace ZenUnit
 
    TEST(PrintExitCodeLine_AlwaysExit0IsTrue_PrintExitCode0InGreenRegardlessOfZenUnitExitCode)
    {
-      const int zenUnitExitCode = ZenUnit::Random<int>();
+      const int exitCode = ZenUnit::Random<int>();
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
       //
-      _exitCodeLinePrinter.PrintExitCodeLine(zenUnitExitCode, true);
+      _exitCodeLinePrinter.PrintExitCodeLine(exitCode, true);
       //
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith("[ZenUnit]", Color::Green));
       METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("   ExitCode: 0"));
@@ -53,12 +53,12 @@ namespace ZenUnit
    {
       _consoleMock->WriteColorMock.Expect();
       _consoleMock->WriteLineMock.Expect();
-      const int zenUnitExitCode = ZenUnit::RandomNotEqualTo<int>(0);
+      const int exitCode = ZenUnit::RandomNotEqualTo<int>(0);
       //
-      _exitCodeLinePrinter.PrintExitCodeLine(zenUnitExitCode, false);
+      _exitCodeLinePrinter.PrintExitCodeLine(exitCode, false);
       //
       METALMOCK(_consoleMock->WriteColorMock.CalledOnceWith(">>------>", Color::Red));
-      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("   ExitCode: " + to_string(zenUnitExitCode)));
+      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith("   ExitCode: " + to_string(exitCode)));
    }
 
    RUN_TESTS(ExitCodeLinePrinterTests)

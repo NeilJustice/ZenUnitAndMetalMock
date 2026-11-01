@@ -74,9 +74,9 @@ namespace ZenUnit
    using _voidZeroArgMemberFunctionCallerMockType = VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>;
    _voidZeroArgMemberFunctionCallerMockType* _voidZeroArgMemberFunctionCallerMock = nullptr;
 
-   using _voidOneArgMemberFunctionCallerMockType = VoidOneArgMemberFunctionCallerMock<
+   using _caller_PrintTestClassResultLineMockType = VoidOneArgMemberFunctionCallerMock<
       SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>;
-   _voidOneArgMemberFunctionCallerMockType* _voidOneArgMemberFunctionCallerMock = nullptr;
+   _caller_PrintTestClassResultLineMockType* _caller_PrintTestClassResultLineMock = nullptr;
 
    // Constant Components
    TestCasesAccumulatorMock* _testCasesAccumulatorMock = nullptr;
@@ -98,7 +98,7 @@ namespace ZenUnit
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new _voidZeroArgMemberFunctionCallerMockType);
-      _specificTestClassRunner->_voidOneArgMemberFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock = new _voidOneArgMemberFunctionCallerMockType);
+      _specificTestClassRunner->_caller_PrintTestClassResultLine.reset(_caller_PrintTestClassResultLineMock = new _caller_PrintTestClassResultLineMockType);
       // Constant Components
       _specificTestClassRunner->_testCasesAccumulator.reset(_testCasesAccumulatorMock = new TestCasesAccumulatorMock);
    }
@@ -116,10 +116,10 @@ namespace ZenUnit
       STD_FUNCTION_TARGETS(Watch::MillisecondsToBracketedMillisecondsString, specificTestClassRunner._call_Watch_MillisecondsToBracketedMillisecondsString);
       STD_FUNCTION_TARGETS(ZenUnitTestRunner::GetZenUnitArgs, specificTestClassRunner._call_ZenUnitTestRunner_GetZenUnitArgs);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests);
+      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._caller_PrintTestClassResultLine);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgTestAnyer);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._twoArgMemberForEacher);
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidZeroArgMemberFunctionCaller);
-      DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidOneArgMemberFunctionCaller);
       // Constant Components
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._testCasesAccumulator);
       // Mutable Fields
@@ -221,7 +221,7 @@ namespace ZenUnit
       {
          _voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.Expect();
       }
-      _voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
+      _caller_PrintTestClassResultLineMock->CallConstMemberFunctionMock.Expect();
       _specificTestClassRunner->_testClassResult = TestingNonDefaultTestClassResult();
       TestClassResult expectedResultingTestClassResult = _specificTestClassRunner->_testClassResult;
       expectedResultingTestClassResult.AddTestResult(testClassIsNewableAndDeletableTestResult);
@@ -245,7 +245,7 @@ namespace ZenUnit
          METALMOCK(_voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.CalledOnceWith(
             _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::DoRunTests));
       }
-      METALMOCK(_voidOneArgMemberFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
+      METALMOCK(_caller_PrintTestClassResultLineMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
          &_specificTestClassRunner->_testClassResult));
       ARE_EQUAL(expectedResultingTestClassResult, testClassResult);

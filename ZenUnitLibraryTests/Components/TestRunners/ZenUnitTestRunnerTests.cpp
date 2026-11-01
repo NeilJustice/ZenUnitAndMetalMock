@@ -174,7 +174,7 @@ namespace ZenUnit
 
       _testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.Expect();
 
-      const int zenUnitExitCode = _nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.ReturnRandom();
+      const int exitCode = _nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.ReturnRandom();
 
       _exitCodeLinePrinterMock->PrintExitCodeLineMock.Expect();
 
@@ -191,9 +191,9 @@ namespace ZenUnit
       METALMOCK(_testClassRunnerRunnerMock->ApplyTestNameFiltersIfAnyMock.CalledOnceWith(zenUnitArgs.testNameFilters));
       METALMOCK(_nTimesMemberFunctionAccumulator_RunTestsMock->AccumulateNonConstMemberFunctionNTimesMock.CalledOnceWith(
          expectedNumberOfTestRuns, &_zenUnitTestRunner, &ZenUnitTestRunner::RunTests));
-      METALMOCK(_exitCodeLinePrinterMock->PrintExitCodeLineMock.CalledOnceWith(zenUnitExitCode, zenUnitArgs.alwaysExit0));
+      METALMOCK(_exitCodeLinePrinterMock->PrintExitCodeLineMock.CalledOnceWith(exitCode, zenUnitArgs.alwaysExit0));
       METALMOCK(_consoleMock->WaitForEnterKeyIfDebuggerPresentOrValueTrueMock.CalledOnceWith(zenUnitArgs.pauseAfter));
-      ARE_EQUAL(zenUnitExitCode, returnedZenUnitExitCode);
+      ARE_EQUAL(exitCode, returnedZenUnitExitCode);
    }
 
    TEST(SkipTest_CallsTestRunResultAddSkippedFullTestName)
