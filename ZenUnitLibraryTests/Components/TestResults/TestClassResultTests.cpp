@@ -33,17 +33,12 @@ namespace ZenUnit
    } _testClassResultSelfMocked;
    // Function Pointers
    METALMOCK_NONVOID1_STATIC_OR_FREE(string, _call_Watch_MillisecondsToBracketedMillisecondsString, unsigned short)
-   // Mutable Fields
-   unsigned short _elapsedMilliseconds = 0;
 
    STARTUP
    {
       // Function Pointers
-      _testClassResultSelfMocked._call_Watch_MillisecondsToBracketedMillisecondsString
-         = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MillisecondsToBracketedMillisecondsStringMock);
-      // Mutable Fields
-      _testClassResult._elapsedMilliseconds = _elapsedMilliseconds = ZenUnit::Random<unsigned short>();
-      _testClassResultSelfMocked._elapsedMilliseconds = _elapsedMilliseconds;
+      _testClassResultSelfMocked._call_Watch_MillisecondsToBracketedMillisecondsString =
+         BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MillisecondsToBracketedMillisecondsStringMock);
    }
 
    TEST(DefaultConstructor_SetsWatchFunction)
@@ -53,7 +48,6 @@ namespace ZenUnit
       STD_FUNCTION_TARGETS(Watch::MillisecondsToBracketedMillisecondsString,
          testClassResult._call_Watch_MillisecondsToBracketedMillisecondsString);
       // Mutable Fields
-      IS_ZERO(testClassResult._elapsedMilliseconds);
       IS_EMPTY(testClassResult._testResults);
    }
 
@@ -218,8 +212,10 @@ namespace ZenUnit
       consoleMock.WriteMock.Expect();
       consoleMock.WriteColorMock.Expect();
       consoleMock.WriteLineMock.Expect();
+
+      const unsigned short elapsedTestClassMilliseconds = ZenUnit::Random<unsigned short>();
       //
-      _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
+      _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock, elapsedTestClassMilliseconds);
       //
       const std::string expected_closingBracket_milliseconds_newline = String::ConcatStrings(
          "  ] ", twoDecimalPlaceMillisecondsString, "\n");
@@ -227,7 +223,7 @@ namespace ZenUnit
       METALMOCKTHEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce()).Then(
 
       METALMOCKTHEN(_call_Watch_MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(
-         _elapsedMilliseconds))).Then(
+         elapsedTestClassMilliseconds))).Then(
 
       METALMOCKTHEN(consoleMock.WriteMock.CalledOnceWith(
          "[  "))).Then(
@@ -251,8 +247,10 @@ namespace ZenUnit
 
       ConsoleMock consoleMock;
       consoleMock.WriteLineColorMock.Expect();
+
+      const unsigned short elapsedTestClassMilliseconds = ZenUnit::Random<unsigned short>();
       //
-      _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock);
+      _testClassResultSelfMocked.PrintTestClassResultLine(&consoleMock, elapsedTestClassMilliseconds);
       //
       const std::string expected_testClassFailed_milliseconds_newline = String::ConcatStrings(
          "[TestClass Failed] ", bracketedMillisecondsString, "\n");
@@ -260,7 +258,7 @@ namespace ZenUnit
       METALMOCKTHEN(_testClassResultSelfMocked.NumberOfFailedTestCasesMock.CalledOnce()).Then(
 
       METALMOCKTHEN(_call_Watch_MillisecondsToBracketedMillisecondsStringMock.CalledOnceWith(
-         _elapsedMilliseconds))).Then(
+         elapsedTestClassMilliseconds))).Then(
 
       METALMOCKTHEN(consoleMock.WriteLineColorMock.CalledOnceWith(
          expected_testClassFailed_milliseconds_newline, Color::Red)));

@@ -92,9 +92,9 @@ namespace ZenUnit
       const TestClassRunnerMock* const testClassRunner1MockAfter = static_cast<const TestClassRunnerMock*>(_testClassRunnerRunner._testClassRunners[0].get());
       const TestClassRunnerMock* const testClassRunner2MockAfter = static_cast<const TestClassRunnerMock*>(_testClassRunnerRunner._testClassRunners[1].get());
       const TestClassRunnerMock* const testClassRunner3MockAfter = static_cast<const TestClassRunnerMock*>(_testClassRunnerRunner._testClassRunners[2].get());
-      METALMOCK(testClassRunner1MockAfter->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testClassRunner2MockAfter->NumberOfTestCasesMock.CalledOnce());
-      METALMOCK(testClassRunner3MockAfter->NumberOfTestCasesMock.CalledOnce());
+      METALMOCKTHEN(testClassRunner1MockAfter->NumberOfTestCasesMock.CalledOnce()).Then(
+      METALMOCKTHEN(testClassRunner2MockAfter->NumberOfTestCasesMock.CalledOnce())).Then(
+      METALMOCKTHEN(testClassRunner3MockAfter->NumberOfTestCasesMock.CalledOnce()));
       const size_t expectedTotalNumberOfTestCases = numberOfTestCases1 + numberOfTestCases2 + numberOfTestCases3;
       ARE_EQUAL(expectedTotalNumberOfTestCases, totalNumberOfTestCases);
    }

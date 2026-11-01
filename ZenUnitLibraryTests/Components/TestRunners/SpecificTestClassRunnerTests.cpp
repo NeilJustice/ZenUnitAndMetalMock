@@ -4,11 +4,12 @@
 #include "ZenUnitLibraryTests/Components/Tests/MetalMock/TestMock.h"
 #include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestClassResultMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/NonVoidOneArgMemberFunctionCallerMock.h"
-#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidOneArgMemberFunctionCallerMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidTwoArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/FunctionCallers/MetalMock/VoidZeroArgMemberFunctionCallerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberAnyerMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Iteration/MetalMock/TwoArgMemberForEacherMock.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 
 namespace ZenUnit
 {
@@ -19,7 +20,7 @@ namespace ZenUnit
    AFACT(HasTestThatMatchesTestNameFilter_TestNameFilterTestNamePatternIsNotEmpty_ReturnsTrueIfTestNameFilterMatchesTestNameReturnsTrue)
    AFACT(TestNameFilterMatchesTestName_ReturnsTrueIfTestNameFilterMatchesTestName)
    AFACT(NumberOfTestCases_ReturnsSumOfNumberOfTestCases)
-   FACTS(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult)
+   FACTS(RunTests_DoesSo)
    FACTS(DoRunTests_RandomlyRunsTestsIfRandomOtherwiseSequentiallyRunsTests)
    FACTS(PrintTestClassNameAndNumberOfNamedTests_WritesTestClassNameVerticalBarNumberOfTests)
    FACTS(ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests_RunsNewableDeletableTest_AddsResultToResults_ReturnsTrueIfNewableAndDeletable)
@@ -74,11 +75,14 @@ namespace ZenUnit
    using _voidZeroArgMemberFunctionCallerMockType = VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>;
    _voidZeroArgMemberFunctionCallerMockType* _voidZeroArgMemberFunctionCallerMock = nullptr;
 
-   using _caller_PrintTestClassResultLineMockType = VoidOneArgMemberFunctionCallerMock<
-      SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>;
+   using _caller_PrintTestClassResultLineMockType = VoidTwoArgMemberFunctionCallerMock<
+      SpecificTestClassRunner<TestingTestClass>,
+      const TestClassResult*,
+      unsigned short>;
    _caller_PrintTestClassResultLineMockType* _caller_PrintTestClassResultLineMock = nullptr;
 
    // Constant Components
+   StopwatchMock* _stopwatchMock = nullptr;
    TestCasesAccumulatorMock* _testCasesAccumulatorMock = nullptr;
 
    const string _testClassName = ZenUnit::Random<string>();
@@ -100,6 +104,7 @@ namespace ZenUnit
       _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new _voidZeroArgMemberFunctionCallerMockType);
       _specificTestClassRunner->_caller_PrintTestClassResultLine.reset(_caller_PrintTestClassResultLineMock = new _caller_PrintTestClassResultLineMockType);
       // Constant Components
+      _specificTestClassRunner->_stopwatch.reset(_stopwatchMock = new StopwatchMock);
       _specificTestClassRunner->_testCasesAccumulator.reset(_testCasesAccumulatorMock = new TestCasesAccumulatorMock);
    }
 
@@ -202,17 +207,20 @@ namespace ZenUnit
       ARE_EQUAL(30, numberOfTestCases);
    }
 
-   TEST2X2(RunTests_PrintsTestClassNameAndNumberOfNamedTests_ConfirmsTestClassNewableAndDeletable_RunsTests_PrintsAndReturnsTestClassResult,
+   TEST2X2(RunTests_DoesSo,
       TestOutcome testOutcome, bool expectDoRunTestsCall,
       TestOutcome::Anomaly, false,
       TestOutcome::Exception, false,
       TestOutcome::Success, true)
    {
+      _stopwatchMock->StartMock.Expect();
+
       _voidZeroArgMemberFunctionCallerMock->CallConstMemberFunctionMock.Expect();
 
       TestResult testClassIsNewableAndDeletableTestResult;
       testClassIsNewableAndDeletableTestResult.testOutcome = testOutcome;
-      _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock->CallConstMemberFunctionMock.Return(testClassIsNewableAndDeletableTestResult);
+      _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock->CallConstMemberFunctionMock.Return(
+         testClassIsNewableAndDeletableTestResult);
 
       const size_t numberOfTestResults = ZenUnit::RandomBetween<size_t>(1, 3);
       _testCasesAccumulatorMock->SumNumberOfTestCasesMock.Return(numberOfTestResults);
@@ -221,21 +229,27 @@ namespace ZenUnit
       {
          _voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.Expect();
       }
+
+      const unsigned short elapsedMilliseconds = _stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
       _caller_PrintTestClassResultLineMock->CallConstMemberFunctionMock.Expect();
+
       _specificTestClassRunner->_testClassResult = TestingNonDefaultTestClassResult();
       TestClassResult expectedResultingTestClassResult = _specificTestClassRunner->_testClassResult;
       expectedResultingTestClassResult.AddTestResult(testClassIsNewableAndDeletableTestResult);
       //
       const TestClassResult testClassResult = _specificTestClassRunner->RunTests();
       //
-      METALMOCK(_voidZeroArgMemberFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
-         _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassNameAndNumberOfNamedTests));
+      METALMOCKTHEN(_stopwatchMock->StartMock.CalledOnce()).Then(
 
-      METALMOCK(_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock->CallConstMemberFunctionMock.CalledOnceWith(
+      METALMOCKTHEN(_voidZeroArgMemberFunctionCallerMock->CallConstMemberFunctionMock.CalledOnceWith(
+         _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassNameAndNumberOfNamedTests))).Then(
+
+      METALMOCKTHEN(_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
-         &_specificTestClassRunner->_newableDeletableTest));
+         &_specificTestClassRunner->_newableDeletableTest))).Then(
 
-      METALMOCK(_testCasesAccumulatorMock->SumNumberOfTestCasesMock.CalledOnceWith(&_specificTestClassRunner->_tests));
+      METALMOCKTHEN(_testCasesAccumulatorMock->SumNumberOfTestCasesMock.CalledOnceWith(
+         &_specificTestClassRunner->_tests)));
 
       constexpr size_t NewableAndDeletableTestResult = 1;
       ARE_EQUAL(NewableAndDeletableTestResult + numberOfTestResults, testClassResult._testResults.capacity());
@@ -245,9 +259,12 @@ namespace ZenUnit
          METALMOCK(_voidZeroArgMemberFunctionCallerMock->CallNonConstMemberFunctionMock.CalledOnceWith(
             _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::DoRunTests));
       }
-      METALMOCK(_caller_PrintTestClassResultLineMock->CallConstMemberFunctionMock.CalledOnceWith(
+
+      METALMOCKTHEN(_stopwatchMock->StopAndGetElapsedMillisecondsMock.CalledOnce()).Then(
+      METALMOCKTHEN(_caller_PrintTestClassResultLineMock->CallConstMemberFunctionMock.CalledOnceWith(
          _specificTestClassRunner.get(), &SpecificTestClassRunner<TestingTestClass>::PrintTestClassResultLine,
-         &_specificTestClassRunner->_testClassResult));
+         &_specificTestClassRunner->_testClassResult, elapsedMilliseconds)));
+
       ARE_EQUAL(expectedResultingTestClassResult, testClassResult);
       IS_DEFAULT_VALUE(_specificTestClassRunner->_testClassResult); // Assertion that _testClassResult was std::moved from
    }
@@ -415,7 +432,9 @@ namespace ZenUnit
       if (expectAnyerCall)
       {
          METALMOCK(p_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
-            zenUnitArgs.testNameFilters, _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName, testName.c_str()));
+            zenUnitArgs.testNameFilters,
+            _specificTestClassRunner.get(), &TestClassRunner::TestNameFilterMatchesTestName,
+            testName.c_str()));
       }
       const string expectedBarTestName = String::ConcatStrings("|", testName);
       METALMOCK(p_consoleMock->WriteMock.CalledOnceWith(expectedBarTestName));
@@ -430,10 +449,11 @@ namespace ZenUnit
    {
       TestClassResultMock testClassResultMock;
       testClassResultMock.PrintTestClassResultLineMock.Expect();
+      const unsigned short elapsedTestClassMilliseconds = ZenUnit::Random<unsigned short>();
       //
-      _specificTestClassRunner->PrintTestClassResultLine(&testClassResultMock);
+      _specificTestClassRunner->PrintTestClassResultLine(&testClassResultMock, elapsedTestClassMilliseconds);
       //
-      METALMOCK(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(p_consoleMock));
+      METALMOCK(testClassResultMock.PrintTestClassResultLineMock.CalledOnceWith(p_consoleMock, elapsedTestClassMilliseconds));
    }
 
    RUN_TESTS(SpecificTestClassRunnerTests)

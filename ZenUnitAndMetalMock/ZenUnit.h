@@ -4692,14 +4692,11 @@ namespace ZenUnit
       // Function Pointers
       std::function<std::string(unsigned short)> _call_Watch_MillisecondsToBracketedMillisecondsString;
       // Mutable Fields
-      unsigned short _elapsedMilliseconds;
       std::vector<TestResult> _testResults;
    public:
       TestClassResult() noexcept
          // Function Pointers
          : _call_Watch_MillisecondsToBracketedMillisecondsString(Watch::MillisecondsToBracketedMillisecondsString)
-         // Mutable Fields
-         , _elapsedMilliseconds(0)
       {
       }
 
@@ -4759,10 +4756,11 @@ namespace ZenUnit
          return static_cast<size_t>(numberOfFailedTestCases);
       }
 
-      virtual void PrintTestClassResultLine(const Console* console) const
+      virtual void PrintTestClassResultLine(const Console* console, unsigned short elapsedTestClassMilliseconds) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
-         const std::string twoDecimalPlaceMillisecondsString = MillisecondsToBracketedMillisecondsString(_elapsedMilliseconds);
+         const std::string twoDecimalPlaceMillisecondsString =
+            MillisecondsToBracketedMillisecondsString(elapsedTestClassMilliseconds);
          [[likely]] if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
@@ -6292,8 +6290,10 @@ Fatal Windows C++ Runtime Assertion
       std::unique_ptr<const _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>
          _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests;
 
-      using _caller_PrintTestClassResultLineType = VoidOneArgMemberFunctionCaller<
-         SpecificTestClassRunner<TestClassType>, const TestClassResult*>;
+      using _caller_PrintTestClassResultLineType = VoidTwoArgMemberFunctionCaller<
+         SpecificTestClassRunner<TestClassType>,
+         const TestClassResult*,
+         unsigned short>;
       std::unique_ptr<const _caller_PrintTestClassResultLineType> _caller_PrintTestClassResultLine;
 
       using _twoArgTestAnyerType = TwoArgAnyer<
@@ -6314,6 +6314,8 @@ Fatal Windows C++ Runtime Assertion
       std::unique_ptr<const _voidZeroArgMemberFunctionCallerType> _voidZeroArgMemberFunctionCaller;
       // Constant Components
       std::unique_ptr<const TestCasesAccumulator> _testCasesAccumulator;
+      // Mutable Components
+      std::unique_ptr<Stopwatch> _stopwatch;
       // Mutable Fields
       NewableDeletableTest<TestClassType> _newableDeletableTest;
       const char* _testClassName;
@@ -6332,6 +6334,8 @@ Fatal Windows C++ Runtime Assertion
          , _voidZeroArgMemberFunctionCaller(std::make_unique<_voidZeroArgMemberFunctionCallerType>())
          // Constant Components
          , _testCasesAccumulator(std::make_unique<TestCasesAccumulator>())
+         // Mutable Components
+         , _stopwatch(std::make_unique<Stopwatch>())
          // Mutable Fields
          , _newableDeletableTest(testClassName)
          , _testClassName(testClassName)
@@ -6375,7 +6379,7 @@ Fatal Windows C++ Runtime Assertion
 
       TestClassResult RunTests() override
       {
-
+         _stopwatch->Start();
 
          _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(
             this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
@@ -6388,15 +6392,18 @@ Fatal Windows C++ Runtime Assertion
          constexpr size_t LengthOfNewableAndDeletableTestResult = 1;
          const size_t numberOfTestResultsForThisTestClass =
             LengthOfNewableAndDeletableTestResult + _testCasesAccumulator->SumNumberOfTestCases(&_tests);
-
          _testClassResult.ReserveVectorCapacityForNumberOfTestResults(numberOfTestResultsForThisTestClass);
          _testClassResult.AddTestResult(std::move(newableAndDeletableTestResult));
+
          if (newableAndDeletableTestResult.testOutcome == TestOutcome::Success)
          {
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
+
+         const unsigned short elapsedMilliseconds = _stopwatch->StopAndGetElapsedMilliseconds();
          _caller_PrintTestClassResultLine->CallConstMemberFunction(
-            this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
+            this, &SpecificTestClassRunner::PrintTestClassResultLine,
+            &_testClassResult, elapsedMilliseconds);
          return std::move(_testClassResult);
       }
    private:
@@ -6464,9 +6471,9 @@ Fatal Windows C++ Runtime Assertion
          }
       }
 
-      void PrintTestClassResultLine(const TestClassResult* testClassResult) const
+      void PrintTestClassResultLine(const TestClassResult* testClassResult, unsigned short elapsedTestClassMilliseconds) const
       {
-         testClassResult->PrintTestClassResultLine(p_console.get());
+         testClassResult->PrintTestClassResultLine(p_console.get(), elapsedTestClassMilliseconds);
       }
    };
 
