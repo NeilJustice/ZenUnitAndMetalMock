@@ -994,7 +994,10 @@ namespace ZenUnit
          return false;
       }
 
-      virtual bool MatchesTestCase(std::string_view testClassName, std::string_view testName, size_t testNXNTestCaseNumber) const
+      virtual bool MatchesTestCase(
+         std::string_view testClassName,
+         std::string_view testName,
+         size_t testNXNTestCaseNumber) const
       {
          const bool testClassNameMatches = MatchesTestClassName(testClassName);
          if (!testClassNameMatches)
