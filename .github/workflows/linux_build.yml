@@ -64,14 +64,14 @@ jobs:
       - name: Run all Debug or RelWithDebInfo tests
         run: "TestScripts/RunAll${{matrix.cmake_build_type}}Tests.sh"
 
-      - name: Install and run lcov 2.5 then upload to Codecov.io if g++ RelWithDebInfo
+      - name: Install and run lcov 2.6 then upload to Codecov.io if g++ RelWithDebInfo
         run: |
-          mkdir -p lcov_2.5
-          wget https://github.com/linux-test-project/lcov/releases/download/v2.5/lcov-2.5.tar.gz --output-document="lcov_2.5/lcov-2.5.tar.gz"
-          tar xf "lcov_2.5/lcov-2.5.tar.gz" --strip-components=1 --directory lcov_2.5
-          lcov_2.5/bin/lcov --version
-          lcov_2.5/bin/lcov --directory . --capture --no-external --ignore-errors inconsistent --output-file coverage.info
-          lcov_2.5/bin/lcov --list coverage.info
+          mkdir -p lcov_2.6
+          wget https://github.com/linux-test-project/lcov/releases/download/v2.6/lcov-2.6.tar.gz --output-document="lcov_2.6/lcov-2.6.tar.gz"
+          tar xf "lcov_2.6/lcov-2.6.tar.gz" --strip-components=1 --directory lcov_2.6
+          lcov_2.6/bin/lcov --version
+          lcov_2.6/bin/lcov --directory . --capture --no-external --ignore-errors inconsistent --output-file coverage.info
+          lcov_2.6/bin/lcov --list coverage.info
           bash <(curl -s https://codecov.io/bash) -f coverage.info -t ${{ secrets.CODECOV_TOKEN }} || echo "Codecov did not collect coverage reports"
         if: ${{ matrix.cxx == 'g++' && matrix.cmake_build_type == 'RelWithDebInfo' }}
 
