@@ -8330,22 +8330,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<typename ElementType>
-   std::set<ElementType> RandomOrderedSet()
-   {
-      const std::size_t randomOrderedSetSize = RandomBetween<size_t>(0, 3);
-      std::set<ElementType> randomOrderedSet = RandomOrderedSetWithSize<ElementType>(randomOrderedSetSize);
-      return randomOrderedSet;
-   }
-
-   template<typename ElementType>
-   std::set<ElementType> RandomNonEmptyOrderedSet()
-   {
-      const std::size_t randomNonEmptyOrderedSetSize = RandomBetween<size_t>(1, 3);
-      std::set<ElementType> randomNonEmptyOrderedSet = RandomOrderedSetWithSize<ElementType>(randomNonEmptyOrderedSetSize);
-      return randomNonEmptyOrderedSet;
-   }
-
-   template<typename ElementType>
    std::unordered_set<ElementType> RandomUnorderedSetWithSize(size_t size)
    {
       size_t numberOfIterations = size;
