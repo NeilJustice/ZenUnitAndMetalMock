@@ -779,8 +779,7 @@ namespace ZenUnit
       static unsigned short ToUnsignedShort(std::string_view str)
       {
          unsigned short unsignedShortValue = 0;
-         std::from_chars_result fromCharsResult = std::from_chars(
-            str.data(), str.data() + str.size(), unsignedShortValue, 10);
+         std::from_chars_result fromCharsResult = std::from_chars(str.data(), str.data() + str.size(), unsignedShortValue, 10);
          [[unlikely]] if (fromCharsResult.ec != std::errc{})
          {
             const std::string exceptionMessage = String::ConcatStrings(
@@ -886,7 +885,10 @@ namespace ZenUnit
       }
    };
 
-   [[noreturn]] NOINLINE inline void Exit1DueToZenUnitInternalAssertionHavingFailed(const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName) // LCOV_EXCL_LINE
+   [[noreturn]] NOINLINE inline void Exit1DueToZenUnitInternalAssertionHavingFailed(
+      const char* predicateText,
+      FilePathLineNumber filePathLineNumber,
+      const char* functionName) // LCOV_EXCL_LINE
    {
       const std::string assertTrueFailedErrorMessage = String::ConcatValues( // LCOV_EXCL_LINE
          "ZENUNIT_ASSERT(", predicateText, ") failed in ", functionName, "()\n", // LCOV_EXCL_LINE
@@ -895,7 +897,11 @@ namespace ZenUnit
       exit(1); // LCOV_EXCL_LINE
    }
 
-   inline void AssertTrue(bool predicateResult, const char* predicateText, FilePathLineNumber filePathLineNumber, const char* functionName)
+   inline void AssertTrue(
+      bool predicateResult,
+      const char* predicateText,
+      FilePathLineNumber filePathLineNumber,
+      const char* functionName)
    {
       if (!predicateResult)
       {
@@ -5290,13 +5296,17 @@ namespace ZenUnit
       friend class TestRunResultTests;
    private:
       // Function Callers
-      using MemberForEacherSkippedTestsType = MemberForEacher<
-         std::vector<std::string>, TestRunResult, void(TestRunResult::*)(const std::string&) const>;
-      std::unique_ptr<const MemberForEacherSkippedTestsType> _memberForEacherSkippedTests;
+      using _memberForEacherSkippedTestsType = MemberForEacher<
+         std::vector<std::string>,
+         TestRunResult,
+         void(TestRunResult::*)(const std::string&) const>;
+      std::unique_ptr<const _memberForEacherSkippedTestsType> _memberForEacherSkippedTests;
 
-      using MemberForEacherTestClassResultsType = MemberForEacher<
-         std::vector<TestClassResult>, TestRunResult, void(TestRunResult::*)(const TestClassResult&) const>;
-      std::unique_ptr<const MemberForEacherTestClassResultsType> _memberForEacherTestClassResults;
+      using _memberForEacherTestClassResultsType = MemberForEacher<
+         std::vector<TestClassResult>,
+         TestRunResult,
+         void(TestRunResult::*)(const TestClassResult&) const>;
+      std::unique_ptr<const _memberForEacherTestClassResultsType> _memberForEacherTestClassResults;
 
       std::unique_ptr<const ThreeArgForEacherType> _threeArgForEacher;
       // Constant Components
@@ -5312,8 +5322,8 @@ namespace ZenUnit
    public:
       TestRunResult() noexcept
          // Function Callers
-         : _memberForEacherSkippedTests(std::make_unique<MemberForEacherSkippedTestsType>())
-         , _memberForEacherTestClassResults(std::make_unique<MemberForEacherTestClassResultsType>())
+         : _memberForEacherSkippedTests(std::make_unique<_memberForEacherSkippedTestsType>())
+         , _memberForEacherTestClassResults(std::make_unique<_memberForEacherTestClassResultsType>())
          , _threeArgForEacher(std::make_unique<ThreeArgForEacherType>())
          // Constant Components
          , _console(std::make_unique<Console>())
@@ -5327,7 +5337,10 @@ namespace ZenUnit
 
       virtual ~TestRunResult() = default;
 
-      virtual void AddSkippedTest(const char* testClassName, const char* testName, const char* skipReason)
+      virtual void AddSkippedTest(
+         const char* testClassName,
+         const char* testName,
+         const char* skipReason)
       {
          std::string fullTestNameAndSkipReason = String::ConcatStrings(testClassName, ".", testName, " skipped because \"", skipReason, "\"");
          _skippedFullTestNamesAndSkipReasons.emplace_back(std::move(fullTestNameAndSkipReason));
