@@ -14,7 +14,7 @@ jobs:
           fetch-depth: 0
           
       - name: Download LinuxCPlusPlusBuilder
-        uses: dawidd6/action-download-artifact@v9
+        uses: dawidd6/action-download-artifact@v28
         with:
           repo: NeilJustice/LinuxCPlusPlusBuilder
           github_token: ${{ secrets.CSHARP_AND_CPLUSPLUS_BUILDERS_READ_PAT }}
