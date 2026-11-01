@@ -5189,7 +5189,9 @@ namespace ZenUnit
          std::unique_ptr<TestClassRunner>& outTestClassRunner, const std::vector<TestNameFilter>& testNameFilters)
       {
          const bool anyTestNameFilterMatchesTestClass = _twoArgMemberAnyer->TwoArgAny(
-            testNameFilters, this, &TestClassRunnerRunner::TestNameFilterMatchesTestClass, outTestClassRunner.get());
+            testNameFilters,
+            this, &TestClassRunnerRunner::TestNameFilterMatchesTestClass,
+            outTestClassRunner.get());
          if (!anyTestNameFilterMatchesTestClass)
          {
             outTestClassRunner = std::make_unique<NoOpTestClassRunner>();

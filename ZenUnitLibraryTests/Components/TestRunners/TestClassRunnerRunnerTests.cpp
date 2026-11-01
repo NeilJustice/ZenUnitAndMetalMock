@@ -163,7 +163,9 @@ namespace ZenUnit
       _testClassRunnerRunner.ResetTestClassRunnerWithNoOpIfTestClassNameDoesNotMatchAnyTestNameFilter(testClassRunner, testNameFilters);
       //
       METALMOCK(_twoArgMemberAnyerMock->TwoArgAnyMock.CalledOnceWith(
-         testNameFilters, &_testClassRunnerRunner, &TestClassRunnerRunner::TestNameFilterMatchesTestClass, testClassRunner.get()));
+         testNameFilters,
+         &_testClassRunnerRunner, &TestClassRunnerRunner::TestNameFilterMatchesTestClass,
+         testClassRunner.get()));
       IS_TRUE(dynamic_cast<NoOpTestClassRunner*>(testClassRunner.get()) == nullptr);
    }
 
@@ -195,8 +197,8 @@ namespace ZenUnit
       const bool testNameFilterMatchesTestClass =
          _testClassRunnerRunner.TestNameFilterMatchesTestClass(testNameFilterMock, testClassRunner.get());
       //
-      METALMOCK(testClassRunnerMock->TestClassNameMock.CalledOnce());
-      METALMOCK(testNameFilterMock.MatchesTestClassNameMock.CalledOnceWith(testClassName.c_str()));
+      METALMOCKTHEN(testClassRunnerMock->TestClassNameMock.CalledOnce()).Then(
+      METALMOCKTHEN(testNameFilterMock.MatchesTestClassNameMock.CalledOnceWith(testClassName.c_str())));
       IS_FALSE(testNameFilterMatchesTestClass);
    }
 
@@ -215,9 +217,14 @@ namespace ZenUnit
       const bool testNameFilterMatchesTestClass =
          _testClassRunnerRunner.TestNameFilterMatchesTestClass(testNameFilterMock, testClassRunner.get());
       //
-      METALMOCK(testClassRunnerMock->TestClassNameMock.CalledOnce());
-      METALMOCK(testClassRunnerMock->HasTestThatMatchesTestNameFilterMock.CalledOnceWith(testNameFilterMock));
-      METALMOCK(testNameFilterMock.MatchesTestClassNameMock.CalledOnceWith(testClassName.c_str()));
+      METALMOCKTHEN(testClassRunnerMock->TestClassNameMock.CalledOnce()).Then(
+
+      METALMOCKTHEN(testNameFilterMock.MatchesTestClassNameMock.CalledOnceWith(
+         testClassName.c_str()))).Then(
+
+      METALMOCKTHEN(testClassRunnerMock->HasTestThatMatchesTestNameFilterMock.CalledOnceWith(
+         testNameFilterMock)));
+
       ARE_EQUAL(hasTestThatMatchesTestNameFilter, testNameFilterMatchesTestClass);
    }
 
@@ -235,14 +242,15 @@ namespace ZenUnit
       //
       const vector<TestClassResult> testClassResults = _testClassRunnerRunner.RunTestClasses(zenUnitArgs);
       //
-      METALMOCK(_testClassRunnerSorterMock->SortMock.CalledOnceWith(&_testClassRunnerRunner._testClassRunners));
-
-      METALMOCK(_transformerMock->TransformMock.CalledOnceWith(
-         &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner));
-
       const ZenUnitArgs expectedResultingZenUnitArgs;
-      ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
 
+      METALMOCKTHEN(_testClassRunnerSorterMock->SortMock.CalledOnceWith(
+         &_testClassRunnerRunner._testClassRunners)).Then(
+
+      METALMOCKTHEN(_transformerMock->TransformMock.CalledOnceWith(
+         &_testClassRunnerRunner._testClassRunners, &TestClassRunnerRunner::RunTestClassRunner)));
+
+      ARE_EQUAL(expectedResultingZenUnitArgs, zenUnitArgs);
       VECTORS_ARE_EQUAL(transformReturnValue, testClassResults);
    }
 
