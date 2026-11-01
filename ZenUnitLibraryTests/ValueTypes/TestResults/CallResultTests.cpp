@@ -4,7 +4,7 @@ namespace ZenUnit
 {
    TESTS(TestPhaseResultTests)
    AFACT(DefaultConstructor_SetsFieldsTo0)
-   AFACT(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
+   AFACT(TestPhaseConstructor_SetsFields)
    EVIDENCE
 
    TEST(DefaultConstructor_SetsFieldsTo0)
@@ -13,18 +13,16 @@ namespace ZenUnit
       TestPhaseResult expectedDefaultTestPhaseResult;
       expectedDefaultTestPhaseResult.testPhase = TestPhase::Unset;
       expectedDefaultTestPhaseResult.testOutcome = TestOutcome::Success;
-      expectedDefaultTestPhaseResult.elapsedMilliseconds = 0;
       expectedDefaultTestPhaseResult.anomalyOrException = nullptr;
       ARE_EQUAL(expectedDefaultTestPhaseResult, defaultTestPhaseResult);
    }
 
-   TEST(TestPhaseConstructor_SetsTestPhase_SetsOtherFieldsTo0)
+   TEST(TestPhaseConstructor_SetsFields)
    {
       const TestPhaseResult testPhaseResult(TestPhase::Constructor);
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::Constructor;
       expectedTestPhaseResult.testOutcome = TestOutcome::Success;
-      expectedTestPhaseResult.elapsedMilliseconds = 0;
       expectedTestPhaseResult.anomalyOrException = nullptr;
       ARE_EQUAL(expectedTestPhaseResult, testPhaseResult);
    }

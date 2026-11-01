@@ -70,7 +70,7 @@ namespace ZenUnit
       expectedSet.insert(1);
       SetType<int> actualSet;
       THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: SETS_ARE_EQUAL(expectedSet, actualSet)",
 "Expected: " + _expectedIntSetTypeName + " (size 1):",
 "{",
@@ -93,7 +93,7 @@ namespace ZenUnit
       SetType<int> actualSet;
       actualSet.insert(2);
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: SETS_ARE_EQUAL(expectedSet, actualSet, messageA, messageB)",
 "Expected: " + _expectedIntSetTypeName + " (size 1):",
 "{",
@@ -117,7 +117,7 @@ namespace ZenUnit
       expectedSet.insert(UserType(1));
       SetType<UserType> actualSet;
       actualSet.insert(UserType(2));
-      THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(SETS_ARE_EQUAL(expectedSet, actualSet), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: SETS_ARE_EQUAL(expectedSet, actualSet)",
 "Expected: " + _expectedUserTypeSetTypeName + " (size 1):",
 "{",

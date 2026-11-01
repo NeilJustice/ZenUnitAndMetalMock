@@ -44,12 +44,12 @@ namespace ZenUnit
 
    #ifdef _WIN32
       #ifdef _DEBUG
-         static_assert(sizeof(Test) == 64);
+         static_assert(sizeof(Test) == 72);
       #else
-         static_assert(sizeof(Test) == 64);
+         static_assert(sizeof(Test) == 72);
       #endif
    #elifdef __linux__
-      static_assert(sizeof(Test) == 64);
+      static_assert(sizeof(Test) == 72);
    #endif
 
    #ifdef _WIN32

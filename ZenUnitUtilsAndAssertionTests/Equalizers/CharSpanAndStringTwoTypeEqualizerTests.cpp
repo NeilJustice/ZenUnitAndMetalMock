@@ -24,7 +24,7 @@ TEST(TwoTypeEqualizer_MutableCharSpan_String_LengthsAreNotEqual_ThrowsAnomaly)
    catch (const ZenUnit::Anomaly& anomaly)
    {
       const string anomalyMessage = anomaly.what();
-      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+      const string expectedAnomalyMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expectedMutableCharSpan.size(), actualConstantString.size())",
 "Expected: 3",
 "  Actual: 5",
@@ -47,7 +47,7 @@ TEST(TwoTypeEqualizer_MutableCharSpan_String_LengthsAreEqual_CharsAreNotEqual_Th
    {
       const string anomalyMessage = anomaly.what();
 #if defined __linux__
-      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+      const string expectedAnomalyMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAYS_ARE_EQUAL(expectedMutableCharSpan.data(), const_cast<char*>(actualConstantString.data()), 3)",
 "Expected: char*",
 "  Actual: char*",
@@ -58,7 +58,7 @@ TEST(TwoTypeEqualizer_MutableCharSpan_String_LengthsAreEqual_CharsAreNotEqual_Th
 "File.cpp(1)",
 "File.cpp(1)");
 #elif defined _WIN32
-      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+      const string expectedAnomalyMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAYS_ARE_EQUAL(expectedMutableCharSpan.data(), const_cast<char*>(actualConstantString.data()), 3)",
 "Expected: char *",
 "  Actual: char *",
@@ -100,7 +100,7 @@ TEST(TwoTypeEqualizer_ConstantCharSpan_String_LengthsAreNotEqual_ThrowsAnomaly)
    catch (const ZenUnit::Anomaly& anomaly)
    {
       const string anomalyMessage = anomaly.what();
-      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+      const string expectedAnomalyMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expectedConstantCharSpan.size(), actualConstantString.size())",
 "Expected: 3",
 "  Actual: 5",
@@ -123,7 +123,7 @@ TEST(TwoTypeEqualizer_ConstantCharSpan_String_LengthsAreEqual_CharsAreNotEqual_T
    {
       const string anomalyMessage = anomaly.what();
 #if defined __linux__
-      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+      const string expectedAnomalyMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAYS_ARE_EQUAL(expectedConstantCharSpan.data(), actualConstantString.data(), 3)",
 "Expected: char const*",
 "  Actual: char const*",
@@ -134,7 +134,7 @@ TEST(TwoTypeEqualizer_ConstantCharSpan_String_LengthsAreEqual_CharsAreNotEqual_T
 "File.cpp(1)",
 "File.cpp(1)");
 #elif defined _WIN32
-      const string expectedAnomalyMessage = TestUtil::NewlineConcat("",
+      const string expectedAnomalyMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAYS_ARE_EQUAL(expectedConstantCharSpan.data(), actualConstantString.data(), 3)",
 "Expected: char const *",
 "  Actual: char const *",

@@ -35,7 +35,7 @@ namespace ZenUnit
       const T expectedArray[1] { randomElement1 }; // NOLINT
       const T actualArray[1] { randomElement2 }; // NOLINT
       //
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 1)",
          "Expected: " + typeName + " [1]",
          "  Actual: " + typeName + " [1]",
@@ -65,7 +65,7 @@ namespace ZenUnit
       const T expectedArray[2] { randomElement1, randomElement1 }; // NOLINT
       const T actualArray[2] { randomElement1, randomElement2 }; // NOLINT
       //
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: ARRAYS_ARE_EQUAL(expectedArray, actualArray, 2)",
          "Expected: " + typeName + " [2]",
          "  Actual: " + typeName + " [2]",

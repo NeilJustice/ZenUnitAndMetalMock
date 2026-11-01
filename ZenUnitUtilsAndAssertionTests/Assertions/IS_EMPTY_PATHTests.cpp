@@ -17,7 +17,7 @@ namespace ZenUnit
    TEST(StringIsNotEmpty_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(IS_EMPTY_PATH(std::filesystem::path("foo/bar")),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_EMPTY_PATH(std::filesystem::path(\"foo/bar\"))",
 "Expected: fsPath == std::filesystem::path()",
 "  Actual: fsPath != std::filesystem::path() (\"foo/bar\")",
@@ -29,7 +29,7 @@ namespace ZenUnit
       const string messageA = "A", messageB = "B";
       const std::filesystem::path fsPath("foo");
       THROWS_EXCEPTION(IS_EMPTY_PATH(fsPath, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_EMPTY_PATH(fsPath, messageA, messageB)",
 "Expected: fsPath == std::filesystem::path()",
 "  Actual: fsPath != std::filesystem::path() (\"foo\")",

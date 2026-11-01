@@ -122,7 +122,7 @@ namespace ZenUnit
       const Anomaly anomaly(_startOfFailedLine, _whyBody, _filePathLineNumber, "", "");
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = TestUtil::NewlineConcat("",
+      expectedAnomaly.why = TestUtil::NewlineConcatStrings("",
 "StartOfFailedLine)",
 "WhyBody",
 _filePathLineNumber);
@@ -135,7 +135,7 @@ _filePathLineNumber);
       const Anomaly anomaly(_startOfFailedLine, "", _filePathLineNumber, "", "");
       //
       Anomaly expectedAnomaly;
-      expectedAnomaly.why = TestUtil::NewlineConcat("",
+      expectedAnomaly.why = TestUtil::NewlineConcatStrings("",
 "StartOfFailedLine)",
 _filePathLineNumber);
       expectedAnomaly.filePathLineNumber = _filePathLineNumber;
@@ -150,7 +150,7 @@ _filePathLineNumber);
       //
       Anomaly expectedAnomaly;
       expectedAnomaly.message = "\"" + message + "\"";
-      expectedAnomaly.why = TestUtil::NewlineConcat("",
+      expectedAnomaly.why = TestUtil::NewlineConcatStrings("",
 "StartOfFailedLine, Message)",
 "WhyBody",
 "Message: " + expectedAnomaly.message,
@@ -297,7 +297,7 @@ _filePathLineNumber);
       ExpectedActualFormat expectedActualFormat,
       string_view expectedWhy,
 
-      "", ExpectedActualFormat::Fields, TestUtil::NewlineConcat("",
+      "", ExpectedActualFormat::Fields, TestUtil::NewlineConcatStrings("",
 "  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
@@ -307,7 +307,7 @@ _filePathLineNumber);
 "BecauseFilePath(123)",
 "FilePath(1)"),
 
-      "", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcat("",
+      "", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcatStrings("",
 "  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
@@ -317,7 +317,7 @@ _filePathLineNumber);
 "BecauseFilePath(123)",
 "FilePath(1)"),
 
-      "BecauseMessage", ExpectedActualFormat::Fields, TestUtil::NewlineConcat("",
+      "BecauseMessage", ExpectedActualFormat::Fields, TestUtil::NewlineConcatStrings("",
 "  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",
@@ -328,7 +328,7 @@ _filePathLineNumber);
 "BecauseFilePath(123)",
 "FilePath(1)"),
 
-      "BecauseMessage", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcat("",
+      "BecauseMessage", ExpectedActualFormat::WholeLines, TestUtil::NewlineConcatStrings("",
 "  Failed: ASSERTION_NAME(_arg1Text)",
 "Expected: Expected",
 "  Actual: Actual",

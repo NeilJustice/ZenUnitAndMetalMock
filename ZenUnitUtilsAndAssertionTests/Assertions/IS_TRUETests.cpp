@@ -26,7 +26,7 @@ namespace ZenUnit
 
    TEST(FalseBoolLiteral_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(IS_TRUE(false), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_TRUE(false), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_TRUE(false)",
 "Expected: true",
 "  Actual: false",
@@ -37,7 +37,7 @@ namespace ZenUnit
    {
       const bool falseBool = false;
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(IS_TRUE(falseBool, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_TRUE(falseBool, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_TRUE(falseBool, messageA, messageB)",
 "Expected: true",
 "  Actual: false",
@@ -54,7 +54,7 @@ namespace ZenUnit
    TEST(StdFunctionDoesNotPointToAFunction_ThrowsAnomaly)
    {
       const function<void()> emptyStdFunction;
-      THROWS_EXCEPTION(IS_TRUE(emptyStdFunction), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_TRUE(emptyStdFunction), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_TRUE(emptyStdFunction)",
 "Expected: true",
 "  Actual: false",
@@ -70,7 +70,7 @@ namespace ZenUnit
    TEST(UserTypeConvertsToFalse_ThrowsAnomaly)
    {
       const UserType falseUserType(0);
-      THROWS_EXCEPTION(IS_TRUE(falseUserType), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_TRUE(falseUserType), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_TRUE(falseUserType)",
 "Expected: true",
 "  Actual: false",

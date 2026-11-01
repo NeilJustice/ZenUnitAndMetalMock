@@ -9,7 +9,7 @@ namespace ZenUnit
 
    TEST(ThrowsAnomaly__StringLiteralTestFailureReasonTestCase)
    {
-      THROWS_EXCEPTION(FAIL_TEST("Test failure reason A"), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FAIL_TEST("Test failure reason A"), Anomaly, TestUtil::NewlineConcatStrings("",
 " Failed: FAIL_TEST(\"Test failure reason A\")",
 "Because: \"Test failure reason A\"",
 "File.cpp(1)"));
@@ -19,7 +19,7 @@ namespace ZenUnit
    {
       const string testFailureReason = "Test failure reason B";
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(FAIL_TEST(testFailureReason, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FAIL_TEST(testFailureReason, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 " Failed: FAIL_TEST(testFailureReason, messageA, messageB)",
 "Because: \"Test failure reason B\"",
 "Message: \"A\", \"B\"",

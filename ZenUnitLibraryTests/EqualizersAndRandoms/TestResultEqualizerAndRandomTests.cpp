@@ -15,7 +15,7 @@ namespace ZenUnit
       ZENUNIT_EQUALIZER_TEST_SETUP(TestResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, fullTestName, ZenUnit::Random<FullTestName>());
       TestPhaseResult nonDefaultTestPhaseResult = ZenUnit::Random<TestPhaseResult>();
-      nonDefaultTestPhaseResult.elapsedMilliseconds = ZenUnit::RandomNon0<unsigned short>();
+      nonDefaultTestPhaseResult.testPhase = ZenUnit::RandomNon0<TestPhase>();
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, constructorTestPhaseResult, nonDefaultTestPhaseResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, startupTestPhaseResult, nonDefaultTestPhaseResult);
       ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestResult, testBodyTestPhaseResult, nonDefaultTestPhaseResult);

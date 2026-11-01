@@ -40,7 +40,7 @@ namespace ZenUnit
       const span<const T> actualSpan = actualElements;
 
       THROWS_EXCEPTION(SPANS_ARE_EQUAL(expectedSpan, actualSpan),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: SPANS_ARE_EQUAL(expectedSpan, actualSpan)",
 "Expected: " + _constSpanTypeName + " (size 0):",
 "{",
@@ -65,7 +65,7 @@ namespace ZenUnit
       const span<const T> actualSpan = actualElements;
 
       THROWS_EXCEPTION(SPANS_ARE_EQUAL(expectedSpan, actualSpan),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: SPANS_ARE_EQUAL(expectedSpan, actualSpan)",
 "Expected: " + _constSpanTypeName + " (size 1):",
 "{",
@@ -92,7 +92,7 @@ namespace ZenUnit
       const span<const T> actualSpan = actualElements;
 
       THROWS_EXCEPTION(SPANS_ARE_EQUAL(expectedSpan, actualSpan),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: SPANS_ARE_EQUAL(expectedSpan, actualSpan)",
 "Expected: " + _constSpanTypeName + " (size 3):",
 "{",

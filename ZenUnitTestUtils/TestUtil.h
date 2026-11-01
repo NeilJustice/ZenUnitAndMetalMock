@@ -3,22 +3,25 @@
 namespace TestUtil
 {
    template<typename...>
-   static void OssNewlineConcat(std::ostringstream&)
+   static void OssNewlineConcatStrings(std::ostringstream&)
    {
    }
 
    template<typename FirstStringType, typename... SubsequentStringTypes>
-   static void OssNewlineConcat(std::ostringstream& oss, FirstStringType&& firstString, SubsequentStringTypes&&... subsequentStrings)
+   static void OssNewlineConcatStrings(
+      std::ostringstream& oss,
+      FirstStringType&& firstString,
+      SubsequentStringTypes&&... subsequentStrings)
    {
       oss << firstString << '\n';
-      OssNewlineConcat(oss, std::forward<SubsequentStringTypes>(subsequentStrings)...);
+      OssNewlineConcatStrings(oss, std::forward<SubsequentStringTypes>(subsequentStrings)...);
    }
 
    template<typename... StringTypes>
-   static std::string NewlineConcat(StringTypes&&... strings)
+   static std::string NewlineConcatStrings(StringTypes&&... strings)
    {
       std::ostringstream oss;
-      OssNewlineConcat(oss, std::forward<StringTypes>(strings)...);
+      OssNewlineConcatStrings(oss, std::forward<StringTypes>(strings)...);
       std::string newlineConcatenatedValues = oss.str();
       if (!newlineConcatenatedValues.empty())
       {

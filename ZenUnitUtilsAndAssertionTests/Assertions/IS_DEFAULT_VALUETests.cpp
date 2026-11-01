@@ -52,7 +52,7 @@ namespace ZenUnit
       -1,
       1)
    {
-      THROWS_EXCEPTION(IS_DEFAULT_VALUE(value), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(value), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_DEFAULT_VALUE(value)",
 "Expected: 0",
 "  Actual: " + to_string(value),
@@ -64,7 +64,7 @@ namespace ZenUnit
       -1.0, "-1",
       1.0, "1")
    {
-      THROWS_EXCEPTION(IS_DEFAULT_VALUE(value), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(value), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_DEFAULT_VALUE(value)",
 "Expected: 0",
 "  Actual: " + expectedValueAsString,
@@ -80,7 +80,7 @@ namespace ZenUnit
    TEST(UserTypeOnlyZenUnitEqualizableIsNotZero_ThrowsAnomaly)
    {
       const OnlyZenUnitEqualizerUserType userTypeOnlyZenUnitEqualizable1{1};
-      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userTypeOnlyZenUnitEqualizable1), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userTypeOnlyZenUnitEqualizable1), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_DEFAULT_VALUE(userTypeOnlyZenUnitEqualizable1)",
 "Expected: OnlyZenUnitEqualizerUserType@0",
 "  Actual: OnlyZenUnitEqualizerUserType@1",
@@ -96,7 +96,7 @@ namespace ZenUnit
    TEST(UserTypeIsNotZero_ThrowsAnomaly)
    {
       const UserType userType1{1};
-      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userType1), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userType1), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_DEFAULT_VALUE(userType1)",
 "Expected: UserType@0",
 "  Actual: UserType@1",
@@ -107,7 +107,7 @@ namespace ZenUnit
    {
       const UserType userType10(10);
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userType10, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_DEFAULT_VALUE(userType10, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_DEFAULT_VALUE(userType10, messageA, messageB)",
 "Expected: UserType@0",
 "  Actual: UserType@10",

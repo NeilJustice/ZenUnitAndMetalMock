@@ -48,7 +48,7 @@ namespace MetalMock
       _classMock.FunctionA("message");
       //
       const string expectedMessage = "mismatching_message";
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: METALMOCKTHEN(_classMock.FunctionAMock.CalledOnceWith(expectedMessage))",
 "Because of this ZenUnit::Anomaly:",
 "  Failed: ARE_EQUAL(expectedArgument, p_metalMockedFunctionCallHistory[0].argument.value, this->p_metalMockedFunctionSignature)",
@@ -73,7 +73,7 @@ namespace MetalMock
       _classMock.FunctionA(messageA);
       _classMock.FunctionB(messageB);
       //
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
 "  Failed: IS_LESS_THAN(expectedFirstFunctionCallSequenceNumber, expectedNextFunctionCallSequenceNumber, unexpectedFunctionCallOrderingErrorMessage)",
 "Expected: " + to_string(expectedSequenceNumberB),
 "  Actual: " + to_string(expectedSequenceNumberA),

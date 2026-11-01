@@ -40,7 +40,7 @@ namespace ZenUnit
 #elif defined _WIN32
          expectedPattern = "0x\\w{16}";
 #endif
-         REGEX_MATCHES(TestUtil::NewlineConcat("",
+         REGEX_MATCHES(TestUtil::NewlineConcatStrings("",
 "  Failed: STD_FUNCTION_TARGETS\\(FunctionA, emptyStdFunction, messageA, messageB\\)",
 "Expected: " + expectedPattern,
 "  Actual: <empty std::function>",
@@ -69,7 +69,7 @@ namespace ZenUnit
 #elif defined _WIN32
          expectedPattern = "0x\\w{16}";
 #endif
-         REGEX_MATCHES(TestUtil::NewlineConcat("",
+         REGEX_MATCHES(TestUtil::NewlineConcatStrings("",
 "  Failed: STD_FUNCTION_TARGETS\\(FunctionB, stdFunctionA\\)",
 "Expected: " + expectedPattern,
 "  Actual: <non-empty std::function>",
@@ -87,7 +87,7 @@ namespace ZenUnit
 
 #if defined __linux__
 
-      THROWS_EXCEPTION(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)",
 "Expected: 1",
 "  Actual: <non-empty std::function>",
@@ -105,7 +105,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         REGEX_MATCHES(TestUtil::NewlineConcat("",
+         REGEX_MATCHES(TestUtil::NewlineConcatStrings("",
 "  Failed: STD_FUNCTION_TARGETS\\(FunctionC, stdFunctionA\\)",
 "Expected: 0x\\w{16}",
 "  Actual: <non-empty std::function>",

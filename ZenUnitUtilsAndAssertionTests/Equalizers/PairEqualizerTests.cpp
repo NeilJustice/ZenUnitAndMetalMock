@@ -15,7 +15,7 @@ namespace ZenUnit
       using PairIntInt = pair<int, int>;
       DOES_NOT_THROW(Equalizer<PairIntInt>::AssertEqual(expectedPair, actualPair));
       expectedPair.first = 1;
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
          "Expected: (1, 0)",
          "  Actual: (0, 0)",
@@ -35,7 +35,7 @@ namespace ZenUnit
       using PairStringUnsignedLongLong = pair<string, unsigned long long>;
       DOES_NOT_THROW(Equalizer<PairStringUnsignedLongLong>::AssertEqual(expectedPair, actualPair));
       expectedPair.first = "str1";
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
          "Expected: (\"str1\", 0)",
          "  Actual: (\"\", 0)",
@@ -55,7 +55,7 @@ namespace ZenUnit
       using PairIntOnlyZenUnitEqualizerUserType = pair<int, OnlyZenUnitEqualizerUserType>;
       DOES_NOT_THROW(Equalizer<PairIntOnlyZenUnitEqualizerUserType>::AssertEqual(expectedPair, actualPair));
       actualPair.second = OnlyZenUnitEqualizerUserType{1};
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
          "Expected: (0, OnlyZenUnitEqualizerUserType@0)",
          "  Actual: (0, OnlyZenUnitEqualizerUserType@1)",

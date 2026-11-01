@@ -28,7 +28,7 @@ namespace ZenUnit
    {
       const T comparisonValue = ZenUnit::RandomNotEqualTo<T>(numeric_limits<T>::min());
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: IS_GREATER_THAN_OR_EQUAL(value, comparisonValue)",
          "Expected: " + to_string(value),
          "  Actual: " + to_string(comparisonValue),
@@ -42,7 +42,7 @@ namespace ZenUnit
       const T value = ZenUnit::RandomLessThan<T>(comparisonValue);
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: IS_GREATER_THAN_OR_EQUAL(value, comparisonValue, messageA, messageB)",
          "Expected: " + to_string(value),
          "  Actual: " + to_string(comparisonValue),

@@ -33,7 +33,7 @@ namespace ZenUnit
    {
       constexpr float f1 = numeric_limits<float>::quiet_NaN();
       constexpr float f2 = 0.0f;
-      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f1, f2), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f1, f2), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: FLOATS_ARE_NEAR(f1, f2)",
 "Expected: nan",
 "  Actual: 0",
@@ -44,7 +44,7 @@ namespace ZenUnit
    {
       constexpr float f1 = 0.0f;
       constexpr float f2 = numeric_limits<float>::quiet_NaN();
-      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f1, f2), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f1, f2), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: FLOATS_ARE_NEAR(f1, f2)",
 "Expected: 0",
 "  Actual: nan",
@@ -77,7 +77,7 @@ namespace ZenUnit
    {
       constexpr float f1 = 1e-5f;
       constexpr float f2 = 2.1e-5f;
-      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f1, f2), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f1, f2), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: FLOATS_ARE_NEAR(f1, f2)",
 "Expected: 1e-05",
 "  Actual: 2.1e-05",
@@ -85,7 +85,7 @@ namespace ZenUnit
 
       constexpr float f3 = -1e-5f;
       constexpr float f4 = -2.1e-5f;
-      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f3, f4), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FLOATS_ARE_NEAR(f3, f4), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: FLOATS_ARE_NEAR(f3, f4)",
 "Expected: -1e-05",
 "  Actual: -2.1e-05",

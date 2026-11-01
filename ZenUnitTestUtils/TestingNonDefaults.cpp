@@ -6,7 +6,7 @@ namespace ZenUnit
    TestResult TestingNonDefaultTestResult() noexcept
    {
       const FullTestName fullTestName("Non", "Default", 0);
-      TestResult constructorFailTestResult = TestResult::ConstructorFail(fullTestName, TestPhaseResult());
+      TestResult constructorFailTestResult = TestResult::ConstructorFail(fullTestName, TestPhaseResult(), 0);
       return constructorFailTestResult;
    }
 

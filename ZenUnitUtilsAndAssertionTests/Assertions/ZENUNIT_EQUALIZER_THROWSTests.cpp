@@ -65,7 +65,7 @@ namespace ZenUnit
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(Namespace::TestStruct);
       THROWS_EXCEPTION(ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldB, 1),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(Namespace::TestStruct, fieldB, 1)",
 "Expected: Function ZenUnit::Equalizer<Namespace::TestStruct>::AssertEqual(expected, actual)",
 "          to throw a ZenUnit::Anomaly from an",
@@ -79,7 +79,7 @@ namespace ZenUnit
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(TestStructB);
       THROWS_EXCEPTION(ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithoutFieldNameInWhatText)",
 "Expected: N/A",
 "  Actual: N/A",
@@ -94,7 +94,7 @@ namespace ZenUnit
    {
       ZENUNIT_EQUALIZER_TEST_SETUP(TestStructB);
       THROWS_EXCEPTION(ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ZENUNIT_EQUALIZER_THROWS_WHEN_FIELD_NOT_EQUAL(TestStructB, field, TestStructB::ThrowWithFieldNameInWhatText)",
 "Expected: N/A",
 "  Actual: N/A",

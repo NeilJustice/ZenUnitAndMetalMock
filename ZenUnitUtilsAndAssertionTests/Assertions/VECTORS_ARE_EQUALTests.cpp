@@ -44,7 +44,7 @@ namespace ZenUnit
       const vector<T> expectedVector(1);
       const vector<T> actualVector;
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(expectedVector, actualVector),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector)",
 "Expected: " + _expectedVectorTypeName + " (size 1):",
 "{",
@@ -65,7 +65,7 @@ namespace ZenUnit
       const vector<T> expectedVector(1);
       const vector<T> actualVector;
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(expectedVector, actualVector, _messageA, _messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: VECTORS_ARE_EQUAL(expectedVector, actualVector, _messageA, _messageB)",
 "Expected: " + _expectedVectorTypeName + " (size 1):",
 "{",
@@ -89,7 +89,7 @@ namespace ZenUnit
       const vector<T> vector1 { randomElement1 };
       const vector<T> vector2 { randomElement2 };
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(vector1, vector2, _messageA, _messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: VECTORS_ARE_EQUAL(vector1, vector2, _messageA, _messageB)",
 "Expected: " + _expectedVectorTypeName + " (size 1):",
 "{",
@@ -116,7 +116,7 @@ namespace ZenUnit
       const vector<T> vector1 { randomElement0, randomElement1 };
       const vector<T> vector2 { randomElement0, randomElement2 };
       THROWS_EXCEPTION(VECTORS_ARE_EQUAL(vector1, vector2),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: VECTORS_ARE_EQUAL(vector1, vector2)",
 "Expected: " + _expectedVectorTypeName + " (size 2):",
 "{",

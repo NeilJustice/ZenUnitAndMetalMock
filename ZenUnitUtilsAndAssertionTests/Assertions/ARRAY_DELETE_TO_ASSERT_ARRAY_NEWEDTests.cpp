@@ -25,7 +25,7 @@ namespace ZenUnit
    {
       const char* const nullRawPointer = nullptr;
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -38,7 +38,7 @@ namespace ZenUnit
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nullRawPointer, messageA, messageB)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -50,7 +50,7 @@ namespace ZenUnit
    {
       unique_ptr<const int[]> emptyUniqueArrayPtr = nullptr; // NOLINT
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr), // NOLINT
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(emptyUniqueArrayPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -80,7 +80,7 @@ namespace ZenUnit
       ARE_EQUAL(5, DestructorCountingElement::s_destructorCallCount);
 
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr), // NOLINT
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(nonNullUniqueArrayPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -89,7 +89,7 @@ namespace ZenUnit
       unique_ptr<const int[]> ints(new int[1]); // NOLINT
       ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints);
       THROWS_EXCEPTION(ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints), // NOLINT
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARRAY_DELETE_TO_ASSERT_ARRAY_NEWED(ints)",
 "Expected: not a nullptr",
 "  Actual: nullptr",

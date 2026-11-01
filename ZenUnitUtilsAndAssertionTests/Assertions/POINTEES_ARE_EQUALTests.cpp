@@ -26,7 +26,7 @@ namespace ZenUnit
       const int actualInt = ZenUnit::Random<int>();
       const int* nonNullActualPointer = &actualInt;;
       THROWS_EXCEPTION(POINTEES_ARE_EQUAL(nullExpectedPointer, nonNullActualPointer),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: POINTEES_ARE_EQUAL(nullExpectedPointer, nonNullActualPointer)",
 "Expected: expected pointer != nullptr",
 "  Actual: expected pointer == nullptr",
@@ -39,7 +39,7 @@ namespace ZenUnit
       const int* nonNullExpectedPointer = &expectedInt;
       const int* nullActualPointer = nullptr;
       THROWS_EXCEPTION(POINTEES_ARE_EQUAL(nonNullExpectedPointer, nullActualPointer),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: POINTEES_ARE_EQUAL(nonNullExpectedPointer, nullActualPointer)",
 "Expected: actual pointer != nullptr",
 "  Actual: actual pointer == nullptr",
@@ -53,7 +53,7 @@ namespace ZenUnit
       const string* const expectedPointer = &expectedPointee;
       const string* const actualPointer = &actualPointee;
       THROWS_EXCEPTION(POINTEES_ARE_EQUAL(expectedPointer, actualPointer),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: POINTEES_ARE_EQUAL(expectedPointer, actualPointer)",
 "Expected: \"" + expectedPointee + "\"",
 "  Actual: \"" + actualPointee + "\"",
@@ -73,7 +73,7 @@ namespace ZenUnit
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       THROWS_EXCEPTION(POINTEES_ARE_EQUAL(expectedPointer, actualPointer, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: POINTEES_ARE_EQUAL(expectedPointer, actualPointer, messageA, messageB)",
 "Expected: \"" + expectedPointee + "\"",
 "  Actual: \"" + actualPointee + "\"",
@@ -90,7 +90,7 @@ namespace ZenUnit
       const unique_ptr<const UserType> expectedPointer = make_unique<UserType>(1);
       const unique_ptr<const UserType> actualPointer = make_unique<UserType>(2);
       THROWS_EXCEPTION(POINTEES_ARE_EQUAL(expectedPointer, actualPointer),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: POINTEES_ARE_EQUAL(expectedPointer, actualPointer)",
 "Expected: UserType@1",
 "  Actual: UserType@2",

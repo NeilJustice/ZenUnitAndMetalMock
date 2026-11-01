@@ -15,7 +15,7 @@ namespace ZenUnit
    {
       int x = 0;
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
-      const string expectedWhat = TestUtil::NewlineConcat("",
+      const string expectedWhat = TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, x)",
 "Expected: 0",
 "  Actual: 0",
@@ -30,7 +30,7 @@ expectedAreNotSameWhatText,
       int x = 0;
       const string messageA = "A", messageB = "B";
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
-      const string expectedWhat = TestUtil::NewlineConcat("",
+      const string expectedWhat = TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, x, messageA, messageB)",
 "Expected: 0",
 "  Actual: 0",
@@ -62,7 +62,7 @@ expectedAreNotSameWhatText,
    {
       const int x = 1;
       int y = 2;
-      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, y)",
 "Expected: 1",
 "  Actual: 2",
@@ -77,7 +77,7 @@ expectedAreNotSameWhatText,
    {
       UserType x(1);
       const UserType y(2);
-      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, y)",
 "Expected: UserType@1",
 "  Actual: UserType@2",
@@ -93,7 +93,7 @@ expectedAreNotSameWhatText,
       UserType x(1);
       UserType y(2);
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(ARE_COPIES(x, y, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, y, messageA, messageB)",
 "Expected: UserType@1",
 "  Actual: UserType@2",

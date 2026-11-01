@@ -38,8 +38,8 @@ namespace ZenUnit
 
    TEST(StopAndGetElapsedMilliseconds_StartNotPreviouslyCalled_Returns0)
    {
-      IS_ZERO(_stopwatch.GetElapsedMillisecondsThenResetStopwatch());
-      IS_ZERO(_stopwatch.GetElapsedMillisecondsThenResetStopwatch());
+      IS_ZERO(_stopwatch.StopAndGetElapsedMilliseconds());
+      IS_ZERO(_stopwatch.StopAndGetElapsedMilliseconds());
    }
 
    TEST(StopAndGetElapsedMilliseconds_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
@@ -51,7 +51,7 @@ namespace ZenUnit
       _call_high_resolution_clock_nowMock.Return(stopTime);
       _stopwatch._startTime = startDateTime;
       //
-      const unsigned short elapsedMilliseconds = _stopwatch.GetElapsedMillisecondsThenResetStopwatch();
+      const unsigned short elapsedMilliseconds = _stopwatch.StopAndGetElapsedMilliseconds();
       //
       METALMOCK(_call_high_resolution_clock_nowMock.CalledOnce());
       ARE_EQUAL(randomMilliseconds, elapsedMilliseconds);

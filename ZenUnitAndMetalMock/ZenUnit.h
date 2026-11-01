@@ -4441,7 +4441,6 @@ namespace ZenUnit
    {
       TestPhase testPhase = TestPhase::Unset;
       TestOutcome testOutcome = TestOutcome::Success;
-      unsigned short elapsedMilliseconds = 0;
       std::shared_ptr<const AnomalyOrException> anomalyOrException;
 
       TestPhaseResult()
@@ -4451,7 +4450,6 @@ namespace ZenUnit
       explicit TestPhaseResult(TestPhase testPhase) noexcept
          : testPhase(testPhase)
          , testOutcome(TestOutcome::Success)
-         , elapsedMilliseconds(0)
       {
       }
    };
@@ -4489,6 +4487,7 @@ namespace ZenUnit
          const TestPhaseResult& testBodyTestPhaseResult,
          const TestPhaseResult& cleanupTestPhaseResult,
          const TestPhaseResult& destructorTestPhaseResult,
+         unsigned short elapsedMilliseconds,
          const std::function<const ZenUnitArgs&()>& getZenUnitArgs)
          : fullTestName(fullTestName)
          , constructorTestPhaseResult(constructorTestPhaseResult)
@@ -4498,12 +4497,7 @@ namespace ZenUnit
          , destructorTestPhaseResult(destructorTestPhaseResult)
          , responsibleTestPhaseResultField(nullptr)
          , testOutcome(TestOutcome::Unset)
-         , elapsedMilliseconds(static_cast<unsigned short>(
-            constructorTestPhaseResult.elapsedMilliseconds +
-            startupTestPhaseResult.elapsedMilliseconds +
-            testBodyTestPhaseResult.elapsedMilliseconds +
-            cleanupTestPhaseResult.elapsedMilliseconds +
-            destructorTestPhaseResult.elapsedMilliseconds))
+         , elapsedMilliseconds(elapsedMilliseconds)
          , testCaseNumber(std::numeric_limits<size_t>::max())
          , totalTestCases(0)
       {
@@ -4545,13 +4539,14 @@ namespace ZenUnit
 
       static TestResult ConstructorFail(
          const FullTestName& fullTestName,
-         const TestPhaseResult& constructorTestPhaseResult) noexcept
+         const TestPhaseResult& constructorTestPhaseResult,
+         unsigned short elapsedMilliseconds) noexcept
       {
          TestResult constructorFailTestResult{};
          constructorFailTestResult.fullTestName = fullTestName;
          constructorFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorFailTestResult.testOutcome = constructorTestPhaseResult.testOutcome;
-         constructorFailTestResult.elapsedMilliseconds = constructorTestPhaseResult.elapsedMilliseconds;
+         constructorFailTestResult.elapsedMilliseconds = elapsedMilliseconds;
          constructorFailTestResult.responsibleTestPhaseResultField = &TestResult::constructorTestPhaseResult;
          return constructorFailTestResult;
       }
@@ -4560,7 +4555,8 @@ namespace ZenUnit
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& startupTestPhaseResult,
-         const TestPhaseResult& destructorTestPhaseResult)
+         const TestPhaseResult& destructorTestPhaseResult,
+         unsigned short elapsedMilliseconds)
       {
          TestResult startupFailTestResult{};
          startupFailTestResult.fullTestName = fullTestName;
@@ -4568,10 +4564,7 @@ namespace ZenUnit
          startupFailTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          startupFailTestResult.startupTestPhaseResult = startupTestPhaseResult;
          startupFailTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         startupFailTestResult.elapsedMilliseconds =
-            static_cast<unsigned short>(constructorTestPhaseResult.elapsedMilliseconds +
-            startupTestPhaseResult.elapsedMilliseconds +
-            destructorTestPhaseResult.elapsedMilliseconds);
+         startupFailTestResult.elapsedMilliseconds = elapsedMilliseconds;
          startupFailTestResult.responsibleTestPhaseResultField = &TestResult::startupTestPhaseResult;
          return startupFailTestResult;
       }
@@ -4579,15 +4572,15 @@ namespace ZenUnit
       static TestResult ConstructorDestructorSuccess(
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
-         const TestPhaseResult& destructorTestPhaseResult)
+         const TestPhaseResult& destructorTestPhaseResult,
+         unsigned short elapsedMilliseconds)
       {
          TestResult constructorAndDestructorSuccessTestResult{};
          constructorAndDestructorSuccessTestResult.fullTestName = fullTestName;
          constructorAndDestructorSuccessTestResult.testOutcome = TestOutcome::Success;
          constructorAndDestructorSuccessTestResult.constructorTestPhaseResult = constructorTestPhaseResult;
          constructorAndDestructorSuccessTestResult.destructorTestPhaseResult = destructorTestPhaseResult;
-         constructorAndDestructorSuccessTestResult.elapsedMilliseconds =
-            static_cast<unsigned short>(constructorTestPhaseResult.elapsedMilliseconds + destructorTestPhaseResult.elapsedMilliseconds);
+         constructorAndDestructorSuccessTestResult.elapsedMilliseconds = elapsedMilliseconds;
          constructorAndDestructorSuccessTestResult.responsibleTestPhaseResultField = nullptr;
          return constructorAndDestructorSuccessTestResult;
       }
@@ -5504,7 +5497,7 @@ namespace ZenUnit
          _startTime = _call_high_resolution_clock_now();
       }
 
-      virtual unsigned short GetElapsedMillisecondsThenResetStopwatch()
+      virtual unsigned short StopAndGetElapsedMilliseconds()
       {
          [[unlikely]] if (_startTime == std::chrono::time_point<std::chrono::high_resolution_clock>())
          {
@@ -5521,7 +5514,7 @@ namespace ZenUnit
       virtual std::string StopAndGetElapsedSeconds()
       {
          // Example elapsedMilliseconds: 1234
-         const unsigned short elapsedMilliseconds = GetElapsedMillisecondsThenResetStopwatch();
+         const unsigned short elapsedMilliseconds = StopAndGetElapsedMilliseconds();
 
          // Example elapsedSeconds: 1
          const unsigned short elapsedSeconds = static_cast<unsigned short>(elapsedMilliseconds / 1000);
@@ -5815,27 +5808,26 @@ Fatal Windows C++ Runtime Assertion
       // Function Pointers
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
       // Function Callers
-      std::unique_ptr<const VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>> _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess;
+      using _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessType =
+         VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>;
+      std::unique_ptr<const _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessType>
+         _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess;
       // Constant Components
       std::unique_ptr<const Console> _console;
       std::unique_ptr<const TestPhaseTranslator> _testPhaseTranslator;
       std::unique_ptr<const TestRunStopwatchStopper> _testRunStopwatchStopper;
       std::unique_ptr<const Watch> _watch;
-      // Mutable Components
-      std::unique_ptr<Stopwatch> _testPhaseStopwatch;
    public:
       TestPhaseRunner() noexcept
          // Function Pointers
          : _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          // Function Callers
-         , _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(std::make_unique<VoidTwoArgMemberFunctionCaller<TestPhaseRunner, TestOutcome, const ZenUnitArgs&>>())
+         , _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(std::make_unique<_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessType>())
          // Constant Components
          , _console(std::make_unique<Console>())
          , _testPhaseTranslator(std::make_unique<TestPhaseTranslator>())
          , _testRunStopwatchStopper(std::make_unique<TestRunStopwatchStopper>())
          , _watch(std::make_unique<Watch>())
-         // Mutable Components
-         , _testPhaseStopwatch(std::make_unique<Stopwatch>())
       {
       }
 
@@ -5860,7 +5852,8 @@ Fatal Windows C++ Runtime Assertion
       void FailFastDueToDotDotDotException(const ZenUnitArgs& zenUnitArgs, TestPhase testPhase) const
       {
          ZenUnitTestRunner* const zenUnitTestRunner = ZenUnitTestRunner::Instance();
-         const std::string testRunDurationInSeconds = _testRunStopwatchStopper->StopTestRunStopwatchAndGetElapsedSeconds(zenUnitTestRunner);
+         const std::string testRunDurationInSeconds =
+            _testRunStopwatchStopper->StopTestRunStopwatchAndGetElapsedSeconds(zenUnitTestRunner);
          _console->WriteLineColor("\n==========================\nFatal ... Exception Thrown\n==========================\n", Color::Red);
 
          _console->WriteColor(">>------> ", Color::Red);
@@ -5902,7 +5895,6 @@ Fatal Windows C++ Runtime Assertion
       template<typename ExceptionType>
       void PopulateTestPhaseResultWithExceptionInformation(const ExceptionType& ex, TestPhaseResult* outTestPhaseResult) const
       {
-         outTestPhaseResult->elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
          const std::string* const exceptionTypeName = Type::GetName(ex);
          const char* const exceptionMessage = ex.what();
          outTestPhaseResult->anomalyOrException = std::make_shared<AnomalyOrException>(exceptionTypeName, exceptionMessage);
@@ -5917,9 +5909,10 @@ Fatal Windows C++ Runtime Assertion
 
       virtual TestResult MakeConstructorFail(
          const FullTestName& fullTestName,
-         const TestPhaseResult& constructorTestPhaseResult) const
+         const TestPhaseResult& constructorTestPhaseResult,
+         unsigned short elapsedMilliseconds) const
       {
-         TestResult testResult = TestResult::ConstructorFail(fullTestName, constructorTestPhaseResult);
+         TestResult testResult = TestResult::ConstructorFail(fullTestName, constructorTestPhaseResult, elapsedMilliseconds);
          return testResult;
       }
 
@@ -5927,22 +5920,29 @@ Fatal Windows C++ Runtime Assertion
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
          const TestPhaseResult& startupTestPhaseResult,
-         const TestPhaseResult& destructorTestPhaseResult) const
+         const TestPhaseResult& destructorTestPhaseResult,
+         unsigned short elapsedMilliseconds) const
       {
          TestResult testResult = TestResult::StartupFail(
             fullTestName,
             constructorTestPhaseResult,
             startupTestPhaseResult,
-            destructorTestPhaseResult);
+            destructorTestPhaseResult,
+            elapsedMilliseconds);
          return testResult;
       }
 
       virtual TestResult MakeConstructorDestructorSuccess(
          const FullTestName& fullTestName,
          const TestPhaseResult& constructorTestPhaseResult,
-         const TestPhaseResult& destructorTestPhaseResult) const
+         const TestPhaseResult& destructorTestPhaseResult,
+         unsigned short elapsedMilliseconds) const
       {
-         TestResult testResult = TestResult::ConstructorDestructorSuccess(fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
+         TestResult testResult = TestResult::ConstructorDestructorSuccess(
+            fullTestName,
+            constructorTestPhaseResult,
+            destructorTestPhaseResult,
+            elapsedMilliseconds);
          return testResult;
       }
 
@@ -5952,7 +5952,8 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult& startupTestPhaseResult,
          const TestPhaseResult& testBodyTestPhaseResult,
          const TestPhaseResult& cleanupTestPhaseResult,
-         const TestPhaseResult& destructorTestPhaseResult) const
+         const TestPhaseResult& destructorTestPhaseResult,
+         unsigned short elapsedMilliseconds) const
       {
          TestResult testResult(
             fullTestName,
@@ -5961,6 +5962,7 @@ Fatal Windows C++ Runtime Assertion
             testBodyTestPhaseResult,
             cleanupTestPhaseResult,
             destructorTestPhaseResult,
+            elapsedMilliseconds,
             ZenUnitTestRunner::GetZenUnitArgs);
          return testResult;
       }
@@ -5970,15 +5972,23 @@ Fatal Windows C++ Runtime Assertion
    {
       friend class TestTests;
    private:
+      // Constant Components
       std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
+      // Mutable Components
+      std::unique_ptr<Stopwatch> _stopwatch;
    protected:
-      FullTestName p_fullTestName;
+      // Mutable Fields
       FilePathLineNumber p_fileLine;
+      FullTestName p_fullTestName;
    public:
       Test(const char* testClassName, const char* testName, unsigned char arity)
+         // Constant Components
          : _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
+         // Mutable Components
+         , _stopwatch(std::make_unique<Stopwatch>())
+         // Mutable Fields
          , p_fullTestName(testClassName, testName, arity)
       {
       }
@@ -6040,31 +6050,49 @@ Fatal Windows C++ Runtime Assertion
    protected:
       TestResult BaseRunTest()
       {
-         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         //_stopwatch->Start();
+         const TestPhaseResult constructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
-               p_fullTestName, constructorTestPhaseResult);
+            const unsigned short elapsedMilliseconds = 0;//_stopwatch->StopAndGetElapsedMilliseconds();
+            const TestResult constructorFailTestResult =
+               _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult, elapsedMilliseconds);
             return constructorFailTestResult;
          }
-         const TestPhaseResult startupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
+         const TestPhaseResult startupTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
          if (startupTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+            const unsigned short elapsedMilliseconds = 0;
+            const TestPhaseResult destructorTestPhaseResult =
+               _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
             const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(
-               p_fullTestName, constructorTestPhaseResult, startupTestPhaseResult, destructorTestPhaseResult);
+               p_fullTestName,
+               constructorTestPhaseResult,
+               startupTestPhaseResult,
+               destructorTestPhaseResult,
+               elapsedMilliseconds);
             return startupFailTestResult;
          }
-         const TestPhaseResult testBodyTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
-         const TestPhaseResult cleanupTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
-         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const TestPhaseResult testBodyTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallTestBody, this, TestPhase::TestBody);
+
+         const TestPhaseResult cleanupTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallCleanup, this, TestPhase::Cleanup);
+
+         const TestPhaseResult destructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+
+         const unsigned short elapsedMilliseconds = 0;
          TestResult testResult = _testResultFactory->MakeFullTestResult(
             p_fullTestName,
             constructorTestPhaseResult,
             startupTestPhaseResult,
             testBodyTestPhaseResult,
             cleanupTestPhaseResult,
-            destructorTestPhaseResult);
+            destructorTestPhaseResult,
+            elapsedMilliseconds);
          return testResult;
       }
    };
@@ -6074,17 +6102,14 @@ Fatal Windows C++ Runtime Assertion
       Test* test,
       TestPhase testPhase) const
    {
-      _testPhaseStopwatch->Start();
       TestPhaseResult testPhaseResult(testPhase);
       const ZenUnitArgs& zenUnitArgs = _call_ZenUnitTestRunner_GetZenUnitArgs();
       try
       {
          testPhaseFunction(test);
-         testPhaseResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
       }
       catch (const Anomaly& anomaly)
       {
-         testPhaseResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
          testPhaseResult.anomalyOrException = std::make_shared<AnomalyOrException>(anomaly);
          testPhaseResult.testOutcome = TestOutcome::Anomaly;
          _console->WriteColor("\n================\nFailed Assertion\n================", Color::Red);
@@ -6146,7 +6171,6 @@ Fatal Windows C++ Runtime Assertion
       std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
       // Mutable Components
-      std::unique_ptr<Stopwatch> _testPhaseStopwatch;
       std::unique_ptr<TestClassType> _instanceOfTestClass;
    public:
       explicit NewableDeletableTest(const char* testClassName)
@@ -6154,8 +6178,6 @@ Fatal Windows C++ Runtime Assertion
          // Constant Components
          , _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
-         // Mutable Components
-         , _testPhaseStopwatch(std::make_unique<Stopwatch>())
       {
       }
 
@@ -6166,18 +6188,26 @@ Fatal Windows C++ Runtime Assertion
 
       std::vector<TestResult> RunTest() override
       {
-         _testPhaseStopwatch->Start();
-         const TestPhaseResult constructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
+         const TestPhaseResult constructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult);
-            constructorFailTestResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
+            const unsigned short elapsedMilliseconds = 0;
+            TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
+               p_fullTestName,
+               constructorTestPhaseResult,
+               elapsedMilliseconds);
             std::vector<TestResult> testResults = { std::move(constructorFailTestResult) };
             return testResults;
          }
-         const TestPhaseResult destructorTestPhaseResult = _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(p_fullTestName, constructorTestPhaseResult, destructorTestPhaseResult);
-         testResult.elapsedMilliseconds = _testPhaseStopwatch->GetElapsedMillisecondsThenResetStopwatch();
+         const TestPhaseResult destructorTestPhaseResult =
+            _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+         const unsigned short elapsedMilliseconds = 0;
+         TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(
+            p_fullTestName,
+            constructorTestPhaseResult,
+            destructorTestPhaseResult,
+            elapsedMilliseconds);
          std::vector<TestResult> testResults = { std::move(testResult) };
          return testResults;
       }

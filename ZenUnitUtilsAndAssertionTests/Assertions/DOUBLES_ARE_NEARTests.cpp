@@ -33,7 +33,7 @@ namespace ZenUnit
    {
       constexpr double d1 = numeric_limits<double>::quiet_NaN();
       constexpr double d2 = 0.0;
-      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DOUBLES_ARE_NEAR(d1, d2)",
 "Expected: nan",
 "  Actual: 0",
@@ -44,7 +44,7 @@ namespace ZenUnit
    {
       constexpr double d1 = 0.0;
       constexpr double d2 = numeric_limits<double>::quiet_NaN();
-      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DOUBLES_ARE_NEAR(d1, d2)",
 "Expected: 0",
 "  Actual: nan",
@@ -73,7 +73,7 @@ namespace ZenUnit
    {
       const double d1 = 1e-7;
       const double d2 = 2e-7;
-      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d1, d2), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DOUBLES_ARE_NEAR(d1, d2)",
 "Expected: 1e-07",
 "  Actual: 2e-07",
@@ -81,7 +81,7 @@ namespace ZenUnit
 
       const double d3 = -1e-7;
       const double d4 = -2e-7;
-      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d3, d4), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DOUBLES_ARE_NEAR(d3, d4), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DOUBLES_ARE_NEAR(d3, d4)",
 "Expected: -1e-07",
 "  Actual: -2e-07",

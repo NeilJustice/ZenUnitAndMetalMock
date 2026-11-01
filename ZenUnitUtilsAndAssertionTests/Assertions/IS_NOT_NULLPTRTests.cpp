@@ -35,7 +35,7 @@ namespace ZenUnit
       const int* const nullRawPointer = nullptr;
       const string messageA = "A", messageB = "B";
       THROWS_EXCEPTION(IS_NOT_NULLPTR(nullRawPointer, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_NULLPTR(nullRawPointer, messageA, messageB)",
 "Expected: not nullptr",
 "  Actual: nullptr",
@@ -47,7 +47,7 @@ namespace ZenUnit
    {
       const unique_ptr<const int> nullUniquePtr = nullptr;
       THROWS_EXCEPTION(IS_NOT_NULLPTR(nullUniquePtr),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_NULLPTR(nullUniquePtr)",
 "Expected: not nullptr",
 "  Actual: nullptr",
@@ -58,7 +58,7 @@ namespace ZenUnit
    {
       const shared_ptr<const int> nullSharedPtr = nullptr;
       THROWS_EXCEPTION(IS_NOT_NULLPTR(nullSharedPtr),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_NULLPTR(nullSharedPtr)",
 "Expected: not nullptr",
 "  Actual: nullptr",

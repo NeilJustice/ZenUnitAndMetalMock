@@ -41,7 +41,7 @@ namespace ZenUnit
    {
       const pair<int, int> expectedPair{1, 0};
       const pair<int, int> actualPair{0, 0};
-      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
 "Expected: (1, 0)",
 "  Actual: (0, 0)",
@@ -57,7 +57,7 @@ namespace ZenUnit
       const pair<int, int> expectedPair{1, 0};
       const pair<int, int> actualPair{0, 0};
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair, messageA, messageB)",
 "Expected: (1, 0)",
 "  Actual: (0, 0)",
@@ -73,7 +73,7 @@ namespace ZenUnit
    {
       const pair<int, int> expectedPair{1, 1};
       const pair<int, int> actualPair{0, 0};
-      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
 "Expected: (1, 1)",
 "  Actual: (0, 0)",
@@ -88,7 +88,7 @@ namespace ZenUnit
    {
       const pair<int, int> expectedPair{1, 1};
       const pair<int, int> actualPair{1, 0};
-      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
 "Expected: (1, 1)",
 "  Actual: (1, 0)",
@@ -103,7 +103,7 @@ namespace ZenUnit
    {
       const pair<UserType, UserType> expectedPair{1,0};
       const pair<UserType, UserType> actualPair{0,0};
-      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
 "Expected: (UserType@1, UserType@0)",
 "  Actual: (UserType@0, UserType@0)",
@@ -118,7 +118,7 @@ namespace ZenUnit
    {
       const pair<UserType, UserType> expectedPair{0,0};
       const pair<UserType, UserType> actualPair{0,1};
-      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(PAIRS_ARE_EQUAL(expectedPair, actualPair), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: PAIRS_ARE_EQUAL(expectedPair, actualPair)",
 "Expected: (UserType@0, UserType@0)",
 "  Actual: (UserType@0, UserType@1)",

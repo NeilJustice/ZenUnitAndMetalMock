@@ -12,7 +12,7 @@ namespace ZenUnit
 
    TEST(LambdaCallThrowsException_ThrowsException)
    {
-      THROWS_EXCEPTION(DOES_NOT_THROW([] { throw runtime_error("what text"); }()), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DOES_NOT_THROW([] { throw runtime_error("what text"); }()), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DOES_NOT_THROW([] { throw runtime_error(\"what text\"); }())",
 "Expected: No exception was thrown",
 "  Actual: std::runtime_error thrown",
@@ -24,7 +24,7 @@ namespace ZenUnit
    {
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS_EXCEPTION(DOES_NOT_THROW([] { throw runtime_error(""); }(), messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DOES_NOT_THROW([] { throw runtime_error(""); }(), messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DOES_NOT_THROW([] { throw runtime_error(\"\"); }(), messageA, messageB)",
 "Expected: No exception was thrown",
 "  Actual: std::runtime_error thrown",
@@ -41,7 +41,7 @@ namespace ZenUnit
    TEST(FunctionCallThrowsException_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(DOES_NOT_THROW(FunctionThatThrowsAnInvalidArgumentException()),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DOES_NOT_THROW(FunctionThatThrowsAnInvalidArgumentException())",
 "Expected: No exception was thrown",
 "  Actual: std::invalid_argument thrown",

@@ -19,7 +19,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<T>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypeName + " (size 0):" + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypeName + " (size 0):" + TestUtil::NewlineConcatStrings("",
          "{",
          "}"), vectorAsString);
    }
@@ -31,7 +31,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<T>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypeName + " (size 1):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 1):" + TestUtil::NewlineConcatStrings("",
          "{",
          "   1",
          "}");
@@ -45,7 +45,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<T>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypeName + " (size 11):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 11):" + TestUtil::NewlineConcatStrings("",
          "{",
          "   1,",
          "   2,",
@@ -82,7 +82,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<UserType>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      ARE_EQUAL(_expectedVectorTypeName + " (size 0):" + TestUtil::NewlineConcat("",
+      ARE_EQUAL(_expectedVectorTypeName + " (size 0):" + TestUtil::NewlineConcatStrings("",
          "{",
          "}"), vectorAsString);
    }
@@ -94,7 +94,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<UserType>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypeName + " (size 1):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 1):" + TestUtil::NewlineConcatStrings("",
          "{",
          "   UserType@1",
          "}");
@@ -121,7 +121,7 @@ namespace ZenUnit
       ZenUnit::Printer<vector<UserType>>::Print(_oss, vec);
       //
       const string vectorAsString = _oss.str();
-      const string expectedVectorAsString = _expectedVectorTypeName + " (size 11):" + TestUtil::NewlineConcat("",
+      const string expectedVectorAsString = _expectedVectorTypeName + " (size 11):" + TestUtil::NewlineConcatStrings("",
          "{",
          "   UserType@1,",
          "   UserType@2,",

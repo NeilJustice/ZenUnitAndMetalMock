@@ -23,7 +23,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         const string expectedWhy = TestUtil::NewlineConcat("",
+         const string expectedWhy = TestUtil::NewlineConcatStrings("",
 "  Failed: THROWS_EXCEPTION([]{}(),",
 "             exception, \"\")",
 "Expected exception thrown: std::exception exactly",
@@ -44,7 +44,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         const string expectedWhy = TestUtil::NewlineConcat("",
+         const string expectedWhy = TestUtil::NewlineConcatStrings("",
 "  Failed: THROWS_EXCEPTION([]{}(),",
 "             exception, \"\", messageA, messageB)",
 "Expected exception thrown: std::exception exactly",
@@ -64,7 +64,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         const string expectedWhy = TestUtil::NewlineConcat("",
+         const string expectedWhy = TestUtil::NewlineConcatStrings("",
 "  Failed: THROWS_EXCEPTION([]{ throw logic_error(\"\"); }(),",
 "             exception, \"\")",
 "Expected exception thrown: std::exception exactly",
@@ -85,7 +85,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         const string expectedWhy = TestUtil::NewlineConcat("",
+         const string expectedWhy = TestUtil::NewlineConcatStrings("",
 "  Failed: THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(),",
 "             logic_error, \"\")",
 "Expected exception thrown: std::logic_error exactly",
@@ -106,7 +106,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         const string expectedWhy = TestUtil::NewlineConcat("",
+         const string expectedWhy = TestUtil::NewlineConcatStrings("",
 "  Failed: THROWS_EXCEPTION([&]{ throw runtime_error(whatText); }(),",
 "             runtime_error, \"\")",
 "Expected exception thrown: std::runtime_error exactly",
@@ -127,7 +127,7 @@ namespace ZenUnit
       }
       catch (const Anomaly& anomaly)
       {
-         const string expectedWhy = TestUtil::NewlineConcat("",
+         const string expectedWhy = TestUtil::NewlineConcatStrings("",
 "  Failed: THROWS_EXCEPTION([]{ throw runtime_error(\"ERROR MESSAGE\"); }(),",
 "             runtime_error, \"error message\")",
 "Expected exception thrown: std::runtime_error exactly",
@@ -149,7 +149,7 @@ namespace ZenUnit
       }
       catch (const Anomaly & anomaly)
       {
-         ARE_EQUAL(TestUtil::NewlineConcat("",
+         ARE_EQUAL(TestUtil::NewlineConcatStrings("",
 "  Failed: THROWS_EXCEPTION([] { throw runtime_error(\"timestamp E123: error message\"); }(),",
 "             runtime_error, \"error message\")",
 "Expected exception thrown: std::runtime_error exactly",

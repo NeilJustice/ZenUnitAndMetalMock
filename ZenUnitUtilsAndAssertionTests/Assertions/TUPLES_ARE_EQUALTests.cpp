@@ -43,7 +43,7 @@ namespace ZenUnit
       const tuple<int, int> expectedTuple{1, 0};
       const tuple<int, int> actualTuple{0, 0};
       THROWS_EXCEPTION(TUPLES_ARE_EQUAL(expectedTuple, actualTuple),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (1, 0)",
 "  Actual: (0, 0)",
@@ -61,7 +61,7 @@ namespace ZenUnit
       const tuple<int, int, string> actualTuple{0, 0, "b"};
       const string messageA = "A", messageB = "B";
       THROWS_EXCEPTION(TUPLES_ARE_EQUAL(expectedTuple, actualTuple, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple, messageA, messageB)",
 "Expected: (1, 0, \"a\")",
 "  Actual: (0, 0, \"b\")",
@@ -79,7 +79,7 @@ namespace ZenUnit
       const tuple<int, int> expectedTuple{1, 1};
       const tuple<int, int> actualTuple{0, 0};
       THROWS_EXCEPTION(TUPLES_ARE_EQUAL(expectedTuple, actualTuple),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (1, 1)",
 "  Actual: (0, 0)",
@@ -96,7 +96,7 @@ namespace ZenUnit
       const tuple<int, int> expectedTuple{1, 1};
       const tuple<int, int> actualTuple{1, 0};
       THROWS_EXCEPTION(TUPLES_ARE_EQUAL(expectedTuple, actualTuple),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (1, 1)",
 "  Actual: (1, 0)",
@@ -113,7 +113,7 @@ namespace ZenUnit
       const tuple<UserType, UserType> expectedTuple{1,0};
       const tuple<UserType, UserType> actualTuple{0,0};
       THROWS_EXCEPTION(TUPLES_ARE_EQUAL(expectedTuple, actualTuple),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (UserType@1, UserType@0)",
 "  Actual: (UserType@0, UserType@0)",
@@ -130,7 +130,7 @@ namespace ZenUnit
       const tuple<UserType, UserType> expectedTuple{0,0};
       const tuple<UserType, UserType> actualTuple{0,1};
       THROWS_EXCEPTION(TUPLES_ARE_EQUAL(expectedTuple, actualTuple),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
 "Expected: (UserType@0, UserType@0)",
 "  Actual: (UserType@0, UserType@1)",

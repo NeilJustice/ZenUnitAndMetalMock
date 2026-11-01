@@ -49,7 +49,7 @@ namespace ZenUnit
       const array<T, 1> actualArray = { randomElement2 };
       //
 #if defined __linux__
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 1ul>>",
 "  Actual: <std::array<" + TypeName + ", 1ul>>",
@@ -60,7 +60,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ",1>>",
 "  Actual: <std::array<" + TypeName + ",1>>",
@@ -110,7 +110,7 @@ namespace ZenUnit
       const array<T, 2> actualArray{ { randomElement2, randomElement1 } };
       //
 #if defined __linux__
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
@@ -121,7 +121,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ",2>>",
 "  Actual: <std::array<" + TypeName + ",2>>",
@@ -143,7 +143,7 @@ namespace ZenUnit
       const array<T, 2> actualArray = { randomElement1, randomElement3 };
       //
 #if defined __linux__
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ", 2ul>>",
 "  Actual: <std::array<" + TypeName + ", 2ul>>",
@@ -154,7 +154,7 @@ namespace ZenUnit
 "File.cpp(1)",
 "File.cpp(1)"));
 #elif defined _WIN32
-      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_ARRAYS_ARE_EQUAL(expectedArray, actualArray)",
 "Expected: <std::array<" + TypeName + ",2>>",
 "  Actual: <std::array<" + TypeName + ",2>>",

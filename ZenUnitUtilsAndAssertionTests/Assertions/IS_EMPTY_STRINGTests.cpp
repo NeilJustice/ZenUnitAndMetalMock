@@ -23,7 +23,7 @@ namespace ZenUnit
    TEST(StringIsNotEmpty_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(IS_EMPTY_STRING("foo"),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_EMPTY_STRING(\"foo\")",
 "Expected: str to be empty string",
 "  Actual: str is not empty string: \"foo\"",
@@ -35,7 +35,7 @@ namespace ZenUnit
       const string messageA = "A", messageB = "B";
       const string nonEmptyString = "bar";
       THROWS_EXCEPTION(IS_EMPTY_STRING(nonEmptyString, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_EMPTY_STRING(nonEmptyString, messageA, messageB)",
 "Expected: str to be empty string",
 "  Actual: str is not empty string: \"bar\"",

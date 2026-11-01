@@ -19,7 +19,6 @@ namespace ZenUnit
    unique_ptr<NewableDeletableTest<TestingTestClass>> _newableDeletableTest;
    TestPhaseRunnerMock* _tryCatchCallerMock = nullptr;
    TestResultFactoryMock* _testResultFactoryMock = nullptr;
-   StopwatchMock* _stopwatchMock = nullptr;
    const string TestClassName = Random<string>();
 
    STARTUP
@@ -27,7 +26,6 @@ namespace ZenUnit
       _newableDeletableTest = make_unique<NewableDeletableTest<TestingTestClass>>(TestClassName.c_str());
       _newableDeletableTest->_testPhaseRunner.reset(_tryCatchCallerMock = new TestPhaseRunnerMock);
       _newableDeletableTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
-      _newableDeletableTest->_testPhaseStopwatch.reset(_stopwatchMock = new StopwatchMock);
    }
 
    TEST(Constructor_NewsComponents)
@@ -36,7 +34,6 @@ namespace ZenUnit
       ARE_EQUAL("TestClassIsNewableAndDeletable", newableDeletableTest.Name());
       DELETE_TO_ASSERT_NEWED(newableDeletableTest._testResultFactory);
       DELETE_TO_ASSERT_NEWED(newableDeletableTest._testPhaseRunner);
-      DELETE_TO_ASSERT_NEWED(newableDeletableTest._testPhaseStopwatch);
       IS_NULLPTR(newableDeletableTest._instanceOfTestClass);
    }
 
@@ -50,57 +47,60 @@ namespace ZenUnit
       TestOutcome::Anomaly,
       TestOutcome::Exception)
    {
-      _stopwatchMock->StartMock.Expect();
-
       TestPhaseResult failedConstructorTestPhaseResult;
       failedConstructorTestPhaseResult.testOutcome = nonSuccessOutcome;
       _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = _stopwatchMock->GetElapsedMillisecondsThenResetStopwatchMock.ReturnRandom();
+      const unsigned short elapsedMilliseconds = 0;
 
       TestResult constructorFailTestResult = TestingNonDefaultTestResult();
-      constructorFailTestResult.elapsedMilliseconds = elapsedMilliseconds;
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
-      METALMOCK(_stopwatchMock->StartMock.CalledOnce());
-      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
+      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
          &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
-      METALMOCK(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
-         _newableDeletableTest->p_fullTestName, failedConstructorTestPhaseResult));
+
+      METALMOCKTHEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
+         _newableDeletableTest->p_fullTestName,
+         failedConstructorTestPhaseResult,
+         elapsedMilliseconds));
+
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
-      METALMOCK(_stopwatchMock->GetElapsedMillisecondsThenResetStopwatchMock.CalledOnce());
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }
 
    TEST(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsConstructorDestructorSuccessTestResult)
    {
-      _stopwatchMock->StartMock.Expect();
-
       TestPhaseResult successConstructorTestPhaseResult;
       successConstructorTestPhaseResult.testOutcome = TestOutcome::Success;
 
       TestPhaseResult destructorTestPhaseResult;
-      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(successConstructorTestPhaseResult, destructorTestPhaseResult);
+      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(
+         successConstructorTestPhaseResult,
+         destructorTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = _stopwatchMock->GetElapsedMillisecondsThenResetStopwatchMock.ReturnRandom();
+      const unsigned short elapsedMilliseconds = 0;
 
       TestResult sixArgCtorTestResult = TestingNonDefaultTestResult();
-      sixArgCtorTestResult.elapsedMilliseconds = elapsedMilliseconds;
       _testResultFactoryMock->MakeConstructorDestructorSuccessMock.Return(sixArgCtorTestResult);
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
       METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledNTimes(2));
-      METALMOCKTHEN(_stopwatchMock->StartMock.CalledOnce()).Then(
+
       METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor))).Then(
+         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor)).Then(
+
       METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
          &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor))).Then(
+
       METALMOCKTHEN(_testResultFactoryMock->MakeConstructorDestructorSuccessMock.CalledOnceWith(
-         _newableDeletableTest->p_fullTestName, successConstructorTestPhaseResult, destructorTestPhaseResult))).Then(
-      METALMOCKTHEN(_stopwatchMock->GetElapsedMillisecondsThenResetStopwatchMock.CalledOnce()));
+         _newableDeletableTest->p_fullTestName,
+         successConstructorTestPhaseResult,
+         destructorTestPhaseResult,
+         elapsedMilliseconds)));
+
       const vector<TestResult> expectedTestResults{ sixArgCtorTestResult };
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
    }

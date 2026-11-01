@@ -15,7 +15,7 @@ namespace ZenUnit
       using TupleIntInt = tuple<int, int>;
       DOES_NOT_THROW(Equalizer<TupleIntInt>::AssertEqual(expectedTuple, actualTuple));
       get<0>(expectedTuple) = 1;
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
          "Expected: (1, 0)",
          "  Actual: (0, 0)",
@@ -36,7 +36,7 @@ namespace ZenUnit
       using TupleStringUnsignedLongLong = tuple<string, unsigned long long>;
       DOES_NOT_THROW(Equalizer<TupleStringUnsignedLongLong>::AssertEqual(expectedTuple, actualTuple));
       get<0>(expectedTuple) = "str1";
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
          "Expected: (\"str1\", 0)",
          "  Actual: (\"\", 0)",
@@ -57,7 +57,7 @@ namespace ZenUnit
       using TupleIntOnlyZenUnitEqualizerUserType = tuple<int, OnlyZenUnitEqualizerUserType>;
       DOES_NOT_THROW(Equalizer<TupleIntOnlyZenUnitEqualizerUserType>::AssertEqual(expectedTuple, actualTuple));
       get<1>(actualTuple) = OnlyZenUnitEqualizerUserType{1};
-      const string expectedExceptionMessage = TestUtil::NewlineConcat("",
+      const string expectedExceptionMessage = TestUtil::NewlineConcatStrings("",
          "  Failed: TUPLES_ARE_EQUAL(expectedTuple, actualTuple)",
          "Expected: (0, OnlyZenUnitEqualizerUserType@0)",
          "  Actual: (0, OnlyZenUnitEqualizerUserType@1)",

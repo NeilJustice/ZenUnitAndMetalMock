@@ -53,7 +53,7 @@ namespace ZenUnit
 
    TEST(IntIsZero_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0)",
 "Expected: Not T{}",
 "  Actual: 0",
@@ -62,7 +62,7 @@ namespace ZenUnit
 
    TEST(FloatIsZero_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0f), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0f), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0.0f)",
 "Expected: Not T{}",
 "  Actual: 0",
@@ -71,7 +71,7 @@ namespace ZenUnit
 
    TEST(DoubleIsZero_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(0.0), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(0.0)",
 "Expected: Not T{}",
 "  Actual: 0",
@@ -80,7 +80,7 @@ namespace ZenUnit
 
    TEST(StringIsEmptyString_ThrowsAnomaly)
    {
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(""s), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(""s), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(\"\"s)",
 "Expected: Not T{}",
 "  Actual: \"\"",
@@ -91,7 +91,7 @@ namespace ZenUnit
    {
       const span<const int> defaultConstIntSpan;
       const string expectedConstIntSpanTypeName = *Type::GetName<span<const int>>();
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultConstIntSpan), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultConstIntSpan), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultConstIntSpan)",
 "Expected: Not T{}",
 "  Actual: " + expectedConstIntSpanTypeName + " (size 0):",
@@ -104,7 +104,7 @@ namespace ZenUnit
    {
       const vector<int> defaultIntVector;
       const string expectedIntVectorTypeName = *Type::GetName<vector<int>>();
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultIntVector), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultIntVector), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultIntVector)",
 "Expected: Not T{}",
 "  Actual: " + expectedIntVectorTypeName + " (size 0):",
@@ -116,7 +116,7 @@ namespace ZenUnit
    TEST(UserTypeIsDefaultValue_ThrowsAnomaly)
    {
       const UserType defaultUserType;
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultUserType), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultUserType), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultUserType)",
 "Expected: Not T{}",
 "  Actual: UserType@0",
@@ -127,7 +127,7 @@ namespace ZenUnit
    {
       const UserType defaultUserType;
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultUserType, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(IS_NOT_DEFAULT_VALUE(defaultUserType, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: IS_NOT_DEFAULT_VALUE(defaultUserType, messageA, messageB)",
 "Expected: Not T{}",
 "  Actual: UserType@0",

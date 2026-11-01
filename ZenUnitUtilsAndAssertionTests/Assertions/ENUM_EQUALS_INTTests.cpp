@@ -31,14 +31,14 @@ namespace ZenUnit
    TEST(EnumClassDoesNotEqualInteger_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(ENUM_EQUALS_INT(1, EnumClass::Zero),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ENUM_EQUALS_INT(1, EnumClass::Zero)",
 "Expected: 1",
 "  Actual: 0",
 "File.cpp(1)"));
 
       THROWS_EXCEPTION(ENUM_EQUALS_INT(3, EnumClass::One),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ENUM_EQUALS_INT(3, EnumClass::One)",
 "Expected: 3",
 "  Actual: 1",
@@ -50,7 +50,7 @@ namespace ZenUnit
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       THROWS_EXCEPTION(ENUM_EQUALS_INT(0, EnumClass::Three, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ENUM_EQUALS_INT(0, EnumClass::Three, messageA, messageB)",
 "Expected: 0",
 "  Actual: 3",
@@ -77,14 +77,14 @@ namespace ZenUnit
    TEST(ClassicEnumDoesNotEqualInteger_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(ENUM_EQUALS_INT(1, ClassicEnum::Zero),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ENUM_EQUALS_INT(1, ClassicEnum::Zero)",
 "Expected: 1",
 "  Actual: 0",
 "File.cpp(1)"));
 
       THROWS_EXCEPTION(ENUM_EQUALS_INT(3, ClassicEnum::One),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ENUM_EQUALS_INT(3, ClassicEnum::One)",
 "Expected: 3",
 "  Actual: 1",
@@ -96,7 +96,7 @@ namespace ZenUnit
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
       THROWS_EXCEPTION(ENUM_EQUALS_INT(0, ClassicEnum::Three, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ENUM_EQUALS_INT(0, ClassicEnum::Three, messageA, messageB)",
 "Expected: 0",
 "  Actual: 3",

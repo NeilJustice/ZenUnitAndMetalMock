@@ -81,7 +81,7 @@ namespace ZenUnit
    {
       const EqualizerOneTypeTestStruct_AreEqual expected{}, actual{};
       THROWS_EXCEPTION(ARE_EQUAL(expected, actual),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expected, actual)",
 "Expected: <EqualizerOneTypeTestStruct_AreEqual>",
 "  Actual: <EqualizerOneTypeTestStruct_AreEqual>",
@@ -96,7 +96,7 @@ namespace ZenUnit
    {
       const EqualizerTwoTypeTestStruct_AreEqual expected{};
       THROWS_EXCEPTION(ARE_EQUAL(expected, 1),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expected, 1)",
 "Expected: <EqualizerTwoTypeTestStruct_AreEqual>",
 "  Actual: 1",
@@ -111,7 +111,7 @@ namespace ZenUnit
    {
       const EqualizerBothOneAndTwoTypeTestStruct_AreEqual expected{}, actual{};
       THROWS_EXCEPTION(ARE_EQUAL(expected, actual),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expected, actual)",
 "Expected: <EqualizerBothOneAndTwoTypeTestStruct_AreEqual>",
 "  Actual: <EqualizerBothOneAndTwoTypeTestStruct_AreEqual>",
@@ -136,7 +136,7 @@ namespace ZenUnit
    TEST(ARE_EQUAL_IntLiteralsAreNotEqual_ThrowsAnomaly)
    {
       THROWS_EXCEPTION(ARE_EQUAL(0, 1),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(0, 1)",
 "Expected: 0",
 "  Actual: 1",
@@ -149,7 +149,7 @@ namespace ZenUnit
       const int actual = 1;
       const string messageA = "A", messageB = "B";
       THROWS_EXCEPTION(ARE_EQUAL(expected, actual, messageA, messageB),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expected, actual, messageA, messageB)",
 "Expected: 0",
 "  Actual: 1",
@@ -162,7 +162,7 @@ namespace ZenUnit
       const string expected = "expected";
       const string actual = "actual";
       THROWS_EXCEPTION(ARE_EQUAL(expected, actual),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expected, actual)",
 "Expected: \"expected\"",
 "  Actual: \"actual\"",
@@ -174,7 +174,7 @@ namespace ZenUnit
       const string_view expectedStringView = "expected";
       const string_view actualStringView = "actual";
       THROWS_EXCEPTION(ARE_EQUAL(expectedStringView, actualStringView),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expectedStringView, actualStringView)",
 "Expected: \"expected\"",
 "  Actual: \"actual\"",
@@ -202,7 +202,7 @@ namespace ZenUnit
       const char* const expected = nullptr;
       const char* const actual = "not_nullptr";
       THROWS_EXCEPTION(ARE_EQUAL(expected, actual),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expected, actual)",
 "Expected: nullptr",
 "  Actual: \"not_nullptr\"",
@@ -214,7 +214,7 @@ namespace ZenUnit
       const char* const expected = "not_nullptr";
       const char* const actual = nullptr;
       THROWS_EXCEPTION(ARE_EQUAL(expected, actual),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expected, actual)",
 "Expected: \"not_nullptr\"",
 "  Actual: nullptr",
@@ -224,7 +224,7 @@ namespace ZenUnit
    TEST(ARE_EQUAL_int_unsigned_ExpectedIntIsNegative_ThrowsEqualizerException)
    {
       THROWS_EXCEPTION(ARE_EQUAL(-1, 1U),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(-1, 1U)",
 "Expected: -1",
 "  Actual: 1",
@@ -243,7 +243,7 @@ namespace ZenUnit
       const int expectedInt = ZenUnit::RandomBetween<int>(0, 123);
       const unsigned actualUnsigned = ZenUnit::RandomNotEqualTo<unsigned>(static_cast<unsigned>(expectedInt));
       THROWS_EXCEPTION(ARE_EQUAL(expectedInt, actualUnsigned),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expectedInt, actualUnsigned)",
 "Expected: " + to_string(expectedInt),
 "  Actual: " + to_string(actualUnsigned),
@@ -253,7 +253,7 @@ namespace ZenUnit
    TEST(ARE_EQUAL_int_unsignedlong_ExpectedIntIsNegative_ThrowsEqualizerException)
    {
       THROWS_EXCEPTION(ARE_EQUAL(-1, 1UL),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(-1, 1UL)",
 "Expected: -1",
 "  Actual: 1",
@@ -272,7 +272,7 @@ namespace ZenUnit
       const int expectedInt = ZenUnit::RandomBetween<int>(0, 123);
       const unsigned long actualUnsignedLong = ZenUnit::RandomNotEqualTo<unsigned long>(static_cast<unsigned long>(expectedInt));
       THROWS_EXCEPTION(ARE_EQUAL(expectedInt, actualUnsignedLong),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expectedInt, actualUnsignedLong)",
 "Expected: " + to_string(expectedInt),
 "  Actual: " + to_string(actualUnsignedLong),
@@ -282,7 +282,7 @@ namespace ZenUnit
    TEST(ARE_EQUAL_int_unsignedlonglong_ExpectedIntIsNegative_ThrowsEqualizerException)
    {
       THROWS_EXCEPTION(ARE_EQUAL(-1, 1ULL),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(-1, 1ULL)",
 "Expected: -1",
 "  Actual: 1",
@@ -301,7 +301,7 @@ namespace ZenUnit
       const int expectedInt = ZenUnit::RandomBetween<int>(0, 123);
       const unsigned long long actualUnsignedLongLong = ZenUnit::RandomNotEqualTo<unsigned long long>(static_cast<unsigned long long>(expectedInt));
       THROWS_EXCEPTION(ARE_EQUAL(expectedInt, actualUnsignedLongLong),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_EQUAL(expectedInt, actualUnsignedLongLong)",
 "Expected: " + to_string(expectedInt),
 "  Actual: " + to_string(actualUnsignedLongLong),

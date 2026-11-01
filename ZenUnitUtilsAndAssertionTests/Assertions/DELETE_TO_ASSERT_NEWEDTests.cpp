@@ -33,7 +33,7 @@ namespace ZenUnit
    TEST(PointerIsNullRawPointer_ThrowsAnomaly)
    {
       const int* const nullRawPointer = nullptr;
-      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nullRawPointer), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(nullRawPointer)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -45,7 +45,7 @@ namespace ZenUnit
       const char* const nullRawPointer = nullptr;
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nullRawPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nullRawPointer, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(nullRawPointer, messageA, messageB)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -56,7 +56,7 @@ namespace ZenUnit
    TEST(PointerIsEmptyUniquePtr_ThrowsAnomaly)
    {
       unique_ptr<const int> emptyUniquePtr = nullptr;
-      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptyUniquePtr), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(emptyUniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -66,7 +66,7 @@ namespace ZenUnit
    TEST(PointerIsEmptySharedPtr_ThrowsAnomaly)
    {
       shared_ptr<const int> emptySharedPtr = nullptr;
-      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(emptySharedPtr), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(emptySharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -89,7 +89,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(nonEmptyUniquePtr);
 
       THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nonEmptyUniquePtr),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(nonEmptyUniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -102,7 +102,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(nonEmptySharedPtr);
 
       THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(nonEmptySharedPtr),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(nonEmptySharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -118,7 +118,7 @@ namespace ZenUnit
       //
       ARE_EQUAL(1, destructorCallCount);
       THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(uniquePtr),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(uniquePtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",
@@ -134,7 +134,7 @@ namespace ZenUnit
       //
       ARE_EQUAL(1, destructorCallCount);
       THROWS_EXCEPTION(DELETE_TO_ASSERT_NEWED(sharedPtr),
-         Anomaly, TestUtil::NewlineConcat("",
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: DELETE_TO_ASSERT_NEWED(sharedPtr)",
 "Expected: not a nullptr",
 "  Actual: nullptr",

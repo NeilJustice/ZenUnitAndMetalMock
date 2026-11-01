@@ -29,7 +29,7 @@ namespace ZenUnit
       expectedStruct.intField = ZenUnit::Random<int>();
       Struct actualStruct;
       actualStruct.intField = ZenUnit::RandomNotEqualTo(expectedStruct.intField);
-      THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expectedStruct, actualStruct, intField), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expectedStruct, actualStruct, intField), Anomaly, TestUtil::NewlineConcatStrings("",
          "  Failed: ARE_EQUAL(expectedStruct.intField, actualStruct.intField)",
          "Expected: " + to_string(expectedStruct.intField),
          "  Actual: " + to_string(actualStruct.intField),
@@ -42,7 +42,7 @@ namespace ZenUnit
       expected.userType = UserType(10);
       Struct actual;
       actual.userType = UserType(20);
-      THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expected, actual, userType), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expected, actual, userType), Anomaly, TestUtil::NewlineConcatStrings("",
          "  Failed: ARE_EQUAL(expected.userType, actual.userType)",
          "Expected: UserType@10",
          "  Actual: UserType@20",
@@ -61,7 +61,7 @@ namespace ZenUnit
       actual.stringField = ZenUnit::RandomNotEqualTo(expected.stringField);
       const string messageA = ZenUnit::Random<string>();
       const string messageB = ZenUnit::Random<string>();
-      THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expected, actual, stringField, messageA, messageB), Anomaly, TestUtil::NewlineConcat("",
+      THROWS_EXCEPTION(FIELDS_ARE_EQUAL(expected, actual, stringField, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
          "  Failed: ARE_EQUAL(expected.stringField, actual.stringField, messageA, messageB)",
          "Expected: \"" + expected.stringField + "\"",
          "  Actual: \"" + actual.stringField + "\"",
