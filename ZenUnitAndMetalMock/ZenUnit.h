@@ -4688,6 +4688,8 @@ namespace ZenUnit
    private:
       // Function Pointers
       std::function<std::string(unsigned short)> _call_Watch_MillisecondsToBracketedMillisecondsString;
+      // Mutable Fields
+      unsigned short _elapsedMilliseconds;
    public:
       // Mutable Fields
       std::vector<TestResult> _testResults;
@@ -4695,6 +4697,8 @@ namespace ZenUnit
       TestClassResult() noexcept
          // Function Pointers
          : _call_Watch_MillisecondsToBracketedMillisecondsString(Watch::MillisecondsToBracketedMillisecondsString)
+         // Mutable Fields
+         , _elapsedMilliseconds(0)
       {
       }
 
@@ -4757,8 +4761,7 @@ namespace ZenUnit
       virtual void PrintTestClassResultLine(const Console* console) const
       {
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
-         const unsigned short sumOfTestResultMilliseconds = SumOfTestResultMilliseconds();
-         const std::string twoDecimalPlaceMillisecondsString = MillisecondsToBracketedMillisecondsString(sumOfTestResultMilliseconds);
+         const std::string twoDecimalPlaceMillisecondsString = MillisecondsToBracketedMillisecondsString(_elapsedMilliseconds);
          [[likely]] if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");

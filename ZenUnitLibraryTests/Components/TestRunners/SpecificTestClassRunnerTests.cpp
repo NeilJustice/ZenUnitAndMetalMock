@@ -182,13 +182,13 @@ namespace ZenUnit
       _specificTestClassRunner->_tests.resize(3);
 
       TestMock* const testMockA = new TestMock;
-      testMockA->NumberOfTestCasesMock.Return(10ull);
+      testMockA->NumberOfTestCasesMock.Return(10ULL);
 
       TestMock* const testMockB = new TestMock;
-      testMockB->NumberOfTestCasesMock.Return(0ull);
+      testMockB->NumberOfTestCasesMock.Return(0ULL);
 
       TestMock* const testMockC = new TestMock;
-      testMockC->NumberOfTestCasesMock.Return(20ull);
+      testMockC->NumberOfTestCasesMock.Return(20ULL);
 
       _specificTestClassRunner->_tests[0].reset(testMockA);
       _specificTestClassRunner->_tests[1].reset(testMockB);
