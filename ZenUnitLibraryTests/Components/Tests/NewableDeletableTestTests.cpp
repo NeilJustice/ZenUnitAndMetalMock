@@ -1,9 +1,8 @@
 #include "pch.h"
-#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultFactoryMock.h"
 #include "ZenUnitLibraryTests/Components/TestRunners/MetalMock/TestPhaseRunnerMock.h"
+#include "ZenUnitLibraryTests/ValueTypes/TestResults/MetalMock/TestResultFactoryMock.h"
 #include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/FullTestNameEqualizerAndRandom.h"
-#include "ZenUnitTestUtils/EqualizersAndRandoms/TestResultEqualizerAndRandom.h"
+#include "ZenUnitUtilsAndAssertionTests/Components/Time/MetalMock/StopwatchMock.h"
 
 namespace ZenUnit
 {
@@ -17,24 +16,32 @@ namespace ZenUnit
 
    class TestingTestClass {};
    unique_ptr<NewableDeletableTest<TestingTestClass>> _newableDeletableTest;
-   TestPhaseRunnerMock* _tryCatchCallerMock = nullptr;
+   // Base Mutable Components
+   StopwatchMock* p_stopwatchMock = nullptr;
+   // Constant Components
+   TestPhaseRunnerMock* _testPhaseRunnerMock = nullptr;
    TestResultFactoryMock* _testResultFactoryMock = nullptr;
    const string TestClassName = Random<string>();
 
    STARTUP
    {
       _newableDeletableTest = make_unique<NewableDeletableTest<TestingTestClass>>(TestClassName.c_str());
-      _newableDeletableTest->_testPhaseRunner.reset(_tryCatchCallerMock = new TestPhaseRunnerMock);
+      // Base Mutable Components
+      _newableDeletableTest->p_stopwatch.reset(p_stopwatchMock = new StopwatchMock);
+      // Constant Components
+      _newableDeletableTest->_testPhaseRunner.reset(_testPhaseRunnerMock = new TestPhaseRunnerMock);
       _newableDeletableTest->_testResultFactory.reset(_testResultFactoryMock = new TestResultFactoryMock);
    }
 
    TEST(Constructor_NewsComponents)
    {
       NewableDeletableTest<TestingTestClass> newableDeletableTest(TestClassName.c_str());
-      ARE_EQUAL("TestClassIsNewableAndDeletable", newableDeletableTest.Name());
+      // Constant Components
       DELETE_TO_ASSERT_NEWED(newableDeletableTest._testResultFactory);
       DELETE_TO_ASSERT_NEWED(newableDeletableTest._testPhaseRunner);
+      // Mutable Components
       IS_NULLPTR(newableDeletableTest._instanceOfTestClass);
+      ARE_EQUAL("TestClassIsNewableAndDeletable", newableDeletableTest.Name());
    }
 
    TEST(NumberOfTestCases_Returns1)
@@ -47,24 +54,30 @@ namespace ZenUnit
       TestOutcome::Anomaly,
       TestOutcome::Exception)
    {
+      p_stopwatchMock->StartMock.Expect();
+
       TestPhaseResult failedConstructorTestPhaseResult;
       failedConstructorTestPhaseResult.testOutcome = nonSuccessOutcome;
-      _tryCatchCallerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
+      _testPhaseRunnerMock->RunTestPhaseMock.Return(failedConstructorTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = 0;
+      const unsigned short elapsedMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
 
       TestResult constructorFailTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeConstructorFailMock.Return(constructorFailTestResult);
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledOnceWith(
-         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor));
+      METALMOCKTHEN(p_stopwatchMock->StartMock.CalledOnce()).Then(
+
+      METALMOCKTHEN(_testPhaseRunnerMock->RunTestPhaseMock.CalledOnceWith(
+         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor))).Then(
+
+      METALMOCKTHEN(p_stopwatchMock->StopAndGetElapsedMillisecondsMock.CalledOnce())).Then(
 
       METALMOCKTHEN(_testResultFactoryMock->MakeConstructorFailMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName,
          failedConstructorTestPhaseResult,
-         elapsedMilliseconds));
+         elapsedMilliseconds)));
 
       const vector<TestResult> expectedTestResults{ constructorFailTestResult };
       VECTORS_ARE_EQUAL(expectedTestResults, testResults);
@@ -72,28 +85,34 @@ namespace ZenUnit
 
    TEST(RunTest_StartsStopwatch_CallsNewTestClassWhichSucceeds_CallsDeleteTestClass_StopsStopwatch_ReturnsConstructorDestructorSuccessTestResult)
    {
+      p_stopwatchMock->StartMock.Expect();
+
       TestPhaseResult successConstructorTestPhaseResult;
       successConstructorTestPhaseResult.testOutcome = TestOutcome::Success;
 
       TestPhaseResult destructorTestPhaseResult;
-      _tryCatchCallerMock->RunTestPhaseMock.ReturnValues(
+      _testPhaseRunnerMock->RunTestPhaseMock.ReturnValues(
          successConstructorTestPhaseResult,
          destructorTestPhaseResult);
 
-      const unsigned short elapsedMilliseconds = 0;
+      const unsigned short elapsedMilliseconds = p_stopwatchMock->StopAndGetElapsedMillisecondsMock.ReturnRandom();
 
       TestResult sixArgCtorTestResult = TestingNonDefaultTestResult();
       _testResultFactoryMock->MakeConstructorDestructorSuccessMock.Return(sixArgCtorTestResult);
       //
       const vector<TestResult> testResults = _newableDeletableTest->RunTest();
       //
-      METALMOCK(_tryCatchCallerMock->RunTestPhaseMock.CalledNTimes(2));
+      METALMOCK(_testPhaseRunnerMock->RunTestPhaseMock.CalledNTimes(2));
 
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
-         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor)).Then(
+      METALMOCKTHEN(p_stopwatchMock->StartMock.CalledOnce()).Then(
 
-      METALMOCKTHEN(_tryCatchCallerMock->RunTestPhaseMock.CalledWith(
+      METALMOCKTHEN(_testPhaseRunnerMock->RunTestPhaseMock.CalledWith(
+         &Test::CallNewTestClass, _newableDeletableTest.get(), TestPhase::Constructor))).Then(
+
+      METALMOCKTHEN(_testPhaseRunnerMock->RunTestPhaseMock.CalledWith(
          &Test::CallDeleteTestClass, _newableDeletableTest.get(), TestPhase::Destructor))).Then(
+
+      METALMOCKTHEN(p_stopwatchMock->StopAndGetElapsedMillisecondsMock.CalledOnce())).Then(
 
       METALMOCKTHEN(_testResultFactoryMock->MakeConstructorDestructorSuccessMock.CalledOnceWith(
          _newableDeletableTest->p_fullTestName,

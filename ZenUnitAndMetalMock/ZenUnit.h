@@ -4686,13 +4686,14 @@ namespace ZenUnit
    {
       friend class TestClassResultTests;
    private:
-      // Function Callers
+      // Function Pointers
       std::function<std::string(unsigned short)> _call_Watch_MillisecondsToBracketedMillisecondsString;
    public:
       // Mutable Fields
       std::vector<TestResult> _testResults;
 
       TestClassResult() noexcept
+         // Function Pointers
          : _call_Watch_MillisecondsToBracketedMillisecondsString(Watch::MillisecondsToBracketedMillisecondsString)
       {
       }
@@ -4758,7 +4759,7 @@ namespace ZenUnit
          const size_t numberOfFailedTestCases = NumberOfFailedTestCases();
          const unsigned short sumOfTestResultMilliseconds = SumOfTestResultMilliseconds();
          const std::string twoDecimalPlaceMillisecondsString = MillisecondsToBracketedMillisecondsString(sumOfTestResultMilliseconds);
-         if (numberOfFailedTestCases == 0)
+         [[likely]] if (numberOfFailedTestCases == 0)
          {
             console->Write("[  ");
             console->WriteColor("OK", Color::Green);
@@ -4779,7 +4780,11 @@ namespace ZenUnit
          const Console* console,
          TestFailureNumberer* testFailureNumberer) const
       {
-         threeArgForEacher->ThreeArgForEach(&_testResults, PrintTestResultIfFailure, console, testFailureNumberer);
+         threeArgForEacher->ThreeArgForEach(
+            &_testResults,
+            PrintTestResultIfFailure,
+            console,
+            testFailureNumberer);
       }
 
       virtual void ReserveVectorCapacityForNumberOfTestResults(size_t numberOfTestResults)
@@ -4793,7 +4798,8 @@ namespace ZenUnit
             _testResults.cbegin(), _testResults.cend(), static_cast<unsigned short>(0),
             [](unsigned short runningSum, const TestResult& testResult)
             {
-               return static_cast<unsigned short>(runningSum + testResult.elapsedMilliseconds);
+               unsigned short newRunningSum = static_cast<unsigned short>(runningSum + testResult.elapsedMilliseconds);
+               return newRunningSum;
             });
          return sumOfTestResultMilliseconds;
       }
@@ -4816,9 +4822,11 @@ namespace ZenUnit
    {
       friend class LinuxEnvironmentServiceTests;
    private:
+      // Function Pointers
       std::function<std::filesystem::path()> _call_filesystem_current_path;
    public:
       EnvironmentService() noexcept
+         // Function Pointers
          : _call_filesystem_current_path(static_cast<std::filesystem::path(*)()>(std::filesystem::current_path))
       {
       }
@@ -5361,7 +5369,7 @@ namespace ZenUnit
 
       virtual void PrintTestFailuresAndSkips() const
       {
-         if (_numberOfFailedTestCases > 0)
+         [[unlikely]] if (_numberOfFailedTestCases > 0)
          {
             const std::string testOrTests = _numberOfFailedTestCases > 1 ? "Tests" : "Test";
             const std::string firstLine = String::ConcatValues("== ", _numberOfFailedTestCases, ' ', testOrTests, " Failed ==");
@@ -5381,49 +5389,47 @@ namespace ZenUnit
          size_t testRunIndex) const
       {
          const Color greenOrRed = _numberOfFailedTestCases == 0 ? Color::Green : Color::Red;
-         if (totalNumberOfTestCases == 0)
+         [[unlikely]] if (totalNumberOfTestCases == 0)
          {
             _console->WriteColor("[ZenUnit]", Color::Red);
             _console->WriteLineAndExit(" Zero test classes run. Exiting with code 1.", 1);
+            return;
+         }
+         const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
+         std::string bracketedZenUnitOrFailArrowPrefix;
+         std::string successOrFailLinePrefix;
+         std::string resultMessage;
+         if (_numberOfFailedTestCases == 0)
+         {
+            bracketedZenUnitOrFailArrowPrefix = "[ZenUnit]";
+            successOrFailLinePrefix = "[SUCCESS]";
+            resultMessage = String::ConcatValues("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
          }
          else
          {
-            const std::string testOrTests = totalNumberOfTestCases == 1 ? "test" : "tests";
-            std::string bracketedZenUnitOrFailArrowPrefix;
-            std::string successOrFailLinePrefix;
-            std::string resultMessage;
-            if (_numberOfFailedTestCases == 0)
-            {
-               bracketedZenUnitOrFailArrowPrefix = "[ZenUnit]";
-               successOrFailLinePrefix = "[SUCCESS]";
-               resultMessage = String::ConcatValues("     Result: All ", totalNumberOfTestCases, ' ', testOrTests, " passed");
-            }
-            else
-            {
-               bracketedZenUnitOrFailArrowPrefix = ">>------>";
-               successOrFailLinePrefix = ">>-FAIL->";
-               resultMessage = String::ConcatValues("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
-            }
-            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
-            const std::string completedCommandLineMessage = String::ConcatStrings("  Completed: ", zenUnitArgs.commandLine);
-            _console->WriteLine(completedCommandLineMessage);
-
-            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
-            const std::string endDateTime = _watch->DateTimeNow();
-            const std::string endTimeMessage = String::ConcatStrings("    EndTime: ", endDateTime);
-            _console->WriteLine(endTimeMessage);
-
-            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
-            const std::string durationMessage = String::ConcatValues("   Duration: ", testRunElapsedSeconds, " seconds");
-            _console->WriteLine(durationMessage);
-
-            _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
-            const std::string testRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
-            _console->WriteLine(testRunMessage);
-
-            _console->WriteColor(successOrFailLinePrefix, greenOrRed);
-            _console->WriteLine(resultMessage);
+            bracketedZenUnitOrFailArrowPrefix = ">>------>";
+            successOrFailLinePrefix = ">>-FAIL->";
+            resultMessage = String::ConcatValues("     Result: ", _numberOfFailedTestCases, " of ", totalNumberOfTestCases, ' ', testOrTests, " failed");
          }
+         _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
+         const std::string completedCommandLineMessage = String::ConcatStrings("  Completed: ", zenUnitArgs.commandLine);
+         _console->WriteLine(completedCommandLineMessage);
+
+         _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
+         const std::string endDateTime = _watch->DateTimeNow();
+         const std::string endTimeMessage = String::ConcatStrings("    EndTime: ", endDateTime);
+         _console->WriteLine(endTimeMessage);
+
+         _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
+         const std::string durationMessage = String::ConcatValues("   Duration: ", testRunElapsedSeconds, " seconds");
+         _console->WriteLine(durationMessage);
+
+         _console->WriteColor(bracketedZenUnitOrFailArrowPrefix, greenOrRed);
+         const std::string testRunMessage = String::ConcatValues("    TestRun: ", testRunIndex + 1, " of ", zenUnitArgs.testRuns);
+         _console->WriteLine(testRunMessage);
+
+         _console->WriteColor(successOrFailLinePrefix, greenOrRed);
+         _console->WriteLine(resultMessage);
       }
 
       virtual int DetermineZenUnitExitCode(const ZenUnitArgs& zenUnitArgs) const
@@ -5433,7 +5439,7 @@ namespace ZenUnit
             return 0;
          }
          const bool haveSkippedTestsOrTestClasses = !_skippedFullTestNamesAndSkipReasons.empty() || !_skippedTestClassNamesAndSkipReasons.empty();
-         if (zenUnitArgs.exit1IfTestsSkipped && haveSkippedTestsOrTestClasses)
+         [[unlikely]] if (zenUnitArgs.exit1IfTestsSkipped && haveSkippedTestsOrTestClasses)
          {
             return 1;
          }
@@ -5511,7 +5517,7 @@ namespace ZenUnit
          return elapsedMilliseconds;
       }
 
-      virtual std::string StopAndGetElapsedSeconds()
+      virtual std::string StopAndGetElapsedSecondsString()
       {
          // Example elapsedMilliseconds: 1234
          const unsigned short elapsedMilliseconds = StopAndGetElapsedMilliseconds();
@@ -5539,6 +5545,8 @@ namespace ZenUnit
    class NTimesMemberFunctionAccumulator
    {
    public:
+      virtual ~NTimesMemberFunctionAccumulator() = default;
+
       using AccumulationFunctionType = ReturnType(ClassType::*)(size_t, size_t);
 
       virtual ReturnType AccumulateNonConstMemberFunctionNTimes(
@@ -5554,8 +5562,6 @@ namespace ZenUnit
          }
          return accumulatedReturnValue;
       }
-
-      virtual ~NTimesMemberFunctionAccumulator() = default;
    };
 
    class ExitCodeLinePrinter
@@ -5601,11 +5607,21 @@ namespace ZenUnit
       friend class ZenUnitTestRunnerTests;
    private:
       // Function Callers
-      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>> _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
-      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>> _caller_RunTestClasses;
-      std::unique_ptr<const VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>> _caller_SetNextGlobalZenUnitModeRandomSeed;
-      std::unique_ptr<const NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>> _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused;
-      std::unique_ptr<const NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>> _nTimesMemberFunctionAccumulator_RunTests;
+      using _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesType =
+         NonVoidTwoArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>;
+      std::unique_ptr<const _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesType> _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines;
+
+      using _caller_RunTestClassesType = VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>;
+      std::unique_ptr<const _caller_RunTestClassesType> _caller_RunTestClasses;
+
+      using _caller_SetNextGlobalZenUnitModeRandomSeedType = VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>;
+      std::unique_ptr<const _caller_SetNextGlobalZenUnitModeRandomSeedType> _caller_SetNextGlobalZenUnitModeRandomSeed;
+
+      using _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedType = NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>;
+      std::unique_ptr<const _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedType> _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused;
+
+      using _nTimesMemberFunctionAccumulator_RunTestsType = NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>;
+      std::unique_ptr<const _nTimesMemberFunctionAccumulator_RunTestsType> _nTimesMemberFunctionAccumulator_RunTests;
       // Function Pointers
 #if defined _WIN32 && defined _DEBUG
       using CRT_REPORT_HOOK_FunctionType = int(*)(int, char*, int*);
@@ -5627,11 +5643,11 @@ namespace ZenUnit
    public:
       ZenUnitTestRunner() noexcept
          // Function Callers
-         : _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(std::make_unique<NonVoidTwoArgMemberFunctionCaller<int, ZenUnitTestRunner, const ZenUnitArgs&, size_t>>())
-         , _caller_RunTestClasses(std::make_unique<VoidZeroArgMemberFunctionCaller<ZenUnitTestRunner>>())
-         , _caller_SetNextGlobalZenUnitModeRandomSeed(std::make_unique<VoidOneArgMemberFunctionCaller<ZenUnitTestRunner, bool>>())
-         , _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(std::make_unique<NonVoidTwoArgMemberFunctionCaller<bool, ZenUnitTestRunner, bool, bool>>())
-         , _nTimesMemberFunctionAccumulator_RunTests(std::make_unique<NTimesMemberFunctionAccumulator<int, ZenUnitTestRunner>>())
+         : _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines(std::make_unique<_caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLinesType>())
+         , _caller_RunTestClasses(std::make_unique<_caller_RunTestClassesType>())
+         , _caller_SetNextGlobalZenUnitModeRandomSeed(std::make_unique<_caller_SetNextGlobalZenUnitModeRandomSeedType>())
+         , _caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused(std::make_unique<_caller_WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPausedType>())
+         , _nTimesMemberFunctionAccumulator_RunTests(std::make_unique<_nTimesMemberFunctionAccumulator_RunTestsType>())
          // Function Pointers
 #if defined _WIN32 && defined _DEBUG
          , _call_CrtSetReportHook(_CrtSetReportHook)
@@ -5707,7 +5723,7 @@ namespace ZenUnit
 
       virtual std::string StopTestRunStopwatchAndGetElapsedSeconds()
       {
-         std::string elapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
+         std::string elapsedSeconds = _testRunStopwatch->StopAndGetElapsedSecondsString();
          return elapsedSeconds;
       }
    private:
@@ -5729,9 +5745,11 @@ Fatal Windows C++ Runtime Assertion
       {
          SetNewRandomEngineForNewTestRun();
          SetCurrentTestRunNumber(testRunIndex);
+
          int zenUnitExitCode = _caller_PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines->CallNonConstMemberFunction(
             this, &ZenUnitTestRunner::PrintPreambleLinesThenRunTestClassesThenPrintConclusionLines,
             _zenUnitArgs, testRunIndex);
+
          _testRunResult->ResetStateInPreparationForNextTestRun();
          _caller_SetNextGlobalZenUnitModeRandomSeed->CallConstMemberFunction(
             this, &ZenUnitTestRunner::SetNextGlobalZenUnitModeRandomSeed, _zenUnitArgs.globalRandomSeedSetByUser);
@@ -5751,7 +5769,7 @@ Fatal Windows C++ Runtime Assertion
 
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
-         const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
+         const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSecondsString();
          _testRunResult->PrintConclusionLines(numberOfTestCases, testRunElapsedSeconds, zenUnitArgs, testRunIndex);
          int zenUnitExitCode = _testRunResult->DetermineZenUnitExitCode(zenUnitArgs);
          return zenUnitExitCode;
@@ -5833,11 +5851,14 @@ Fatal Windows C++ Runtime Assertion
 
       virtual ~TestPhaseRunner() = default;
 
-      virtual TestPhaseResult RunTestPhase(void(*testPhaseFunction)(Test*), Test* testPointer, TestPhase testPhase) const;
+      virtual TestPhaseResult RunTestPhase(
+         void(*testPhaseFunction)(Test*),
+         Test* testPointer,
+         TestPhase testPhase) const;
 
       void FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess(TestOutcome testOutcome, const ZenUnitArgs& zenUnitArgs) const
       {
-         if (zenUnitArgs.failFast && testOutcome != TestOutcome::Success)
+         [[unlikely]] if (zenUnitArgs.failFast && testOutcome != TestOutcome::Success)
          {
             const int exitCode = zenUnitArgs.alwaysExit0 ? 0 : 1;
             const std::string failFastMessage = String::ConcatValues('\n',
@@ -5912,7 +5933,10 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult& constructorTestPhaseResult,
          unsigned short elapsedMilliseconds) const
       {
-         TestResult testResult = TestResult::ConstructorFail(fullTestName, constructorTestPhaseResult, elapsedMilliseconds);
+         TestResult testResult = TestResult::ConstructorFail(
+            fullTestName,
+            constructorTestPhaseResult,
+            elapsedMilliseconds);
          return testResult;
       }
 
@@ -5975,8 +5999,9 @@ Fatal Windows C++ Runtime Assertion
       // Constant Components
       std::unique_ptr<const TestPhaseRunner> _testPhaseRunner;
       std::unique_ptr<const TestResultFactory> _testResultFactory;
+   protected:
       // Mutable Components
-      std::unique_ptr<Stopwatch> _stopwatch;
+      std::unique_ptr<Stopwatch> p_stopwatch;
    protected:
       // Mutable Fields
       FilePathLineNumber p_fileLine;
@@ -5987,7 +6012,7 @@ Fatal Windows C++ Runtime Assertion
          : _testPhaseRunner(std::make_unique<TestPhaseRunner>())
          , _testResultFactory(std::make_unique<TestResultFactory>())
          // Mutable Components
-         , _stopwatch(std::make_unique<Stopwatch>())
+         , p_stopwatch(std::make_unique<Stopwatch>())
          // Mutable Fields
          , p_fullTestName(testClassName, testName, arity)
       {
@@ -6048,14 +6073,14 @@ Fatal Windows C++ Runtime Assertion
       }
       virtual void DeleteTestClass() {}
    protected:
-      TestResult BaseRunTest()
+      TestResult BaseRunFivePhaseTest()
       {
-         //_stopwatch->Start();
+         p_stopwatch->Start();
          const TestPhaseResult constructorTestPhaseResult =
             _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const unsigned short elapsedMilliseconds = 0;//_stopwatch->StopAndGetElapsedMilliseconds();
+            const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
             const TestResult constructorFailTestResult =
                _testResultFactory->MakeConstructorFail(p_fullTestName, constructorTestPhaseResult, elapsedMilliseconds);
             return constructorFailTestResult;
@@ -6064,9 +6089,9 @@ Fatal Windows C++ Runtime Assertion
             _testPhaseRunner->RunTestPhase(&Test::CallStartup, this, TestPhase::Startup);
          if (startupTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const unsigned short elapsedMilliseconds = 0;
             const TestPhaseResult destructorTestPhaseResult =
                _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
+            const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
             const TestResult startupFailTestResult = _testResultFactory->MakeStartupFail(
                p_fullTestName,
                constructorTestPhaseResult,
@@ -6084,7 +6109,7 @@ Fatal Windows C++ Runtime Assertion
          const TestPhaseResult destructorTestPhaseResult =
             _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
 
-         const unsigned short elapsedMilliseconds = 0;
+         const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
          TestResult testResult = _testResultFactory->MakeFullTestResult(
             p_fullTestName,
             constructorTestPhaseResult,
@@ -6188,11 +6213,12 @@ Fatal Windows C++ Runtime Assertion
 
       std::vector<TestResult> RunTest() override
       {
+         p_stopwatch->Start();
          const TestPhaseResult constructorTestPhaseResult =
             _testPhaseRunner->RunTestPhase(&Test::CallNewTestClass, this, TestPhase::Constructor);
          if (constructorTestPhaseResult.testOutcome != TestOutcome::Success)
          {
-            const unsigned short elapsedMilliseconds = 0;
+            const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
             TestResult constructorFailTestResult = _testResultFactory->MakeConstructorFail(
                p_fullTestName,
                constructorTestPhaseResult,
@@ -6202,7 +6228,7 @@ Fatal Windows C++ Runtime Assertion
          }
          const TestPhaseResult destructorTestPhaseResult =
             _testPhaseRunner->RunTestPhase(&Test::CallDeleteTestClass, this, TestPhase::Destructor);
-         const unsigned short elapsedMilliseconds = 0;
+         const unsigned short elapsedMilliseconds = p_stopwatch->StopAndGetElapsedMilliseconds();
          TestResult testResult = _testResultFactory->MakeConstructorDestructorSuccess(
             p_fullTestName,
             constructorTestPhaseResult,
@@ -6230,7 +6256,7 @@ Fatal Windows C++ Runtime Assertion
 
       virtual size_t SumNumberOfTestCases(const std::vector<std::unique_ptr<Test>>* tests) const
       {
-         const size_t numberOfTestResults = std::accumulate(
+         size_t numberOfTestResults = std::accumulate(
             tests->cbegin(), tests->cend(),
             0ULL, [](size_t runningSumOfTestResults, const std::unique_ptr<Test>& test)
             {
@@ -6252,8 +6278,10 @@ Fatal Windows C++ Runtime Assertion
       std::function<const ZenUnitArgs&()> _call_ZenUnitTestRunner_GetZenUnitArgs;
 
       // Function Callers
-      using _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType =
-         NonVoidOneArgMemberFunctionCaller<TestResult, SpecificTestClassRunner<TestClassType>, Test*>;
+      using _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType = NonVoidOneArgMemberFunctionCaller<
+         TestResult,
+         SpecificTestClassRunner<TestClassType>,
+         Test*>;
       std::unique_ptr<const _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>
          _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests;
 
@@ -6271,8 +6299,12 @@ Fatal Windows C++ Runtime Assertion
          TestClassResult*>;
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
-      std::unique_ptr<const VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>> _voidZeroArgMemberFunctionCaller;
-      std::unique_ptr<const VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>> _voidOneArgMemberFunctionCaller;
+      using _voidZeroArgMemberFunctionCallerType = VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>;
+      std::unique_ptr<const _voidZeroArgMemberFunctionCallerType> _voidZeroArgMemberFunctionCaller;
+
+      using _voidOneArgMemberFunctionCallerType = VoidOneArgMemberFunctionCaller<
+         SpecificTestClassRunner<TestClassType>, const TestClassResult*>;
+      std::unique_ptr<const _voidOneArgMemberFunctionCallerType> _voidOneArgMemberFunctionCaller;
       // Constant Components
       std::unique_ptr<const TestCasesAccumulator> _testCasesAccumulator;
       // Mutable Fields
@@ -6286,12 +6318,11 @@ Fatal Windows C++ Runtime Assertion
          : _call_Watch_MillisecondsToBracketedMillisecondsString(Watch::MillisecondsToBracketedMillisecondsString)
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          // Function Callers
-         , _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(
-            std::make_unique<_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>())
+         , _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests(std::make_unique<_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsType>())
          , _twoArgTestAnyer(std::make_unique<_twoArgTestAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
-         , _voidZeroArgMemberFunctionCaller(std::make_unique<VoidZeroArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>>>())
-         , _voidOneArgMemberFunctionCaller(std::make_unique<VoidOneArgMemberFunctionCaller<SpecificTestClassRunner<TestClassType>, const TestClassResult*>>())
+         , _voidZeroArgMemberFunctionCaller(std::make_unique<_voidZeroArgMemberFunctionCallerType>())
+         , _voidOneArgMemberFunctionCaller(std::make_unique<_voidOneArgMemberFunctionCallerType>())
          // Constant Components
          , _testCasesAccumulator(std::make_unique<TestCasesAccumulator>())
          // Mutable Fields
@@ -6312,7 +6343,8 @@ Fatal Windows C++ Runtime Assertion
          {
             return true;
          }
-         bool thisTestClassHasATestThatMatchesTestNameFilter = _twoArgTestAnyer->TwoArgAny(&_tests, TestNameFilterMatchesTestName, testNameFilter);
+         bool thisTestClassHasATestThatMatchesTestNameFilter = _twoArgTestAnyer->TwoArgAny(
+            &_tests, TestNameFilterMatchesTestName, testNameFilter);
          return thisTestClassHasATestThatMatchesTestNameFilter;
       }
 
@@ -6336,18 +6368,26 @@ Fatal Windows C++ Runtime Assertion
 
       TestClassResult RunTests() override
       {
-         _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
-         TestResult newableAndDeletableTestResult = _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests->CallConstMemberFunction(
-            this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests, &_newableDeletableTest);
+         _voidZeroArgMemberFunctionCaller->CallConstMemberFunction(
+            this, &SpecificTestClassRunner::PrintTestClassNameAndNumberOfNamedTests);
+
+         TestResult newableAndDeletableTestResult =
+            _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests->CallConstMemberFunction(
+               this, &SpecificTestClassRunner::ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests,
+               &_newableDeletableTest);
+
          constexpr size_t LengthOfNewableAndDeletableTestResult = 1;
-         const size_t numberOfTestResultsForThisTestClass = LengthOfNewableAndDeletableTestResult + _testCasesAccumulator->SumNumberOfTestCases(&_tests);
+         const size_t numberOfTestResultsForThisTestClass =
+            LengthOfNewableAndDeletableTestResult + _testCasesAccumulator->SumNumberOfTestCases(&_tests);
+
          _testClassResult.ReserveVectorCapacityForNumberOfTestResults(numberOfTestResultsForThisTestClass);
          _testClassResult.AddTestResult(std::move(newableAndDeletableTestResult));
          if (newableAndDeletableTestResult.testOutcome == TestOutcome::Success)
          {
             _voidZeroArgMemberFunctionCaller->CallNonConstMemberFunction(this, &SpecificTestClassRunner::DoRunTests);
          }
-         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
+         _voidOneArgMemberFunctionCaller->CallConstMemberFunction(
+            this, &SpecificTestClassRunner::PrintTestClassResultLine, &_testClassResult);
          return std::move(_testClassResult);
       }
    private:
@@ -6401,12 +6441,14 @@ Fatal Windows C++ Runtime Assertion
          const bool testNameFilterMatchesTestName = zenUnitArgs.testNameFilters.empty() || p_twoArgMemberAnyer->TwoArgAny(
             zenUnitArgs.testNameFilters,
             this, &TestClassRunner::TestNameFilterMatchesTestName, testName);
-         if (testNameFilterMatchesTestName)
+         [[likely]] if (testNameFilterMatchesTestName)
          {
             const std::string barTestName = String::ConcatStrings("|", testName);
             p_console->Write(barTestName);
             test->WritePostTestNameMessage(p_console.get());
+
             std::vector<TestResult> testResults = test->RunTest();
+
             test->WritePostTestCompletionMessage(p_console.get(), testResults[0]);
             outTestClassResult->AddTestResults(std::move(testResults));
          }
@@ -6457,7 +6499,7 @@ Fatal Windows C++ Runtime Assertion
 
       std::vector<TestResult> RunTest() override
       {
-         TestResult testResult = BaseRunTest();
+         TestResult testResult = BaseRunFivePhaseTest();
          std::vector<TestResult> testResults{ std::move(testResult) };
          return testResults;
       }
@@ -6670,13 +6712,13 @@ Fatal Windows C++ Runtime Assertion
       std::function<std::shared_ptr<ITestCaseNumberGenerator>(bool)> _call_ITestCaseNumberGeneratorFactoryNew;
       std::function<std::vector<std::string>(const char*)> _call_String_SplitOnNonQuotedCommas;
       std::function<const ZenUnitArgs& ()> _call_ZenUnitTestRunner_GetZenUnitArgs;
-      using CallerOfTestNameFilterMatchesTestCaseType = ThreeArgAnyer<
+      // Function Callers
+      using _callerOfTestNameFilterMatchesTestCaseType = ThreeArgAnyer<
          std::vector<TestNameFilter>,
          bool(*)(const TestNameFilter&, const FullTestName&, size_t),
          const FullTestName&,
          size_t>;
-      // Function Callers
-      std::unique_ptr<CallerOfTestNameFilterMatchesTestCaseType> _callerOfTestNameFilterMatchesTestCase;
+      std::unique_ptr<_callerOfTestNameFilterMatchesTestCaseType> _callerOfTestNameFilterMatchesTestCase;
       // Constant Components
       std::unique_ptr<const Console> _console;
       // Mutable Fields
@@ -6695,7 +6737,7 @@ Fatal Windows C++ Runtime Assertion
          , _call_String_SplitOnNonQuotedCommas(String::SplitOnNonQuotedCommas)
          , _call_ZenUnitTestRunner_GetZenUnitArgs(ZenUnitTestRunner::GetZenUnitArgs)
          // Function Callers
-         , _callerOfTestNameFilterMatchesTestCase(std::make_unique<CallerOfTestNameFilterMatchesTestCaseType>())
+         , _callerOfTestNameFilterMatchesTestCase(std::make_unique<_callerOfTestNameFilterMatchesTestCaseType>())
          // Constant Components
          , _console(std::make_unique<Console>())
          // Mutable Fields
@@ -6776,16 +6818,16 @@ Fatal Windows C++ Runtime Assertion
       virtual void RunTestCase(size_t testCaseNumber, const std::vector<std::string>& splitTestCaseArgs)
       {
          PrintTestCaseNumberThenArgsThenArrow(testCaseNumber, splitTestCaseArgs);
-         TestResult testResult = MockableCallBaseRunTest();
+         TestResult testResult = MockableCallBaseRunFivePhaseTest();
          testResult.testCaseNumber = testCaseNumber;
          testResult.totalTestCases = NumberOfTestCases();
          WriteLineOKIfSuccessOrSuccessButPastDeadline(testResult);
          _testResults.emplace_back(std::move(testResult));
       }
 
-      virtual TestResult MockableCallBaseRunTest()
+      virtual TestResult MockableCallBaseRunFivePhaseTest()
       {
-         TestResult testResult = BaseRunTest();
+         TestResult testResult = BaseRunFivePhaseTest();
          return testResult;
       }
 

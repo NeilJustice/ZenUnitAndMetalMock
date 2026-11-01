@@ -68,12 +68,15 @@ namespace ZenUnit
 
    using TwoArgMemberForEacherMockType = TwoArgMemberForEacherMock<
       unique_ptr<Test>, SpecificTestClassRunner<TestingTestClass>,
-      void (SpecificTestClassRunner<TestingTestClass>::*)(
-         const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
+      void (SpecificTestClassRunner<TestingTestClass>::*)(const unique_ptr<Test>& test, TestClassResult*) const, TestClassResult*>;
    TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
 
-   VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>* _voidZeroArgMemberFunctionCallerMock = nullptr;
-   VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>* _voidOneArgMemberFunctionCallerMock = nullptr;
+   using _voidZeroArgMemberFunctionCallerMockType = VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>;
+   _voidZeroArgMemberFunctionCallerMockType* _voidZeroArgMemberFunctionCallerMock = nullptr;
+
+   using _voidOneArgMemberFunctionCallerMockType = VoidOneArgMemberFunctionCallerMock<
+      SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>;
+   _voidOneArgMemberFunctionCallerMockType* _voidOneArgMemberFunctionCallerMock = nullptr;
 
    // Constant Components
    TestCasesAccumulatorMock* _testCasesAccumulatorMock = nullptr;
@@ -91,12 +94,11 @@ namespace ZenUnit
       _specificTestClassRunner->_call_Watch_MillisecondsToBracketedMillisecondsString = BIND_1ARG_METALMOCK_OBJECT(_call_Watch_MillisecondsToBracketedMillisecondsStringMock);
       _specificTestClassRunner->_call_ZenUnitTestRunner_GetZenUnitArgs = BIND_0ARG_METALMOCK_OBJECT(_call_ZenUnitTestRunner_GetZenUnitArgsMock);
       // Function Callers
-      _specificTestClassRunner->_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests.reset(
-         _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock = new _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMockType);
+      _specificTestClassRunner->_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTests.reset(_caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMock = new _caller_ConfirmTestClassIsNewableAndDeletableAndRegisterNXNTestsMockType);
       _specificTestClassRunner->_twoArgTestAnyer.reset(_twoArgTestAnyerMock = new TwoArgTestAnyerMockType);
       _specificTestClassRunner->_twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
-      _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new VoidZeroArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>>);
-      _specificTestClassRunner->_voidOneArgMemberFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock = new VoidOneArgMemberFunctionCallerMock<SpecificTestClassRunner<TestingTestClass>, const TestClassResult*>);
+      _specificTestClassRunner->_voidZeroArgMemberFunctionCaller.reset(_voidZeroArgMemberFunctionCallerMock = new _voidZeroArgMemberFunctionCallerMockType);
+      _specificTestClassRunner->_voidOneArgMemberFunctionCaller.reset(_voidOneArgMemberFunctionCallerMock = new _voidOneArgMemberFunctionCallerMockType);
       // Constant Components
       _specificTestClassRunner->_testCasesAccumulator.reset(_testCasesAccumulatorMock = new TestCasesAccumulatorMock);
    }
@@ -120,7 +122,7 @@ namespace ZenUnit
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._voidOneArgMemberFunctionCaller);
       // Constant Components
       DELETE_TO_ASSERT_NEWED(specificTestClassRunner._testCasesAccumulator);
-
+      // Mutable Fields
       ARE_EQUAL(_testClassName.c_str(), specificTestClassRunner._testClassName);
       vector<unique_ptr<Test>> expectedTests;
       expectedTests.emplace_back(nullptr);
@@ -138,7 +140,8 @@ namespace ZenUnit
       const TestNameFilter testNameFilterWithEmptyTestName;
       IS_EMPTY(testNameFilterWithEmptyTestName.testNamePattern);
       //
-      const bool hasTestThatMatchesTestNameFilter = _specificTestClassRunner->HasTestThatMatchesTestNameFilter(testNameFilterWithEmptyTestName);
+      const bool hasTestThatMatchesTestNameFilter =
+         _specificTestClassRunner->HasTestThatMatchesTestNameFilter(testNameFilterWithEmptyTestName);
       //
       IS_TRUE(hasTestThatMatchesTestNameFilter);
    }
@@ -148,7 +151,8 @@ namespace ZenUnit
       const bool twoArgAnyerReturnValue = _twoArgTestAnyerMock->TwoArgAnyMock.ReturnRandom();
       const TestNameFilter testNameFilter = ZenUnit::Random<TestNameFilter>();
       //
-      const bool hasTestThatMatchesTestNameFilter = _specificTestClassRunner->HasTestThatMatchesTestNameFilter(testNameFilter);
+      const bool hasTestThatMatchesTestNameFilter =
+         _specificTestClassRunner->HasTestThatMatchesTestNameFilter(testNameFilter);
       //
       METALMOCK(_twoArgTestAnyerMock->TwoArgAnyMock.CalledOnceWith(
          &_specificTestClassRunner->_tests, SpecificTestClassRunner<TestingTestClass>::TestNameFilterMatchesTestName, testNameFilter));
@@ -165,7 +169,8 @@ namespace ZenUnit
       TestNameFilterMock testNameFilterMock;
       const bool testNameFilterMatchesTestName = testNameFilterMock.MatchesTestNameMock.ReturnRandom();
       //
-      const bool returnedTestNameFilterMatchesTestName = _specificTestClassRunner->TestNameFilterMatchesTestName(test, testNameFilterMock);
+      const bool returnedTestNameFilterMatchesTestName =
+         _specificTestClassRunner->TestNameFilterMatchesTestName(test, testNameFilterMock);
       //
       METALMOCK(testMock->NameMock.CalledOnce());
       METALMOCK(testNameFilterMock.MatchesTestNameMock.CalledOnceWith(testName.c_str()));
@@ -310,7 +315,7 @@ namespace ZenUnit
       else
       {
          const string expectedRunningTestMessage = String::ConcatValues(" | Running ", numberOfTests, " test");
-         METALMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestMessage));
+          METALMOCK(p_consoleMock->WriteLineMock.CalledOnceWith(expectedRunningTestMessage));
       }
    }
 

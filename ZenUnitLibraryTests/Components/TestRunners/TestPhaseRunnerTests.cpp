@@ -95,13 +95,15 @@ namespace ZenUnit
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.Expect();
       //
       const TestPhaseResult testPhaseResult = _testPhaseRunner.RunTestPhase(
-         FunctionThatDoesNotThrowAnException, _testMock.get(), TestPhase::Startup);
+         FunctionThatDoesNotThrowAnException,
+         _testMock.get(),
+         TestPhase::Startup);
       //
-      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
       ARE_EQUAL(1, TestPhaseRunnerTests::s_numberOfFunctionCallsToFunctionThatDoesNotThrowAnException);
-      METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
+      METALMOCKTHEN(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce()).Then(
+      METALMOCKTHEN(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
-         TestOutcome::Success, zenUnitArgs));
+         TestOutcome::Success, zenUnitArgs)));
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = TestPhase::Startup;
       expectedTestPhaseResult.testOutcome = TestOutcome::Success;
@@ -336,7 +338,7 @@ namespace ZenUnit
 
    TEST(RunTestPhase_FunctionThrowsMetalMockException_ReturnsExceptionResult)
    {
-      ZenUnitArgs zenUnitArgs;
+      const ZenUnitArgs zenUnitArgs = ZenUnit::Random<ZenUnitArgs>();
       _call_ZenUnitTestRunner_GetZenUnitArgsMock.Return(zenUnitArgs);
 
       _caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.Expect();
@@ -352,8 +354,6 @@ namespace ZenUnit
          throw MetalMock::UnexpectedCallException("MetalMockedFunctionSignature");
       }, _testMock.get(), testPhase);
       //
-      METALMOCK(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce());
-
       const string exceptionTypeName = "MetalMock::UnexpectedCallException";
       const size_t expectedEqualsSignsLength =
          exceptionTypeName.size() + strlen(_testPhaseSuffix.c_str());
@@ -362,17 +362,24 @@ namespace ZenUnit
          expectedEqualsSigns, "\n",
          exceptionTypeName, _testPhaseSuffix, "\n",
          expectedEqualsSigns);
-      METALMOCK(_consoleMock->WriteLineColorMock.CalledOnceWith(
-         expectedExceptionNameAndTestPhaseSuffixLines, Color::Red));
 
-      METALMOCK(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(testPhase));
       const string expectedWhat = MetalMock::UnexpectedCallException::MakeExceptionMessage("MetalMockedFunctionSignature");
       const string expectedTestPhaseSuffixAndWhatLines = String::ConcatStrings("what(): \"", expectedWhat, "\"");
-      METALMOCK(_consoleMock->WriteLineMock.CalledOnceWith(expectedTestPhaseSuffixAndWhatLines));
 
-      METALMOCK(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
+      METALMOCKTHEN(_call_ZenUnitTestRunner_GetZenUnitArgsMock.CalledOnce()).Then(
+
+      METALMOCKTHEN(_testPhaseTranslatorMock->TestPhaseToTestPhaseSuffixMock.CalledOnceWith(
+         testPhase))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteLineColorMock.CalledOnceWith(
+         expectedExceptionNameAndTestPhaseSuffixLines, Color::Red))).Then(
+
+      METALMOCKTHEN(_consoleMock->WriteLineMock.CalledOnceWith(
+         expectedTestPhaseSuffixAndWhatLines))).Then(
+
+      METALMOCKTHEN(_caller_FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccessMock->CallConstMemberFunctionMock.CalledOnceWith(
          &_testPhaseRunner, &TestPhaseRunner::FailFastIfFailFastIsTrueAndTestOutcomeIsNotSuccess,
-         TestOutcome::Exception, zenUnitArgs));
+         TestOutcome::Exception, zenUnitArgs)));
 
       TestPhaseResult expectedTestPhaseResult;
       expectedTestPhaseResult.testPhase = testPhase;

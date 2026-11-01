@@ -7,7 +7,7 @@ namespace ZenUnit
    AFACT(Start_SetsStartTimeToNow)
    AFACT(StopAndGetElapsedMilliseconds_StartNotPreviouslyCalled_Returns0)
    AFACT(StopAndGetElapsedMilliseconds_StartPreviouslyCalled_ReturnsElapsedMilliseconds)
-   FACTS(StopAndGetElapsedSecondsString_StartPreviouslyCalled_SetsStartTimeToDefaultValue_ReturnsElapsedSecondsString)
+   FACTS(StopAndGetElapsedSecondsStringString_StartPreviouslyCalled_SetsStartTimeToDefaultValue_ReturnsElapsedSecondsString)
    EVIDENCE
 
    Stopwatch _stopwatch;
@@ -57,7 +57,7 @@ namespace ZenUnit
       ARE_EQUAL(randomMilliseconds, elapsedMilliseconds);
    }
 
-   TEST2X2(StopAndGetElapsedSecondsString_StartPreviouslyCalled_SetsStartTimeToDefaultValue_ReturnsElapsedSecondsString,
+   TEST2X2(StopAndGetElapsedSecondsStringString_StartPreviouslyCalled_SetsStartTimeToDefaultValue_ReturnsElapsedSecondsString,
       unsigned short elapsedMilliseconds, const string& expectedReturnValue,
       static_cast<unsigned short>(0), "0.000",
       static_cast<unsigned short>(1), "0.001",
@@ -73,7 +73,7 @@ namespace ZenUnit
          stopTimeThatIsElapsedMillisecondsAheadOfStartTime = startTime + chrono::milliseconds(elapsedMilliseconds);
       _call_high_resolution_clock_nowMock.Return(stopTimeThatIsElapsedMillisecondsAheadOfStartTime);
       //
-      const string elapsedSeconds = _stopwatch.StopAndGetElapsedSeconds();
+      const string elapsedSeconds = _stopwatch.StopAndGetElapsedSecondsString();
       //
       METALMOCK(_call_high_resolution_clock_nowMock.CalledOnce());
       ARE_EQUAL(chrono::time_point<chrono::high_resolution_clock>(), _stopwatch._startTime);
