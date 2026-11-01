@@ -34,6 +34,7 @@ namespace ZenUnit
       bool(TestClassRunnerRunner::*)(const TestNameFilter&, const TestClassRunner*) const,
       const TestClassRunner*>;
    TwoArgMemberAnyerMockType* _twoArgMemberAnyerMock = nullptr;
+
    using TwoArgMemberForEacherMockType = TwoArgMemberForEacherMock<
       std::unique_ptr<TestClassRunner>,
       TestClassRunnerRunner,
@@ -42,7 +43,8 @@ namespace ZenUnit
    TwoArgMemberForEacherMockType* _twoArgMemberForEacherMock = nullptr;
 
    // Constant Components
-   SorterMock<vector<unique_ptr<TestClassRunner>>>* _testClassRunnerSorterMock = nullptr;
+   using _testClassRunnerSorterMockType = SorterMock<vector<unique_ptr<TestClassRunner>>>;
+   _testClassRunnerSorterMockType* _testClassRunnerSorterMock = nullptr;
    WatchMock* _watchMock = nullptr;
 
    STARTUP
@@ -52,7 +54,7 @@ namespace ZenUnit
       _testClassRunnerRunner._twoArgMemberAnyer.reset(_twoArgMemberAnyerMock = new TwoArgMemberAnyerMockType);
       _testClassRunnerRunner._twoArgMemberForEacher.reset(_twoArgMemberForEacherMock = new TwoArgMemberForEacherMockType);
       // Constant Components
-      _testClassRunnerRunner._testClassRunnerSorter.reset(_testClassRunnerSorterMock = new SorterMock<vector<unique_ptr<TestClassRunner>>>);
+      _testClassRunnerRunner._testClassRunnerSorter.reset(_testClassRunnerSorterMock = new _testClassRunnerSorterMockType);
       _testClassRunnerRunner._watch.reset(_watchMock = new WatchMock);
    }
 

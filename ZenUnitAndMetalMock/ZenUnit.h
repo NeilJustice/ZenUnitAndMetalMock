@@ -5097,7 +5097,8 @@ namespace ZenUnit
       std::unique_ptr<const TwoArgMemberForEacherType> _twoArgMemberForEacher;
 
       // Constant Components
-      std::unique_ptr<const Sorter<std::vector<std::unique_ptr<TestClassRunner>>>> _testClassRunnerSorter;
+      using _testClassRunnerSorterType = Sorter<std::vector<std::unique_ptr<TestClassRunner>>>;
+      std::unique_ptr<const _testClassRunnerSorterType> _testClassRunnerSorter;
       std::unique_ptr<const Watch> _watch;
 
       // Mutable Fields
@@ -5109,7 +5110,7 @@ namespace ZenUnit
          , _twoArgMemberAnyer(std::make_unique<TwoArgMemberAnyerType>())
          , _twoArgMemberForEacher(std::make_unique<TwoArgMemberForEacherType>())
          // Constant Components
-         , _testClassRunnerSorter(std::make_unique<Sorter<std::vector<std::unique_ptr<TestClassRunner>>>>())
+         , _testClassRunnerSorter(std::make_unique<_testClassRunnerSorterType>())
          , _watch(std::make_unique<Watch>())
       {
       }
@@ -5155,12 +5156,16 @@ namespace ZenUnit
          std::vector<TestClassResult> testClassResults;
          if (zenUnitArgs.randomTestOrdering)
          {
-            testClassResults = _transformer->RandomTransform(&_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner, globalZenUnitMode.randomSeed);
+            testClassResults = _transformer->RandomTransform(
+               &_testClassRunners,
+               &TestClassRunnerRunner::RunTestClassRunner, globalZenUnitMode.randomSeed);
          }
          else
          {
-            _testClassRunnerSorter->Sort(&_testClassRunners); // Sort test class runners by test class name
-            testClassResults = _transformer->Transform(&_testClassRunners, &TestClassRunnerRunner::RunTestClassRunner);
+            _testClassRunnerSorter->Sort(&_testClassRunners);
+            testClassResults = _transformer->Transform(
+               &_testClassRunners,
+               &TestClassRunnerRunner::RunTestClassRunner);
          }
          return testClassResults;
       }
@@ -5748,7 +5753,9 @@ Fatal Windows C++ Runtime Assertion
             this, &ZenUnitTestRunner::WaitForEnterKeyIfPauseModeAndHaveNotPreviouslyPaused,
             zenUnitArgs.pauseBefore, _havePaused);
          _testRunStopwatch->Start();
+
          _caller_RunTestClasses->CallNonConstMemberFunction(this, &ZenUnitTestRunner::RunTestClasses);
+
          _testRunResult->PrintTestFailuresAndSkips();
          const size_t numberOfTestCases = _testClassRunnerRunner->NumberOfTestCases();
          const std::string testRunElapsedSeconds = _testRunStopwatch->StopAndGetElapsedSeconds();
