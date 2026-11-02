@@ -47,19 +47,14 @@ namespace ZenUnit
       }
       expectedWhatPatternBuilder << R"()
 Expected: Not )";
-#if defined __linux__
-      expectedWhatPatternBuilder << notExpectedAddress << R"(
-  Actual:     )" << actualAddress;
-#elif defined _WIN32
-      expectedWhatPatternBuilder << "0x" << notExpectedAddress << R"(
-  Actual:     0x)" << actualAddress;
-#endif
+      expectedWhatPatternBuilder << std::format("{}", static_cast<const void*>(notExpectedAddress)) << R"(
+  Actual:     )" << std::format("{}", static_cast<const void*>(actualAddress));
       if (doAppendMessage)
       {
          expectedWhatPatternBuilder << "\n Message: \"A\", \"B\"";
       }
       expectedWhatPatternBuilder << "\nFile.cpp(1)";
-      const string expectedWhatPattern = expectedWhatPatternBuilder.str();
+      string expectedWhatPattern = expectedWhatPatternBuilder.str();
       return expectedWhatPattern;
    }
 

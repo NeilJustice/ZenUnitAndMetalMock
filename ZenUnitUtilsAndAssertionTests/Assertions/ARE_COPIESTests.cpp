@@ -22,13 +22,15 @@ namespace ZenUnit
 expectedAreNotSameWhatText,
 "File.cpp(1)",
 "File.cpp(1)");
-      THROWS_EXCEPTION(ARE_COPIES(x, x), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(ARE_COPIES(x, x),
+         Anomaly, expectedWhat);
    }
 
    TEST(ObjectsHaveSameAddress_ThrowsAnomaly__MessagesTestCase)
    {
       int x = 0;
-      const string messageA = "A", messageB = "B";
+      const string messageA = "A";
+      const string messageB = "B";
       const string expectedAreNotSameWhatText = MakeExpectedARE_NOT_SAME_WhatText(&x, &x);
       const string expectedWhat = TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, x, messageA, messageB)",
@@ -38,7 +40,8 @@ expectedAreNotSameWhatText,
 " Message: \"A\", \"B\"",
 "File.cpp(1)",
 "File.cpp(1)");
-      THROWS_EXCEPTION(ARE_COPIES(x, x, messageA, messageB), Anomaly, expectedWhat);
+      THROWS_EXCEPTION(ARE_COPIES(x, x, messageA, messageB),
+         Anomaly, expectedWhat);
    }
 
    static string MakeExpectedARE_NOT_SAME_WhatText(const void* notExpectedAddress, const void* actualAddress)
@@ -46,15 +49,9 @@ expectedAreNotSameWhatText,
       ostringstream expectedWhatPatternBuilder;
       expectedWhatPatternBuilder <<
 " Because: ARE_NOT_SAME(expectedObject, actualObject) failed\n" <<
-"Expected: Not ";
-#if defined __linux__
-      expectedWhatPatternBuilder << notExpectedAddress << R"(
-  Actual:     )" << actualAddress;
-#elif defined _WIN32
-      expectedWhatPatternBuilder << "0x" << notExpectedAddress << R"(
-  Actual:     0x)" << actualAddress;
-#endif
-      const string expectedWhatPattern = expectedWhatPatternBuilder.str();
+"Expected: Not " << std::format("{}", notExpectedAddress) << R"(
+  Actual:     )" << std::format("{}", actualAddress);
+      string expectedWhatPattern = expectedWhatPatternBuilder.str();
       return expectedWhatPattern;
    }
 
@@ -62,7 +59,8 @@ expectedAreNotSameWhatText,
    {
       const int x = 1;
       int y = 2;
-      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcatStrings("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y),
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, y)",
 "Expected: 1",
 "  Actual: 2",
@@ -77,7 +75,8 @@ expectedAreNotSameWhatText,
    {
       UserType x(1);
       const UserType y(2);
-      THROWS_EXCEPTION(ARE_COPIES(x, y), Anomaly, TestUtil::NewlineConcatStrings("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y),
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, y)",
 "Expected: UserType@1",
 "  Actual: UserType@2",
@@ -93,7 +92,8 @@ expectedAreNotSameWhatText,
       UserType x(1);
       UserType y(2);
       const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(ARE_COPIES(x, y, messageA, messageB), Anomaly, TestUtil::NewlineConcatStrings("",
+      THROWS_EXCEPTION(ARE_COPIES(x, y, messageA, messageB),
+         Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: ARE_COPIES(x, y, messageA, messageB)",
 "Expected: UserType@1",
 "  Actual: UserType@2",

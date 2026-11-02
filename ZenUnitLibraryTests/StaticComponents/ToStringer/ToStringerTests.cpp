@@ -56,8 +56,6 @@ namespace ZenUnit
    AFACT(ToString_StdString_ReturnsQuotedString)
    AFACT(ToString_CharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    AFACT(ToString_ConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
-   AFACT(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
-   AFACT(ToString_WideConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
    AFACT(ToString_Char_ReturnsQuotedChar)
    AFACT(ToString_Bool_ReturnsBoolAlpha)
    AFACT(ToString_Pair_ReturnsLeftParenFirstValueCommaSecondValueRightParen)
@@ -141,7 +139,6 @@ namespace ZenUnit
       const int* const constIntPointerNullptrConst = nullptr;
       ARE_EQUAL("nullptr", ToStringer::ToString(constIntPointerNullptrConst));
 
-#if defined __linux__
       int* intPointer1 = reinterpret_cast<int*>(0x1);
       ARE_EQUAL("0x1", ToStringer::ToString(intPointer1));
       int* intPointerFF = reinterpret_cast<int*>(0xFF);
@@ -152,18 +149,6 @@ namespace ZenUnit
       ARE_EQUAL("0xffffffffffffffff", ToStringer::ToString(intPointerMaxAsBinary));
       const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
       ARE_EQUAL("0x1111111111111111", ToStringer::ToString(intPointerMid));
-#elif defined _WIN32
-      const int* const intPointer1 = reinterpret_cast<const int*>(0x1);
-      ARE_EQUAL("0x0000000000000001", ToStringer::ToString(intPointer1));
-      const int* const intPointerFF = reinterpret_cast<const int*>(0xFF);
-      ARE_EQUAL("0x00000000000000FF", ToStringer::ToString(intPointerFF));
-      const int* const intPointerMaxAsHex = reinterpret_cast<const int*>(0xFFFFFFFFFFFFFFFF);
-      ARE_EQUAL("0xFFFFFFFFFFFFFFFF", ToStringer::ToString(intPointerMaxAsHex));
-      const int* intPointerMaxAsBinary = reinterpret_cast<const int*>(0b1111111111111111111111111111111111111111111111111111111111111111);
-      ARE_EQUAL("0xFFFFFFFFFFFFFFFF", ToStringer::ToString(intPointerMaxAsBinary));
-      const int* intPointerMid = reinterpret_cast<const int*>(0x1111111111111111);
-      ARE_EQUAL("0x1111111111111111", ToStringer::ToString(intPointerMid));
-#endif
    }
 
    TEST(ToString_UniquePtr_ReturnsPointeeAddress)
@@ -206,11 +191,7 @@ namespace ZenUnit
 
    static const char* MemoryAddressPattern()
    {
-#if defined __linux__
       return R"(0x\w+)";
-#elif defined _WIN32
-      return R"(0x\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w)";
-#endif
    }
 
    TEST(ToString_SharedPtr_ReturnsPointeeAddress)
@@ -291,29 +272,6 @@ namespace ZenUnit
       ARE_EQUAL(expected, actual);
    }
 
-   TEST(ToString_WideCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
-   {
-      const array<wchar_t, 1> chars { 0 };
-      ARE_EQUAL("\"\"", ToStringer::ToString(chars.data()));
-
-      const array<wchar_t, 4> charsABC { 'A', 'B', 'C', 0 };
-      ARE_EQUAL("\"ABC\"", ToStringer::ToString(charsABC.data()));
-   }
-
-   TEST(ToString_WideConstCharPointer_ReturnsNullptrIfNullptrOtherwiseQuotedString)
-   {
-      ARE_EQUAL("nullptr", ToStringer::ToString(static_cast<const wchar_t*>(nullptr)));
-      ARE_EQUAL("\"\"", ToStringer::ToString(L""));
-      ARE_EQUAL("\".\"", ToStringer::ToString(L"."));
-
-      const string expected = R"("a\b\c")";
-      const string actual = ToStringer::ToString(L"a\\b\\c");
-      ARE_EQUAL(expected, actual);
-
-      ARE_EQUAL("\"a/b/c\"", ToStringer::ToString(L"a/b/c"));
-      ARE_EQUAL("\"ABC\"", ToStringer::ToString(L"ABC"));
-   }
-
    TEST(ToString_Char_ReturnsQuotedChar)
    {
       ARE_EQUAL("'\\0' (0)", ToStringer::ToString(static_cast<char>(0)));
@@ -336,11 +294,7 @@ namespace ZenUnit
       ARE_EQUAL("(nullptr, nullptr)", ToStringer::ToString(pair<int*, int*>()));
       ARE_EQUAL("(nullptr, nullptr)", ToStringer::ToString(pair<const int*, const int*>()));
       ARE_EQUAL("(\"hello1\", \"hello2\")", ToStringer::ToString(pair<string, string>("hello1", "hello2")));
-#if defined __linux__
       ARE_EQUAL("(0x1, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
-#elif defined _WIN32
-      ARE_EQUAL("(0x0000000000000001, 5)", ToStringer::ToString(pair<int*, int>(reinterpret_cast<int*>(0x1), 5)));
-#endif
    }
 
    TEST(ToString_TypeDoesNotHaveZenUnitPrinter_TypeDoesNotHaveOStreamInsertionOperator_ReturnsRTTITypeNameInBrackets)

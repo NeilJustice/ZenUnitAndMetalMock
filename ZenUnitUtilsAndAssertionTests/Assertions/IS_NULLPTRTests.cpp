@@ -35,15 +35,11 @@ namespace ZenUnit
       string expectedWhat = R"(
   Failed: IS_NULLPTR(nonNullRawPointer, messageA, messageB)
 Expected: nullptr
-  Actual: )";
-#if defined __linux__
-      expectedWhat += "0x123\n";
-#elif defined _WIN32
-      expectedWhat += "0x0000000000000123\n";
-#endif
-      expectedWhat += " Message: \"A\", \"B\"\n";
-      expectedWhat += "File.cpp(1)";
-      const string messageA = "A", messageB = "B";
+  Actual: 0x123
+ Message: "A", "B"
+File.cpp(1))";
+      const string messageA = "A";
+      const string messageB = "B";
       THROWS_EXCEPTION(IS_NULLPTR(nonNullRawPointer, messageA, messageB),
          Anomaly, expectedWhat);
    }
@@ -63,13 +59,8 @@ Expected: nullptr
       string expectedWhat = R"(
   Failed: IS_NULLPTR(nonNullUniquePointer)
 Expected: nullptr
-  Actual: )";
-#if defined __linux__
-      expectedWhat += "0x1234567890123";
-#elif defined _WIN32
-      expectedWhat += "0x0001234567890123";
-#endif
-      expectedWhat += "\nFile.cpp(1)";
+  Actual: 0x1234567890123
+File.cpp(1))";
       THROWS_EXCEPTION(IS_NULLPTR(nonNullUniquePointer),
          Anomaly, expectedWhat);
    }
@@ -81,13 +72,8 @@ Expected: nullptr
       string expectedWhat = R"(
   Failed: IS_NULLPTR(nonNullSharedPointer)
 Expected: nullptr
-  Actual: )";
-#if defined __linux__
-      expectedWhat += "0x1234567890123";
-#elif defined _WIN32
-      expectedWhat += "0x0001234567890123";
-#endif
-      expectedWhat += "\nFile.cpp(1)";
+  Actual: 0x1234567890123
+File.cpp(1))";
       THROWS_EXCEPTION(IS_NULLPTR(nonNullSharedPointer),
          Anomaly, expectedWhat);
    }

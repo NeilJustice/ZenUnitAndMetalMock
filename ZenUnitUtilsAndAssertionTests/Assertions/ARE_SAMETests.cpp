@@ -21,8 +21,10 @@ namespace ZenUnit
       int expectedObject = 0;
       int actualObject = 0;
       const string expectedWhat = MakeExpectedWhat(
-         "expectedObject", "actualObject", &expectedObject, &actualObject, false);
-      THROWS_EXCEPTION(ARE_SAME(expectedObject, actualObject), Anomaly, expectedWhat);
+         "expectedObject", "actualObject",
+         &expectedObject, &actualObject, false);
+      THROWS_EXCEPTION(ARE_SAME(expectedObject, actualObject),
+         Anomaly, expectedWhat);
    }
 
    TEST(ExpectedAndActualValuesNotEqual_AddressesNotEqual_ThrowsAnomaly__MessagesTestCase)
@@ -30,9 +32,12 @@ namespace ZenUnit
       const string expectedObject = "a";
       const string actualObject = "b";
       const string expectedWhat = MakeExpectedWhat(
-         "expectedObject", "actualObject", &expectedObject, &actualObject, true);
-      const string messageA = "A", messageB = "B";
-      THROWS_EXCEPTION(ARE_SAME(expectedObject, actualObject, messageA, messageB), Anomaly, expectedWhat);
+         "expectedObject", "actualObject",
+         &expectedObject, &actualObject, true);
+      const string messageA = "A";
+      const string messageB = "B";
+      THROWS_EXCEPTION(ARE_SAME(expectedObject, actualObject, messageA, messageB),
+         Anomaly, expectedWhat);
    }
 
    static string MakeExpectedWhat(
@@ -48,19 +53,14 @@ namespace ZenUnit
       }
       expectedWhatPatternBuilder << R"()
 Expected: )";
-#if defined __linux__
-      expectedWhatPatternBuilder << expectedAddress << R"(
-  Actual: )" << actualAddress;
-#elif defined _WIN32
-      expectedWhatPatternBuilder << "0x" << expectedAddress << R"(
-  Actual: 0x)" << actualAddress;
-#endif
+      expectedWhatPatternBuilder << std::format("{}", static_cast<const void*>(expectedAddress)) << R"(
+  Actual: )" << std::format("{}", static_cast<const void*>(actualAddress));
       if (doAppendMessage)
       {
          expectedWhatPatternBuilder << "\n Message: \"A\", \"B\"";
       }
       expectedWhatPatternBuilder << "\nFile.cpp(1)";
-      const string expectedWhatPattern = expectedWhatPatternBuilder.str();
+      string expectedWhatPattern = expectedWhatPatternBuilder.str();
       return expectedWhatPattern;
    }
 

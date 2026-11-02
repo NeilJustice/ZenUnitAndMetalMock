@@ -161,7 +161,7 @@ Example ZenUnit command line arguments:
 // Value Assertions
 //
 
-// Asserts that expectedValue == actualValue or if defined calls ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue). Calls strcmp or wcscmp instead of operator== if expectedValue and actualValue are const char* or const wchar_t*.
+// Asserts that expectedValue == actualValue or if defined calls ZenUnit::Equalizer<T>::AssertEqual(const T& expectedValue, const T& actualValue). Calls strcmp or wcscmp instead of operator== if expectedValue and actualValue are const char*.
 #define ARE_EQUAL(expectedValue, actualValue, ...) \
    ZenUnit::ARE_EQUAL_Defined(expectedValue, #expectedValue, actualValue, #actualValue, \
       ZENUNIT_FILELINE, ZENUNIT_VA_ARGS_TEXT(__VA_ARGS__), ##__VA_ARGS__)
@@ -1356,18 +1356,9 @@ namespace ZenUnit
    template<> inline constexpr bool is_narrow_string_v<std::string_view> = true;
    template<size_t N> inline constexpr bool is_narrow_string_v<char[N]> = true;
 
-   template<typename T> inline constexpr bool is_wide_string_v = false;
-   template<> inline constexpr bool is_wide_string_v<wchar_t*> = true;
-   template<> inline constexpr bool is_wide_string_v<const wchar_t*> = true;
-   template<> inline constexpr bool is_wide_string_v<std::wstring> = true;
-   template<> inline constexpr bool is_wide_string_v<std::wstring_view> = true;
-   template<size_t N> inline constexpr bool is_wide_string_v<wchar_t[N]> = true;
-
    template<typename T> inline constexpr bool is_string_type_with_data_function_v = false;
    template<> inline constexpr bool is_string_type_with_data_function_v<std::string> = true;
    template<> inline constexpr bool is_string_type_with_data_function_v<std::string_view> = true;
-   template<> inline constexpr bool is_string_type_with_data_function_v<std::wstring> = true;
-   template<> inline constexpr bool is_string_type_with_data_function_v<std::wstring_view> = true;
 
    template<typename T> constexpr bool is_pair_v = false;
    template<typename T1, typename T2> constexpr bool is_pair_v<std::pair<T1, T2>> = true;
@@ -1403,11 +1394,7 @@ namespace ZenUnit
       std::is_same_v<char*, typename std::decay<T>::type> ||
       std::is_same_v<char const*, typename std::decay<T>::type> ||
       std::is_same_v<std::string, typename std::decay<T>::type> ||
-      std::is_same_v<std::string_view, typename std::decay<T>::type> ||
-      std::is_same_v<wchar_t*, typename std::decay<T>::type> ||
-      std::is_same_v<wchar_t const*, typename std::decay<T>::type> ||
-      std::is_same_v<std::wstring, typename std::decay<T>::type> ||
-      std::is_same_v<std::wstring_view, typename std::decay<T>::type>;
+      std::is_same_v<std::string_view, typename std::decay<T>::type>;
 
    template<typename T>
    class Printer;
@@ -1628,28 +1615,6 @@ namespace ZenUnit
          return ToString(static_cast<const char*>(charPointerString));
       }
 
-      static std::string ToString(const wchar_t* constWideCharPointerString)
-      {
-         if (constWideCharPointerString == nullptr)
-         {
-            return "nullptr";
-         }
-         std::wostringstream oss;
-         oss << '\"' << constWideCharPointerString << '\"';
-         const std::wstring quotedWideString(oss.str());
-
-         // Hack wstring-to-string implementation
-         std::string quotedNarrowString = std::filesystem::path(quotedWideString).string();
-
-         // The below proper wstring-to-string implementation would require Windows includers of ZenUnit.h
-         // to inconveniently have to define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING.
-
-         // std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstringConverter;
-         // const std::string quotedNarrowString = wstringConverter.to_bytes(quotedWideString);
-
-         return quotedNarrowString;
-      }
-
       template<typename T, typename Deleter>
       static std::string ToString(const std::unique_ptr<T, Deleter>& uniquePtr)
       {
@@ -1720,20 +1685,13 @@ namespace ZenUnit
 
    private:
       template<typename T>
-      static std::string PointerToAddressString(T* pointer)
+      static std::string PointerToAddressString(const T* pointer)
       {
          if (pointer == nullptr)
          {
             return "nullptr";
          }
-         std::ostringstream oss;
-         // Clang and GCC ostringstream operator<< on a pointer: "0x<PointerAddress>"
-         //          MSVC ostringstream operator<< on a pointer: "<PointerAddress>"
-#if defined _WIN32
-         oss << "0x";
-#endif
-         oss << pointer;
-         std::string pointerAddressAsString(oss.str());
+         std::string pointerAddressAsString = std::format("{}", static_cast<const void*>(pointer));
          return pointerAddressAsString;
       }
 
@@ -2518,7 +2476,7 @@ namespace ZenUnit
          else
          {
             static_assert(std::is_same_v<ConstCharPointerType, const wchar_t*>);
-            stringComparisonResult = wcscmp(expectedConstCharPointer, actualConstCharPointer);
+            throw std::runtime_error("Unsupported call to ZenUnit::AssertStringsAreEqual with const wchar_t*");
          }
          if (stringComparisonResult != 0)
          {
@@ -2538,10 +2496,6 @@ namespace ZenUnit
          if constexpr (is_narrow_string_v<ExpectedType> && is_narrow_string_v<ActualType>)
          {
             AssertStringsAreEqual<const char*>(expectedValue, actualValue);
-         }
-         else if constexpr (is_wide_string_v<ExpectedType> && is_wide_string_v<ActualType>)
-         {
-            AssertStringsAreEqual<const wchar_t*>(expectedValue, actualValue);
          }
          else
          {
@@ -8525,34 +8479,10 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
       }
    }
 
-   inline const wchar_t* GetRandomWideConstCharPointer()
-   {
-      const int randomIntBetween1And10 = RandomBetween<int>(1, 10);
-      switch (randomIntBetween1And10)
-      {
-      case 1: return L"RandomWideString1";
-      case 2: return L"RandomWideString2";
-      case 3: return L"RandomWideString3";
-      case 4: return L"RandomWideString4";
-      case 5: return L"RandomWideString5";
-      case 6: return L"RandomWideString6";
-      case 7: return L"RandomWideString7";
-      case 8: return L"RandomWideString8";
-      case 9: return L"RandomWideString9";
-      default: return L"RandomWideString10";
-      }
-   }
-
    template<>
    inline const char* Random<const char*>()
    {
       return GetRandomConstCharPointer();
-   }
-
-   template<>
-   inline const wchar_t* Random<const wchar_t*>()
-   {
-      return GetRandomWideConstCharPointer();
    }
 
    template<>
@@ -8562,21 +8492,9 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
    }
 
    template<>
-   inline std::wstring Random<std::wstring>()
-   {
-      return GetRandomWideConstCharPointer();
-   }
-
-   template<>
    inline std::string_view Random<std::string_view>()
    {
       return GetRandomConstCharPointer();
-   }
-
-   template<>
-   inline std::wstring_view Random<std::wstring_view>()
-   {
-      return GetRandomWideConstCharPointer();
    }
 
    inline char RandomLetter()
@@ -8597,27 +8515,6 @@ or change TEST(TestName) to TESTNXN(TestName, ...), where N can be 1 through 10,
          const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
          char randomLowercaseLetter = static_cast<char>(randomLowercaseLetterInt);
          return randomLowercaseLetter;
-      }
-   }
-
-   inline wchar_t RandomWideLetter()
-   {
-      const bool randomBool = Random<bool>();
-      if (randomBool)
-      {
-         static_assert(static_cast<int>(L'A') == 65);
-         static_assert(static_cast<int>(L'Z') == 90);
-         const int randomUppercaseLetterInt = RandomBetween<int>(65, 90);
-         wchar_t randomUppercaseWideLetter = static_cast<wchar_t>(randomUppercaseLetterInt);
-         return randomUppercaseWideLetter;
-      }
-      else
-      {
-         static_assert(static_cast<int>(L'a') == 97);
-         static_assert(static_cast<int>(L'z') == 122);
-         const int randomLowercaseLetterInt = RandomBetween<int>(97, 122);
-         wchar_t randomLowercaseWideLetter = static_cast<wchar_t>(randomLowercaseLetterInt);
-         return randomLowercaseWideLetter;
       }
    }
 

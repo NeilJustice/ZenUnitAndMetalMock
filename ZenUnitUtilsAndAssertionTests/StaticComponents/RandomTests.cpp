@@ -37,14 +37,10 @@ namespace ZenUnit
    AFACT(Random_FilesystemPath_ReturnsFilesystemPathWithBetween0And2Subfolders)
    AFACT(Random_ErrorCode_ReturnsEitherGenericCategoryOrIostreamCategoryOrSystemCategoryErrorCode)
    AFACT(Random_ConstCharPointer_ReturnsRandomConstCharPointer1Through10)
-   AFACT(Random_ConstWCharTPointer_CodeCoverage)
    AFACT(Random_String_ReturnsRandomString1Through10)
-   AFACT(Random_WideString_CodeCoverage)
    AFACT(Random_StringView_ReturnsRandomString1Through10)
-   AFACT(Random_WideStringView_CodeCoverage)
 
    AFACT(RandomLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
-   AFACT(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
 
    AFACT(RandomStringWithSize_ReturnsRandomStringWithSize)
 
@@ -522,15 +518,6 @@ namespace ZenUnit
       }
    }
 
-   TEST(Random_ConstWCharTPointer_CodeCoverage)
-   {
-      // 1000 iterations for code coverage of all ten branches
-      for (size_t i = 0; i < 1000; ++i)
-      {
-         Random<const wchar_t*>();
-      }
-   }
-
    TEST(Random_String_ReturnsRandomString1Through10)
    {
       set<string> randomStrings;
@@ -548,30 +535,12 @@ namespace ZenUnit
       }
    }
 
-   TEST(Random_WideString_CodeCoverage)
-   {
-      // 1000 iterations for code coverage of all ten branches
-      for (size_t i = 0; i < 1000; ++i)
-      {
-         Random<wstring>();
-      }
-   }
-
    TEST(Random_StringView_ReturnsRandomString1Through10)
    {
       // 1000 iterations for code coverage of all ten branches
       for (size_t i = 0; i < 1000; ++i)
       {
          Random<string_view>();
-      }
-   }
-
-   TEST(Random_WideStringView_CodeCoverage)
-   {
-      // 1000 iterations for code coverage of all ten branches
-      for (size_t i = 0; i < 1000; ++i)
-      {
-         Random<wstring_view>();
       }
    }
 
@@ -587,30 +556,6 @@ namespace ZenUnit
             uppercaseLetterReturned = true;
          }
          if (islower(randomLetter))
-         {
-            lowercaseLetterReturned = true;
-         }
-         if (uppercaseLetterReturned && lowercaseLetterReturned)
-         {
-            break;
-         }
-      }
-      IS_TRUE(uppercaseLetterReturned);
-      IS_TRUE(lowercaseLetterReturned);
-   }
-
-   TEST(RandomWideLetter_ReturnsUppercaseAThroughZ50PercentOfTheTime_ReturnsLowercaseAThroughZ50PercentOfTheTime)
-   {
-      bool uppercaseLetterReturned = false;
-      bool lowercaseLetterReturned = false;
-      for (size_t i = 0; i < 100; ++i)
-      {
-         const wchar_t randomWideLetter = ZenUnit::RandomWideLetter();
-         if (isupper(randomWideLetter))
-         {
-            uppercaseLetterReturned = true;
-         }
-         if (islower(randomWideLetter))
          {
             lowercaseLetterReturned = true;
          }
