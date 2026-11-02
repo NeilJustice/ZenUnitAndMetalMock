@@ -59,7 +59,7 @@ namespace ZenUnit
          static_assert(sizeof(TestClassResult) == 96);
       #endif
    #elifdef __linux__
-      static_assert(sizeof(TestClassResult) == 96);
+      static_assert(sizeof(TestClassResult) == 64);
    #endif
 
    #ifdef _WIN32

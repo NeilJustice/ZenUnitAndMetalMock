@@ -1366,6 +1366,9 @@ namespace ZenUnit
    template<typename T> constexpr bool is_const_span_v = false;
    template<typename T> constexpr bool is_const_span_v<std::span<const T>> = true;
 
+   template<typename T> 
+   using is_function_ptr = std::integral_constant<bool, std::is_pointer_v<T> && std::is_function_v<std::remove_pointer_t<T>>>;
+
    template<typename T> constexpr bool is_vector_v = false;
    template<typename T> constexpr bool is_vector_v<std::vector<T>> = true;
 
@@ -1564,6 +1567,10 @@ namespace ZenUnit
          else if constexpr (has_to_string<T>)
          {
             oss << std::to_string(value);
+         }
+         else if constexpr (is_function_ptr<T>::value)
+         {
+            oss << "FunctionPointer";
          }
          else if constexpr (std::is_member_pointer_v<T>)
          {

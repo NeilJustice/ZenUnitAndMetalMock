@@ -36,7 +36,7 @@ namespace ZenUnit
       {
          string expectedPattern;
 #if defined __linux__
-         expectedPattern = "1";
+         expectedPattern = "FunctionPointer";
 #elif defined _WIN32
          expectedPattern = "0x\\w+";
 #endif
@@ -65,7 +65,7 @@ namespace ZenUnit
       {
          string expectedPattern;
 #if defined __linux__
-         expectedPattern = "1";
+         expectedPattern = "FunctionPointer";
 #elif defined _WIN32
          expectedPattern = "0x\\w+";
 #endif
@@ -89,11 +89,11 @@ namespace ZenUnit
 
       THROWS_EXCEPTION(STD_FUNCTION_TARGETS(FunctionC, stdFunctionA), Anomaly, TestUtil::NewlineConcatStrings("",
 "  Failed: STD_FUNCTION_TARGETS(FunctionC, stdFunctionA)",
-"Expected: 1",
+"Expected: FunctionPointer",
 "  Actual: <non-empty std::function>",
 " Because: ARE_EQUAL(expectedStdFunctionTarget, *stdFunction.template target<ExpectedStdFunctionTargetType*>()) failed",
-"Expected: 1",
-"  Actual: 1",
+"Expected: FunctionPointer",
+"  Actual: FunctionPointer",
 "File.cpp(1)",
 "File.cpp(1)"));
 
