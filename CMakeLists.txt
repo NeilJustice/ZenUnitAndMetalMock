@@ -21,6 +21,7 @@ if(UNIX)
          -Wno-global-constructors \
          -Wno-gnu-zero-variadic-macro-arguments \
          -Wno-header-hygiene \
+         -Wno-lifetime-safety-intra-tu-suggestions \
          -Wno-missing-include-dirs \
          -Wno-missing-noreturn \
          -Wno-missing-prototypes \
