@@ -34,7 +34,7 @@ if(UNIX)
          -Wno-unsafe-buffer-usage \
          -Wno-unused-template \
          -Wno-weak-vtables")
-      if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 21.0.0)
+      if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 23.0.0)
          append(CMAKE_CXX_FLAGS "-Wno-lifetime-safety-intra-tu-suggestions")
       endif ()
    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
