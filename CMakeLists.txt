@@ -21,11 +21,11 @@ if(UNIX)
          -Wno-global-constructors \
          -Wno-gnu-zero-variadic-macro-arguments \
          -Wno-header-hygiene \
-         -Wno-lifetime-safety-intra-tu-suggestions \
          -Wno-missing-include-dirs \
          -Wno-missing-noreturn \
          -Wno-missing-prototypes \
          -Wno-missing-variable-declarations \
+         -Wno-nrvo \
          -Wno-old-style-cast \
          -Wno-padded \
          -Wno-reserved-identifier \
@@ -35,7 +35,7 @@ if(UNIX)
          -Wno-unused-template \
          -Wno-weak-vtables")
       if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 21.0.0)
-         append(CMAKE_CXX_FLAGS "-Wno-nrvo")
+         append(CMAKE_CXX_FLAGS "-Wno-lifetime-safety-intra-tu-suggestions")
       endif ()
    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
       set(CMAKE_CXX_FLAGS "-std=c++2b -Wall -Wextra -pedantic -Werror -Wno-dangling-reference")
